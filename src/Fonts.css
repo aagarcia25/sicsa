@@ -1,0 +1,37 @@
+@font-face {
+  font-family: "MontserratBold"; /*Can be any text*/
+  src: local("Montserrat-Bold"),
+    url("../src/app/assets/fonts/Montserrat-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "MontserratLight"; /*Can be any text*/
+  src: local("Montserrat-Light"),
+    url("../src/app/assets/fonts/Montserrat-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "MontserratMedium"; /*Can be any text*/
+  src: local("Montserrat-Medium"),
+    url("../src/app/assets/fonts/Montserrat-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold"; /*Can be any text*/
+  src: local("Montserrat-SemiBold"),
+    url("../src/app/assets/fonts/Montserrat-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "MontserratRegular"; /*Can be any text*/
+  src: local("Montserrat-Regular"),
+    url("../src/app/assets/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+#pswPlaceholder::placeholder {
+  opacity: 1;
+}
+
+#usrPlaceholder::placeholder {
+  opacity: 1;
+}
