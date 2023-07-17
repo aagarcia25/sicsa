@@ -8,11 +8,11 @@ import { getPermisos, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
-import ButtonsEdit from "../componentes/ButtonsEdit"; 
-import { EntidadFiscalizadaModal } from "./EntidadFiscalizadaModal";
+import ButtonsEdit from "../componentes/ButtonsEdit";
 import TitleComponent from "../componentes/TitleComponent";
+import { TipoAuditoriaModal } from "./TipoAuditoriaModal";
 
-export const EntidadFiscalizada = () => {
+export const TipoAuditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
   const [open, setOpen] = useState(false);
@@ -52,7 +52,7 @@ export const EntidadFiscalizada = () => {
             CHUSER: user.Id,
           };
 
-          CatalogosServices.aniosindex(data).then((res) => {
+          CatalogosServices.Tipos_Auditoria_index(data).then((res) => {
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -96,7 +96,7 @@ export const EntidadFiscalizada = () => {
     { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "Descripcion", headerName: "Descripcion", width: 100 },
+    { field: "Descripcion", headerName: "Nombre", width: 350 },
 
  
   ];
@@ -114,7 +114,7 @@ export const EntidadFiscalizada = () => {
   };
 
   const consulta = (data: any) => {
-    CatalogosServices.Entidad_Fiscalizada_index(data).then((res) => {
+    CatalogosServices.Tipos_Auditoria_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -131,7 +131,7 @@ export const EntidadFiscalizada = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "EFISCALIZADA") {
+      if (String(item.ControlInterno) === "TAUDITORIA") {
        
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
@@ -150,7 +150,7 @@ export const EntidadFiscalizada = () => {
   return (
     <div style={{ height: 600, width: "100%" , padding:"1%"}}>
       {open ? (
-        <EntidadFiscalizadaModal
+        <TipoAuditoriaModal
           open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
@@ -158,8 +158,7 @@ export const EntidadFiscalizada = () => {
         />
       ) : ""}
 
-     
-       <TitleComponent title={"Entidad Fiscalizada"} show={openSlider} />
+       <TitleComponent title={"Tipos de Auditoria"} show={openSlider} />
        <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
        <MUIXDataGrid columns={columns} rows={bancos} />
     </div>

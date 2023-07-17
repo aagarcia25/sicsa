@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
 import { USUARIORESPONSE } from "../../interfaces/UserInfo";
-import { CatalogosServices } from "../../services/catalogosServices";
+import { AuditoriaService } from "../../services/AuditoriaService";
 import { getUser } from "../../services/localStorage";
 import ModalForm from "../componentes/ModalForm";
 
-export const AniosModal = ({
+export const AuditoriaModal = ({
   open,
   handleClose,
   tipo,
@@ -58,7 +58,7 @@ export const AniosModal = ({
   };
 
   const agregar = (data: any) => {
-    CatalogosServices.aniosindex(data).then((res) => {
+    AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -72,7 +72,7 @@ export const AniosModal = ({
   };
 
   const editar = (data: any) => {
-    CatalogosServices.aniosindex(data).then((res) => {
+    AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",

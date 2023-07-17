@@ -1,17 +1,16 @@
-import { Grid, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import MUIXDataGrid from "../MUIXDataGrid";
-import { AniosModal } from "./AniosModal";
-import { getPermisos, getUser } from "../../services/localStorage";
+import { Toast } from "../../helpers/Toast";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { CatalogosServices } from "../../services/catalogosServices";
-import { Toast } from "../../helpers/Toast";
-import Progress from "../Progress";
+import { getPermisos, getUser } from "../../services/localStorage";
+import MUIXDataGrid from "../MUIXDataGrid";
 import ButtonsAdd from "../componentes/ButtonsAdd";
-import ButtonsEdit from "../componentes/ButtonsEdit";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
+import ButtonsEdit from "../componentes/ButtonsEdit";
+import TitleComponent from "../componentes/TitleComponent";
+import { AniosModal } from "./AniosModal";
 
 export const Anios = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -159,14 +158,8 @@ export const Anios = () => {
         />
       ) : ""}
 
-      <Grid container justifyContent="space-between">
-      <Progress open={openSlider}></Progress>
-        <Grid item md={12} textAlign="center" >
-          <Typography variant="h3" >
-            {"Años Fiscales"}
-          </Typography>
-        </Grid>
-      </Grid>
+
+       <TitleComponent title={"Años Fiscales"} show={openSlider} />
        <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
        <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
