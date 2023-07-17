@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import { Fingerprint } from "@mui/icons-material";
-import { RESPONSE, UserLogin } from "../interfaces/UserInfo";
+import { USUARIORESPONSE, UserLogin } from "../interfaces/UserInfo";
 import { getToken, getUser } from "../services/localStorage";
 import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
@@ -37,7 +37,7 @@ export function BloqueoSesion({
       setName(decoded.NombreUsuario);
 
     } else {
-      const user: RESPONSE = JSON.parse(String(getUser() === "undefined" || getUser() === undefined ? null : getUser()));
+      const user: USUARIORESPONSE = JSON.parse(String(getUser() === "undefined" || getUser() === undefined ? null : getUser()));
       setApellMat(user?.ApellidoMaterno);
       setApellPat(user?.ApellidoPaterno);
       setName(user?.Nombre);

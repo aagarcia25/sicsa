@@ -8,7 +8,8 @@ import Inicio from '../views/Inicio';
 import { Perfil } from '../views/perfil/Perfil';
 import { AuthRouter } from './AuthRouter';
 import { Anios } from '../views/CatAnio/Anios';
-import { RESPONSE, RESPONSESTORAGE } from '../interfaces/UserInfo';
+import { RESPONSESTORAGE, USUARIORESPONSE } from '../interfaces/UserInfo';
+import { EntidadFiscalizada } from '../views/CatEntidadFiscalizada/EntidadFiscalizada';
 
 export const AppRouter = (
   {
@@ -21,14 +22,14 @@ export const AppRouter = (
 
 ) => {
   const log = login;
-  const user: RESPONSE = JSON.parse(String(getUser()));
+  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const [responseStorage, setResponseStorage] = useState<RESPONSESTORAGE>();
   const [ClearresponseStorage, setClearResponseStorage] = useState<RESPONSESTORAGE>();
 
   const handleCloseModal = () => {
   };
   const handleChangeImg = () => {
-    GetImage("/FOTOPERFIL/", user.RutaFoto)
+    //GetImage("/FOTOPERFIL/", user.RutaFoto)
   };
 
   const GetImage = (tipo: string, nameImagen: string) => {
@@ -53,7 +54,10 @@ export const AppRouter = (
         <Route path='/*' element={log ? <Eo404 /> : <AuthRouter />} />
         <Route path='/' element={log ? <Bienvenido user={user} /> : <AuthRouter />} />
         {/* SECCION DE CATALOGOS */}
-        <Route path='/inicio/catalogos/anio' element={<Anios />} />
+        <Route path='/inicio/catalogos/anio' element={log ? <Anios /> : <AuthRouter />} />
+        <Route path='/inicio/catalogos/ef' element={log ? <EntidadFiscalizada /> : <AuthRouter />} />
+
+        
         {/* FIN SECCION DE CATALOGOS */}
 
         {/* SECCION DE CALENDARIO */}

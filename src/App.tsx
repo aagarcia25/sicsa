@@ -9,10 +9,12 @@ import { AppRouter } from "./app/router/AppRouter";
 import { AuthService } from "./app/services/AuthService";
 import { UserServices } from "./app/services/UserServices";
 import {
+  getIdApp,
   getRfToken,
   getToken,
   getUser,
   setDepartamento,
+  setIdApp,
   setMenus,
   setPerfilFoto,
   setPerfiles,
@@ -26,7 +28,7 @@ import {
 import { BloqueoSesion } from "./app/views/BloqueoSesion";
 import Slider from "./app/views/Progress";
 import Validacion from "./app/views/Validacion";
-import { RESPONSE, UserInfo, UserLogin } from "./app/interfaces/UserInfo";
+import {  USUARIORESPONSE, UserLogin } from "./app/interfaces/UserInfo";
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
   const query = new URLSearchParams(urlParams);
   const jwt = query.get("jwt");
   const refjwt = query.get("rf");
+  const idapp = query.get("IdApp");
+
   const [openSlider, setOpenSlider] = useState(true);
   const [bloqueoStatus, setBloqueoStatus] = useState<boolean>();
   const [login, setlogin] = useState<boolean>(false);
@@ -73,79 +77,112 @@ function App() {
 
   const buscaUsuario = (id: string) => {
     let data = {
-      NUMOPERACION: 1,
-      ID: id,
+      IdUsuario: id,
+      IdApp: JSON.parse(String(getIdApp()))
     };
-    AuthService.adminUser(data).then((res2) => {
-      const us: UserInfo = res2;
-      setUser(us.RESPONSE);
 
-      if (String(us.RESPONSE) === "PrimerInicio") {
-        Swal.fire({
-          icon: "info",
-          title: 'Bienvenid@',
-          text: 'Su cuenta Se Confirmo Correctamente',
-          showDenyButton: false,
-          showCancelButton: false,
-          confirmButtonText: "Aceptar",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            var ventana = window.self;
-            ventana.location.reload();
-          }
-        });
-
-      }
-      else if (us.SUCCESS && String(us.RESPONSE) !== "PrimerInicio") {
-        setRoles(us.RESPONSE.ROLES);
-        setPermisos(us.RESPONSE.PERMISOS);
-        setMenus(us.RESPONSE.MENUS);
-        setPerfiles(us.RESPONSE.PERFILES);
-        setDepartamento(us.RESPONSE.DEPARTAMENTOS);
-        setOpenSlider(false);
-        setlogin(true);
-        setAcceso(true);
+  
+    UserServices.userAppDetail(data).then((res) => {
+       console.log(res);
+      if (res?.status === 200) {
+        console.log(res.data.data);
+        setUser(res.data.data);
+        setRoles(res.data.roles[0]);
+        setPerfiles(res.data.perfiles[0]);
+        setMenus(res.data.menus[0]);
+        setPermisos(res.data.permisos[0]);
+        setUserName(res.data.data.NombreUsuario)
+        
         setBloqueoStatus(false);
-        GetImage("/FOTOPERFIL/", us?.RESPONSE?.RutaFoto);
+        setOpenSlider(false);
+        setAcceso(true);
+        setlogin(true);
+    
+      } else if (res.status === 401) {
+        setOpenSlider(false);
+        setlogin(false);
+        setAcceso(false);
 
-      }
-      else if (us.SUCCESS) {
-        mensaje('', 'Información', us.STRMESSAGE==="Exito"?"":us.STRMESSAGE + " Contactar Al Departamento Correspondiente");
-      }
-      else if (us.SUCCESS === false && !us.RESPONSE) {
-        Swal.fire({
-          icon: "info",
-          title: 'Bienvenid@',
-          text: us.STRMESSAGE,
-          showDenyButton: false,
-          showCancelButton: false,
-          confirmButtonText: "Aceptar",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            var ventana = window.self;
-            ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN))
-
-
-          }
-        });
-      }
-      else if (us.SUCCESS === false && us.RESPONSE) {
-        Swal.fire({
-          icon: "info",
-          title: us.RESPONSE,
-          showDenyButton: false,
-          showCancelButton: false,
-          confirmButtonText: "Aceptar",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            var ventana = window.self;
-            ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN));
-
-
-          }
-        });
       }
     });
+
+
+
+    // AuthService.adminUser(data).then((res2) => {
+    //   const us: UserInfo = res2;
+    //   setUser(us.RESPONSE);
+
+    //   if (String(us.RESPONSE) === "PrimerInicio") {
+    //     Swal.fire({
+    //       icon: "info",
+    //       title: 'Bienvenid@',
+    //       text: 'Su cuenta Se Confirmo Correctamente',
+    //       showDenyButton: false,
+    //       showCancelButton: false,
+    //       confirmButtonText: "Aceptar",
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         var ventana = window.self;
+    //         ventana.location.reload();
+    //       }
+    //     });
+
+    //   }
+    //   else if (us.SUCCESS && String(us.RESPONSE) !== "PrimerInicio") {
+    //     setRoles(us.RESPONSE.ROLES);
+    //     setPermisos(us.RESPONSE.PERMISOS);
+    //     setMenus(us.RESPONSE.MENUS);
+    //     setPerfiles(us.RESPONSE.PERFILES);
+    //     setDepartamento(us.RESPONSE.DEPARTAMENTOS);
+    //     setOpenSlider(false);
+    //     setlogin(true);
+    //     setAcceso(true);
+    //     setBloqueoStatus(false);
+    //     GetImage("/FOTOPERFIL/", us?.RESPONSE?.RutaFoto);
+
+    //   }
+    //   else if (us.SUCCESS) {
+    //     mensaje('', 'Información', us.STRMESSAGE==="Exito"?"":us.STRMESSAGE + " Contactar Al Departamento Correspondiente");
+    //   }
+    //   else if (us.SUCCESS === false && !us.RESPONSE) {
+    //     Swal.fire({
+    //       icon: "info",
+    //       title: 'Bienvenid@',
+    //       text: us.STRMESSAGE,
+    //       showDenyButton: false,
+    //       showCancelButton: false,
+    //       confirmButtonText: "Aceptar",
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         var ventana = window.self;
+    //         ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN))
+
+
+    //       }
+    //     });
+    //   }
+    //   else if (us.SUCCESS === false && us.RESPONSE) {
+    //     Swal.fire({
+    //       icon: "info",
+    //       title: us.RESPONSE,
+    //       showDenyButton: false,
+    //       showCancelButton: false,
+    //       confirmButtonText: "Aceptar",
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         var ventana = window.self;
+    //         ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN));
+
+
+    //       }
+    //     });
+    //   }
+    // });
+
+
+
+
+
   };
 
 
@@ -174,7 +211,7 @@ function App() {
 
   const handleOnActive = (password: string, user:string) => {
     const decoded: UserLogin = jwt_decode(String(getToken()));
-    const userInfo: RESPONSE = JSON.parse(String(getUser()));
+    const userInfo: USUARIORESPONSE = JSON.parse(String(getUser()));
     let data = {
       NombreUsuario: decoded.NombreUsuario?decoded.NombreUsuario: userInfo.NombreUsuario,
       Contrasena: password,
@@ -231,6 +268,7 @@ function App() {
       if (((decoded.exp - (Date.now() / 1000)) / 60) > 1) {
         setToken(jwt);
         setRfToken(refjwt);
+        setIdApp(idapp ); 
         var ventana = window.self;
         ventana.location.replace("/");
       } else {
@@ -288,5 +326,7 @@ function App() {
 }
 
 export default App;
+
+
 
 

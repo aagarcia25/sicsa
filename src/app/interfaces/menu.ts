@@ -45,7 +45,7 @@ export interface menus {
     Path: string;
     Nivel: number;
     Orden: number;
-    items?: Item[];
+    item?: Item[];
 }
 
 export interface Preguntas {

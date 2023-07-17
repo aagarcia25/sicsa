@@ -5,7 +5,7 @@ import Navigator from "./Navigator";
 import Header from "./Header";
 import { ReactNode } from "react";
 import { Grid } from "@mui/material";
-import { RESPONSE } from "../interfaces/UserInfo";
+import { USUARIORESPONSE } from "../interfaces/UserInfo";
 
 let theme = createTheme({
   palette: {
@@ -170,7 +170,7 @@ theme = {
 
 interface Props {
   children?: ReactNode;
-  user: RESPONSE;
+  user: USUARIORESPONSE;
   imgData: string;
   imgTipo: string;
 

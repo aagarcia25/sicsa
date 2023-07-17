@@ -16,11 +16,11 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import React from "react";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Swal from "sweetalert2";
-import { RESPONSE } from "../../interfaces/UserInfo";
 import { getUser, setToken } from "../../services/localStorage";
 import { UserServices } from "../../services/UserServices";
 import { Toast } from "../../helpers/Toast";
 import { Blanco } from "../../styles/imagen";
+import { USUARIORESPONSE } from "../../interfaces/UserInfo";
 
 export const Perfil = (
   {
@@ -33,7 +33,7 @@ export const Perfil = (
     imgTipo: string;
   }
 ) => {
-  const user: RESPONSE = (JSON.parse(String(getUser())));
+  const user: USUARIORESPONSE = (JSON.parse(String(getUser())));
   // const [responseStorage, setResponseStorage] = useState<RESPONSESTORAGE>();
 
   const [openDialog, setOpenDialog] = useState(false)
@@ -107,7 +107,7 @@ export const Perfil = (
         if (result.isConfirmed) {
 
           let dat = {
-            IdUsuario: user.id,
+            IdUsuario: user.Id,
             ContrasenaNueva: password,
           };
 
@@ -171,7 +171,7 @@ export const Perfil = (
                   }}
 
                   sx={{ width: "7.4rem", height: "7.4rem", backgroundColor: "white", borderRadius: '50%', justifyContent: "center", cursor: "pointer", }} >
-                  {user?.RutaFoto &&imgData!=="undefined" ?
+                  {imgData!=="undefined" ?
 
                     <img 
                     alt="Foto de Perfil"
@@ -232,7 +232,8 @@ export const Perfil = (
                     Departamento:
                   </Typography>
                   <Typography variant="h6" className="DatosSecundariosPerfil">
-                    {user.DEPARTAMENTOS[0]?.Descripcion} </Typography>
+                    {/* {user.DEPARTAMENTOS[0]?.Descripcion}  */}
+                  </Typography>
 
                 </Grid>
                 <Grid item xs={12}>

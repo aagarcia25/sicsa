@@ -46,58 +46,8 @@ export interface PERMISO {
 
 }
 
-export interface SPEIS {
-    CreadoPor: string;
-    FechaCreacion: string;
-    ModificadoPor: string;
-    Nombre: string;
-    Route: string;
-    UltimaActualizacion: string;
-    deleted: string;
-    id: string;
-    idPA: string;
-}
 
 
-export interface GetParticipaciones {
-    id: string;
-    NumProyecto: string;
-    ConceptoEgreso: number;
-    NumOper: number;
-    Anio: number;
-    Mes: string;
-    ClaveEstado: number;
-    Nombre: string;
-    Clave: string;
-    fondodes: string;
-    tipocalculo: string;
-    total: string;
-    Presupuesto: string;
-    Descripcion: string;
-    ClavePresupuestal: string;
-    estatus: string;
-    uresclave: string;
-    uresdes: string;
-    Divisa: string;
-    Proveedor: string;
-    Deudor: string;
-    TipoSolicitud: string;
-    Observaciones?: any;
-    clasificacion: string;
-    clasificacionDescripcion: string;
-    ClaveBeneficiario?: any;
-    DescripcionBeneficiario?: any;
-    conceptoCheque: string;
-    NumParticipacion?: any;
-    NumSolEgreso?: any;
-    NumEgreso?: any;
-    NumOrdenPago?: any;
-    NumRequerimientoAnt?: any;
-    NumCheque?: any;
-    Retenciones: string;
-    Descuentos: string;
-    importe: string;
-}
 
 
 export interface FPG {
@@ -201,49 +151,53 @@ export interface RESPONSEGUIARAPIDA {
     RutaGuia: string;
 }
 
-export interface RESPONSE {
-    NOMBRE?: string;
-    TIPO?: string;
-    SIZE?: number;
-    FILE?: string;
-    id: string;
-    deleted: string;
-    UltimaActualizacion: string;
-    FechaCreacion: string;
-    ModificadoPor: string;
-    CreadoPor: string;
-    Nombre: string;
-    ApellidoPaterno: string;
-    ApellidoMaterno: string;
-    NombreUsuario: string;
-    CorreoElectronico: string;
-    RutaFoto?: any;
-    Puesto?: any;
-    EstaActivo?: number;
-    Ubicacion?: any;
-    Ext?: any;
-    Telefono?: any;
-    idDepartamento?: any;
-    ROLES: ROLE[];
-    MENUS: MENU[];
-    PERMISOS: PERMISO[];
-    PERFILES: PERFILES[];
-    DEPARTAMENTOS: DEPARTAMENTOS[];
-    MUNICIPIO: MUNICIPIO[];
-    ORG: ORG[];
-    tipo?: any;
-    Celular?: any;
-    Curp?: string;
-    idPerfil?: string;
-    idUsuarioCentral?: string;
-    numFideicomisos?: number;
-    idUResp?: string;
+export interface USUARIORESPONSE {
+    Id: string
+    Nombre: string
+    ApellidoPaterno: string
+    ApellidoMaterno: string
+    NombreUsuario: string
+    CorreoElectronico: string
+    Puesto: string
+    Curp: string
+    Rfc: string
+    Telefono: string
+    Ext: string
+    Celular: string
+    IdTipoUsuario: string
+    TipoUsuario: string
+    EstaActivo: number
+    PuedeFirmar: number
+    UltimoInicioDeSesion: string
+    Deleted: number
+    IdApp: string
+    Aplicacion: string
+    IdDepartamento: any
+    NombreCortoDepartamento: any
+    Departamento: any
+    IdPerfil: any
+    Perfil: any
+    IdRol: any
+    Rol: any
+    DescRol: any
+    IdUnidadResponsable: any
+    ClaveUResponsable: any
+    UnidadResponsable: any
+    IdDependencia: any
+    Dependencia: any
+    IdTipoDependencia: any
+    TipoDependencia: any
+    IdSecretaria: any
+    NombreCortoSecretaria: any
+    Secretaria: any
+    Acceso: any
+    RutaFoto:any
 }
 
 export interface UserInfo {
     NUMCODE: number;
     STRMESSAGE: string;
-    RESPONSE: RESPONSE;
+    RESPONSE: USUARIORESPONSE;
     SUCCESS: boolean;
 }
 

@@ -1,4 +1,4 @@
-import { RESPONSE, User } from "../interfaces/UserInfo";
+import { USUARIORESPONSE, User } from "../interfaces/UserInfo";
 import { post, postEasy } from "./apiService";
 import { getToken, getUser } from "./localStorage";
 
@@ -121,9 +121,9 @@ export class AuthService {
 
     
     public static async GetImagenProfile(tipo: string,nameImagen:string) {
-        const user: RESPONSE = JSON.parse(String(getUser()));
+        const user: USUARIORESPONSE = JSON.parse(String(getUser()));
         const formData = new FormData();
-        formData.append("CHUSER", user.id);
+        formData.append("CHUSER", user.Id);
         formData.append("TOKEN", JSON.parse(String(getToken())));
         formData.append("TIPO", tipo);
         formData.append("IMG", nameImagen);

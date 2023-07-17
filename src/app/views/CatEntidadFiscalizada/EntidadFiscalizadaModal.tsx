@@ -15,7 +15,7 @@ import { getUser } from "../../services/localStorage";
 import { CatalogosServices } from "../../services/catalogosServices";
 import ModalForm from "../componentes/ModalForm";
 
-export const AniosModal = ({
+export const EntidadFiscalizadaModal = ({
   open,
   handleClose,
   tipo,
@@ -61,7 +61,7 @@ export const AniosModal = ({
   };
 
   const agregar = (data: any) => {
-    CatalogosServices.aniosindex(data).then((res) => {
+    CatalogosServices.Entidad_Fiscalizada_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -75,7 +75,7 @@ export const AniosModal = ({
   };
 
   const editar = (data: any) => {
-    CatalogosServices.aniosindex(data).then((res) => {
+    CatalogosServices.Entidad_Fiscalizada_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",

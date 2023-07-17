@@ -28,7 +28,7 @@ import logoNL from "../assets/img/logo1.svg";
 
 // import ButtonsTutorial from "./menu/catalogos/Utilerias/ButtonsTutorial";
 import NotesIcon from '@mui/icons-material/Notes';
-import { RESPONSE } from "../interfaces/UserInfo";
+import { USUARIORESPONSE } from "../interfaces/UserInfo";
 
 interface HeaderProps {
   onDrawerToggle: () => void;
@@ -41,7 +41,7 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   const btnPerson = "120%";
-  const user: RESPONSE = JSON.parse(String(getUser()));
+  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const navigate = useNavigate();
   const [cnotif, setCnotif] = React.useState(0);
   const { onDrawerToggle } = props;
@@ -263,7 +263,7 @@ export default function Header(props: HeaderProps) {
 
   let data = {
     NUMOPERACION: 5,
-    CHUSER: user?.id ? user?.id : "",
+    CHUSER: user?.Id ? user?.Id : "",
   };
 
   React.useEffect(() => {
@@ -377,13 +377,8 @@ export default function Header(props: HeaderProps) {
 
                     <Grid container item xs={12} sm={12} direction="row" justifyContent="flex-end" alignItems="center">
                       <Typography color="black">
-                        {(user?.PERFILES[0]?.Referencia === "MUN" ? "" : " ") +
-                          (user?.ROLES[0]?.Nombre === "Municipio" ? user.ROLES[0].Nombre + " " : " ") +
-                          ((user?.DEPARTAMENTOS[0]?.NombreCorto !== "MUN") ? user?.DEPARTAMENTOS[0]?.NombreCorto !== "ORG" ? user?.DEPARTAMENTOS[0]?.Descripcion + " " : " " : "") +
-                          (user?.MUNICIPIO[0]?.Nombre ? " " + user?.MUNICIPIO[0]?.Nombre + " " : " ")
-                          + ((user?.MUNICIPIO[0]?.Nombre || user?.DEPARTAMENTOS[0]?.NombreCorto !== "MUN") ? "" : "* Sin Municipio asignado *")
-                          + (user?.ORG[0]?.Descripcion ? " " + user?.ORG[0]?.Descripcion + " " : " ")
-                          + ((user?.ORG[0]?.Descripcion || user?.DEPARTAMENTOS[0]?.NombreCorto !== "ORG") ? "" : "* Sin Organismo asignado *")
+                        {
+                         user.Rol
                         }
                       </Typography>
                     </Grid>
@@ -404,7 +399,7 @@ export default function Header(props: HeaderProps) {
                         onClick={handleToggle('left')}
                         color="inherit"
                       >
-                        {user.RutaFoto && props.imgData !== "undefined" ? (
+                        {props.imgData !== "undefined" ? (
                           <>
                             <img
                               className="imgDentroDeHeaderInicio"

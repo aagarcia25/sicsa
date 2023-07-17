@@ -31,7 +31,6 @@ export default function Navigator(props: DrawerProps, logoFijo: any) {
   };
   const consulta = (data: string) => {
     navigate(data);
-
   };
 
 
@@ -77,10 +76,9 @@ export default function Navigator(props: DrawerProps, logoFijo: any) {
             {
 
               list.map((item, indexx) => {
-
                 return (
-
-                  (item?.items?.length !== 0) ?
+                 
+                  (item?.item?.length !== 0) ?
 
                     <div key={indexx} >
                       <ListItemButton sx={{ bgcolor: open === indexx ? 'rgba(195, 165, 117)' : 'rgba(255, 255, 255, 0.291)' }} key={indexx} onClick={() => handleClick(indexx)} >
@@ -96,7 +94,7 @@ export default function Navigator(props: DrawerProps, logoFijo: any) {
                       </ListItemButton>
 
                       {
-                        item?.items?.map((subitem, index) => {
+                        item?.item?.map((subitem, index) => {
                           return (
                             <Collapse key={index} in={open === indexx} timeout="auto" unmountOnExit>
                               <List sx={{ borderRadius: "1" }} key={index} component="div" disablePadding>

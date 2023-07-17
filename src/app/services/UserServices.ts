@@ -17,6 +17,10 @@ export class UserServices {
         return await post('user-detail', data);
     }
 
+    public static async userAppDetail(data: any) {
+        return await post('userapp-detail', data);
+    }
+
     public static async login(data: any) {
         return await postSingle('login', data);
     }

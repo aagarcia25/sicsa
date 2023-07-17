@@ -3,7 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import MUIXDataGrid from "../MUIXDataGrid";
-import { AniosModal } from "./AniosModal";
+import { EntidadFiscalizadaModal } from "./EntidadFiscalizadaModal";
 import { getPermisos, getUser } from "../../services/localStorage";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { CatalogosServices } from "../../services/catalogosServices";
@@ -13,7 +13,7 @@ import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 
-export const Anios = () => {
+export const EntidadFiscalizada = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
   const [open, setOpen] = useState(false);
@@ -115,7 +115,7 @@ export const Anios = () => {
   };
 
   const consulta = (data: any) => {
-    CatalogosServices.aniosindex(data).then((res) => {
+    CatalogosServices.Entidad_Fiscalizada_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -132,7 +132,7 @@ export const Anios = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "ANIOS") {
+      if (String(item.ControlInterno) === "EFISCALIZADA") {
        
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
@@ -151,7 +151,7 @@ export const Anios = () => {
   return (
     <div style={{ height: 600, width: "100%" , padding:"1%"}}>
       {open ? (
-        <AniosModal
+        <EntidadFiscalizadaModal
           open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
@@ -163,7 +163,7 @@ export const Anios = () => {
       <Progress open={openSlider}></Progress>
         <Grid item md={12} textAlign="center" >
           <Typography variant="h3" >
-            {"Años Fiscales"}
+            {"Entidad Fiscalizada"}
           </Typography>
         </Grid>
       </Grid>
