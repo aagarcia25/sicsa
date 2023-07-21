@@ -223,19 +223,21 @@ const handleAccion = (v: any) => {
         denyButtonText: `Cancelar`,
       }).then((result) => {
         if (result.isConfirmed) {
+          console.log(v);
           let data = {
             NUMOPERACION: 3,
             CHID: v.data.row.id,
-           // CHUSER: user.Id,
+            CHUSER: user.Id,
+            P_ROUTE: v.data.row.Route,
           };
-
+      
           AuditoriaService.Filesindex(data).then((res) => {
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
                 title: "¡Registro Eliminado!",
               });
-             // consulta({ NUMOPERACION: 4 });
+              consulta();
             } else {
               Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
             }

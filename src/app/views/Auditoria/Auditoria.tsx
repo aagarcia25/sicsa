@@ -42,6 +42,7 @@ export const Auditoria = () => {
  };
 
   const handleClose = () => {
+    setOpen(false);
     setOpenModalDetalle(false);
     setOpenAdjuntos(false);
   };
@@ -106,8 +107,8 @@ export const Auditoria = () => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={editar}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={eliminar}></ButtonsDeleted>
+           <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
+           <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
            <ButtonsDetail title={"Notificación Area"} handleFunction={handleDetalle} show={true} icon={<ChatIcon/>} row={v}></ButtonsDetail>
            <ButtonsDetail title={"Ver Adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail>
           </>
@@ -194,7 +195,7 @@ export const Auditoria = () => {
       ) : ""}
 
        <TitleComponent title={"Administración de Auditorias"} show={openSlider} />
-       <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
+       <ButtonsAdd handleOpen={handleOpen} agregar={true} /> 
        <MUIXDataGrid columns={columns} rows={bancos} />     
     </div>
 
