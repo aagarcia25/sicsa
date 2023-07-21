@@ -121,18 +121,15 @@ export const Auditoria = () => {
     { field: "creado", headerName: "Creado Por", width: 100 },
     { field: "modi", headerName: "Modificado Por", width: 100 },
     { field: "Consecutivo", headerName: "Consecutivo", width: 100 },
+    { field: "NAUDITORIA", headerName: "No. De Auditoria", width: 100 },
     { field: "FolioSIGA", headerName: "Folio SIGA", width: 100 },
     { field: "Encargado", headerName: "Personal Encargado De La Auditoría", width: 200 },
-    { field: "PersonalEncargado", headerName: "Personal", width: 250 },
-    { field: "NAUDITORIA", headerName: "No. De Auditoria", width: 100 },
+    { field: "PersonalEncargado", headerName: "Personal", width: 300 },
     { field: "NombreAudoria", headerName: "Nombre", width: 300 },
     { field: "ActaInicio", headerName: "Acta De Inicio", width: 150 },
     { field: "OFinicio", headerName: "Oficio De Inicio", width: 150 },
     { field: "Fecha_Recibido", headerName: "Fecha Recibido ", width: 150 },
     { field: "Fecha_Vencimiento", headerName: "Fecha Vencimiento", width: 150 },
-
-
- 
   ];
 
 
@@ -187,7 +184,6 @@ export const Auditoria = () => {
      <div style={{ height: 600, width: "100%" , padding:"1%"}}>
       {open ? (
         <AuditoriaModal
-          open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
           dt={vrows}
