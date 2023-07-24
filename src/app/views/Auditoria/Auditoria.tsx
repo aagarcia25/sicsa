@@ -17,6 +17,7 @@ import Notif from "./Notificaciones/Notif";
 import { Grid } from "@mui/material";
 import VisorDocumentos from "../componentes/VisorDocumentos";
 import AttachmentIcon from '@mui/icons-material/Attachment';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -103,12 +104,13 @@ export const Auditoria = () => {
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
-      width: 200,
+      width: 250,
       renderCell: (v) => {
         return (
           <>
            <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
            <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
+           <ButtonsDetail title={"Acciones"} handleFunction={handleDetalle} show={true} icon={<Diversity3Icon/>} row={v}></ButtonsDetail>
            <ButtonsDetail title={"Notificación Area"} handleFunction={handleDetalle} show={true} icon={<ChatIcon/>} row={v}></ButtonsDetail>
            <ButtonsDetail title={"Ver Adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail>
           </>

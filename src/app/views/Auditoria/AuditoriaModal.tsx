@@ -246,6 +246,36 @@ console.log(data)
               </Grid>
           </Grid>
 
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+        
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+           
+              
+             </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>  
+
+
+             
+              </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>  
+         
+              </Grid>
+          </Grid>
+
 
           <Grid
             container
@@ -302,6 +332,39 @@ console.log(data)
                 placeholder={"Seleccione Entrega"}
                 disabled={false}
               />
+              </Grid>
+          </Grid>
+
+
+
+
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+        
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+           
+              
+             </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>  
+
+
+             
+              </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>  
+         
               </Grid>
           </Grid>
 
