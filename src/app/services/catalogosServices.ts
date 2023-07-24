@@ -51,7 +51,9 @@ export class CatalogosServices {
         return await post('Unidad_Admin_Auditora_index', data);
     };
 
-
+    public static async Ramo_index(data : any) {
+        return await post('Ramo_index', data);
+    };
 
 
 }
