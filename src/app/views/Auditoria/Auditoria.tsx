@@ -18,6 +18,7 @@ import { Grid } from "@mui/material";
 import VisorDocumentos from "../componentes/VisorDocumentos";
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import Acciones from "./Acciones/Acciones";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -26,7 +27,8 @@ export const Auditoria = () => {
   const [vrows, setVrows] = useState({});
   const [bancos, setBancos] = useState([]);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
-
+  const [openModalAcciones, setOpenModalAcciones] = useState(false);
+  
   const [openModalNotificacion, setOpenModalDetalle] = useState<boolean>(false);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
@@ -46,6 +48,12 @@ export const Auditoria = () => {
     setOpen(false);
     setOpenModalDetalle(false);
     setOpenAdjuntos(false);
+    setOpenModalAcciones(false)
+  };
+
+  const handleAcciones = (data: any) => {
+    setVrows(data);
+    setOpenModalAcciones(true);
   };
 
   const handleDetalle = (data: any) => {
@@ -110,7 +118,7 @@ export const Auditoria = () => {
           <>
            <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
            <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
-           <ButtonsDetail title={"Acciones"} handleFunction={handleDetalle} show={true} icon={<Diversity3Icon/>} row={v}></ButtonsDetail>
+           <ButtonsDetail title={"Acciones"} handleFunction={handleAcciones} show={true} icon={<Diversity3Icon/>} row={v}></ButtonsDetail>
            <ButtonsDetail title={"Notificación Area"} handleFunction={handleDetalle} show={true} icon={<ChatIcon/>} row={v}></ButtonsDetail>
            <ButtonsDetail title={"Ver Adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail>
           </>
@@ -207,6 +215,7 @@ export const Auditoria = () => {
     </Grid>
     {openModalNotificacion ? (<Notif handleFunction={handleClose} obj={vrows}/>) : ("")} 
     {openAdjuntos ? (<VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={1}/>) : ("")} 
+    {openModalAcciones ? (<Acciones handleFunction={handleClose} obj={vrows}/>) : ("")} 
   </div>
 
   );
