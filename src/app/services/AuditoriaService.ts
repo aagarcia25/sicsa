@@ -23,6 +23,9 @@ export class AuditoriaService {
         return await post('Acciones_index', data);
     };
     
-
+    public static async OficiosA_index(data : any) {
+        return await post('OficiosA_index', data);
+    };
+    
 
 }
