@@ -85,8 +85,8 @@ export const Anios = () => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={editar}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={eliminar}></ButtonsDeleted>
+           <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
+           <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
           </>
          
         );
@@ -160,7 +160,7 @@ export const Anios = () => {
 
 
        <TitleComponent title={"Años Fiscales"} show={openSlider} />
-       <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
+       <ButtonsAdd handleOpen={handleOpen} agregar={true} /> 
        <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );
