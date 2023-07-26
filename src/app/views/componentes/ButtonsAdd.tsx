@@ -1,13 +1,15 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Tooltip, ToggleButton } from "@mui/material";
 
-const ButtonsAdd = ({
+const ButtonsAdd = (
+  {
   handleOpen,
   agregar,
 }: {
   handleOpen: Function;
   agregar: boolean;
-}) => {
+}
+) => {
   return (
     <>
       {agregar ? (
