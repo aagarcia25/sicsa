@@ -18,7 +18,7 @@ const ButtonsEdit = ({
            {/* EDITAR */}
            {show ? 
              <Tooltip title={"Editar Registro"}>
-            <IconButton color="inherit" onClick={() => handleAccion({data:row})}>
+            <IconButton color="inherit" onClick={() => handleAccion({data:row,tipo:1})}>
               <ModeEditOutlineIcon />
             </IconButton>
             </Tooltip>
