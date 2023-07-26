@@ -2,7 +2,6 @@ import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 
 const CustomizedDate = ({
 value,
