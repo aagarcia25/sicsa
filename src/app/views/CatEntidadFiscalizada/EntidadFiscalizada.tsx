@@ -23,9 +23,9 @@ export const EntidadFiscalizada = () => {
 
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(false);
-  const [editar, setEditar] = useState<boolean>(false);
-  const [eliminar, setEliminar] = useState<boolean>(false);
+  const [agregar, setAgregar] = useState<boolean>(true);
+  const [editar, setEditar] = useState<boolean>(true);
+  const [eliminar, setEliminar] = useState<boolean>(true);
 
 
 
@@ -52,7 +52,7 @@ export const EntidadFiscalizada = () => {
             CHUSER: user.Id,
           };
 
-          CatalogosServices.aniosindex(data).then((res) => {
+          CatalogosServices.Entidad_Fiscalizada_index(data).then((res) => {
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",

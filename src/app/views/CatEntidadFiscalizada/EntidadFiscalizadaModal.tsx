@@ -25,19 +25,19 @@ export const EntidadFiscalizadaModal = ({
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [id, setId] = useState("");
-  const [nombre, setNombre] = useState("");
+  //const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const handleSend = () => {
-    if (!nombre || !descripcion) {
+    if (!descripcion) {
       Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
     } else {
       let data = {
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        NOMBRE: nombre,
+        //NOMBRE: nombre,
         DESCRIPCION: descripcion,
       };
 
@@ -88,7 +88,7 @@ export const EntidadFiscalizadaModal = ({
     if (dt === "") {
     } else {
       setId(dt?.row?.id);
-      setNombre(dt?.row?.Nombre);
+      //setNombre(dt?.row?.Nombre);
       setDescripcion(dt?.row?.Descripcion);
     }
   }, [dt]);
@@ -102,7 +102,7 @@ export const EntidadFiscalizadaModal = ({
         <Grid container direction="row" justifyContent="center" alignItems="center"  sx={{ padding:"2%" }}  >
         <Grid item alignItems="center" justifyContent="center" xs={4}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={4}>
-            <TextField
+            {/* <TextField
               required
               margin="dense"
               id="Nombre"
@@ -116,7 +116,7 @@ export const EntidadFiscalizadaModal = ({
               InputProps={{
                 readOnly: tipo === 1 ? false : true,
               }}
-            />
+            /> */}
 
             <TextField
               required
@@ -138,7 +138,7 @@ export const EntidadFiscalizadaModal = ({
           <Grid item alignItems="center" justifyContent="center" xs={12} height={40}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={5}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={2}>
-            <Button disabled={descripcion===""||nombre===""}  className={tipo === 1 ? "guardar" : "actualizar"}  onClick={() => handleSend()} >
+            <Button disabled={descripcion===""}  className={tipo === 1 ? "guardar" : "actualizar"}  onClick={() => handleSend()} >
               {tipo === 1 ? "Agregar" : "Editar"}
             </Button>
           </Grid>
