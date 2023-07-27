@@ -30,7 +30,7 @@ export const UnidadAdminAuditoraModal = ({
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const handleSend = () => {
-    if (!nombre || !descripcion) {
+    if (!descripcion) {
       Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
     } else {
       let data = {
@@ -42,7 +42,7 @@ export const UnidadAdminAuditoraModal = ({
       };
 
       handleRequest(data);
-      handleClose();
+      
     }
   };
 
@@ -64,7 +64,7 @@ export const UnidadAdminAuditoraModal = ({
           icon: "success",
           title: "¡Registro Agregado!",
         });
-
+        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
       }
@@ -78,6 +78,7 @@ export const UnidadAdminAuditoraModal = ({
           icon: "success",
           title: "¡Registro Editado!",
         });
+        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
       }
@@ -102,7 +103,7 @@ export const UnidadAdminAuditoraModal = ({
         <Grid container direction="row" justifyContent="center" alignItems="center"  sx={{ padding:"2%" }}  >
         <Grid item alignItems="center" justifyContent="center" xs={4}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={4}>
-            <TextField
+            {/* <TextField
               required
               margin="dense"
               id="Nombre"
@@ -116,7 +117,7 @@ export const UnidadAdminAuditoraModal = ({
               InputProps={{
                 readOnly: tipo === 1 ? false : true,
               }}
-            />
+            /> */}
 
             <TextField
               required
@@ -138,7 +139,7 @@ export const UnidadAdminAuditoraModal = ({
           <Grid item alignItems="center" justifyContent="center" xs={12} height={40}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={5}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={2}>
-            <Button disabled={descripcion===""||nombre===""}  className={tipo === 1 ? "guardar" : "actualizar"}  onClick={() => handleSend()} >
+            <Button disabled={descripcion===""}  className={tipo === 1 ? "guardar" : "actualizar"}  onClick={() => handleSend()} >
               {tipo === 1 ? "Agregar" : "Editar"}
             </Button>
           </Grid>

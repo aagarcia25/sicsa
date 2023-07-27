@@ -23,9 +23,9 @@ export const OrigenAuditoria = () => {
 
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(false);
-  const [editar, setEditar] = useState<boolean>(false);
-  const [eliminar, setEliminar] = useState<boolean>(false);
+  const [agregar, setAgregar] = useState<boolean>(true);
+  const [editar, setEditar] = useState<boolean>(true);
+  const [eliminar, setEliminar] = useState<boolean>(true);
 
 
 
@@ -96,7 +96,7 @@ export const OrigenAuditoria = () => {
     { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "Descripcion", headerName: "Nombre", width: 100 },
+    { field: "Descripcion", headerName: "Descripción", width: 100 },
 
  
   ];
@@ -111,6 +111,13 @@ export const OrigenAuditoria = () => {
     setModo("Agregar Registro");
     setOpen(true);
     setVrows("");
+  };
+
+  const handleEdit = (v: any) => {
+    setTipoOperacion(2);
+    setModo("Módificar Registro");
+    setOpen(true);
+    setVrows(v);
   };
 
   const consulta = (data: any) => {
