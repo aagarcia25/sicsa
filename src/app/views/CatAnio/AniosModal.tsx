@@ -26,7 +26,7 @@ export const AniosModal = ({
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [id, setId] = useState("");
-  const [anio, setNombre] = useState("");
+  const [anio, setAnio] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
@@ -38,7 +38,7 @@ export const AniosModal = ({
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        NOMBRE: anio,
+        ANIO: anio,
       };
 
      // handleRequest(data);
@@ -94,7 +94,7 @@ export const AniosModal = ({
     } else {
       console.log("dt",dt)
       setId(dt?.row?.id);
-      setNombre(dt?.row?.anio);
+      setAnio(dt?.row?.anio);
       //setDescripcion(dt?.data?.row?.Descripcion);
     }
   }, [dt]);
@@ -103,15 +103,13 @@ export const AniosModal = ({
     
 
     if(/^[0-9]+$/.test(dato)){
-      setNombre(dato)
+      setAnio(dato)
     }
     else if(dato.length===0){
-      setNombre("")
+      setAnio("")
     }
 
   }
-
-  
 
   return (
 
@@ -125,7 +123,7 @@ export const AniosModal = ({
             <TextField
               required
               margin="dense"
-              id="Nombre"
+              id="Año"
               label="Año"
               value={anio}
               type="text"
