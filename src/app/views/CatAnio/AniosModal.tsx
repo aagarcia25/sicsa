@@ -11,6 +11,7 @@ import { USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { CatalogosServices } from "../../services/catalogosServices";
 import { getUser } from "../../services/localStorage";
 import ModalForm from "../componentes/ModalForm";
+import { DataObject } from "@mui/icons-material";
 
 export const AniosModal = ({
   open,
@@ -25,37 +26,38 @@ export const AniosModal = ({
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [id, setId] = useState("");
-  const [nombre, setNombre] = useState("");
+  const [anio, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const handleSend = () => {
-    if (!nombre || !descripcion) {
+    if (!anio) {
       Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
     } else {
       let data = {
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        NOMBRE: nombre,
-        DESCRIPCION: descripcion,
+        NOMBRE: anio,
       };
 
-      handleRequest(data);
-      handleClose();
+     // handleRequest(data);
+
+      if (tipo === 1) {
+        //AGREGAR
+        agregar(data);
+      } else if (tipo === 2) {
+        //EDITAR
+  
+        editar(data);
+      }
+      
     }
   };
 
-  const handleRequest = (data: any) => {
-    if (tipo === 1) {
-      //AGREGAR
-      agregar(data);
-    } else if (tipo === 2) {
-      //EDITAR
-
-      editar(data);
-    }
-  };
+ //const handleRequest = (data: any) => {
+   
+ // };
 
   const agregar = (data: any) => {
     CatalogosServices.aniosindex(data).then((res) => {
@@ -64,8 +66,10 @@ export const AniosModal = ({
           icon: "success",
           title: "¡Registro Agregado!",
         });
-
+        handleClose();
       } else {
+        
+        
         Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
       }
     });
@@ -78,6 +82,7 @@ export const AniosModal = ({
           icon: "success",
           title: "¡Registro Editado!",
         });
+        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
       }
@@ -87,11 +92,26 @@ export const AniosModal = ({
   useEffect(() => {
     if (dt === "") {
     } else {
+      console.log("dt",dt)
       setId(dt?.row?.id);
-      setNombre(dt?.row?.Nombre);
-      setDescripcion(dt?.row?.Descripcion);
+      setNombre(dt?.row?.anio);
+      //setDescripcion(dt?.data?.row?.Descripcion);
     }
   }, [dt]);
+
+  const validarNumero=(dato:string)=>{
+    
+
+    if(/^[0-9]+$/.test(dato)){
+      setNombre(dato)
+    }
+    else if(dato.length===0){
+      setNombre("")
+    }
+
+  }
+
+  
 
   return (
 
@@ -106,19 +126,19 @@ export const AniosModal = ({
               required
               margin="dense"
               id="Nombre"
-              label="Nombre"
-              value={nombre}
+              label="Año"
+              value={anio}
               type="text"
               fullWidth
               variant="standard"
-              onChange={(v) => setNombre(v.target.value)}
-              error={nombre === "" ? true : false}
+              onChange={(v) =>validarNumero(v.target.value) }
+              error={anio === "" ? true : false}
               InputProps={{
-                readOnly: tipo === 1 ? false : true,
+              //readOnly: tipo === 1 ? false : true,
               }}
             />
 
-            <TextField
+            {/* <TextField
               required
               margin="dense"
               id="Descripcion"
@@ -132,13 +152,13 @@ export const AniosModal = ({
               InputProps={{
 
               }}
-            />
+            /> */}
           </Grid>
           <Grid item alignItems="center" justifyContent="center" xs={4}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={12} height={40}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={5}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={2}>
-            <Button disabled={descripcion===""||nombre===""}  className={tipo === 1 ? "guardar" : "actualizar"}  onClick={() => handleSend()} >
+            <Button disabled={anio===""}  className={tipo === 1 ? "guardar" : "actualizar"}  onClick={() => handleSend()} >
               {tipo === 1 ? "Agregar" : "Editar"}
             </Button>
           </Grid>

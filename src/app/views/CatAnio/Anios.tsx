@@ -23,15 +23,15 @@ export const Anios = () => {
 
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(false);
-  const [editar, setEditar] = useState<boolean>(false);
-  const [eliminar, setEliminar] = useState<boolean>(false);
+  const [agregar, setAgregar] = useState<boolean>(true);
+  const [editar, setEditar] = useState<boolean>(true);
+  const [eliminar, setEliminar] = useState<boolean>(true);
 
 
 
 
   const handleAccion = (v: any) => {
-    if (v.tipo == 1) {
+    if (v.tipo === 1) {
       setTipoOperacion(2);
       setModo("Editar Registro");
       setOpen(true);
@@ -96,7 +96,7 @@ export const Anios = () => {
     { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "anio", headerName: "Nombre", width: 100 },
+    { field: "anio", headerName: "Año", width: 100 },
 
  
   ];
@@ -111,6 +111,13 @@ export const Anios = () => {
     setModo("Agregar Registro");
     setOpen(true);
     setVrows("");
+  };
+
+  const handleEdit = (v: any) => {
+    setTipoOperacion(2);
+    setModo("Módificar Registro");
+    setOpen(true);
+    setVrows(v);
   };
 
   const consulta = (data: any) => {
@@ -149,14 +156,14 @@ export const Anios = () => {
 
   return (
     <div style={{ height: 600, width: "100%" , padding:"1%"}}>
-      {open ? (
+      {open ? 
         <AniosModal
           open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
           dt={vrows}
         />
-      ) : ""}
+      : ""}
 
 
        <TitleComponent title={"Años Fiscales"} show={openSlider} />
