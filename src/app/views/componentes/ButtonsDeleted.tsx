@@ -20,7 +20,7 @@ const ButtonsDeleted = ({
             {/* ELIMINAR */}
             {show ?
               <Tooltip title={"Eliminar Registro"}>
-            <IconButton  color="inherit" onClick={() => handleAccion({data:row})}>
+            <IconButton  color="inherit" onClick={() => handleAccion({data:row,tipo:2})}>
               <DeleteForeverIcon />
             </IconButton>
             </Tooltip>

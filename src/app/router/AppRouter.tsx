@@ -20,6 +20,7 @@ import { TipoAuditoria } from '../views/CatTipoAuditoria/TipoAuditoria';
 import { UnidadAdminAuditora } from '../views/CatUnidadAdminAuditora/UnidadAdminAuditora';
 import { Dashboard } from '@mui/icons-material';
 import { Auditoria } from '../views/Auditoria/Auditoria';
+import { Ramo } from '../views/CatRamo/Ramo';
 
 export const AppRouter = (
   {
@@ -79,6 +80,7 @@ export const AppRouter = (
         <Route path='/inicio/catalogos/ta' element={log ? <TipoAccion /> : <AuthRouter />} />
         <Route path='/inicio/catalogos/tauditoria' element={log ? <TipoAuditoria /> : <AuthRouter />} />
         <Route path='/inicio/catalogos/uaa' element={log ? <UnidadAdminAuditora /> : <AuthRouter />} />
+        <Route path='/inicio/catalogos/ramo' element={log ? <Ramo /> : <AuthRouter />} />
         {/* FIN SECCION DE CATALOGOS */}
 
         {/* SECCION DE CALENDARIO */}

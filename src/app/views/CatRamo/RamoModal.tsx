@@ -12,7 +12,7 @@ import { CatalogosServices } from "../../services/catalogosServices";
 import { getUser } from "../../services/localStorage";
 import ModalForm from "../componentes/ModalForm";
 
-export const EntidadFiscalizadaModal = ({
+export const RamoModal = ({
   open,
   handleClose,
   tipo,
@@ -25,7 +25,7 @@ export const EntidadFiscalizadaModal = ({
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [id, setId] = useState("");
-  //const [nombre, setNombre] = useState("");
+  const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
@@ -37,28 +37,25 @@ export const EntidadFiscalizadaModal = ({
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        //NOMBRE: nombre,
         DESCRIPCION: descripcion,
       };
 
-      handleRequest(data);
+      if (tipo === 1) {
+        //AGREGAR
+        agregar(data);
+      } else if (tipo === 2) {
+        //EDITAR
+  
+        editar(data);
+      }
+
       
     }
   };
 
-  const handleRequest = (data: any) => {
-    if (tipo === 1) {
-      //AGREGAR
-      agregar(data);
-    } else if (tipo === 2) {
-      //EDITAR
-
-      editar(data);
-    }
-  };
 
   const agregar = (data: any) => {
-    CatalogosServices.Entidad_Fiscalizada_index(data).then((res) => {
+    CatalogosServices.Ramo_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -72,7 +69,7 @@ export const EntidadFiscalizadaModal = ({
   };
 
   const editar = (data: any) => {
-    CatalogosServices.Entidad_Fiscalizada_index(data).then((res) => {
+    CatalogosServices.Ramo_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -88,9 +85,9 @@ export const EntidadFiscalizadaModal = ({
   useEffect(() => {
     if (dt === "") {
     } else {
-      setId(dt?.row?.id);
-      //setNombre(dt?.row?.Nombre);
-      setDescripcion(dt?.row?.Descripcion);
+      console.log(dt?.data)
+      setId(dt?.data?.row?.id);
+      setDescripcion(dt?.data?.row?.Descripcion);
     }
   }, [dt]);
 
@@ -103,21 +100,7 @@ export const EntidadFiscalizadaModal = ({
         <Grid container direction="row" justifyContent="center" alignItems="center"  sx={{ padding:"2%" }}  >
         <Grid item alignItems="center" justifyContent="center" xs={4}></Grid>
           <Grid item alignItems="center" justifyContent="center" xs={4}>
-            {/* <TextField
-              required
-              margin="dense"
-              id="Nombre"
-              label="Nombre"
-              value={nombre}
-              type="text"
-              fullWidth
-              variant="standard"
-              onChange={(v) => setNombre(v.target.value)}
-              error={nombre === "" ? true : false}
-              InputProps={{
-                readOnly: tipo === 1 ? false : true,
-              }}
-            /> */}
+           
 
             <TextField
               required

@@ -10,9 +10,9 @@ import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import TitleComponent from "../componentes/TitleComponent";
-import { AniosModal } from "./AniosModal";
+import { RamoModal } from "./RamoModal";
 
-export const Anios = () => {
+export const Ramo = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
   const [open, setOpen] = useState(false);
@@ -23,20 +23,18 @@ export const Anios = () => {
 
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
 
 
 
 
   const handleAccion = (v: any) => {
-    if (v.tipo === 1) {
-      setTipoOperacion(2);
-      setModo("Editar Registro");
-      setOpen(true);
-      setVrows(v.data);
-    } else if (v.tipo === 2) {
+    console.log('imprimiendo contenido')
+    console.log(v)
+
+
       Swal.fire({
         icon: "info",
         title: "¿Estás seguro de eliminar este registro?",
@@ -48,11 +46,11 @@ export const Anios = () => {
         if (result.isConfirmed) {
           let data = {
             NUMOPERACION: 3,
-            CHID: v.data.row.id,
+            CHID: v.data.id,
             CHUSER: user.Id,
           };
 
-          CatalogosServices.aniosindex(data).then((res) => {
+          CatalogosServices.Ramo_index(data).then((res) => {
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -67,7 +65,7 @@ export const Anios = () => {
           Swal.fire("No se realizaron cambios", "", "info");
         }
       });
-    }
+    
   };
 
   const columns: GridColDef[] = [
@@ -85,7 +83,7 @@ export const Anios = () => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
+           <ButtonsEdit handleAccion={handleEdit} row={v} show={true}></ButtonsEdit>
            <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
           </>
          
@@ -94,9 +92,9 @@ export const Anios = () => {
     },
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
     { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
-    { field: "CreadoPor", headerName: "Creado Por", width: 100 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "anio", headerName: "Año", width: 100 },
+    { field: "modi", headerName: "Creado Por", width: 100 },
+    { field: "creado", headerName: "Modificado Por", width: 100 },
+    { field: "Descripcion", headerName: "Descripcion", width: 350 },
 
  
   ];
@@ -113,6 +111,7 @@ export const Anios = () => {
     setVrows("");
   };
 
+  
   const handleEdit = (v: any) => {
     setTipoOperacion(2);
     setModo("Módificar Registro");
@@ -121,7 +120,7 @@ export const Anios = () => {
   };
 
   const consulta = (data: any) => {
-    CatalogosServices.aniosindex(data).then((res) => {
+    CatalogosServices.Ramo_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -138,7 +137,7 @@ export const Anios = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "ANIOS") {
+      if (String(item.ControlInterno) === "RAMOS") {
        
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
@@ -156,17 +155,16 @@ export const Anios = () => {
 
   return (
     <div style={{ height: 600, width: "100%" , padding:"1%"}}>
-      {open ? 
-        <AniosModal
+      {open ? (
+        <RamoModal
           open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
           dt={vrows}
         />
-      : ""}
+      ) : ""}
 
-
-       <TitleComponent title={"Años Fiscales"} show={openSlider} />
+       <TitleComponent title={"Catálogo de Ramos"} show={openSlider} />
        <ButtonsAdd handleOpen={handleOpen} agregar={true} /> 
        <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
