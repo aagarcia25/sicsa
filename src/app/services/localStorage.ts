@@ -11,7 +11,7 @@ export const setUser = (user: any) => localStorage.setItem('user', JSON.stringif
 export const getUser = () => localStorage.getItem('user');
 // PERMISOS
 export const setPermisos = (permisos: any) => localStorage.setItem('permisos', JSON.stringify(permisos));
-export const getPermisos = () => ((localStorage.getItem('permisos')==null || localStorage.getItem('permisos')==undefined)?  "[{}]": localStorage.getItem('permisos'));
+export const getPermisos = () => ((localStorage.getItem('permisos')===undefined)?  []: localStorage.getItem('permisos'));
 // ROLES
 export const setRoles = (roles: any) => localStorage.setItem('roles', JSON.stringify(roles));
 export const getRoles = () => localStorage.getItem('roles');
