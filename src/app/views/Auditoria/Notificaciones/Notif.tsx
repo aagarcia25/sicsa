@@ -16,6 +16,7 @@ import ButtonsEdit from '../../componentes/ButtonsEdit';
 import ModalForm from '../../componentes/ModalForm';
 import VisorDocumentos from '../../componentes/VisorDocumentos';
 import { Contestacion } from './Contestacion';
+import { NotifModal } from './NotifModal';
 
 const Notif = ({
     handleFunction,
@@ -31,13 +32,13 @@ const [openAdjuntos, setOpenAdjuntos] = useState(false);
 const [show, setShow] = useState(false);
 const [vrows, setVrows] = useState({});
 const [data, setData] = useState([]);
-
-
+const [openModal, setOpenModal] = useState(false);
+const [tipoOperacion, setTipoOperacion] = useState(0);
 const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 const user: USUARIORESPONSE = JSON.parse(String(getUser()));
-const [agregar, setAgregar] = useState<boolean>(false);
-const [editar, setEditar] = useState<boolean>(false);
-const [eliminar, setEliminar] = useState<boolean>(false);
+const [agregar, setAgregar] = useState<boolean>(true);
+const [editar, setEditar] = useState<boolean>(true);
+const [eliminar, setEliminar] = useState<boolean>(true);
 
 
 
@@ -60,7 +61,38 @@ const consulta = (data: any) => {
   };
 
 const handleAccion = (v: any) => {
-   
+ 
+  Swal.fire({
+    icon: "info",
+    title: "¿Estás seguro de eliminar este registro?",
+    showDenyButton: true,
+    showCancelButton: false,
+    confirmButtonText: "Confirmar",
+    denyButtonText: `Cancelar`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      setOpenSlider(false);
+      let data = {
+        NUMOPERACION: 3,
+        CHID: v.data.row.id,
+        CHUSER: user.Id,
+      };
+
+      AuditoriaService.Notificacionindex(data).then((res) => {
+        if (res.SUCCESS) {
+          Toast.fire({
+            icon: "success",
+            title: "¡Registro Eliminado!",
+          });
+          consulta({ NUMOPERACION: 4 });
+        } else {
+          Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        }
+      });
+    } else if (result.isDenied) {
+      Swal.fire("No se realizaron cambios", "", "info");
+    }
+  });
 };
 
 const handleDetalle = (data: any) => {
@@ -77,11 +109,19 @@ const handleClose = () => {
     setOpen(false);
     setOpenContestacion(false);
     setOpenAdjuntos(false);
+    setOpenModal(false)
     consulta({ NUMOPERACION: 4 ,P_IDAUDITORIA:obj.id });
   };
 
-const handleOpen = (v: any) => {
-    setOpen(true);
+  const handleEdit = (data: any) => {
+    setOpenModal(true);
+    setTipoOperacion(2);
+    setVrows(data.data);
+  };
+  
+const handleOpen = () => {
+    setOpenModal(true);
+    setTipoOperacion(1);
     setVrows("");
   };
 
@@ -100,8 +140,8 @@ const handleOpen = (v: any) => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
+           <ButtonsEdit handleAccion={handleEdit} row={v} show={editar}></ButtonsEdit>
+           <ButtonsDeleted handleAccion={handleAccion} row={v} show={eliminar}></ButtonsDeleted>
            <ButtonsDetail title={"Ver Adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail>
            <ButtonsDetail title={"Ver Contestación"} handleFunction={handleDetalle} show={true} icon={<RemoveRedEyeIcon/>} row={v}></ButtonsDetail>
           </>
@@ -146,6 +186,7 @@ const handleOpen = (v: any) => {
      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
      <MUIXDataGrid columns={columns} rows={data} />
      </ModalForm>
+     {openModal ? (<NotifModal tipo={tipoOperacion} handleClose={handleClose} dt={vrows} user={user} idAuditoria={obj.id}        />      ) : ""}
      {openContestacion ? (<Contestacion handleFunction={handleClose} obj={vrows}/>) : ("")} 
      {openAdjuntos ? (<VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={2}/>) : ("")} 
     </div>
