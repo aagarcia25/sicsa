@@ -35,9 +35,9 @@ const [data, setData] = useState([]);
 
 const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 const user: USUARIORESPONSE = JSON.parse(String(getUser()));
-const [agregar, setAgregar] = useState<boolean>(false);
-const [editar, setEditar] = useState<boolean>(false);
-const [eliminar, setEliminar] = useState<boolean>(false);
+const [agregar, setAgregar] = useState<boolean>(true);
+const [editar, setEditar] = useState<boolean>(true);
+const [eliminar, setEliminar] = useState<boolean>(true);
 
 
 
@@ -60,7 +60,38 @@ const consulta = (data: any) => {
   };
 
 const handleAccion = (v: any) => {
-   
+ 
+  Swal.fire({
+    icon: "info",
+    title: "¿Estás seguro de eliminar este registro?",
+    showDenyButton: true,
+    showCancelButton: false,
+    confirmButtonText: "Confirmar",
+    denyButtonText: `Cancelar`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      setOpenSlider(false);
+      let data = {
+        NUMOPERACION: 3,
+        CHID: v.data.row.id,
+        CHUSER: user.Id,
+      };
+
+      AuditoriaService.Notificacionindex(data).then((res) => {
+        if (res.SUCCESS) {
+          Toast.fire({
+            icon: "success",
+            title: "¡Registro Eliminado!",
+          });
+          consulta({ NUMOPERACION: 4 });
+        } else {
+          Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        }
+      });
+    } else if (result.isDenied) {
+      Swal.fire("No se realizaron cambios", "", "info");
+    }
+  });
 };
 
 const handleDetalle = (data: any) => {
