@@ -96,7 +96,7 @@ export const Anios = () => {
     { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "anio", headerName: "Año", width: 100 },
+    { field: "anio", headerName: "Año",description:"Año", width: 100 },
 
  
   ];
