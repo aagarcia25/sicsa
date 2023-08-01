@@ -15,7 +15,8 @@ import { ShareService } from "../../../services/ShareService";
 import Progress from "../../Progress";
 import ModalForm from "../../componentes/ModalForm";
 import SelectFrag from "../../componentes/SelectFrag";
-
+import dayjs, { Dayjs } from "dayjs";
+import CustomizedDate from "../../componentes/CustomizedDate";
 
 export const NotifModal = ({
   handleClose,
@@ -39,6 +40,7 @@ export const NotifModal = ({
   const [Prorroga, setProrroga] = useState("");
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
+  const [FechaOficio, setFechaOficio] = useState<Dayjs | null>();
 
   const [ListDependencia, setListDependencia] = useState<SelectValues[]>([]);
 
@@ -56,6 +58,7 @@ export const NotifModal = ({
         Prorroga:Prorroga,
         Oficio:Oficio,
         SIGAOficio:SIGAOficio,
+        FechaOficio:FechaOficio,
       };
 
       handleRequest(data);
@@ -105,6 +108,10 @@ export const NotifModal = ({
     });
   };
 
+  const handleFilterChange2 = (v: any) => {
+    setFechaOficio(v)
+  };
+
   useEffect(() => {
     loadFilter(11);
     if (dt === "") {
@@ -114,6 +121,7 @@ export const NotifModal = ({
       setProrroga(dt.row.Prorroga);
       setOficio(dt.row.Oficio);
       setSIGAOficio(dt.row.SIGAOficio);
+      setFechaOficio(dayjs(dt?.data?.row?.FechaOficio) );
 
     }
   }, [dt]);
@@ -197,7 +205,13 @@ export const NotifModal = ({
                         onChange={(v) => setSIGAOficio(v.target.value)}
                     />
               </Grid>
+
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+            <CustomizedDate value={FechaOficio} label={"Fecha Oficio"} onchange={handleFilterChange2}/>
+            </Grid>
+
           </Grid>
+          
 
        
 

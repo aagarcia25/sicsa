@@ -157,6 +157,7 @@ const handleOpen = () => {
     { field: "Prorroga", headerName: "Prorroga", width: 100 },
     { field: "Oficio", headerName: "Oficio", width: 150 },
     { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
+    { field: "FechaOficio", headerName: "Fecha de Oficio", width: 150 },
 
  
   ];
