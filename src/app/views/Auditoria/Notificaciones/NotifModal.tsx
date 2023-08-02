@@ -40,7 +40,7 @@ export const NotifModal = ({
   const [Prorroga, setProrroga] = useState("");
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
-  const [FechaOficio, setFechaOficio] = useState<Dayjs | null>();
+  const [FOficio, setFechaOficio] = useState<Dayjs | null>();
 
   const [ListDependencia, setListDependencia] = useState<SelectValues[]>([]);
 
@@ -49,6 +49,8 @@ export const NotifModal = ({
     if (!Dependencia  ||!Oficio) {
       Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
     } else {
+
+     
       let data = {
         NUMOPERACION: tipo,
         CHID: id,
@@ -58,7 +60,7 @@ export const NotifModal = ({
         Prorroga:Prorroga,
         Oficio:Oficio,
         SIGAOficio:SIGAOficio,
-        FechaOficio:FechaOficio,
+        FOficio:FOficio,
       };
 
       handleRequest(data);
@@ -69,15 +71,17 @@ export const NotifModal = ({
   const handleRequest = (data: any) => {
     if (tipo === 1) {
       AuditoriaService.Notificacionindex(data).then((res) => {
-        if (res.SUCCESS) {
-          Toast.fire({
-            icon: "success",
-            title: "¡Registro Agregado!",
-          });
-          handleClose();
-        } else {
-          Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
-        }
+        console.log(res);
+        
+      //   if (res.SUCCESS) {
+      //     Toast.fire({
+      //       icon: "success",
+      //       title: "¡Registro Agregado!",
+      //     });
+      //     handleClose();
+      //   } else {
+      //     Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
+      //   }
       });
     } else if (tipo === 2) {
       AuditoriaService.Notificacionindex(data).then((res) => {
@@ -110,12 +114,15 @@ export const NotifModal = ({
 
   const handleFilterChange2 = (v: any) => {
     setFechaOficio(v)
+    console.log(v);
+    
   };
 
   useEffect(() => {
     loadFilter(11);
     if (dt === "") {
-    } else {
+    } else { console.log("fecha", dt?.data?.row?.FechaOficio);
+    
       setId(dt?.row?.id);
       setDependencia(dt.row.Dependencia);
       setProrroga(dt.row.Prorroga);
@@ -147,7 +154,7 @@ export const NotifModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={3.5}>
             <Typography sx={{ fontFamily: "sans-serif" }}>Dependencia:</Typography>
               <SelectFrag
                 value={Dependencia}
@@ -157,10 +164,9 @@ export const NotifModal = ({
                 disabled={false}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-          
-
-<TextField
+            
+            <Grid item xs={12} sm={6} md={4} lg={3.5}>
+            <TextField
                         margin="dense"
                         id="Prorroga"
                         label="Prorroga"
@@ -174,8 +180,8 @@ export const NotifModal = ({
                     />
               
              </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-
+           
+            <Grid item xs={12} sm={6} md={4} lg={3.5}>  
             <TextField
                         margin="dense"
                         id="Oficio"
@@ -189,9 +195,9 @@ export const NotifModal = ({
                         onChange={(v) => setOficio(v.target.value)}
                     />
 
-             
-              </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={4} lg={3.5}>  
             <TextField
                         margin="dense"
                         id="FolioSIGA"
@@ -206,8 +212,8 @@ export const NotifModal = ({
                     />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-            <CustomizedDate value={FechaOficio} label={"Fecha Oficio"} onchange={handleFilterChange2}/>
+            <Grid item xs={12} sm={6} md={4} lg={3.5}>
+            <CustomizedDate value={FOficio} label={"Fecha Oficio"} onchange={handleFilterChange2}/>
             </Grid>
 
           </Grid>

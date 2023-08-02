@@ -79,7 +79,7 @@ export const Oficios = ({
               Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
             }
           });
-        } else if (result.isDenied) {
+        } else if (result.isDenied) { 
           Swal.fire("No se realizaron cambios", "", "info");
         }
       });
