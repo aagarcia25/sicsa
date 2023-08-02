@@ -12,10 +12,11 @@ import ButtonsEdit from '../../componentes/ButtonsEdit';
 import { AuditoriaService } from '../../../services/AuditoriaService';
 import { Toast } from '../../../helpers/Toast';
 import Swal from 'sweetalert2';
-import { PERMISO } from '../../../interfaces/UserInfo';
-import { getPermisos } from '../../../services/localStorage';
+import { PERMISO, USUARIORESPONSE } from '../../../interfaces/UserInfo';
+import { getPermisos, getUser } from '../../../services/localStorage';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import VisorDocumentos from '../../componentes/VisorDocumentos';
+import { ContestacionModal } from './ContestacionModal';
 
 export const Contestacion = ({
     handleFunction,
@@ -31,6 +32,9 @@ const [vrows, setVrows] = useState({});
 const [data, setData] = useState([]);
 const [openAdjuntos, setOpenAdjuntos] = useState(false);
 
+const [openModal, setOpenModal] = useState(false);
+const [tipoOperacion, setTipoOperacion] = useState(0);
+const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 const [agregar, setAgregar] = useState<boolean>(false);
 const [editar, setEditar] = useState<boolean>(false);
@@ -72,11 +76,12 @@ const handleDetalle = (data: any) => {
 const handleClose = () => {
     setOpen(false);
     setOpenAdjuntos(false);
+    setOpenModal(false);
     consulta({ NUMOPERACION: 4 ,P_IDNOTIFICACION:obj.id });
   };
 
 const handleOpen = (v: any) => {
-    setOpen(true);
+    setOpenModal(true);
     setVrows("");
   };
 
@@ -140,6 +145,7 @@ const handleOpen = (v: any) => {
      <ButtonsAdd handleOpen={handleOpen} agregar={true} /> 
      <MUIXDataGrid columns={columns} rows={data} />
      </ModalForm>
+     {openModal ? (<ContestacionModal tipo={tipoOperacion} handleClose={handleClose} dt={vrows} user={user} idAuditoria={obj.id}        />      ) : ""}
      {openAdjuntos ? (<VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={3}/>) : ("")} 
     </div>
   )
