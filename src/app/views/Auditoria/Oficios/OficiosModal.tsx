@@ -143,10 +143,11 @@ export const OficiosModal = ({
             <Grid item xs={12} sm={6} md={4} lg={2}>
             <CustomizedDate value={finicio} label={"Fecha Recibido"} onchange={handleFilterChange1}/>
             </Grid>
+           
             <Grid item xs={12} sm={6} md={4} lg={2} >
             <CustomizedDate value={ffin} label={"Fecha Vencimiento"} onchange={handleFilterChange2}/>
-             
             </Grid>
+            
             <Grid item xs={12} sm={6} md={4} lg={3}>
            
             </Grid>

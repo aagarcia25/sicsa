@@ -17,6 +17,7 @@ import ModalForm from '../../componentes/ModalForm';
 import VisorDocumentos from '../../componentes/VisorDocumentos';
 import { Contestacion } from './Contestacion';
 import { NotifModal } from './NotifModal';
+import { OficiosModal } from '../Oficios/OficiosModal';
 
 const Notif = ({
     handleFunction,
@@ -71,7 +72,7 @@ const handleAccion = (v: any) => {
     denyButtonText: `Cancelar`,
   }).then((result) => {
     if (result.isConfirmed) {
-      setOpenSlider(false);
+      //setOpenSlider(false);
       let data = {
         NUMOPERACION: 3,
         CHID: v.data.row.id,
@@ -84,7 +85,8 @@ const handleAccion = (v: any) => {
             icon: "success",
             title: "¡Registro Eliminado!",
           });
-          consulta({ NUMOPERACION: 4 });
+          //consulta({ NUMOPERACION: 4 });
+          consulta({ NUMOPERACION: 4 ,P_IDAUDITORIA:obj.id });
         } else {
           Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
         }
@@ -157,7 +159,7 @@ const handleOpen = () => {
     { field: "Prorroga", headerName: "Prorroga", width: 100 },
     { field: "Oficio", headerName: "Oficio", width: 150 },
     { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
-    { field: "FechaOficio", headerName: "Fecha de Oficio", width: 150 },
+    { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
 
  
   ];
@@ -183,6 +185,11 @@ const handleOpen = () => {
   return (
     <div>
      <ModalForm title={"Notificaciones de Áreas"} handleClose={handleFunction}>
+    
+    
+
+
+      
      <Progress open={show}></Progress>
      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
      <MUIXDataGrid columns={columns} rows={data} />
