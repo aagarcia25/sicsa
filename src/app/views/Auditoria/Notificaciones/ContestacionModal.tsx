@@ -23,24 +23,24 @@ export const ContestacionModal = ({
   tipo,
   dt,
   user,
-  idAuditoria
+  idNotificacion
 
 }: {
   tipo: number;
   handleClose: Function;
   dt: any;
   user: USUARIORESPONSE ;
-  idAuditoria:string
+  idNotificacion:string
 
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
   const [id, setId] = useState("");
   const [Dependencia, setDependencia] = useState("");
-  const [Prorroga, setProrroga] = useState("");
+  const [Prorroga, setProrroga] = useState<Dayjs | null>();
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
-  const [FechaOficio, setFechaOficio] = useState<Dayjs | null>();
+  const [FOficio, setFechaOficio] = useState<Dayjs | null>();
 
   const [ListDependencia, setListDependencia] = useState<SelectValues[]>([]);
 
@@ -53,12 +53,12 @@ export const ContestacionModal = ({
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        idAuditoria:idAuditoria,
+        idNotificacion:idNotificacion,
         Dependencia:Dependencia,
         Prorroga:Prorroga,
         Oficio:Oficio,
         SIGAOficio:SIGAOficio,
-        FechaOficio:FechaOficio,
+        FOficio:FOficio,
       };
 
       handleRequest(data);
@@ -69,12 +69,16 @@ export const ContestacionModal = ({
   const handleRequest = (data: any) => {
     if (tipo === 1) {
       AuditoriaService.Contestacionindex(data).then((res) => {
+        console.log(res);
+
         if (res.SUCCESS) {
           Toast.fire({
             icon: "success",
             title: "¡Registro Agregado!",
           });
+          
           handleClose();
+          
         } else {
           Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
         }
@@ -104,26 +108,32 @@ export const ContestacionModal = ({
       if (operacion === 11) {
         setListDependencia(res.RESPONSE);
         setShow(false);
+        
       } 
     });
   };
 
   const handleFilterChange2 = (v: any) => {
+    setProrroga(v)
+    console.log(v);
+  };
+
+  const handleFilterChange3 = (v: any) => {
     setFechaOficio(v)
+    console.log(v);
   };
 
   useEffect(() => {
     loadFilter(11);
     if (dt === "") {
-    } else {
+    } else { 
       setId(dt?.row?.id);
-      setDependencia(dt.row.Dependencia);
-      setProrroga(dt.row.Prorroga);
-      setOficio(dt.row.Oficio);
-      setSIGAOficio(dt.row.SIGAOficio);
-      setFechaOficio(dayjs(dt?.data?.row?.FechaOficio) );
-
-    }
+      setDependencia(dt?.row?.Dependencia);
+      setProrroga(dayjs(dt?.row?.Prorroga));
+      setOficio(dt?.row?.Oficio);
+      setSIGAOficio(dt?.row?.SIGAOficio);
+      setFechaOficio(dayjs(dt?.row?.FOficio) );
+    } 
   }, [dt]);
 
   return (
@@ -158,22 +168,8 @@ export const ContestacionModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-          
-
-<TextField
-                        margin="dense"
-                        id="Prorroga"
-                        label="Prorroga"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={Prorroga}
-                        required
-                        error={!Prorroga}
-                        onChange={(v) => setProrroga(v.target.value)}
-                    />
-              
-             </Grid>
+            <CustomizedDate value={Prorroga} label={"Prorroga"} onchange={handleFilterChange2}/>
+            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>  
 
             <TextField
@@ -224,7 +220,7 @@ export const ContestacionModal = ({
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <CustomizedDate value={FechaOficio} label={"Fecha Oficio"} onchange={handleFilterChange2}/>
+            <CustomizedDate value={FOficio} label={"Fecha Oficio"} onchange={handleFilterChange3}/>
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
           
