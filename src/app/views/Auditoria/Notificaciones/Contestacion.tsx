@@ -25,26 +25,26 @@ export const Contestacion = ({
     handleFunction: Function;
     obj: any;
   }) => {
-const [openSlider, setOpenSlider] = useState(false);
+const [openSlider, setOpenSlider] = useState(true);
 const [open, setOpen] = useState(false);
 const [openModalDetalle, setOpenModalDetalle] = useState(false);
 const [vrows, setVrows] = useState({});
 const [data, setData] = useState([]);
 const [openAdjuntos, setOpenAdjuntos] = useState(false);
-
+const [show, setShow] = useState(false);
 const [openModal, setOpenModal] = useState(false);
 const [tipoOperacion, setTipoOperacion] = useState(0);
 const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-const [agregar, setAgregar] = useState<boolean>(false);
-const [editar, setEditar] = useState<boolean>(false);
-const [eliminar, setEliminar] = useState<boolean>(false);
+const [agregar, setAgregar] = useState<boolean>(true);
+const [editar, setEditar] = useState<boolean>(true);
+const [eliminar, setEliminar] = useState<boolean>(true);
 
-const handleVerAdjuntos = (data: any) => {
-  setVrows(data);
-  setOpenAdjuntos(true);
+// const handleVerAdjuntos = (data: any) => {
+//   setVrows(data);
+//   setOpenAdjuntos(true);
  
-};
+// };
 
 
 
@@ -57,6 +57,7 @@ const consulta = (data: any) => {
         });
         setData(res.RESPONSE);
         setOpenSlider(false);
+        
       } else {
         setOpenSlider(false);
         Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
@@ -65,13 +66,48 @@ const consulta = (data: any) => {
   };
 
 const handleAccion = (v: any) => {
-   
+  Swal.fire({
+    icon: "info",
+    title: "¿Estás seguro de eliminar este registro?",
+    showDenyButton: true,
+    showCancelButton: false,
+    confirmButtonText: "Confirmar",
+    denyButtonText: `Cancelar`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      //setOpenSlider(false);
+      let data = {
+        NUMOPERACION: 3,
+        CHID: v.data.row.id,
+        CHUSER: user.Id,
+      };
+
+      AuditoriaService.Contestacionindex(data).then((res) => {
+        if (res.SUCCESS) {
+          Toast.fire({
+            icon: "success",
+            title: "¡Registro Eliminado!",
+          });
+          //consulta({ NUMOPERACION: 4 });
+          consulta({ NUMOPERACION: 4 ,P_IDNOTIFICACION:obj.id });
+        } else {
+          Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        }
+      });
+    } else if (result.isDenied) {
+      Swal.fire("No se realizaron cambios", "", "info");
+    }
+  });
 };
+
+
 
 const handleDetalle = (data: any) => {
     setVrows(data);
     setOpenModalDetalle(true);
   };
+
+ 
 
 const handleClose = () => {
     setOpen(false);
@@ -80,8 +116,15 @@ const handleClose = () => {
     consulta({ NUMOPERACION: 4 ,P_IDNOTIFICACION:obj.id });
   };
 
+  const handleEdit = (data: any) => {
+    setOpenModal(true);
+    setTipoOperacion(2);
+    setVrows(data.data);
+  };
+
 const handleOpen = (v: any) => {
     setOpenModal(true);
+    setTipoOperacion(1);
     setVrows("");
   };
 
@@ -100,9 +143,10 @@ const handleOpen = (v: any) => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
-           <ButtonsDetail title={"Ver adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail>
+           <ButtonsEdit handleAccion={handleEdit} row={v} show={editar}></ButtonsEdit>
+           <ButtonsDeleted handleAccion={handleAccion} row={v} show={eliminar}></ButtonsDeleted>
+           {/* <ButtonsDetail title={"Ver adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail> */}
+           <ButtonsDetail title={"Ver Contestación"} handleFunction={handleDetalle} show={true} icon={<RemoveRedEyeIcon/>} row={v}></ButtonsDetail>
           </>
          
         );
@@ -116,6 +160,7 @@ const handleOpen = (v: any) => {
     { field: "Prorroga", headerName: "Prorroga", width: 100 },
     { field: "Oficio", headerName: "Oficio", width: 150 },
     { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
+    { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
 
  
   ];
@@ -140,15 +185,19 @@ const handleOpen = (v: any) => {
 
   return (
     <div>
+
+    
+
      <ModalForm title={"Contestación a Notificación"} handleClose={handleFunction}>
      <Progress open={openSlider}></Progress>
-     <ButtonsAdd handleOpen={handleOpen} agregar={true} /> 
+     <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
      <MUIXDataGrid columns={columns} rows={data} />
      </ModalForm>
-     {openModal ? (<ContestacionModal tipo={tipoOperacion} handleClose={handleClose} dt={vrows} user={user} idAuditoria={obj.id}        />      ) : ""}
-     {openAdjuntos ? (<VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={3}/>) : ("")} 
-    </div>
+     {openModal ? (<ContestacionModal tipo={tipoOperacion} handleClose={handleClose} dt={vrows} user={user} idNotificacion={obj.id}        />      ) : ""}
+     {openModal ? (<ContestacionModal tipo={tipoOperacion} handleClose={handleClose} dt={vrows} user={user} idNotificacion={obj.id}        />      ) : ""}
+       </div>
   )
 }
 
 
+export default ContestacionModal

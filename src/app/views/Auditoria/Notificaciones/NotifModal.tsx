@@ -37,7 +37,7 @@ export const NotifModal = ({
   const [show, setShow] = useState(false);
   const [id, setId] = useState("");
   const [Dependencia, setDependencia] = useState("");
-  const [Prorroga, setProrroga] = useState("");
+  const [Prorroga, setProrroga] = useState<Dayjs | null>();
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
   const [FOficio, setFechaOficio] = useState<Dayjs | null>();
@@ -73,15 +73,15 @@ export const NotifModal = ({
       AuditoriaService.Notificacionindex(data).then((res) => {
         console.log(res);
         
-      //   if (res.SUCCESS) {
-      //     Toast.fire({
-      //       icon: "success",
-      //       title: "¡Registro Agregado!",
-      //     });
-      //     handleClose();
-      //   } else {
-      //     Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
-      //   }
+        if (res.SUCCESS) {
+          Toast.fire({
+            icon: "success",
+            title: "¡Registro Agregado!",
+          });
+          handleClose();
+        } else {
+          Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
+        }
       });
     } else if (tipo === 2) {
       AuditoriaService.Notificacionindex(data).then((res) => {
@@ -121,14 +121,14 @@ export const NotifModal = ({
   useEffect(() => {
     loadFilter(11);
     if (dt === "") {
-    } else { console.log("fecha", dt?.data?.row?.FechaOficio);
+    } else { console.log("fecha", dt.row.FOficio);
     
       setId(dt?.row?.id);
-      setDependencia(dt.row.Dependencia);
-      setProrroga(dt.row.Prorroga);
-      setOficio(dt.row.Oficio);
-      setSIGAOficio(dt.row.SIGAOficio);
-      setFechaOficio(dayjs(dt?.data?.row?.FechaOficio) );
+      setDependencia(dt?.row?.Dependencia);
+      setProrroga(dayjs(dt?.row?.Prorroga));
+      setOficio(dt?.row?.Oficio);
+      setSIGAOficio(dt?.row?.SIGAOficio);
+      setFechaOficio(dayjs(dt?.row?.FOficio) );
 
     }
   }, [dt]);
@@ -154,7 +154,7 @@ export const NotifModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
-            <Grid item xs={12} sm={6} md={4} lg={3.5}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography sx={{ fontFamily: "sans-serif" }}>Dependencia:</Typography>
               <SelectFrag
                 value={Dependencia}
@@ -165,23 +165,14 @@ export const NotifModal = ({
               />
             </Grid>
             
-            <Grid item xs={12} sm={6} md={4} lg={3.5}>
-            <TextField
-                        margin="dense"
-                        id="Prorroga"
-                        label="Prorroga"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={Prorroga}
-                        required
-                        error={!Prorroga}
-                        onChange={(v) => setProrroga(v.target.value)}
-                    />
+            
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <CustomizedDate value={Prorroga} label={"Prorroga"} onchange={handleFilterChange2}/>
+            </Grid>
               
-             </Grid>
+            
            
-            <Grid item xs={12} sm={6} md={4} lg={3.5}>  
+            <Grid item xs={12} sm={6} md={4} lg={3}>  
             <TextField
                         margin="dense"
                         id="Oficio"
@@ -197,7 +188,7 @@ export const NotifModal = ({
 
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4} lg={3.5}>  
+            <Grid item xs={12} sm={6} md={4} lg={3}>  
             <TextField
                         margin="dense"
                         id="FolioSIGA"
@@ -210,14 +201,43 @@ export const NotifModal = ({
                         error={!SIGAOficio}
                         onChange={(v) => setSIGAOficio(v.target.value)}
                     />
-              </Grid>
-
-            <Grid item xs={12} sm={6} md={4} lg={3.5}>
-            <CustomizedDate value={FOficio} label={"Fecha Oficio"} onchange={handleFilterChange2}/>
             </Grid>
 
+            
+
           </Grid>
+
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <CustomizedDate value={FOficio} label={"Fecha Oficio"} onchange={handleFilterChange2}/>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
           
+
+
+             </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>  
+
+          
+
+             
+              </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+                </Grid>
+           
+                </Grid>
 
        
 

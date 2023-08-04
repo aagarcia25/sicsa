@@ -194,8 +194,8 @@ const handleOpen = () => {
      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
      <MUIXDataGrid columns={columns} rows={data} />
      </ModalForm>
-     {openModal ? (<NotifModal tipo={tipoOperacion} handleClose={handleClose} dt={vrows} user={user} idAuditoria={obj.id}        />      ) : ""}
      {openContestacion ? (<Contestacion handleFunction={handleClose} obj={vrows}/>) : ("")} 
+     {openModal ? (<NotifModal tipo={tipoOperacion} handleClose={handleClose} dt={vrows} user={user} idAuditoria={obj.id}        />      ) : ""}
      {openAdjuntos ? (<VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={2}/>) : ("")} 
     </div>
   )
