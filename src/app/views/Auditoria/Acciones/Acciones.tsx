@@ -14,6 +14,9 @@ import ButtonsDeleted from '../../componentes/ButtonsDeleted';
 import { ButtonsDetail } from '../../componentes/ButtonsDetail';
 import ButtonsEdit from '../../componentes/ButtonsEdit';
 import ModalForm from '../../componentes/ModalForm';
+import { ButtonsImport } from '../../componentes/ButtonsImport';
+import { CatalogosServices } from '../../../services/catalogosServices';
+import { MigraData, resultmigracion } from '../../../interfaces/Share';
 
 const Acciones = ({
     handleFunction,
@@ -33,16 +36,16 @@ const [data, setData] = useState([]);
 
 const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 const user: USUARIORESPONSE = JSON.parse(String(getUser()));
-const [agregar, setAgregar] = useState<boolean>(false);
-const [editar, setEditar] = useState<boolean>(false);
-const [eliminar, setEliminar] = useState<boolean>(false);
+const [agregar, setAgregar] = useState<boolean>(true);
+const [editar, setEditar] = useState<boolean>(true);
+const [eliminar, setEliminar] = useState<boolean>(true);
 
 
 
 
 
 const consulta = (data: any) => {
-    AuditoriaService.Notificacionindex(data).then((res) => {
+    AuditoriaService.Acciones_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -76,6 +79,28 @@ const handleClose = () => {
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     consulta({ NUMOPERACION: 4 ,P_IDAUDITORIA:obj.id });
+  };
+
+  const handleUpload = (data: any) => {
+    setShow(true);
+     let file = data?.target?.files?.[0] || "";
+    const formData = new FormData();
+    formData.append("inputfile", file, "inputfile.xlxs");
+    formData.append("CHUSER", user.Id);
+    formData.append("tipo", "migraAcciones");
+    CatalogosServices.migraData(formData).then((res) => {
+      if (res.SUCCESS) {
+        setShow(false);
+        Toast.fire({
+          icon: "success",
+          title: "¡Consulta Exitosa!",
+        });
+        consulta({ NUMOPERACION: 4 ,P_IDAUDITORIA:obj.id });
+      }else{
+        setShow(false);
+        Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+      }
+    });
   };
 
 const handleOpen = (v: any) => {
@@ -142,6 +167,7 @@ const handleOpen = (v: any) => {
      <ModalForm title={"Administración de Acciones"} handleClose={handleFunction}>
      <Progress open={show}></Progress>
      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
+     <ButtonsImport handleOpen={handleUpload} agregar={agregar} /> 
      <MUIXDataGrid columns={columns} rows={data} />
      </ModalForm>
     </div>

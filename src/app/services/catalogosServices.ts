@@ -1,5 +1,5 @@
 
-import { post, postDoc } from './apiService';
+import { post, postDoc, postDocument } from './apiService';
 
 export class CatalogosServices {
 
@@ -53,6 +53,11 @@ export class CatalogosServices {
 
     public static async Ramo_index(data : any) {
         return await post('Ramo_index', data);
+    };
+
+
+    public static async migraData(data : any) {
+        return await postDocument('migraData', data);
     };
 
 
