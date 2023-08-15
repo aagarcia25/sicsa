@@ -48,7 +48,42 @@ const [editar, setEditar] = useState<boolean>(true);
 const [eliminar, setEliminar] = useState<boolean>(true);
 
 
-
+const handleDeleted = (v: any) => {
+ 
+  Swal.fire({
+    icon: "info",
+    title: "¿Estás seguro de eliminar este registro?",
+    showDenyButton: true,
+    showCancelButton: false,
+    confirmButtonText: "Confirmar",
+    denyButtonText: `Cancelar`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      //setOpenSlider(false);
+      let data = {
+        NUMOPERACION: 3,
+        CHID: v.data.row.id,
+        CHUSER: user.Id,
+        
+        
+      };
+      
+      AuditoriaService.Acciones_index(data).then((res) => {
+        if (res.SUCCESS) {
+          Toast.fire({
+            icon: "success",
+            title: "¡Registro Eliminado!",
+          });
+          consulta({ NUMOPERACION: 4 ,P_IDAUDITORIA:obj.id });
+        } else {
+          Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        }
+      });
+    } else if (result.isDenied) {
+      Swal.fire("No se realizaron cambios", "", "info");
+    }
+  });
+};
 
 
 const consulta = (data: any) => {
@@ -138,7 +173,7 @@ const handleOpen = (v: any) => {
         return (
           <>
            <ButtonsEdit handleAccion={handleAccion} row={v} show={editar}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={eliminar}></ButtonsDeleted>
+           <ButtonsDeleted handleAccion={handleDeleted} row={v} show={eliminar}></ButtonsDeleted>
            <ButtonsDetail title={"Ver Adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail>
            <ButtonsDetail title={"Ver Contestación"} handleFunction={handleDetalle} show={true} icon={<RemoveRedEyeIcon/>} row={v}></ButtonsDetail>
           </>
@@ -150,7 +185,7 @@ const handleOpen = (v: any) => {
     { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
     { field: "creado", headerName: "Creado Por", width: 150 },
     { field: "modi", headerName: "Modificado Por", width: 150 },
-    { field: "anio", headerName: "Año Cuenta Pública", width: 80 },
+   // { field: "anio", headerName: "Año Cuenta Pública", width: 80 },
     { field: "NAUDITORIA", headerName: "No. de Auditoría", width: 80 },
     { field: "DescripcionTipoDeAccion", headerName: "Tipo de Acción", width: 100 },
     { field: "DescripcionEstatusAccion", headerName: "Estatus de las Acciones", width: 150 },
@@ -184,7 +219,7 @@ const handleOpen = (v: any) => {
     <div>
      <ModalForm title={"Administración de Acciones"} handleClose={handleFunction}>
         {openAccionesModal ? (
-          <AccionesModal dt={vrows} handleClose={handleClose}  tipo={tipoOperacion}  nAuditoria={NoAuditoria} idAuditoria={obj.id}/>
+          <AccionesModal dt={vrows} handleClose={handleClose}  tipo={tipoOperacion}  nAuditoria={NoAuditoria} idAuditoria={obj.id} />
         ) : ""}
 
      <Progress open={show}></Progress>
