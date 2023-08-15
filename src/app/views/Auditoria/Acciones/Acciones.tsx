@@ -17,6 +17,7 @@ import ModalForm from '../../componentes/ModalForm';
 import { ButtonsImport } from '../../componentes/ButtonsImport';
 import { CatalogosServices } from '../../../services/catalogosServices';
 import { MigraData, resultmigracion } from '../../../interfaces/Share';
+import { AccionesModal } from './AccionesModal';
 
 const Acciones = ({
     handleFunction,
@@ -25,14 +26,20 @@ const Acciones = ({
     handleFunction: Function;
     obj: any;
   }) => {
+
+
+    useEffect(()=>{console.log("obj",obj);
+    })
 const [openSlider, setOpenSlider] = useState(false);
-const [open, setOpen] = useState(false);
+const [openAccionesModal, setOpenAccionesModal] = useState(false);
 const [openContestacion, setOpenContestacion] = useState(false);
 const [openAdjuntos, setOpenAdjuntos] = useState(false);
+const [openModal, setOpenModal] = useState(false);
 const [show, setShow] = useState(false);
 const [vrows, setVrows] = useState({});
+const [NoAuditoria, setNoAuditoria] = useState(0);
 const [data, setData] = useState([]);
-
+const [tipoOperacion, setTipoOperacion] = useState(0);
 
 const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 const user: USUARIORESPONSE = JSON.parse(String(getUser()));
@@ -61,7 +68,11 @@ const consulta = (data: any) => {
   };
 
 const handleAccion = (v: any) => {
-   
+  setTipoOperacion(2)
+  setOpenAccionesModal(true)
+  setVrows(v.data.row)
+  console.log("v",v.data.row);
+  
 };
 
 const handleDetalle = (data: any) => {
@@ -75,7 +86,7 @@ const handleVerAdjuntos = (data: any) => {
  };
 
 const handleClose = () => {
-    setOpen(false);
+    setOpenAccionesModal(false);
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     consulta({ NUMOPERACION: 4 ,P_IDAUDITORIA:obj.id });
@@ -104,8 +115,11 @@ const handleClose = () => {
   };
 
 const handleOpen = (v: any) => {
-    setOpen(true);
+  setTipoOperacion(1)
+    setOpenAccionesModal(true);
     setVrows("");
+    setNoAuditoria(obj?.row?.NAUDITORIA)
+
   };
 
   const columns: GridColDef[] = [
@@ -123,8 +137,8 @@ const handleOpen = (v: any) => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
+           <ButtonsEdit handleAccion={handleAccion} row={v} show={editar}></ButtonsEdit>
+           <ButtonsDeleted handleAccion={handleAccion} row={v} show={eliminar}></ButtonsDeleted>
            <ButtonsDetail title={"Ver Adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail>
            <ButtonsDetail title={"Ver Contestación"} handleFunction={handleDetalle} show={true} icon={<RemoveRedEyeIcon/>} row={v}></ButtonsDetail>
           </>
@@ -136,12 +150,16 @@ const handleOpen = (v: any) => {
     { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
     { field: "creado", headerName: "Creado Por", width: 150 },
     { field: "modi", headerName: "Modificado Por", width: 150 },
-    { field: "Dependencia", headerName: "Dependencia", width: 100 },
-    { field: "Prorroga", headerName: "Prorroga", width: 100 },
-    { field: "Oficio", headerName: "Oficio", width: 150 },
-    { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
-
- 
+    { field: "anio", headerName: "Año Cuenta Pública", width: 80 },
+    { field: "NAUDITORIA", headerName: "No. de Auditoría", width: 80 },
+    { field: "DescripcionTipoDeAccion", headerName: "Tipo de Acción", width: 100 },
+    { field: "DescripcionEstatusAccion", headerName: "Estatus de las Acciones", width: 150 },
+    { field: "ClaveAccion", headerName: "Clave de Acción", width: 150 },
+    { field: "TextoAccion", headerName: "Texto Acción", width: 380 },
+    { field: "Valor", headerName: "Valor", width: 150 },
+    { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
+    
+    
   ];
 
   useEffect(() => {
@@ -165,11 +183,16 @@ const handleOpen = (v: any) => {
   return (
     <div>
      <ModalForm title={"Administración de Acciones"} handleClose={handleFunction}>
+        {openAccionesModal ? (
+          <AccionesModal dt={vrows} handleClose={handleClose}  tipo={tipoOperacion}  nAuditoria={NoAuditoria} idAuditoria={obj.id}/>
+        ) : ""}
+
      <Progress open={show}></Progress>
      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
      <ButtonsImport handleOpen={handleUpload} agregar={agregar} /> 
      <MUIXDataGrid columns={columns} rows={data} />
      </ModalForm>
+     
     </div>
   )
 }
