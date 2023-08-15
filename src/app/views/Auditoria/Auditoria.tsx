@@ -11,15 +11,15 @@ import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import TitleComponent from "../componentes/TitleComponent";
 import { AuditoriaModal } from "./AuditoriaModal";
-import ChatIcon from '@mui/icons-material/Chat';
+import ChatIcon from "@mui/icons-material/Chat";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 import Notif from "./Notificaciones/Notif";
 import { Grid } from "@mui/material";
 import VisorDocumentos from "../componentes/VisorDocumentos";
-import AttachmentIcon from '@mui/icons-material/Attachment';
-import Diversity3Icon from '@mui/icons-material/Diversity3';
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
 import Acciones from "./Acciones/Acciones";
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Oficios } from "./Oficios/Oficios";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -35,17 +35,15 @@ export const Auditoria = () => {
   const [openModalNotificacion, setOpenModalDetalle] = useState<boolean>(false);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
-
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
 
-
   const handleVerAdjuntos = (data: any) => {
     setVrows(data);
     setOpenAdjuntos(true);
- };
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -101,7 +99,7 @@ export const Auditoria = () => {
               });
               consulta({ NUMOPERACION: 4 });
             } else {
-              Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
           });
         } else if (result.isDenied) {
@@ -118,7 +116,34 @@ export const Auditoria = () => {
       width: 150,
     },
     {
-      field: "acciones",  disableExport: true,
+      field: "ciid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "ctaid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "cefid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "cgfid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "csid",
+      headerName: "Identificador",
+      width: 150,
+    },
+
+    {
+      field: "acciones",
+      disableExport: true,
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
@@ -126,31 +151,72 @@ export const Auditoria = () => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
-           <ButtonsDetail title={"Ver Oficios"} handleFunction={handleOficios} show={true} icon={<AssignmentIcon/>} row={v}></ButtonsDetail>
-           <ButtonsDetail title={"Acciones"} handleFunction={handleAcciones} show={true} icon={<Diversity3Icon/>} row={v}></ButtonsDetail>
-           <ButtonsDetail title={"Notificación Area"} handleFunction={handleDetalle} show={true} icon={<ChatIcon/>} row={v}></ButtonsDetail>
-           <ButtonsDetail title={"Ver Adjuntos"} handleFunction={handleVerAdjuntos} show={true} icon={<AttachmentIcon/>} row={v}></ButtonsDetail>
+            <ButtonsDeleted
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsDeleted>
+            <ButtonsEdit
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+            <ButtonsDetail
+              title={"Ver Oficios"}
+              handleFunction={handleOficios}
+              show={true}
+              icon={<AssignmentIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Acciones"}
+              handleFunction={handleAcciones}
+              show={true}
+              icon={<Diversity3Icon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Notificación Area"}
+              handleFunction={handleDetalle}
+              show={true}
+              icon={<ChatIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Ver Adjuntos"}
+              handleFunction={handleVerAdjuntos}
+              show={true}
+              icon={<AttachmentIcon />}
+              row={v}
+            ></ButtonsDetail>
           </>
-         
         );
       },
     },
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Ultima Actualización",
+      width: 150,
+    },
     { field: "creado", headerName: "Creado Por", width: 100 },
     { field: "modi", headerName: "Modificado Por", width: 100 },
     { field: "Consecutivo", headerName: "Consecutivo", width: 100 },
     { field: "NAUDITORIA", headerName: "No. De Auditoria", width: 100 },
     { field: "FolioSIGA", headerName: "Folio SIGA", width: 100 },
-    { field: "Encargado", headerName: "Personal Encargado De La Auditoría", width: 200 },
+    {
+      field: "Encargado",
+      headerName: "Personal Encargado De La Auditoría",
+      width: 200,
+    },
     { field: "PersonalEncargado", headerName: "Personal", width: 300 },
     { field: "NombreAudoria", headerName: "Nombre", width: 300 },
-    { field: "ActaInicio", headerName: "Acta De Inicio", width: 150 },
+    { field: "cefDescripcion", headerName: "Entidad Fiscalizada", width: 150 },
+    { field: "ciDescripcion", headerName: "Informe", width: 150 },
+    { field: "ctaDescripcion", headerName: "Tipo de Auditoria", width: 150 },
+    { field: "cefDescripcion", headerName: "Entidad Fiscalizada", width: 150 },
+    { field: "csDescripcion", headerName: "Sector ", width: 150 },
   ];
-
-
 
   const handleOpen = (v: any) => {
     setTipoOperacion(1);
@@ -177,7 +243,7 @@ export const Auditoria = () => {
         setOpenSlider(false);
       } else {
         setOpenSlider(false);
-        Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
       }
     });
   };
@@ -185,7 +251,6 @@ export const Auditoria = () => {
   useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "AUDITOR") {
-       
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
         }
@@ -201,31 +266,47 @@ export const Auditoria = () => {
   }, []);
 
   return (
- <div>
+    <div>
+      <Grid container spacing={1} padding={0}>
+        <div style={{ height: 600, width: "100%", padding: "1%" }}>
+          {open ? (
+            <AuditoriaModal
+              tipo={tipoOperacion}
+              handleClose={handleClose}
+              dt={vrows}
+            />
+          ) : (
+            ""
+          )}
 
-
-    
-   <Grid container spacing={1} padding={0}>
-     <div style={{ height: 600, width: "100%" , padding:"1%"}}>
-      {open ? (
-        <AuditoriaModal
-          tipo={tipoOperacion}
-          handleClose={handleClose}
-          dt={vrows}
-        />
-      ) : ""}
-
-       <TitleComponent title={"Administración de Auditorias"} show={openSlider} />
-       <ButtonsAdd handleOpen={handleOpen} agregar={true} /> 
-       <MUIXDataGrid columns={columns} rows={bancos} />     
+          <TitleComponent
+            title={"Administración de Auditorias"}
+            show={openSlider}
+          />
+          <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+          <MUIXDataGrid columns={columns} rows={bancos} />
+        </div>
+      </Grid>
+      {openModalNotificacion ? (
+        <Notif handleFunction={handleClose} obj={vrows} />
+      ) : (
+        ""
+      )}
+      {openAdjuntos ? (
+        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={1} />
+      ) : (
+        ""
+      )}
+      {openModalAcciones ? (
+        <Acciones handleFunction={handleClose} obj={vrows} />
+      ) : (
+        ""
+      )}
+      {openModalOficios ? (
+        <Oficios handleFunction={handleClose} obj={vrows} idauditoria={id} />
+      ) : (
+        ""
+      )}
     </div>
-
-    </Grid>
-    {openModalNotificacion ? (<Notif handleFunction={handleClose} obj={vrows}/>) : ("")} 
-    {openAdjuntos ?          (<VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={1}/>) : ("")} 
-    {openModalAcciones ?     (<Acciones handleFunction={handleClose} obj={vrows}/>) : ("")} 
-    {openModalOficios?       (<Oficios handleFunction={handleClose} obj={vrows} idauditoria={id}/>) : ("")} 
-  </div>
-
   );
 };
