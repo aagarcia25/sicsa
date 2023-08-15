@@ -172,6 +172,7 @@ export const ContestacionModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>  
 
+
             <TextField
                         margin="dense"
                         id="Oficio"
@@ -201,9 +202,6 @@ export const ContestacionModal = ({
                         onChange={(v) => setSIGAOficio(v.target.value)}
                     />
               </Grid>
-
-             
-
           </Grid>
           
           <Grid
@@ -235,18 +233,9 @@ export const ContestacionModal = ({
               </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
                 </Grid>
-           
-             
-          
           
 
           </Grid>
-       
-
-
-
-
-
 
           <Grid
             container
@@ -271,8 +260,6 @@ export const ContestacionModal = ({
               </Button>
             </Grid>
           </Grid>
-       
-       
        
         </Box>
       </ModalForm>

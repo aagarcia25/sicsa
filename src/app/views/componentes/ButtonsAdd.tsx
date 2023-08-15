@@ -15,7 +15,7 @@ const ButtonsAdd = (
       {agregar ? (
           <Tooltip
             title={"Agregar"}>
-            <ToggleButton  className="guardar" value="check" onClick={() => handleOpen(1)}>
+            <ToggleButton  className="guardar" size="large" value="check" onClick={() => handleOpen(1)}>
               <AddIcon />
             </ToggleButton>
           </Tooltip>

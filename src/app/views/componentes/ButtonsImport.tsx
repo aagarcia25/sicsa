@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Tooltip, ToggleButton, IconButton } from "@mui/material";
+import { Tooltip, ToggleButton, IconButton, makeStyles } from "@mui/material";
 import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
 
 export const ButtonsImport = ({
@@ -9,16 +9,21 @@ export const ButtonsImport = ({
   handleOpen: Function;
   agregar: boolean;
 }) => {
+
+  
+  
   return (
     <>
       {agregar ? (
         <Tooltip title={"Importar Plantilla"}>
-          <ToggleButton value="check">
+          <ToggleButton value="check" className="guardar" size="small" >
             <IconButton
-              color="secondary"
+              style={{ color: 'white' }}
               aria-label="upload documento"
               component="label"
-              size="large"
+              
+              
+            
             >
               <input
                 hidden

@@ -96,7 +96,7 @@ console.log(data)
           icon: "success",
           title: "¡Registro Agregado!",
         });
-
+        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
       }
@@ -110,6 +110,7 @@ console.log(data)
           icon: "success",
           title: "¡Registro Editado!",
         });
+        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
       }
