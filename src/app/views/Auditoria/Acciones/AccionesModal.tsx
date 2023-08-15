@@ -22,7 +22,7 @@ import {
     tipo,
     dt,
     nAuditoria,
-    idAuditoria
+    idAuditoria,
     
     // user,
   }: {
@@ -31,17 +31,17 @@ import {
     dt: any;
     nAuditoria: number;
     //user: USUARIORESPONSE ;
-    idAuditoria:string
+    idAuditoria:string;
+    
   
   }) => {
-    useEffect(()=>{console.log("dt modal",dt);
+    useEffect(()=>{
     })
     // CAMPOS DE LOS FORMULARIOS
     const user: USUARIORESPONSE = JSON.parse(String(getUser()));
     const [show, setShow] = useState(false);
     const [id, setId] = useState("");
     
-    const [Anio, setAnio] = useState("");
     const [NoAuditoria, setNoAuditoria] = useState(0);
     const [EstatusAcciones, setEstatusAcciones] = useState("");
     const [TipoAccion, setTipoAccion] = useState("");
@@ -51,13 +51,12 @@ import {
     const [ListTipoAccion, setListTipoAccion] = useState<SelectValues[]>([]);
     
     
-    const handleSend = () => {
+    const handleSend = () => { 
+    
       if (!TipoAccion|| !EstatusAcciones || !ClaveAccion || !TextoAccion ) {
         Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
       } else {
         let data = {
-        
-          Anio:Anio,
           idTipoAccion:TipoAccion,
           idEstatusAccion:EstatusAcciones,
           ClaveAccion:ClaveAccion,
@@ -72,8 +71,10 @@ import {
        
 
       }
+
     };
-  
+    
+
     const handleRequest = (data: any) => {
       if (tipo === 1) {
         AuditoriaService.Acciones_index(data).then((res) => {
@@ -126,6 +127,7 @@ import {
         setClaveAccion(dt?.ClaveAccion);
         setTextoAccion(dt?.TextoAccion);
         setId(dt?.id)
+        console.log(dt);
       } 
       
       
@@ -264,18 +266,14 @@ import {
                </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>  
   
-            
   
                
                 </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
                   </Grid>
-             
             
   
             </Grid>
-
-  
   
             <Grid
               container
@@ -300,8 +298,6 @@ import {
                 </Button>
               </Grid>
             </Grid>
-         
-         
          
           </Box>
         </ModalForm>
