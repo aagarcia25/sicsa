@@ -20,6 +20,7 @@ export default function MUIXDataGrid(props: any) {
       cefid: false,
       cgfid: false,
       csid: false,
+      iduaa: false,
     });
 
   return (
