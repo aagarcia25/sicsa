@@ -172,7 +172,7 @@ export const AuditoriaModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={1}>
               <TextField
                 required
                 margin="dense"
@@ -189,7 +189,7 @@ export const AuditoriaModal = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={5}>
               <TextField
                 margin="dense"
                 id="NombreAudoria"
