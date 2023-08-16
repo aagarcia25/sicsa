@@ -140,6 +140,7 @@ const VisorDocumentos = ({
     let data = {
       NUMOPERACION: 5,
       P_ROUTE: v.row.Route,
+      TOKEN: JSON.parse(String(getToken())),
     };
 
     console.log(data);
