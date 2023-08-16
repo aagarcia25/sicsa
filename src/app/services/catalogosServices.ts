@@ -3,6 +3,10 @@ import { post, postDoc, postDocument } from './apiService';
 
 export class CatalogosServices {
 
+     public static async areaindex(data : any) {
+        return await post('areaindex', data);
+    };
+
     public static async aniosindex(data : any) {
         return await post('aniosindex', data);
     };
