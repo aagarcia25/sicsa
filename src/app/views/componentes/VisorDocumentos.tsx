@@ -174,6 +174,7 @@ const VisorDocumentos = ({
     let data = {
       NUMOPERACION: 5,
       P_ROUTE: v.row.Route,
+      TOKEN: JSON.parse(String(getToken())),
     };
 
     AuditoriaService.Filesindex(data).then((res) => {
@@ -210,6 +211,7 @@ const VisorDocumentos = ({
           CHID: v.data.row.id,
           CHUSER: user.Id,
           P_ROUTE: v.data.row.Route,
+          TOKEN: JSON.parse(String(getToken())),
         };
 
         AuditoriaService.Filesindex(data).then((res) => {
