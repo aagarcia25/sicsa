@@ -203,6 +203,7 @@ export const Auditoria = () => {
     { field: "modi", headerName: "Modificado Por", width: 100 },
     { field: "Consecutivo", headerName: "Consecutivo", width: 100 },
     { field: "NAUDITORIA", headerName: "No. De Auditoria", width: 100 },
+    { field: "Anio", headerName: "Año Cuenta Pública", width: 100 },
     { field: "FolioSIGA", headerName: "Folio SIGA", width: 100 },
     {
       field: "Encargado",
