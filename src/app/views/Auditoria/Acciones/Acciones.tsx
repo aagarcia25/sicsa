@@ -185,14 +185,13 @@ const handleOpen = (v: any) => {
     { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
     { field: "creado", headerName: "Creado Por", width: 150 },
     { field: "modi", headerName: "Modificado Por", width: 150 },
-   // { field: "anio", headerName: "Año Cuenta Pública", width: 80 },
+    { field: "anio", headerName: "Año Cuenta Pública", width: 80 },
     { field: "NAUDITORIA", headerName: "No. de Auditoría", width: 80 },
     { field: "DescripcionTipoDeAccion", headerName: "Tipo de Acción", width: 100 },
     { field: "DescripcionEstatusAccion", headerName: "Estatus de las Acciones", width: 150 },
     { field: "ClaveAccion", headerName: "Clave de Acción", width: 150 },
     { field: "TextoAccion", headerName: "Texto Acción", width: 380 },
     { field: "Valor", headerName: "Valor", width: 150 },
-    { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
     
     
   ];

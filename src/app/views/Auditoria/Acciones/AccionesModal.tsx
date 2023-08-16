@@ -18,6 +18,7 @@ import {
   import { getUser } from "../../../services/localStorage";
   
   export const AccionesModal = ({
+    
     handleClose,
     tipo,
     dt,
@@ -42,6 +43,7 @@ import {
     const [show, setShow] = useState(false);
     const [id, setId] = useState("");
     
+    const [Anio, setAnio] = useState(0);
     const [NoAuditoria, setNoAuditoria] = useState(0);
     const [EstatusAcciones, setEstatusAcciones] = useState("");
     const [TipoAccion, setTipoAccion] = useState("");
@@ -49,7 +51,7 @@ import {
     const [TextoAccion, setTextoAccion] = useState("");
     const [ListEstatusAcciones, setListEstatusAcciones] = useState<SelectValues[]>([]);
     const [ListTipoAccion, setListTipoAccion] = useState<SelectValues[]>([]);
-    
+    const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
     
     const handleSend = () => { 
     
@@ -65,6 +67,7 @@ import {
           NUMOPERACION: tipo,
           CHID: id,
           CHUSER: user.Id,
+          anio: Anio,
         };
   
        handleRequest(data);
@@ -107,7 +110,11 @@ import {
       }
     };
    
-  
+    
+    const handleFilterChange1 = (v: any) => {
+      setAnio(v)
+    };
+
     const handleFilterChange2 = (v: any) => {
       setTipoAccion(v)
     };
@@ -122,6 +129,7 @@ import {
         setNoAuditoria(nAuditoria)
       } else { 
         setNoAuditoria(dt?.NAUDITORIA);
+        setAnio(dt?.anio);
         setTipoAccion(dt?.idTipoAccion);
         setEstatusAcciones(dt?.idEstatusAccion);
         setClaveAccion(dt?.ClaveAccion);
@@ -143,13 +151,18 @@ import {
         if (catalogo === 3) {
           setListEstatusAcciones(res.RESPONSE);
         }
+        if (catalogo === 1) {
+          setListAnio(res.RESPONSE);
+        }
       });
     };
-
+    
     useEffect(()=>{
       
       consultaListas(8)
       consultaListas(3)
+      consultaListas(1)
+
     },[])
   
     return (
@@ -190,6 +203,17 @@ import {
 
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>Año:</Typography>
+              <SelectFrag
+                value={Anio.toString()}
+                options={ListAnio}
+                onInputChange={handleFilterChange1}
+                placeholder={"Seleccione el Año"}
+                disabled={false}
+              />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>  
+  
               <Typography sx={{ fontFamily: "sans-serif" }}>Tipo de Acción:</Typography>
               <SelectFrag
                 value={TipoAccion}
@@ -198,9 +222,9 @@ import {
                 placeholder={"Seleccione el Tipo de Acción"}
                 disabled={false}
               />
+
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>  
-  
               <Typography sx={{ fontFamily: "sans-serif" }}>Estatus de las acciones:</Typography>
               <SelectFrag
                 value={EstatusAcciones}
@@ -209,10 +233,6 @@ import {
                 placeholder={"Seleccione el Estatus de las Acciones"}
                 disabled={false}
               />
-
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={3}>  
-              
 
 
               </Grid>
