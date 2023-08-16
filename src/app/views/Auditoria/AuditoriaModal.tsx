@@ -40,7 +40,7 @@ export const AuditoriaModal = ({
   const [CatTipoAuditoria, setCatTipoAuditoria] = useState<SelectValues[]>([]);
   const [CatSector, setCatSector] = useState<SelectValues[]>([]);
   const [CatEntidadFiscalizada, setCatEntidadFiscalizada] = useState<SelectValues[]>([]);
-  const [Anio, setAnio] = useState("");
+  const [anio, setanio] = useState("");
   const [idGrupoFuncional, setidGrupoFuncional] = useState("");
   const [ListGrupoFuncional, setListGrupoFuncional] = useState<SelectValues[]>([]);
   
@@ -62,7 +62,7 @@ export const AuditoriaModal = ({
       idTipoAuditoria: idTipoAuditoria,
       idCatSector: idSector,
       idCatEntidadFiscalizada: idEntidadFiscalizada,
-      Anio: Number(Anio),
+      anio: Number(anio),
       idCatGrupoFuncional:idGrupoFuncional,
 
     };
@@ -76,7 +76,7 @@ export const AuditoriaModal = ({
   };
 
   const handleFilterChange1 = (v: string) => {
-    setAnio(v);
+    setanio(v);
   };
 
   const handleFilterChange2 = (v: string) => {
@@ -172,7 +172,7 @@ export const AuditoriaModal = ({
       setNAUDITORIA(dt?.row?.NAUDITORIA);
       setNombreAudoria(dt?.row?.NombreAudoria);
       setActaInicio(dt?.row?.ActaInicio);
-      setAnio (String(dt.row.Anio));
+      setanio (String(dt.row.anio));
       setidGrupoFuncional(dt?.row?.cgfid);
     }
   }, []);
@@ -201,7 +201,7 @@ export const AuditoriaModal = ({
             <Grid item xs={12} sm={6} md={4} lg={1}>
             <Typography sx={{ fontFamily: "sans-serif" }}>Año:</Typography>
               <SelectFrag
-                value={Anio}
+                value={anio}
                 options={ListAnio}
                 onInputChange={handleFilterChange1}
                 placeholder={"Seleccione el Año"}
