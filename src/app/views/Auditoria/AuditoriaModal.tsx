@@ -36,21 +36,32 @@ export const AuditoriaModal = ({
   const [NombreAudoria, setNombreAudoria] = useState("");
   const [ActaInicio, setActaInicio] = useState("");
   const [Encargado, setEncargado] = useState("");
+  const [anio, setanio] = useState("");
+  const [modalidad, setmodalidad] = useState("");
+  const [origenauditoria, setorigenauditoria] = useState("");
+  const [idGrupoFuncional, setidGrupoFuncional] = useState("");
+  const [iduaa, setiduaa] = useState("");
+  const [idaa, setidaa] = useState("");
+
   const [CatInforme, setCatInforme] = useState<SelectValues[]>([]);
   const [CatTipoAuditoria, setCatTipoAuditoria] = useState<SelectValues[]>([]);
   const [CatSector, setCatSector] = useState<SelectValues[]>([]);
   const [CatEntidadFiscalizada, setCatEntidadFiscalizada] = useState<
     SelectValues[]
   >([]);
-  const [anio, setanio] = useState("");
-  const [modalidad, setmodalidad] = useState("");
-  const [idGrupoFuncional, setidGrupoFuncional] = useState("");
+
   const [ListGrupoFuncional, setListGrupoFuncional] = useState<SelectValues[]>(
     []
   );
 
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
   const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
+  const [Listorigenauditoria, setListorigenauditoria] = useState<
+    SelectValues[]
+  >([]);
+
+  const [Listuaa, setListuaa] = useState<SelectValues[]>([]);
+  const [Listaa, setListaa] = useState<SelectValues[]>([]);
 
   const handleSend = () => {
     let data = {
@@ -103,6 +114,11 @@ export const AuditoriaModal = ({
     setIdInforme(v);
   };
 
+  const handleFilterChangeuaa = (v: any) => {
+    setiduaa(v);
+    loadFilter(13);
+  };
+
   const agregar = (data: any) => {
     AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
@@ -133,7 +149,7 @@ export const AuditoriaModal = ({
 
   const loadFilter = (operacion: number) => {
     setShow(true);
-    let data = { NUMOPERACION: operacion };
+    let data = { NUMOPERACION: operacion, P_ID: iduaa };
     ShareService.SelectIndex(data).then((res) => {
       if (operacion === 5) {
         setCatInforme(res.RESPONSE);
@@ -149,6 +165,13 @@ export const AuditoriaModal = ({
         setListGrupoFuncional(res.RESPONSE);
       } else if (operacion === 12) {
         setListModalidad(res.RESPONSE);
+      } else if (operacion === 6) {
+        setListorigenauditoria(res.RESPONSE);
+      } else if (operacion === 10) {
+        setListuaa(res.RESPONSE);
+        setShow(false);
+      } else if (operacion === 13) {
+        setListaa(res.RESPONSE);
         setShow(false);
       }
     });
@@ -162,6 +185,8 @@ export const AuditoriaModal = ({
     loadFilter(1);
     loadFilter(4);
     loadFilter(12);
+    loadFilter(6);
+    loadFilter(10);
 
     if (dt === "") {
     } else {
@@ -350,6 +375,36 @@ export const AuditoriaModal = ({
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
+                Origen Auditoria:
+              </Typography>
+              <SelectFrag
+                value={origenauditoria}
+                options={Listorigenauditoria}
+                onInputChange={handleFilterChange2}
+                placeholder={"Seleccione...."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+          </Grid>
+
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
                 Grupo Funcional:
               </Typography>
               <SelectFrag
@@ -426,9 +481,9 @@ export const AuditoriaModal = ({
                 Unidad Administrativa Auditora:
               </Typography>
               <SelectFrag
-                value={idInforme}
-                options={CatInforme}
-                onInputChange={handleFilterChange6}
+                value={iduaa}
+                options={Listuaa}
+                onInputChange={handleFilterChangeuaa}
                 placeholder={"Seleccione.."}
                 disabled={false}
               />
@@ -438,8 +493,8 @@ export const AuditoriaModal = ({
                 Área Auditora:
               </Typography>
               <SelectFrag
-                value={idInforme}
-                options={CatInforme}
+                value={idaa}
+                options={Listaa}
                 onInputChange={handleFilterChange6}
                 placeholder={"Seleccione.."}
                 disabled={false}
