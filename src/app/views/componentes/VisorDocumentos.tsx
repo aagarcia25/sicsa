@@ -23,7 +23,9 @@ import ButtonsDeleted from "./ButtonsDeleted";
 import { ButtonsDetail } from "./ButtonsDetail";
 import { TooltipPersonalizado } from "./CustomizedTooltips";
 import ModalForm from "./ModalForm";
-
+import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
+import InsightsIcon from "@mui/icons-material/Insights";
+import Trazabilidad from "./Trazabilidad";
 const VisorDocumentos = ({
   handleFunction,
   obj,
@@ -36,6 +38,8 @@ const VisorDocumentos = ({
   const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
   const [verarchivo, setverarchivo] = useState(false);
+
+  const [verTrazabilidad, setVerTrazabilidad] = useState(false);
 
   const [openModalDetalle, setOpenModalDetalle] = useState(false);
   const [vrows, setVrows] = useState({});
@@ -135,6 +139,46 @@ const VisorDocumentos = ({
     });
   };
 
+  const handletrazabilidad = (v: any) => {
+    setVrows(v);
+    setVerTrazabilidad(true);
+  };
+
+  const handleVerificarArchivo = (v: any) => {
+    Swal.fire({
+      icon: "info",
+      title: "¿Estás seguro Verificar el Archivo?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          NUMOPERACION: 6,
+          CHID: v.id,
+          CHUSER: user.Id,
+        };
+        setOpenSlider(true);
+        AuditoriaService.Filesindex(data).then((res) => {
+          if (res.SUCCESS) {
+            Toast.fire({
+              icon: "success",
+              title: "¡Registro Verificado!",
+            });
+            consulta();
+            setOpenSlider(false);
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            setOpenSlider(false);
+          }
+        });
+      } else if (result.isDenied) {
+        Swal.fire("No se realizaron cambios", "", "info");
+        setOpenSlider(false);
+      }
+    });
+  };
   const handleDescargarFile = (v: any) => {
     setOpenSlider(true);
     let data = {
@@ -142,8 +186,6 @@ const VisorDocumentos = ({
       P_ROUTE: v.row.Route,
       TOKEN: JSON.parse(String(getToken())),
     };
-
-    console.log(data);
 
     AuditoriaService.Filesindex(data).then((res) => {
       if (res.SUCCESS) {
@@ -168,6 +210,7 @@ const VisorDocumentos = ({
 
   const handleCloseModal = () => {
     setverarchivo(false);
+    setVerTrazabilidad(false);
   };
 
   const handleVer = (v: any) => {
@@ -238,6 +281,7 @@ const VisorDocumentos = ({
       headerName: "Identificador",
       width: 150,
     },
+
     {
       field: "Route",
       headerName: "Route",
@@ -253,11 +297,15 @@ const VisorDocumentos = ({
       renderCell: (v) => {
         return (
           <>
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsDeleted>
+            {String(v.row.estatus) !== "Verificado" ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )}
             <ButtonsDetail
               title={"Ver"}
               handleFunction={handleVer}
@@ -272,9 +320,33 @@ const VisorDocumentos = ({
               icon={<DownloadingIcon />}
               row={v}
             ></ButtonsDetail>
+            {String(v.row.estatus) === "Pendiente de Verificación" ? (
+              <ButtonsDetail
+                title={"Verificar Archivo"}
+                handleFunction={handleVerificarArchivo}
+                show={true}
+                icon={<ChecklistRtlIcon />}
+                row={v}
+              ></ButtonsDetail>
+            ) : (
+              ""
+            )}
+
+            <ButtonsDetail
+              title={"Ver Trazabilidad"}
+              handleFunction={handletrazabilidad}
+              show={true}
+              icon={<InsightsIcon />}
+              row={v}
+            ></ButtonsDetail>
           </>
         );
       },
+    },
+    {
+      field: "estatus",
+      headerName: "Estatus",
+      width: 150,
     },
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
     {
@@ -350,7 +422,11 @@ const VisorDocumentos = ({
 
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
-
+      {verTrazabilidad ? (
+        <Trazabilidad handleFunction={handleCloseModal} obj={vrows} />
+      ) : (
+        ""
+      )}
       {verarchivo ? (
         <ModalForm title={"Visualización"} handleClose={handleCloseModal}>
           <DialogContent dividers={true}>

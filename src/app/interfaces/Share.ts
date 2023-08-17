@@ -15,3 +15,9 @@ export interface MigraData {
     IDENTIFICADORC: string
   }
   
+  export interface ItrazabilidadFile {
+    id: string;
+    FechaCreacion: string;
+    Nombre: string;
+    estatus: string;
+}
