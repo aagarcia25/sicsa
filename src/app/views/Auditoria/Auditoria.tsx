@@ -51,6 +51,7 @@ export const Auditoria = () => {
     setOpenAdjuntos(false);
     setOpenModalAcciones(false);
     setOpenModalOficios(false);
+    consulta({ NUMOPERACION: 4 });
   };
 
   const handleAcciones = (data: any) => {
