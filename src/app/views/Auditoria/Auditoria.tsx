@@ -21,6 +21,9 @@ import Diversity3Icon from "@mui/icons-material/Diversity3";
 import Acciones from "./Acciones/Acciones";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Oficios } from "./Oficios/Oficios";
+import { Gantt } from "gantt-task-react";
+import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
+import GanttModal from "../componentes/GanttModal";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -32,6 +35,7 @@ export const Auditoria = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [openModalAcciones, setOpenModalAcciones] = useState(false);
   const [openModalOficios, setOpenModalOficios] = useState(false);
+  const [openModalgant, setOpenModalgant] = useState(false);
   const [openModalNotificacion, setOpenModalDetalle] = useState<boolean>(false);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
@@ -52,6 +56,7 @@ export const Auditoria = () => {
     setOpenModalAcciones(false);
     setOpenModalOficios(false);
     consulta({ NUMOPERACION: 4 });
+    setOpenModalgant(false);
   };
 
   const handleAcciones = (data: any) => {
@@ -63,6 +68,12 @@ export const Auditoria = () => {
     setId(data.id);
     setVrows(data);
     setOpenModalOficios(true);
+  };
+
+  const handlePlan = (data: any) => {
+    setId(data.id);
+    setVrows(data);
+    setOpenModalgant(true);
   };
 
   const handleDetalle = (data: any) => {
@@ -148,7 +159,7 @@ export const Auditoria = () => {
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
-      width: 250,
+      width: 300,
       renderCell: (v) => {
         return (
           <>
@@ -190,6 +201,13 @@ export const Auditoria = () => {
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Ver Plan de trabajo"}
+              handleFunction={handlePlan}
+              show={true}
+              icon={<AlignHorizontalLeftIcon />}
+              row={v}
+            ></ButtonsDetail>
           </>
         );
       },
@@ -216,7 +234,6 @@ export const Auditoria = () => {
     { field: "cefDescripcion", headerName: "Entidad Fiscalizada", width: 150 },
     { field: "ciDescripcion", headerName: "Informe", width: 150 },
     { field: "ctaDescripcion", headerName: "Tipo de Auditoria", width: 150 },
-    { field: "cefDescripcion", headerName: "Entidad Fiscalizada", width: 150 },
     { field: "csDescripcion", headerName: "Sector ", width: 150 },
   ];
 
@@ -235,7 +252,6 @@ export const Auditoria = () => {
   };
 
   const consulta = (data: any) => {
-    
     AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
@@ -307,6 +323,11 @@ export const Auditoria = () => {
       )}
       {openModalOficios ? (
         <Oficios handleFunction={handleClose} obj={vrows} idauditoria={id} />
+      ) : (
+        ""
+      )}
+      {openModalgant ? (
+        <GanttModal handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
       )}

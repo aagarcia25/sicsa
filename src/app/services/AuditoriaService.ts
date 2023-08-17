@@ -27,5 +27,8 @@ export class AuditoriaService {
         return await post('OficiosA_index', data);
     };
     
+    public static async planindex(data : any) {
+      return await post('planindex', data);
+    };
 
 }
