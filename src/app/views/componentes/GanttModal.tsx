@@ -4,6 +4,7 @@ import ModalForm from "./ModalForm";
 import "gantt-task-react/dist/index.css";
 import { AuditoriaService } from "../../services/AuditoriaService";
 import Progress from "../Progress";
+import { Box, Grid, Typography } from "@mui/material";
 
 const GanttModal = ({
   handleFunction,
@@ -49,18 +50,32 @@ const GanttModal = ({
   };
 
   useEffect(() => {
+    console.log(obj);
     consulta();
   }, []);
 
   return (
     <div>
       <ModalForm title={"PLAN DE TRABAJO"} handleClose={handleFunction}>
+        <Grid item xs={10} sm={10} md={10} lg={10}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              paddingBottom: "10px",
+            }}
+          >
+            <Typography variant="h6">
+              {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
+            </Typography>
+          </Box>
+        </Grid>
         {tasks.length > 0 ? (
           <Gantt
             tasks={tasks}
             locale={"es"}
             ganttHeight={400}
-            columnWidth={50}
+            columnWidth={60}
             fontSize={"9"}
             listCellWidth={"155px"}
           />
