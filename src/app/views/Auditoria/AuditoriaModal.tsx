@@ -39,13 +39,18 @@ export const AuditoriaModal = ({
   const [CatInforme, setCatInforme] = useState<SelectValues[]>([]);
   const [CatTipoAuditoria, setCatTipoAuditoria] = useState<SelectValues[]>([]);
   const [CatSector, setCatSector] = useState<SelectValues[]>([]);
-  const [CatEntidadFiscalizada, setCatEntidadFiscalizada] = useState<SelectValues[]>([]);
+  const [CatEntidadFiscalizada, setCatEntidadFiscalizada] = useState<
+    SelectValues[]
+  >([]);
   const [anio, setanio] = useState("");
+  const [modalidad, setmodalidad] = useState("");
   const [idGrupoFuncional, setidGrupoFuncional] = useState("");
-  const [ListGrupoFuncional, setListGrupoFuncional] = useState<SelectValues[]>([]);
-  
-  const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
+  const [ListGrupoFuncional, setListGrupoFuncional] = useState<SelectValues[]>(
+    []
+  );
 
+  const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
+  const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
 
   const handleSend = () => {
     let data = {
@@ -63,8 +68,7 @@ export const AuditoriaModal = ({
       idCatSector: idSector,
       idCatEntidadFiscalizada: idEntidadFiscalizada,
       anio: Number(anio),
-      idCatGrupoFuncional:idGrupoFuncional,
-
+      idCatGrupoFuncional: idGrupoFuncional,
     };
 
     console.log(data);
@@ -139,12 +143,12 @@ export const AuditoriaModal = ({
         setCatSector(res.RESPONSE);
       } else if (operacion === 2) {
         setCatEntidadFiscalizada(res.RESPONSE);
-        setShow(false);
-      }else if (operacion === 1) {
+      } else if (operacion === 1) {
         setListAnio(res.RESPONSE);
-        setShow(false);
-      }else if (operacion === 4) {
+      } else if (operacion === 4) {
         setListGrupoFuncional(res.RESPONSE);
+      } else if (operacion === 12) {
+        setListModalidad(res.RESPONSE);
         setShow(false);
       }
     });
@@ -157,6 +161,7 @@ export const AuditoriaModal = ({
     loadFilter(2);
     loadFilter(1);
     loadFilter(4);
+    loadFilter(12);
 
     if (dt === "") {
     } else {
@@ -172,7 +177,7 @@ export const AuditoriaModal = ({
       setNAUDITORIA(dt?.row?.NAUDITORIA);
       setNombreAudoria(dt?.row?.NombreAudoria);
       setActaInicio(dt?.row?.ActaInicio);
-      setanio (String(dt.row.anio));
+      setanio(String(dt.row.anio));
       setidGrupoFuncional(dt?.row?.cgfid);
     }
   }, []);
@@ -198,8 +203,10 @@ export const AuditoriaModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
-            <Grid item xs={12} sm={6} md={4} lg={1}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>Año:</Typography>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Año Cuenta Pública:
+              </Typography>
               <SelectFrag
                 value={anio}
                 options={ListAnio}
@@ -208,8 +215,8 @@ export const AuditoriaModal = ({
                 disabled={false}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={5}>
-            <TextField
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
                 required
                 margin="dense"
                 id="NAUDITORIA"
@@ -226,7 +233,7 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <TextField
+              <TextField
                 margin="dense"
                 id="FolioSIGA"
                 label="Folio SIGA"
@@ -240,18 +247,16 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              {/* <TextField
-                margin="dense"
-                id="FolioSIGA"
-                label="Folio SIGA" 
-                type="text"
-                fullWidth
-                variant="standard"
-                value={FolioSIGA}
-                required
-                error={!FolioSIGA}
-                onChange={(v) => setFolioSIGA(v.target.value)}
-              /> */}
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Modalidad:
+              </Typography>
+              <SelectFrag
+                value={modalidad}
+                options={ListModalidad}
+                onInputChange={handleFilterChange1}
+                placeholder={"Seleccione ..."}
+                disabled={false}
+              />
             </Grid>
           </Grid>
 
@@ -269,13 +274,12 @@ export const AuditoriaModal = ({
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={12} md={8} lg={6}>
-            <TextField
+              <TextField
                 margin="dense"
                 id="NombreAudoria"
                 label="Nombre"
                 type="text"
                 multiline
-
                 fullWidth
                 variant="standard"
                 rows={5}
@@ -286,19 +290,50 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={12} md={8} lg={6}>
-            <TextField
+              <TextField
                 id="outlined-multiline-static"
-                label="Personal"
+                label="Encargado"
+                multiline
+                fullWidth
+                variant="standard"
+                rows={5}
+                value={Encargado}
+                onChange={(v) => setEncargado(v.target.value)}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={12} md={8} lg={6}>
+              <TextField
+                margin="dense"
+                id="personalencargado"
+                label="Personal Encargado"
+                type="text"
                 multiline
                 fullWidth
                 variant="standard"
                 rows={5}
                 value={PersonalEncargado}
+                required
+                error={!PersonalEncargado}
                 onChange={(v) => setPersonalEncargado(v.target.value)}
               />
             </Grid>
+            <Grid item xs={12} sm={12} md={8} lg={6}></Grid>
           </Grid>
-
 
           <Grid
             container
@@ -314,7 +349,9 @@ export const AuditoriaModal = ({
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>Grupo Funcional:</Typography>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Grupo Funcional:
+              </Typography>
               <SelectFrag
                 value={idGrupoFuncional}
                 options={ListGrupoFuncional}
@@ -324,9 +361,7 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>
-                Sector:
-              </Typography>
+              <Typography sx={{ fontFamily: "sans-serif" }}>Sector:</Typography>
               <SelectFrag
                 value={idSector}
                 options={CatSector}
@@ -336,7 +371,7 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
                 Entidad Fiscalizada:
               </Typography>
               <SelectFrag
@@ -348,7 +383,7 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
                 Tipo de Auditoria:
               </Typography>
               <SelectFrag
@@ -361,7 +396,66 @@ export const AuditoriaModal = ({
             </Grid>
           </Grid>
 
-
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Entrega:
+              </Typography>
+              <SelectFrag
+                value={idInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChange6}
+                placeholder={"Seleccione Entrega"}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Unidad Administrativa Auditora:
+              </Typography>
+              <SelectFrag
+                value={idInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChange6}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Área Auditora:
+              </Typography>
+              <SelectFrag
+                value={idInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChange6}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>Ramo:</Typography>
+              <SelectFrag
+                value={idInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChange6}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+          </Grid>
 
           <Grid
             container
@@ -377,22 +471,38 @@ export const AuditoriaModal = ({
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-
-            <Typography sx={{ fontFamily: "sans-serif" }}>
-                Entrega:
-              </Typography>
-              <SelectFrag
-                value={idInforme}
-                options={CatInforme}
-                onInputChange={handleFilterChange6}
-                placeholder={"Seleccione Entrega"}
-                disabled={false}
+              <TextField
+                required
+                margin="dense"
+                id="UNIVERSO"
+                label="Universo(miles de pesos)"
+                value={NAUDITORIA}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setNAUDITORIA(v.target.value)}
+                error={NAUDITORIA === "" ? true : false}
+                InputProps={{
+                  readOnly: tipo === 1 ? false : true,
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-
-            
-
+              <TextField
+                required
+                margin="dense"
+                id="NAUDITORIA"
+                label="Muestra(miles de pesos)"
+                value={NAUDITORIA}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setNAUDITORIA(v.target.value)}
+                error={NAUDITORIA === "" ? true : false}
+                InputProps={{
+                  readOnly: tipo === 1 ? false : true,
+                }}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
