@@ -42,6 +42,15 @@ export const AuditoriaModal = ({
   const [CatEntidadFiscalizada, setCatEntidadFiscalizada] = useState<
     SelectValues[]
   >([]);
+  const [anio, setanio] = useState("");
+  const [modalidad, setmodalidad] = useState("");
+  const [idGrupoFuncional, setidGrupoFuncional] = useState("");
+  const [ListGrupoFuncional, setListGrupoFuncional] = useState<SelectValues[]>(
+    []
+  );
+
+  const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
+  const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
 
   const handleSend = () => {
     let data = {
@@ -58,6 +67,8 @@ export const AuditoriaModal = ({
       idTipoAuditoria: idTipoAuditoria,
       idCatSector: idSector,
       idCatEntidadFiscalizada: idEntidadFiscalizada,
+      anio: Number(anio),
+      idCatGrupoFuncional: idGrupoFuncional,
     };
 
     console.log(data);
@@ -69,11 +80,11 @@ export const AuditoriaModal = ({
   };
 
   const handleFilterChange1 = (v: string) => {
-    setIdInforme(v);
+    setanio(v);
   };
 
   const handleFilterChange2 = (v: string) => {
-    setIdTipoAuditoria(v);
+    setidGrupoFuncional(v);
   };
 
   const handleFilterChange3 = (v: string) => {
@@ -82,6 +93,14 @@ export const AuditoriaModal = ({
 
   const handleFilterChange4 = (v: string) => {
     setIdEntidadFiscalizada(v);
+  };
+
+  const handleFilterChange5 = (v: any) => {
+    setIdTipoAuditoria(v);
+  };
+
+  const handleFilterChange6 = (v: any) => {
+    setIdInforme(v);
   };
 
   const agregar = (data: any) => {
@@ -124,6 +143,12 @@ export const AuditoriaModal = ({
         setCatSector(res.RESPONSE);
       } else if (operacion === 2) {
         setCatEntidadFiscalizada(res.RESPONSE);
+      } else if (operacion === 1) {
+        setListAnio(res.RESPONSE);
+      } else if (operacion === 4) {
+        setListGrupoFuncional(res.RESPONSE);
+      } else if (operacion === 12) {
+        setListModalidad(res.RESPONSE);
         setShow(false);
       }
     });
@@ -134,6 +159,10 @@ export const AuditoriaModal = ({
     loadFilter(9);
     loadFilter(7);
     loadFilter(2);
+    loadFilter(1);
+    loadFilter(4);
+    loadFilter(12);
+
     if (dt === "") {
     } else {
       console.log(dt?.row);
@@ -148,6 +177,8 @@ export const AuditoriaModal = ({
       setNAUDITORIA(dt?.row?.NAUDITORIA);
       setNombreAudoria(dt?.row?.NombreAudoria);
       setActaInicio(dt?.row?.ActaInicio);
+      setanio(String(dt.row.anio));
+      setidGrupoFuncional(dt?.row?.cgfid);
     }
   }, []);
 
@@ -172,7 +203,19 @@ export const AuditoriaModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
-            <Grid item xs={12} sm={6} md={4} lg={1}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Año Cuenta Pública:
+              </Typography>
+              <SelectFrag
+                value={anio}
+                options={ListAnio}
+                onInputChange={handleFilterChange1}
+                placeholder={"Seleccione el Año"}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
                 required
                 margin="dense"
@@ -189,34 +232,6 @@ export const AuditoriaModal = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={5}>
-              <TextField
-                margin="dense"
-                id="NombreAudoria"
-                label="Nombre"
-                type="text"
-                fullWidth
-                variant="standard"
-                value={NombreAudoria}
-                required
-                error={!NombreAudoria}
-                onChange={(v) => setNombreAudoria(v.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
-                margin="dense"
-                id="PersonalEncargado"
-                label="Encargado"
-                type="text"
-                fullWidth
-                variant="standard"
-                value={Encargado}
-                required
-                error={!Encargado}
-                onChange={(v) => setEncargado(v.target.value)}
-              />
-            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
                 margin="dense"
@@ -229,6 +244,18 @@ export const AuditoriaModal = ({
                 required
                 error={!FolioSIGA}
                 onChange={(v) => setFolioSIGA(v.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Modalidad:
+              </Typography>
+              <SelectFrag
+                value={modalidad}
+                options={ListModalidad}
+                onInputChange={handleFilterChange1}
+                placeholder={"Seleccione ..."}
+                disabled={false}
               />
             </Grid>
           </Grid>
@@ -246,6 +273,93 @@ export const AuditoriaModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
+            <Grid item xs={12} sm={12} md={8} lg={6}>
+              <TextField
+                margin="dense"
+                id="NombreAudoria"
+                label="Nombre"
+                type="text"
+                multiline
+                fullWidth
+                variant="standard"
+                rows={5}
+                value={NombreAudoria}
+                required
+                error={!NombreAudoria}
+                onChange={(v) => setNombreAudoria(v.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={8} lg={6}>
+              <TextField
+                id="outlined-multiline-static"
+                label="Encargado"
+                multiline
+                fullWidth
+                variant="standard"
+                rows={5}
+                value={Encargado}
+                onChange={(v) => setEncargado(v.target.value)}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={12} md={8} lg={6}>
+              <TextField
+                margin="dense"
+                id="personalencargado"
+                label="Personal Encargado"
+                type="text"
+                multiline
+                fullWidth
+                variant="standard"
+                rows={5}
+                value={PersonalEncargado}
+                required
+                error={!PersonalEncargado}
+                onChange={(v) => setPersonalEncargado(v.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={8} lg={6}></Grid>
+          </Grid>
+
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Grupo Funcional:
+              </Typography>
+              <SelectFrag
+                value={idGrupoFuncional}
+                options={ListGrupoFuncional}
+                onInputChange={handleFilterChange2}
+                placeholder={"Seleccione Grupo Funcional"}
+                disabled={false}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>Sector:</Typography>
               <SelectFrag
@@ -275,11 +389,26 @@ export const AuditoriaModal = ({
               <SelectFrag
                 value={idTipoAuditoria}
                 options={CatTipoAuditoria}
-                onInputChange={handleFilterChange2}
+                onInputChange={handleFilterChange5}
                 placeholder={"Seleccione Tipo de Auditoria"}
                 disabled={false}
               />
             </Grid>
+          </Grid>
+
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Entrega:
@@ -287,8 +416,42 @@ export const AuditoriaModal = ({
               <SelectFrag
                 value={idInforme}
                 options={CatInforme}
-                onInputChange={handleFilterChange1}
+                onInputChange={handleFilterChange6}
                 placeholder={"Seleccione Entrega"}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Unidad Administrativa Auditora:
+              </Typography>
+              <SelectFrag
+                value={idInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChange6}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Área Auditora:
+              </Typography>
+              <SelectFrag
+                value={idInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChange6}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>Ramo:</Typography>
+              <SelectFrag
+                value={idInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChange6}
+                placeholder={"Seleccione.."}
                 disabled={false}
               />
             </Grid>
@@ -307,36 +470,40 @@ export const AuditoriaModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
-            <Grid item xs={12} sm={12} md={8} lg={6}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
-                id="outlined-multiline-static"
-                label="Personal"
-                multiline
+                required
+                margin="dense"
+                id="UNIVERSO"
+                label="Universo(miles de pesos)"
+                value={NAUDITORIA}
+                type="text"
                 fullWidth
                 variant="standard"
-                rows={5}
-                value={PersonalEncargado}
-                onChange={(v) => setPersonalEncargado(v.target.value)}
+                onChange={(v) => setNAUDITORIA(v.target.value)}
+                error={NAUDITORIA === "" ? true : false}
+                InputProps={{
+                  readOnly: tipo === 1 ? false : true,
+                }}
               />
             </Grid>
-            <Grid item xs={12} sm={12} md={8} lg={6}></Grid>
-          </Grid>
-
-          <Grid
-            container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
-          >
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                required
+                margin="dense"
+                id="NAUDITORIA"
+                label="Muestra(miles de pesos)"
+                value={NAUDITORIA}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setNAUDITORIA(v.target.value)}
+                error={NAUDITORIA === "" ? true : false}
+                InputProps={{
+                  readOnly: tipo === 1 ? false : true,
+                }}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>

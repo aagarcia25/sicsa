@@ -18,6 +18,7 @@ import { ButtonsImport } from "../../componentes/ButtonsImport";
 import { CatalogosServices } from "../../../services/catalogosServices";
 import { MigraData, resultmigracion } from "../../../interfaces/Share";
 import { AccionesModal } from "./AccionesModal";
+import VisorDocumentos from "../../componentes/VisorDocumentos";
 
 const Acciones = ({
   handleFunction,
@@ -26,9 +27,6 @@ const Acciones = ({
   handleFunction: Function;
   obj: any;
 }) => {
-  useEffect(() => {
-    console.log("obj", obj);
-  });
   const [openSlider, setOpenSlider] = useState(false);
   const [openAccionesModal, setOpenAccionesModal] = useState(false);
   const [openContestacion, setOpenContestacion] = useState(false);
@@ -182,13 +180,6 @@ const Acciones = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Ver Contestación"}
-              handleFunction={handleDetalle}
-              show={true}
-              icon={<RemoveRedEyeIcon />}
-              row={v}
-            ></ButtonsDetail>
           </>
         );
       },
@@ -254,6 +245,12 @@ const Acciones = ({
             nAuditoria={NoAuditoria}
             idAuditoria={obj.id}
           />
+        ) : (
+          ""
+        )}
+
+        {openAdjuntos ? (
+          <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={5} />
         ) : (
           ""
         )}
