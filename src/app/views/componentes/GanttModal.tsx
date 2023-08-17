@@ -75,7 +75,7 @@ const GanttModal = ({
             tasks={tasks}
             locale={"es"}
             ganttHeight={400}
-            columnWidth={50}
+            columnWidth={60}
             fontSize={"9"}
             listCellWidth={"155px"}
           />
