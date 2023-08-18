@@ -168,7 +168,7 @@ export const Ramo = () => {
         ""
       )}
 
-      <TitleComponent title={"Catálogo de Ramos"} show={openSlider} />
+      <TitleComponent title={"Ramos"} show={openSlider} />
       <ButtonsAdd handleOpen={handleOpen} agregar={true} />
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
