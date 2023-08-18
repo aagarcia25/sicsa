@@ -160,7 +160,6 @@ export const AuditoriaModal = ({
           icon: "success",
           title: "¡Registro Agregado!",
         });
-        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
@@ -174,7 +173,6 @@ export const AuditoriaModal = ({
           icon: "success",
           title: "¡Registro Editado!",
         });
-        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
