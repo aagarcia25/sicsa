@@ -13,4 +13,4 @@ import Swal from "sweetalert2";
         toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
 
-});
+ });
