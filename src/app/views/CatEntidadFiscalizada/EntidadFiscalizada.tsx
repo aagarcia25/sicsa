@@ -8,7 +8,7 @@ import { getPermisos, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
-import ButtonsEdit from "../componentes/ButtonsEdit"; 
+import ButtonsEdit from "../componentes/ButtonsEdit";
 import { EntidadFiscalizadaModal } from "./EntidadFiscalizadaModal";
 import TitleComponent from "../componentes/TitleComponent";
 
@@ -21,14 +21,10 @@ export const EntidadFiscalizada = () => {
   const [bancos, setBancos] = useState([]);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
-
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [agregar, setAgregar] = useState<boolean>(true);
   const [editar, setEditar] = useState<boolean>(true);
   const [eliminar, setEliminar] = useState<boolean>(true);
-
-
-
 
   const handleAccion = (v: any) => {
     if (v.tipo == 1) {
@@ -60,7 +56,7 @@ export const EntidadFiscalizada = () => {
               });
               consulta({ NUMOPERACION: 4 });
             } else {
-              Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
           });
         } else if (result.isDenied) {
@@ -77,7 +73,8 @@ export const EntidadFiscalizada = () => {
       width: 150,
     },
     {
-      field: "acciones",  disableExport: true,
+      field: "acciones",
+      disableExport: true,
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
@@ -85,20 +82,34 @@ export const EntidadFiscalizada = () => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={editar}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={eliminar}></ButtonsDeleted>
+            <ButtonsEdit
+              handleAccion={handleAccion}
+              row={v}
+              show={editar}
+            ></ButtonsEdit>
+            <ButtonsDeleted
+              handleAccion={handleAccion}
+              row={v}
+              show={eliminar}
+            ></ButtonsDeleted>
           </>
-         
         );
       },
     },
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "Descripcion", headerName: "Descripcion", description:"Descripción", width: 100 },
-
- 
+    {
+      field: "Descripcion",
+      headerName: "Descripcion",
+      description: "Descripción",
+      width: 100,
+    },
   ];
 
   const handleClose = () => {
@@ -124,7 +135,7 @@ export const EntidadFiscalizada = () => {
         setOpenSlider(false);
       } else {
         setOpenSlider(false);
-        Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
       }
     });
   };
@@ -132,7 +143,6 @@ export const EntidadFiscalizada = () => {
   useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "EFISCALIZADA") {
-       
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
         }
@@ -148,7 +158,7 @@ export const EntidadFiscalizada = () => {
   }, []);
 
   return (
-    <div style={{ height: 600, width: "100%" , padding:"1%"}}>
+    <div style={{ height: 600, width: "100%", padding: "1%" }}>
       {open ? (
         <EntidadFiscalizadaModal
           open={open}
@@ -156,12 +166,13 @@ export const EntidadFiscalizada = () => {
           handleClose={handleClose}
           dt={vrows}
         />
-      ) : ""}
+      ) : (
+        ""
+      )}
 
-     
-       <TitleComponent title={"Entidad Fiscalizada"} show={openSlider} />
-       <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
-       <MUIXDataGrid columns={columns} rows={bancos} />
+      <TitleComponent title={"Entidad Fiscalizada"} show={openSlider} />
+      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+      <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );
 };

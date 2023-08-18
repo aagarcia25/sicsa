@@ -187,7 +187,7 @@ const Acciones = ({
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
     {
       field: "UltimaActualizacion",
-      headerName: "Ultima Actualización",
+      headerName: "Última Actualización",
       width: 150,
     },
     { field: "creado", headerName: "Creado Por", width: 200 },
