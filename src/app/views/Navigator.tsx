@@ -48,7 +48,7 @@ export default function Navigator(props: DrawerProps, logoFijo: any) {
           sx={{ width: "auto", textAlign: "center", paddingLeft: "3%" }}
         >
           <Typography variant="h6" sx={{ fontWeight: "550" }}>
-            SISTEMA DE CONTROL DE SEGUIMIENTO DE ÁUDITORIAS
+            SISTEMA DE CONTROL DE SEGUIMIENTO DE AUDITORÍAS
           </Typography>
         </Grid>
       </Grid>
