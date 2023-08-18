@@ -215,7 +215,7 @@ export const Auditoria = () => {
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
     {
       field: "UltimaActualizacion",
-      headerName: "Ultima Actualización",
+      headerName: "Última Actualización",
       width: 150,
     },
     { field: "creado", headerName: "Creado Por", width: 100 },
@@ -323,7 +323,7 @@ export const Auditoria = () => {
           )}
 
           <TitleComponent
-            title={"Administración de Auditorias"}
+            title={"Administración de Auditorías"}
             show={openSlider}
           />
           <ButtonsAdd handleOpen={handleOpen} agregar={true} />
