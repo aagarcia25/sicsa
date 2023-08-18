@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid,
-  TextField,
-  Typography
-} from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
@@ -23,15 +17,13 @@ export const NotifModal = ({
   tipo,
   dt,
   user,
-  idAuditoria
-
+  idAuditoria,
 }: {
   tipo: number;
   handleClose: Function;
   dt: any;
-  user: USUARIORESPONSE ;
-  idAuditoria:string
-
+  user: USUARIORESPONSE;
+  idAuditoria: string;
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -44,27 +36,23 @@ export const NotifModal = ({
 
   const [ListDependencia, setListDependencia] = useState<SelectValues[]>([]);
 
-
   const handleSend = () => {
-    if (!Dependencia  ||!Oficio) {
-      Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
+    if (!Dependencia || !Oficio) {
+      Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
-
-     
       let data = {
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        idAuditoria:idAuditoria,
-        Dependencia:Dependencia,
-        Prorroga:Prorroga,
-        Oficio:Oficio,
-        SIGAOficio:SIGAOficio,
-        FOficio:FOficio,
+        idAuditoria: idAuditoria,
+        Dependencia: Dependencia,
+        Prorroga: Prorroga,
+        Oficio: Oficio,
+        SIGAOficio: SIGAOficio,
+        FOficio: FOficio,
       };
 
       handleRequest(data);
-      
     }
   };
 
@@ -72,7 +60,7 @@ export const NotifModal = ({
     if (tipo === 1) {
       AuditoriaService.Notificacionindex(data).then((res) => {
         console.log(res);
-        
+
         if (res.SUCCESS) {
           Toast.fire({
             icon: "success",
@@ -80,7 +68,7 @@ export const NotifModal = ({
           });
           handleClose();
         } else {
-          Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
+          Swal.fire(res.STRMESSAGE, "¡Error!", "info");
         }
       });
     } else if (tipo === 2) {
@@ -92,7 +80,7 @@ export const NotifModal = ({
           });
           handleClose();
         } else {
-          Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
+          Swal.fire(res.STRMESSAGE, "¡Error!", "info");
         }
       });
     }
@@ -108,39 +96,38 @@ export const NotifModal = ({
       if (operacion === 11) {
         setListDependencia(res.RESPONSE);
         setShow(false);
-      } 
+      }
     });
   };
 
   const handleFilterChange2 = (v: any) => {
-    setFechaOficio(v)
+    setFechaOficio(v);
     console.log(v);
-    
   };
 
   useEffect(() => {
     loadFilter(11);
     if (dt === "") {
-    } else { console.log("fecha", dt.row.FOficio);
-    
+    } else {
+      console.log("fecha", dt.row.FOficio);
+
       setId(dt?.row?.id);
       setDependencia(dt?.row?.Dependencia);
       setProrroga(dayjs(dt?.row?.Prorroga));
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
-      setFechaOficio(dayjs(dt?.row?.FOficio) );
-
+      setFechaOficio(dayjs(dt?.row?.FOficio));
     }
   }, [dt]);
 
   return (
-
-
     <>
-      <ModalForm title={tipo === 1 ? "Agregar Registro" : "Editar Registro"} handleClose={handleClose} >
-      <Progress open={show}></Progress>
+      <ModalForm
+        title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}
+        handleClose={handleClose}
+      >
+        <Progress open={show}></Progress>
         <Box boxShadow={3}>
-         
           <Grid
             container
             item
@@ -155,7 +142,9 @@ export const NotifModal = ({
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>Dependencia:</Typography>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Dependencia:
+              </Typography>
               <SelectFrag
                 value={Dependencia}
                 options={ListDependencia}
@@ -164,47 +153,42 @@ export const NotifModal = ({
                 disabled={false}
               />
             </Grid>
-            
-            
+
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <CustomizedDate value={Prorroga} label={"Prorroga"} onchange={handleFilterChange2}/>
-            </Grid>
-              
-            
-           
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-            <TextField
-                        margin="dense"
-                        id="Oficio"
-                        label="Oficio"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={Oficio}
-                        required
-                        error={!Oficio}
-                        onChange={(v) => setOficio(v.target.value)}
-                    />
-
+              <CustomizedDate
+                value={Prorroga}
+                label={"Prorroga"}
+                onchange={handleFilterChange2}
+              />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-            <TextField
-                        margin="dense"
-                        id="FolioSIGA"
-                        label="Folio SIGA"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={SIGAOficio}
-                        required
-                        error={!SIGAOficio}
-                        onChange={(v) => setSIGAOficio(v.target.value)}
-                    />
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                margin="dense"
+                id="Oficio"
+                label="Oficio"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={Oficio}
+                required
+                error={!Oficio}
+                onChange={(v) => setOficio(v.target.value)}
+              />
             </Grid>
 
-            
-
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                margin="dense"
+                id="FolioSIGA"
+                label="Folio SIGA"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={SIGAOficio}
+                onChange={(v) => setSIGAOficio(v.target.value)}
+              />
+            </Grid>
           </Grid>
 
           <Grid
@@ -221,30 +205,16 @@ export const NotifModal = ({
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <CustomizedDate value={FOficio} label={"Fecha Oficio"} onchange={handleFilterChange2}/>
+              <CustomizedDate
+                value={FOficio}
+                label={"Fecha Oficio"}
+                onchange={handleFilterChange2}
+              />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-          
-
-
-             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-
-          
-
-             
-              </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-                </Grid>
-           
-                </Grid>
-
-       
-
-
-
-
-
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+          </Grid>
 
           <Grid
             container
@@ -257,8 +227,6 @@ export const NotifModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
-          
-
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
                 // disabled={descripcion === "" || nombre === ""}
@@ -269,12 +237,8 @@ export const NotifModal = ({
               </Button>
             </Grid>
           </Grid>
-       
-       
-       
         </Box>
       </ModalForm>
     </>
   );
-
 };
