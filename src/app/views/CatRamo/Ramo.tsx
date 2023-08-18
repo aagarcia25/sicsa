@@ -21,51 +21,45 @@ export const Ramo = () => {
   const [bancos, setBancos] = useState([]);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
-
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
 
-
-
-
   const handleAccion = (v: any) => {
-    console.log('imprimiendo contenido')
-    console.log(v)
+    console.log("imprimiendo contenido");
+    console.log(v);
 
+    Swal.fire({
+      icon: "info",
+      title: "¿Estás seguro de eliminar este registro?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          NUMOPERACION: 3,
+          CHID: v.data.id,
+          CHUSER: user.Id,
+        };
 
-      Swal.fire({
-        icon: "info",
-        title: "¿Estás seguro de eliminar este registro?",
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: "Confirmar",
-        denyButtonText: `Cancelar`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          let data = {
-            NUMOPERACION: 3,
-            CHID: v.data.id,
-            CHUSER: user.Id,
-          };
-
-          CatalogosServices.Ramo_index(data).then((res) => {
-            if (res.SUCCESS) {
-              Toast.fire({
-                icon: "success",
-                title: "¡Registro Eliminado!",
-              });
-              consulta({ NUMOPERACION: 4 });
-            } else {
-              Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
-            }
-          });
-        } else if (result.isDenied) {
-          Swal.fire("No se realizaron cambios", "", "info");
-        }
-      });
-    
+        CatalogosServices.Ramo_index(data).then((res) => {
+          if (res.SUCCESS) {
+            Toast.fire({
+              icon: "success",
+              title: "¡Registro Eliminado!",
+            });
+            consulta({ NUMOPERACION: 4 });
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+          }
+        });
+      } else if (result.isDenied) {
+        Swal.fire("No se realizaron cambios", "", "info");
+      }
+    });
   };
 
   const columns: GridColDef[] = [
@@ -75,7 +69,8 @@ export const Ramo = () => {
       width: 150,
     },
     {
-      field: "acciones",  disableExport: true,
+      field: "acciones",
+      disableExport: true,
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
@@ -83,20 +78,29 @@ export const Ramo = () => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleEdit} row={v} show={true}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
+            <ButtonsEdit
+              handleAccion={handleEdit}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+            <ButtonsDeleted
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsDeleted>
           </>
-         
         );
       },
     },
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
     { field: "modi", headerName: "Creado Por", width: 100 },
     { field: "creado", headerName: "Modificado Por", width: 100 },
     { field: "Descripcion", headerName: "Descripcion", width: 350 },
-
- 
   ];
 
   const handleClose = () => {
@@ -111,7 +115,6 @@ export const Ramo = () => {
     setVrows("");
   };
 
-  
   const handleEdit = (v: any) => {
     setTipoOperacion(2);
     setModo("Módificar Registro");
@@ -130,7 +133,7 @@ export const Ramo = () => {
         setOpenSlider(false);
       } else {
         setOpenSlider(false);
-        Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
       }
     });
   };
@@ -138,7 +141,6 @@ export const Ramo = () => {
   useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "RAMOS") {
-       
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
         }
@@ -154,7 +156,7 @@ export const Ramo = () => {
   }, []);
 
   return (
-    <div style={{ height: 600, width: "100%" , padding:"1%"}}>
+    <div style={{ height: 600, width: "100%", padding: "1%" }}>
       {open ? (
         <RamoModal
           open={open}
@@ -162,11 +164,13 @@ export const Ramo = () => {
           handleClose={handleClose}
           dt={vrows}
         />
-      ) : ""}
+      ) : (
+        ""
+      )}
 
-       <TitleComponent title={"Catálogo de Ramos"} show={openSlider} />
-       <ButtonsAdd handleOpen={handleOpen} agregar={true} /> 
-       <MUIXDataGrid columns={columns} rows={bancos} />
+      <TitleComponent title={"Catálogo de Ramos"} show={openSlider} />
+      <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+      <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );
 };

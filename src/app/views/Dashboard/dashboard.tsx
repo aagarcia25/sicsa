@@ -1,10 +1,5 @@
-
 const dashboard = () => {
-  return (
-    <div>
-      Dashboard de Auditorias
-    </div>
-  )
-}
+  return <div>Dashboard de Auditorías</div>;
+};
 
-export default dashboard
+export default dashboard;

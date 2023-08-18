@@ -22,14 +22,10 @@ export const GrupoFuncional = () => {
   const [bancos, setBancos] = useState([]);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
-
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [agregar, setAgregar] = useState<boolean>(true);
   const [editar, setEditar] = useState<boolean>(true);
   const [eliminar, setEliminar] = useState<boolean>(true);
-
-
-
 
   const handleAccion = (v: any) => {
     if (v.tipo == 1) {
@@ -61,7 +57,7 @@ export const GrupoFuncional = () => {
               });
               consulta({ NUMOPERACION: 4 });
             } else {
-              Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
           });
         } else if (result.isDenied) {
@@ -78,7 +74,8 @@ export const GrupoFuncional = () => {
       width: 150,
     },
     {
-      field: "acciones",  disableExport: true,
+      field: "acciones",
+      disableExport: true,
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
@@ -86,20 +83,29 @@ export const GrupoFuncional = () => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={editar}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={eliminar}></ButtonsDeleted>
+            <ButtonsEdit
+              handleAccion={handleAccion}
+              row={v}
+              show={editar}
+            ></ButtonsEdit>
+            <ButtonsDeleted
+              handleAccion={handleAccion}
+              row={v}
+              show={eliminar}
+            ></ButtonsDeleted>
           </>
-         
         );
       },
     },
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
     { field: "Descripcion", headerName: "Descripción", width: 350 },
-
- 
   ];
 
   const handleClose = () => {
@@ -125,7 +131,7 @@ export const GrupoFuncional = () => {
         setOpenSlider(false);
       } else {
         setOpenSlider(false);
-        Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
       }
     });
   };
@@ -133,7 +139,6 @@ export const GrupoFuncional = () => {
   useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "GFUNCIONALES") {
-       
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
         }
@@ -149,7 +154,7 @@ export const GrupoFuncional = () => {
   }, []);
 
   return (
-    <div style={{ height: 600, width: "100%" , padding:"1%"}}>
+    <div style={{ height: 600, width: "100%", padding: "1%" }}>
       {open ? (
         <GrupoFuncionalModal
           open={open}
@@ -157,11 +162,13 @@ export const GrupoFuncional = () => {
           handleClose={handleClose}
           dt={vrows}
         />
-      ) : ""}
+      ) : (
+        ""
+      )}
 
-       <TitleComponent title={"Grupo Funcional"} show={openSlider} />
-       <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> 
-       <MUIXDataGrid columns={columns} rows={bancos} />
+      <TitleComponent title={"Grupo Funcional"} show={openSlider} />
+      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+      <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );
 };

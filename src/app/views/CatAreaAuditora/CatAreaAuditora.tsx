@@ -103,7 +103,7 @@ export const CatAreaAuditora = () => {
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
     {
       field: "UltimaActualizacion",
-      headerName: "Ultima Actualización",
+      headerName: "Última Actualización",
       width: 150,
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },

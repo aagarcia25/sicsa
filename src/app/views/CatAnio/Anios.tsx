@@ -21,14 +21,10 @@ export const Anios = () => {
   const [bancos, setBancos] = useState([]);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
-
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [agregar, setAgregar] = useState<boolean>(true);
   const [editar, setEditar] = useState<boolean>(true);
   const [eliminar, setEliminar] = useState<boolean>(true);
-
-
-
 
   const handleAccion = (v: any) => {
     if (v.tipo === 1) {
@@ -60,7 +56,7 @@ export const Anios = () => {
               });
               consulta({ NUMOPERACION: 4 });
             } else {
-              Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
           });
         } else if (result.isDenied) {
@@ -77,7 +73,8 @@ export const Anios = () => {
       width: 150,
     },
     {
-      field: "acciones",  disableExport: true,
+      field: "acciones",
+      disableExport: true,
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
@@ -85,20 +82,29 @@ export const Anios = () => {
       renderCell: (v) => {
         return (
           <>
-           <ButtonsEdit handleAccion={handleAccion} row={v} show={true}></ButtonsEdit>
-           <ButtonsDeleted handleAccion={handleAccion} row={v} show={true}></ButtonsDeleted>
+            <ButtonsEdit
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+            <ButtonsDeleted
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsDeleted>
           </>
-         
         );
       },
     },
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    { field: "UltimaActualizacion", headerName: "Ultima Actualización", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "anio", headerName: "Año",description:"Año", width: 100 },
-
- 
+    { field: "anio", headerName: "Año", description: "Año", width: 100 },
   ];
 
   const handleClose = () => {
@@ -131,7 +137,7 @@ export const Anios = () => {
         setOpenSlider(false);
       } else {
         setOpenSlider(false);
-        Swal.fire( "¡Error!", res.STRMESSAGE,  "error");
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
       }
     });
   };
@@ -139,7 +145,6 @@ export const Anios = () => {
   useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "ANIOS") {
-       
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
         }
@@ -155,20 +160,21 @@ export const Anios = () => {
   }, []);
 
   return (
-    <div style={{ height: 600, width: "100%" , padding:"1%"}}>
-      {open ? 
+    <div style={{ height: 600, width: "100%", padding: "1%" }}>
+      {open ? (
         <AniosModal
           open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
           dt={vrows}
         />
-      : ""}
+      ) : (
+        ""
+      )}
 
-
-       <TitleComponent title={"Años Fiscales"} show={openSlider} />
-       <ButtonsAdd handleOpen={handleOpen} agregar={true} /> 
-       <MUIXDataGrid columns={columns} rows={bancos} />
+      <TitleComponent title={"Años Fiscales"} show={openSlider} />
+      <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+      <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );
 };
