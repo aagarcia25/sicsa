@@ -18,10 +18,11 @@ import { Sector } from "../views/CatSector/Sector";
 import { TipoAccion } from "../views/CatTipoAccion/TipoAccion";
 import { TipoAuditoria } from "../views/CatTipoAuditoria/TipoAuditoria";
 import { UnidadAdminAuditora } from "../views/CatUnidadAdminAuditora/UnidadAdminAuditora";
-import { Dashboard } from "@mui/icons-material";
 import { Auditoria } from "../views/Auditoria/Auditoria";
 import { Ramo } from "../views/CatRamo/Ramo";
 import { CatAreaAuditora } from "../views/CatAreaAuditora/CatAreaAuditora";
+import Dashboard from "../views/Dashboard/dashboard";
+import { PTA } from "../views/PlanAnual/PTA";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
   const log = login;
@@ -121,15 +122,7 @@ export const AppRouter = ({ login }: { login: boolean }) => {
           path="/inicio/catalogos/uau"
           element={log ? <CatAreaAuditora /> : <AuthRouter />}
         />
-        {/* FIN SECCION DE CATALOGOS */}
-
-        {/* SECCION DE CALENDARIO */}
-        {/* <Route path='/Calendario' element={<CalendarC />} /> */}
-        {/* FIN SECCION DE CALENDARIO */}
-
-        {/* SECCION DE NOTIFICACIONES */}
-        {/* <Route path='/Notification' element={<ListNotification />} /> */}
-        {/* FIN SECCION DE NOTIFICACIONES */}
+        <Route path="/inicio/pta" element={log ? <PTA /> : <AuthRouter />} />
 
         {/* SECCION DE PERFIL */}
         <Route

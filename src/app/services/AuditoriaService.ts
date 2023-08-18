@@ -31,4 +31,10 @@ export class AuditoriaService {
       return await post('planindex', data);
     };
 
+    public static async planAnualindex(data : any) {
+      return await post('planAnualindex', data);
+    };
+
+    
+
 }
