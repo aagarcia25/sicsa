@@ -7,7 +7,7 @@ import { CatalogosServices } from "../../services/catalogosServices";
 import { getUser } from "../../services/localStorage";
 import ModalForm from "../componentes/ModalForm";
 
-export const TipoAccionModal = ({
+export const RamoModal = ({
   open,
   handleClose,
   tipo,
@@ -20,12 +20,12 @@ export const TipoAccionModal = ({
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [id, setId] = useState("");
-  const [abreviatura, setAbreviatura] = useState("");
+  const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const handleSend = () => {
-    if (!abreviatura || !descripcion) {
+    if (!descripcion) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {
@@ -33,26 +33,21 @@ export const TipoAccionModal = ({
         CHID: id,
         CHUSER: user.Id,
         DESCRIPCION: descripcion,
-        ABREVIATURA: abreviatura,
       };
 
-      handleRequest(data);
-    }
-  };
+      if (tipo === 1) {
+        //AGREGAR
+        agregar(data);
+      } else if (tipo === 2) {
+        //EDITAR
 
-  const handleRequest = (data: any) => {
-    if (tipo === 1) {
-      //AGREGAR
-      agregar(data);
-    } else if (tipo === 2) {
-      //EDITAR
-
-      editar(data);
+        editar(data);
+      }
     }
   };
 
   const agregar = (data: any) => {
-    CatalogosServices.TiposAccion_index(data).then((res) => {
+    CatalogosServices.Ramo_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -65,7 +60,7 @@ export const TipoAccionModal = ({
   };
 
   const editar = (data: any) => {
-    CatalogosServices.TiposAccion_index(data).then((res) => {
+    CatalogosServices.Ramo_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -80,9 +75,9 @@ export const TipoAccionModal = ({
   useEffect(() => {
     if (dt === "") {
     } else {
-      setId(dt?.row?.id);
-      setAbreviatura(dt?.row?.Abreviatura);
-      setDescripcion(dt?.row?.Descripcion);
+      console.log(dt?.data);
+      setId(dt?.data?.row?.id);
+      setDescripcion(dt?.data?.row?.Descripcion);
     }
   }, [dt]);
 
@@ -120,24 +115,6 @@ export const TipoAccionModal = ({
                 error={descripcion === "" ? true : false}
                 InputProps={{}}
               />
-
-              <TextField
-                required
-                margin="dense"
-                id="Abreviatura"
-                label="Abreviatura"
-                value={abreviatura}
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={(v) => setAbreviatura(v.target.value)}
-                error={abreviatura === "" ? true : false}
-                InputProps={
-                  {
-                    //readOnly: tipo === 1 ? false : true,
-                  }
-                }
-              />
             </Grid>
             <Grid
               item
@@ -160,7 +137,7 @@ export const TipoAccionModal = ({
             ></Grid>
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
-                disabled={descripcion === "" || abreviatura === ""}
+                disabled={descripcion === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >

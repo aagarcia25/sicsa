@@ -10,9 +10,9 @@ import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import TitleComponent from "../componentes/TitleComponent";
-import { SectorModal } from "./SectorModal";
+import { RamoModal } from "./RamoModal";
 
-export const Sector = () => {
+export const Ramo = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
   const [open, setOpen] = useState(false);
@@ -22,48 +22,44 @@ export const Sector = () => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
 
   const handleAccion = (v: any) => {
-    if (v.tipo == 1) {
-      setTipoOperacion(2);
-      setModo("Editar Registro");
-      setOpen(true);
-      setVrows(v.data);
-    } else if (v.tipo === 2) {
-      Swal.fire({
-        icon: "info",
-        title: "¿Estás seguro de eliminar este registro?",
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: "Confirmar",
-        denyButtonText: `Cancelar`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          let data = {
-            NUMOPERACION: 3,
-            CHID: v.data.row.id,
-            CHUSER: user.Id,
-          };
+    console.log("imprimiendo contenido");
+    console.log(v);
 
-          CatalogosServices.Sector_index(data).then((res) => {
-            if (res.SUCCESS) {
-              Toast.fire({
-                icon: "success",
-                title: "¡Registro Eliminado!",
-              });
-              consulta({ NUMOPERACION: 4 });
-            } else {
-              Swal.fire("¡Error!", res.STRMESSAGE, "error");
-            }
-          });
-        } else if (result.isDenied) {
-          Swal.fire("No se realizaron cambios", "", "info");
-        }
-      });
-    }
+    Swal.fire({
+      icon: "info",
+      title: "¿Estás seguro de eliminar este registro?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          NUMOPERACION: 3,
+          CHID: v.data.id,
+          CHUSER: user.Id,
+        };
+
+        CatalogosServices.Ramo_index(data).then((res) => {
+          if (res.SUCCESS) {
+            Toast.fire({
+              icon: "success",
+              title: "¡Registro Eliminado!",
+            });
+            consulta({ NUMOPERACION: 4 });
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+          }
+        });
+      } else if (result.isDenied) {
+        Swal.fire("No se realizaron cambios", "", "info");
+      }
+    });
   };
 
   const columns: GridColDef[] = [
@@ -83,14 +79,14 @@ export const Sector = () => {
         return (
           <>
             <ButtonsEdit
-              handleAccion={handleAccion}
+              handleAccion={handleEdit}
               row={v}
-              show={editar}
+              show={true}
             ></ButtonsEdit>
             <ButtonsDeleted
               handleAccion={handleAccion}
               row={v}
-              show={eliminar}
+              show={true}
             ></ButtonsDeleted>
           </>
         );
@@ -102,8 +98,8 @@ export const Sector = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "CreadoPor", headerName: "Creado Por", width: 100 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
+    { field: "modi", headerName: "Creado Por", width: 100 },
+    { field: "creado", headerName: "Modificado Por", width: 100 },
     { field: "Descripcion", headerName: "Descripción", width: 350 },
   ];
 
@@ -119,8 +115,15 @@ export const Sector = () => {
     setVrows("");
   };
 
+  const handleEdit = (v: any) => {
+    setTipoOperacion(2);
+    setModo("Módificar Registro");
+    setOpen(true);
+    setVrows(v);
+  };
+
   const consulta = (data: any) => {
-    CatalogosServices.Sector_index(data).then((res) => {
+    CatalogosServices.Ramo_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -137,7 +140,7 @@ export const Sector = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "SECTORES") {
+      if (String(item.ControlInterno) === "RAMOS") {
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
         }
@@ -155,7 +158,7 @@ export const Sector = () => {
   return (
     <div style={{ height: 600, width: "100%", padding: "1%" }}>
       {open ? (
-        <SectorModal
+        <RamoModal
           open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
@@ -165,8 +168,8 @@ export const Sector = () => {
         ""
       )}
 
-      <TitleComponent title={"Sectores"} show={openSlider} />
-      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+      <TitleComponent title={"Ramos"} show={openSlider} />
+      <ButtonsAdd handleOpen={handleOpen} agregar={true} />
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );

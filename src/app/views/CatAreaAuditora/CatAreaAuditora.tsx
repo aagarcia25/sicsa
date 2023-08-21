@@ -10,9 +10,9 @@ import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import TitleComponent from "../componentes/TitleComponent";
-import { SectorModal } from "./SectorModal";
+import { CatAreaAuditoraModal } from "./CatAreaAuditoraModal";
 
-export const Sector = () => {
+export const CatAreaAuditora = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
   const [open, setOpen] = useState(false);
@@ -27,7 +27,7 @@ export const Sector = () => {
   const [eliminar, setEliminar] = useState<boolean>(true);
 
   const handleAccion = (v: any) => {
-    if (v.tipo == 1) {
+    if (v.tipo === 1) {
       setTipoOperacion(2);
       setModo("Editar Registro");
       setOpen(true);
@@ -48,7 +48,7 @@ export const Sector = () => {
             CHUSER: user.Id,
           };
 
-          CatalogosServices.Sector_index(data).then((res) => {
+          CatalogosServices.areaindex(data).then((res) => {
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -73,24 +73,28 @@ export const Sector = () => {
       width: 150,
     },
     {
+      field: "iduaa",
+      width: 0,
+    },
+    {
       field: "acciones",
       disableExport: true,
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
-      width: 200,
+      width: 100,
       renderCell: (v) => {
         return (
           <>
             <ButtonsEdit
               handleAccion={handleAccion}
               row={v}
-              show={editar}
+              show={true}
             ></ButtonsEdit>
             <ButtonsDeleted
               handleAccion={handleAccion}
               row={v}
-              show={eliminar}
+              show={true}
             ></ButtonsDeleted>
           </>
         );
@@ -104,7 +108,20 @@ export const Sector = () => {
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "Descripcion", headerName: "Descripción", width: 350 },
+    { field: "Clave", headerName: "Clave", description: "Clave", width: 100 },
+    {
+      field: "Descripcion",
+      headerName: "Descripción",
+      description: "Descripcion",
+      width: 300,
+    },
+
+    {
+      field: "cuaadesc",
+      headerName: "UAA",
+      description: "Unidad Admnistrativa Auditora",
+      width: 300,
+    },
   ];
 
   const handleClose = () => {
@@ -119,8 +136,15 @@ export const Sector = () => {
     setVrows("");
   };
 
+  const handleEdit = (v: any) => {
+    setTipoOperacion(2);
+    setModo("Módificar Registro");
+    setOpen(true);
+    setVrows(v);
+  };
+
   const consulta = (data: any) => {
-    CatalogosServices.Sector_index(data).then((res) => {
+    CatalogosServices.areaindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -137,7 +161,7 @@ export const Sector = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "SECTORES") {
+      if (String(item.ControlInterno) === "ANIOS") {
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
         }
@@ -155,7 +179,7 @@ export const Sector = () => {
   return (
     <div style={{ height: 600, width: "100%", padding: "1%" }}>
       {open ? (
-        <SectorModal
+        <CatAreaAuditoraModal
           open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
@@ -165,8 +189,8 @@ export const Sector = () => {
         ""
       )}
 
-      <TitleComponent title={"Sectores"} show={openSlider} />
-      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+      <TitleComponent title={"Área Auditora"} show={openSlider} />
+      <ButtonsAdd handleOpen={handleOpen} agregar={true} />
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );

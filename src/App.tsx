@@ -90,7 +90,7 @@ function App() {
         setRoles(res.data.roles[0]);
         setPerfiles(res.data.perfiles[0]);
         setMenus(res.data.menus[0]);
-        setPermisos(res.data.permisos[0]);
+        setPermisos(res.data.permisos[0] == undefined ? [] : res.data.permisos[0]);
         setUserName(res.data.data.NombreUsuario)
         
         setBloqueoStatus(false);

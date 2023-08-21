@@ -14,12 +14,13 @@ import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
+import { ButtonsImport } from "../../componentes/ButtonsImport";
+import { CatalogosServices } from "../../../services/catalogosServices";
+import { MigraData, resultmigracion } from "../../../interfaces/Share";
+import { AccionesModal } from "./AccionesModal";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
-import { Contestacion } from "./Contestacion";
-import { NotifModal } from "./NotifModal";
-import { OficiosModal } from "../Oficios/OficiosModal";
 
-const Notif = ({
+const Acciones = ({
   handleFunction,
   obj,
 }: {
@@ -27,37 +28,23 @@ const Notif = ({
   obj: any;
 }) => {
   const [openSlider, setOpenSlider] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openAccionesModal, setOpenAccionesModal] = useState(false);
   const [openContestacion, setOpenContestacion] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [show, setShow] = useState(false);
   const [vrows, setVrows] = useState({});
+  const [NoAuditoria, setNoAuditoria] = useState(0);
   const [data, setData] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
   const [tipoOperacion, setTipoOperacion] = useState(0);
+
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const [agregar, setAgregar] = useState<boolean>(true);
   const [editar, setEditar] = useState<boolean>(true);
   const [eliminar, setEliminar] = useState<boolean>(true);
 
-  const consulta = (data: any) => {
-    AuditoriaService.Notificacionindex(data).then((res) => {
-      if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
-        setData(res.RESPONSE);
-        setOpenSlider(false);
-      } else {
-        setOpenSlider(false);
-        Swal.fire("¡Error!", res.STRMESSAGE, "error");
-      }
-    });
-  };
-
-  const handleAccion = (v: any) => {
+  const handleDeleted = (v: any) => {
     Swal.fire({
       icon: "info",
       title: "¿Estás seguro de eliminar este registro?",
@@ -74,13 +61,12 @@ const Notif = ({
           CHUSER: user.Id,
         };
 
-        AuditoriaService.Notificacionindex(data).then((res) => {
+        AuditoriaService.Acciones_index(data).then((res) => {
           if (res.SUCCESS) {
             Toast.fire({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            //consulta({ NUMOPERACION: 4 });
             consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
@@ -90,6 +76,29 @@ const Notif = ({
         Swal.fire("No se realizaron cambios", "", "info");
       }
     });
+  };
+
+  const consulta = (data: any) => {
+    AuditoriaService.Acciones_index(data).then((res) => {
+      if (res.SUCCESS) {
+        Toast.fire({
+          icon: "success",
+          title: "¡Consulta Exitosa!",
+        });
+        setData(res.RESPONSE);
+        setOpenSlider(false);
+      } else {
+        setOpenSlider(false);
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
+      }
+    });
+  };
+
+  const handleAccion = (v: any) => {
+    setTipoOperacion(2);
+    setOpenAccionesModal(true);
+    setVrows(v.data.row);
+    console.log("v", v.data.row);
   };
 
   const handleDetalle = (data: any) => {
@@ -103,23 +112,39 @@ const Notif = ({
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenAccionesModal(false);
     setOpenContestacion(false);
     setOpenAdjuntos(false);
-    setOpenModal(false);
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
   };
 
-  const handleEdit = (data: any) => {
-    setOpenModal(true);
-    setTipoOperacion(2);
-    setVrows(data.data);
+  const handleUpload = (data: any) => {
+    setShow(true);
+    let file = data?.target?.files?.[0] || "";
+    const formData = new FormData();
+    formData.append("inputfile", file, "inputfile.xlxs");
+    formData.append("CHUSER", user.Id);
+    formData.append("tipo", "migraAcciones");
+    CatalogosServices.migraData(formData).then((res) => {
+      if (res.SUCCESS) {
+        setShow(false);
+        Toast.fire({
+          icon: "success",
+          title: "¡Consulta Exitosa!",
+        });
+        consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+      } else {
+        setShow(false);
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
+      }
+    });
   };
 
-  const handleOpen = () => {
-    setOpenModal(true);
+  const handleOpen = (v: any) => {
     setTipoOperacion(1);
+    setOpenAccionesModal(true);
     setVrows("");
+    setNoAuditoria(obj?.row?.NAUDITORIA);
   };
 
   const columns: GridColDef[] = [
@@ -139,12 +164,12 @@ const Notif = ({
         return (
           <>
             <ButtonsEdit
-              handleAccion={handleEdit}
+              handleAccion={handleAccion}
               row={v}
               show={editar}
             ></ButtonsEdit>
             <ButtonsDeleted
-              handleAccion={handleAccion}
+              handleAccion={handleDeleted}
               row={v}
               show={eliminar}
             ></ButtonsDeleted>
@@ -153,13 +178,6 @@ const Notif = ({
               handleFunction={handleVerAdjuntos}
               show={true}
               icon={<AttachmentIcon />}
-              row={v}
-            ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Ver Contestación"}
-              handleFunction={handleDetalle}
-              show={true}
-              icon={<RemoveRedEyeIcon />}
               row={v}
             ></ButtonsDetail>
           </>
@@ -172,13 +190,28 @@ const Notif = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 150 },
-    { field: "modi", headerName: "Modificado Por", width: 150 },
-    { field: "Dependencia", headerName: "Dependencia", width: 100 },
-    { field: "Prorroga", headerName: "Prorroga", width: 100 },
-    { field: "Oficio", headerName: "Oficio", width: 150 },
-    { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
-    { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
+    { field: "creado", headerName: "Creado Por", width: 200 },
+    { field: "modi", headerName: "Modificado Por", width: 200 },
+    { field: "NAUDITORIA", headerName: "No. de Auditoría", width: 80 },
+    {
+      field: "DescripcionTipoDeAccion",
+      headerName: "Tipo de Acción",
+      width: 100,
+    },
+    {
+      field: "DescripcionEstatusAccion",
+      headerName: "Estatus de las Acciones",
+      width: 150,
+    },
+    { field: "ClaveAccion", headerName: "Clave de Acción", width: 200 },
+    { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
+    {
+      field: "accionSuperviviente",
+      headerName: "Acción Superveniente",
+      width: 200,
+    },
+    { field: "TextoAccion", headerName: "Texto Acción", width: 900 },
+    { field: "Valor", headerName: "Valor", width: 150 },
   ];
 
   useEffect(() => {
@@ -200,34 +233,35 @@ const Notif = ({
 
   return (
     <div>
-      <ModalForm title={"Notificaciones de Áreas"} handleClose={handleFunction}>
+      <ModalForm
+        title={"Administración de Acciones"}
+        handleClose={handleFunction}
+      >
+        {openAccionesModal ? (
+          <AccionesModal
+            dt={vrows}
+            handleClose={handleClose}
+            tipo={tipoOperacion}
+            nAuditoria={NoAuditoria}
+            idAuditoria={obj.id}
+          />
+        ) : (
+          ""
+        )}
+
+        {openAdjuntos ? (
+          <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={5} />
+        ) : (
+          ""
+        )}
+
         <Progress open={show}></Progress>
         <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
-      {openContestacion ? (
-        <Contestacion handleFunction={handleClose} obj={vrows} />
-      ) : (
-        ""
-      )}
-      {openModal ? (
-        <NotifModal
-          tipo={tipoOperacion}
-          handleClose={handleClose}
-          dt={vrows}
-          user={user}
-          idAuditoria={obj.id}
-        />
-      ) : (
-        ""
-      )}
-      {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={2} />
-      ) : (
-        ""
-      )}
     </div>
   );
 };
 
-export default Notif;
+export default Acciones;

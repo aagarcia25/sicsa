@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid,
-  TextField,
-  Typography
-} from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
@@ -27,57 +21,107 @@ export const AuditoriaModal = ({
   dt: any;
 }) => {
   // CAMPOS DE LOS FORMULARIOS
-  const [id, setId] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
+
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const [show, setShow] = useState(false);
-
+  const [id, setId] = useState("");
   const [idInforme, setIdInforme] = useState("");
   const [idTipoAuditoria, setIdTipoAuditoria] = useState("");
   const [idSector, setIdSector] = useState("");
   const [idEntidadFiscalizada, setIdEntidadFiscalizada] = useState("");
+  const [FolioSIGA, setFolioSIGA] = useState("");
+  const [PersonalEncargado, setPersonalEncargado] = useState("");
+  const [NAUDITORIA, setNAUDITORIA] = useState("");
+  const [NombreAudoria, setNombreAudoria] = useState("");
+  const [Encargado, setEncargado] = useState("");
+  const [anio, setanio] = useState<Number>(0);
+  const [modalidad, setmodalidad] = useState("");
+  const [origenauditoria, setorigenauditoria] = useState("");
+  const [idGrupoFuncional, setidGrupoFuncional] = useState("");
+  const [iduaa, setiduaa] = useState("");
+  const [idaa, setidaa] = useState("");
+  const [idClasificacion, setidClasificacion] = useState("");
+  const [idramo, setidramo] = useState("");
+  const [Consecutivo, setConsecutivo] = useState("");
+  const [actainicio, setactainicio] = useState("");
+  const [universomilespesos, setuniversomilespesos] = useState("");
+  const [muestramilespesos, setmuestramilespesos] = useState("");
 
   const [CatInforme, setCatInforme] = useState<SelectValues[]>([]);
+  const [CatRamo, setCatRamo] = useState<SelectValues[]>([]);
   const [CatTipoAuditoria, setCatTipoAuditoria] = useState<SelectValues[]>([]);
   const [CatSector, setCatSector] = useState<SelectValues[]>([]);
-  const [CatEntidadFiscalizada, setCatEntidadFiscalizada] = useState<SelectValues[]>([]);
+  const [CatEntidadFiscalizada, setCatEntidadFiscalizada] = useState<
+    SelectValues[]
+  >([]);
 
+  const [ListGrupoFuncional, setListGrupoFuncional] = useState<SelectValues[]>(
+    []
+  );
 
+  const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
+  const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
+  const [Listorigenauditoria, setListorigenauditoria] = useState<
+    SelectValues[]
+  >([]);
 
+  const [Listuaa, setListuaa] = useState<SelectValues[]>([]);
+  const [Listaa, setListaa] = useState<SelectValues[]>([]);
+  const [LisClasificacion, setLisClasificacion] = useState<SelectValues[]>([]);
   const handleSend = () => {
-    // if (!nombre || !descripcion) {
-    //   Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
-    // } else {
-      let data = {
-        NUMOPERACION: tipo,
-        CHUSER: user.Id,
-       // FolioSIGA:FolioSIGA,
-       // PersonalEncargado:PersonalEncargado,
-      //  NAUDITORIA:NAUDITORIA,
-       // NombreAudoria:NombreAudoria,
-       // ActaInicio:ActaInicio,
-       // OFinicio:OFinicio,
-       // Fecha_Recibido:Fecha_Recibido,
-       // Fecha_Vencimiento:Fecha_Vencimiento,
-        idCatInforme:idInforme,
-        idTipoAuditoria:idTipoAuditoria,
-        idCatSector:idSector,
-        idCatEntidadFiscalizada:idEntidadFiscalizada,
+    let data = {
+      NUMOPERACION: tipo,
+      CHID: id,
+      CHUSER: user.Id,
+      anio: Number(anio),
+      NAUDITORIA: NAUDITORIA,
+      FolioSIGA: FolioSIGA,
+      Modalidad: modalidad,
+      Consecutivo: Consecutivo,
+      NombreAudoria: NombreAudoria,
+      ActaInicio: actainicio,
+      Encargado: Encargado,
+      PersonalEncargado: PersonalEncargado,
+      idClasificacion: idClasificacion,
+      idcatorigenaud: origenauditoria,
+      idCatGrupoFuncional: idGrupoFuncional,
+      idCatSector: idSector,
+      idCatEntidadFiscalizada: idEntidadFiscalizada,
+      idTipoAuditoria: idTipoAuditoria,
+      idCatInforme: idInforme,
+      idUnidadAdm: iduaa,
+      idAreaAdm: idaa,
+      idRamo: idramo,
+      universopesos: universomilespesos,
+      muestrapesos: muestramilespesos,
+    };
 
-      };
-console.log(data)
-     // handleRequest(data);
-     // handleClose();
-    // }
+    console.log(data);
+    if (tipo == 1) {
+      agregar(data);
+    } else {
+      editar(data);
+    }
+  };
+
+  const handleFilterChangemodalidad = (v: string) => {
+    setmodalidad(v);
   };
 
   const handleFilterChange1 = (v: string) => {
-    setIdInforme(v);
+    setanio(Number(anio));
+  };
+
+  const handleFilterChangeclasificacion = (v: string) => {
+    setidClasificacion(v);
   };
 
   const handleFilterChange2 = (v: string) => {
-    setIdTipoAuditoria(v);
+    setidGrupoFuncional(v);
+  };
+
+  const handleFilterChangeorigenaud = (v: string) => {
+    setorigenauditoria(v);
   };
 
   const handleFilterChange3 = (v: string) => {
@@ -87,7 +131,27 @@ console.log(data)
   const handleFilterChange4 = (v: string) => {
     setIdEntidadFiscalizada(v);
   };
-  
+
+  const handleFilterChange5 = (v: any) => {
+    setIdTipoAuditoria(v);
+  };
+
+  const handleFilterramo = (v: any) => {
+    setidramo(v);
+  };
+
+  const handleFilterChange6 = (v: any) => {
+    setIdInforme(v);
+  };
+
+  const handleFilterChangeaa = (v: any) => {
+    setidaa(v);
+  };
+
+  const handleFilterChangeuaa = (v: any) => {
+    setiduaa(v);
+    loadFilter(13, v);
+  };
 
   const agregar = (data: any) => {
     AuditoriaService.Auditoriaindex(data).then((res) => {
@@ -96,9 +160,8 @@ console.log(data)
           icon: "success",
           title: "¡Registro Agregado!",
         });
-
       } else {
-        Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
+        Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
     });
   };
@@ -111,18 +174,14 @@ console.log(data)
           title: "¡Registro Editado!",
         });
       } else {
-        Swal.fire(res.STRMESSAGE,  "¡Error!", "info");
+        Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
     });
   };
 
-  const loadFilter = (operacion: number) => {
+  const loadFilter = (operacion: number, id?: string) => {
     setShow(true);
-   
-    let data = { NUMOPERACION: operacion };
-
-
-
+    let data = { NUMOPERACION: operacion, P_ID: id };
     ShareService.SelectIndex(data).then((res) => {
       if (operacion === 5) {
         setCatInforme(res.RESPONSE);
@@ -132,8 +191,25 @@ console.log(data)
         setCatSector(res.RESPONSE);
       } else if (operacion === 2) {
         setCatEntidadFiscalizada(res.RESPONSE);
+      } else if (operacion === 1) {
+        setListAnio(res.RESPONSE);
+      } else if (operacion === 4) {
+        setListGrupoFuncional(res.RESPONSE);
+      } else if (operacion === 12) {
+        setListModalidad(res.RESPONSE);
+      } else if (operacion === 6) {
+        setListorigenauditoria(res.RESPONSE);
+      } else if (operacion === 10) {
+        setListuaa(res.RESPONSE);
         setShow(false);
-      } 
+      } else if (operacion === 13) {
+        setListaa(res.RESPONSE);
+        setShow(false);
+      } else if (operacion === 14) {
+        setLisClasificacion(res.RESPONSE);
+      } else if (operacion === 15) {
+        setCatRamo(res.RESPONSE);
+      }
     });
   };
 
@@ -142,13 +218,42 @@ console.log(data)
     loadFilter(9);
     loadFilter(7);
     loadFilter(2);
-    // if (dt === "") {
-    // } else {
-    //   setId(dt?.row?.id);
-    //   setNombre(dt?.row?.Nombre);
-    //   setDescripcion(dt?.row?.Descripcion);
-    // }
-  }, [dt]);
+    loadFilter(1);
+    loadFilter(4);
+    loadFilter(14);
+    loadFilter(15);
+    loadFilter(12);
+    loadFilter(6);
+    loadFilter(10);
+
+    if (dt === "") {
+    } else {
+      console.log(dt?.row);
+      setId(dt?.row.id);
+      setanio(Number(dt?.row.anio));
+      setNAUDITORIA(dt?.row.NAUDITORIA);
+      setFolioSIGA(dt?.row.FolioSIGA);
+      setmodalidad(dt?.row.Modalidad);
+      setConsecutivo(dt?.row.Consecutivo);
+      setNombreAudoria(dt?.row.NombreAudoria);
+      setactainicio(dt?.row.ActaInicio);
+      setEncargado(dt?.row.Encargado);
+      setPersonalEncargado(dt?.row.PersonalEncargado);
+      setidClasificacion(dt?.row.ctid);
+      setorigenauditoria(dt?.row.coaid);
+      setIdSector(dt?.row.csid);
+      setIdEntidadFiscalizada(dt?.row.cefid);
+      setIdTipoAuditoria(dt?.row.ctaid);
+      setIdInforme(dt?.row.ciid);
+      setiduaa(dt?.row.cuaaid);
+      setidGrupoFuncional(dt?.row.cgfid);
+      setidramo(dt?.row.crid);
+      setuniversomilespesos(dt?.row.universopesos);
+      setmuestramilespesos(dt?.row.muestrapesos);
+      handleFilterChangeuaa(dt?.row.cuaaid);
+      setidaa(dt?.row.caaid);
+    }
+  }, []);
 
   return (
     <>
@@ -156,9 +261,76 @@ console.log(data)
         title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}
         handleClose={handleClose}
       >
-         <Progress open={show}></Progress>
+        <Progress open={show}></Progress>
         <Box boxShadow={3}>
-         
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Año Cuenta Pública:
+              </Typography>
+              <SelectFrag
+                value={String(anio)}
+                options={ListAnio}
+                onInputChange={handleFilterChange1}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                required
+                margin="dense"
+                id="NAUDITORIA"
+                label="N° de Auditoría"
+                value={NAUDITORIA}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setNAUDITORIA(v.target.value)}
+                error={NAUDITORIA === "" ? true : false}
+                InputProps={{
+                  readOnly: tipo === 1 ? false : true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                margin="dense"
+                id="FolioSIGA"
+                label="Folio SIGA"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={FolioSIGA}
+                onChange={(v) => setFolioSIGA(v.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Modalidad:
+              </Typography>
+              <SelectFrag
+                value={modalidad}
+                options={ListModalidad}
+                onInputChange={handleFilterChangemodalidad}
+                placeholder={"Seleccione ..."}
+                disabled={false}
+              />
+            </Grid>
+          </Grid>
+
           <Grid
             container
             item
@@ -174,76 +346,105 @@ console.log(data)
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
-              required
-              margin="dense"
-              id="NAUDITORIA"
-              label="N° de Auditoría"
-              value={nombre}
-              type="text"
-              fullWidth
-              variant="standard"
-              onChange={(v) => (v.target.value)}
-              error={nombre === "" ? true : false}
-              InputProps={{
-                readOnly: tipo === 1 ? false : true,
-              }}
-            />
+                margin="dense"
+                id="Consecutivo"
+                label="Consecutivo"
+                type="number"
+                fullWidth
+                variant="standard"
+                value={Consecutivo}
+                onChange={(v) => setConsecutivo(v.target.value)}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-             {/* <textarea
-              id="PersonalEncargado"
-              required
-              spellCheck="true"
-              rows={2}
-              onChange={(v) => (v.target.value)}
-              style={{ width: "100%" }}
-            /> */}
+              <TextField
+                margin="dense"
+                id="ActaInicio"
+                label="Acta de Inicio"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={actainicio}
+                onChange={(v) => setactainicio(v.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+          </Grid>
 
-<TextField
-                        margin="dense"
-                        id="NombreAudoria"
-                        label="Nombre"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={nombre}
-                        required
-                        error={!nombre}
-                        onChange={(v) => (v.target.value)}
-                    />
-              
-             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={12} md={8} lg={6}>
+              <TextField
+                margin="dense"
+                id="NombreAudoria"
+                label="Nombre"
+                type="text"
+                multiline
+                fullWidth
+                variant="standard"
+                rows={5}
+                value={NombreAudoria}
+                required
+                error={!NombreAudoria}
+                onChange={(v) => setNombreAudoria(v.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={8} lg={6}>
+              <TextField
+                id="outlined-multiline-static"
+                label="Encargado"
+                multiline
+                fullWidth
+                variant="standard"
+                rows={5}
+                value={Encargado}
+                onChange={(v) => setEncargado(v.target.value)}
+              />
+            </Grid>
+          </Grid>
 
-            <TextField
-                        margin="dense"
-                        id="OFinicio"
-                        label="Oficio"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={nombre}
-                        required
-                        error={!nombre}
-                        onChange={(v) => (v.target.value)}
-                    />
-
-             
-              </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-            <TextField
-                        margin="dense"
-                        id="FolioSIGA"
-                        label="Folio SIGA"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                        value={nombre}
-                        required
-                        error={!nombre}
-                        onChange={(v) => (v.target.value)}
-                    />
-              </Grid>
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={12} md={8} lg={6}>
+              <TextField
+                margin="dense"
+                id="personalencargado"
+                label="Personal Encargado"
+                type="text"
+                multiline
+                fullWidth
+                variant="standard"
+                rows={5}
+                value={PersonalEncargado}
+                required
+                error={!PersonalEncargado}
+                onChange={(v) => setPersonalEncargado(v.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={8} lg={6}></Grid>
           </Grid>
 
           <Grid
@@ -260,22 +461,32 @@ console.log(data)
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-        
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Clasificación Auditoria:
+              </Typography>
+              <SelectFrag
+                value={idClasificacion}
+                options={LisClasificacion}
+                onInputChange={handleFilterChangeclasificacion}
+                placeholder={"Seleccione...."}
+                disabled={false}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-           
-              
-             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-
-
-             
-              </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-         
-              </Grid>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Origen Auditoria:
+              </Typography>
+              <SelectFrag
+                value={origenauditoria}
+                options={Listorigenauditoria}
+                onInputChange={handleFilterChangeorigenaud}
+                placeholder={"Seleccione...."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
-
 
           <Grid
             container
@@ -291,52 +502,52 @@ console.log(data)
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>Sector:</Typography>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Grupo Funcional:
+              </Typography>
+              <SelectFrag
+                value={idGrupoFuncional}
+                options={ListGrupoFuncional}
+                onInputChange={handleFilterChange2}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>Sector:</Typography>
               <SelectFrag
                 value={idSector}
                 options={CatSector}
                 onInputChange={handleFilterChange3}
-                placeholder={"Seleccione Sector"}
+                placeholder={"Seleccione.."}
                 disabled={false}
               />
-            
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>Entidad Fiscalizada:</Typography>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Entidad Fiscalizada:
+              </Typography>
               <SelectFrag
                 value={idEntidadFiscalizada}
                 options={CatEntidadFiscalizada}
                 onInputChange={handleFilterChange4}
-                placeholder={"Seleccione entidad Fiscalizada"}
+                placeholder={"Seleccione.."}
                 disabled={false}
               />
-              
-             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-            <Typography sx={{ fontFamily: "sans-serif" }}>Tipo de Auditoria:</Typography>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Tipo de Auditoria:
+              </Typography>
               <SelectFrag
                 value={idTipoAuditoria}
                 options={CatTipoAuditoria}
-                onInputChange={handleFilterChange2}
-                placeholder={"Seleccione Tipo de Auditoria"}
+                onInputChange={handleFilterChange5}
+                placeholder={"Seleccione.."}
                 disabled={false}
               />
-             
-              </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-            <Typography sx={{ fontFamily: "sans-serif" }}>Entrega:</Typography>
-              <SelectFrag
-                value={idInforme}
-                options={CatInforme}
-                onInputChange={handleFilterChange1}
-                placeholder={"Seleccione Entrega"}
-                disabled={false}
-              />
-              </Grid>
+            </Grid>
           </Grid>
-
-
-
 
           <Grid
             container
@@ -352,22 +563,97 @@ console.log(data)
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-        
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Entrega:
+              </Typography>
+              <SelectFrag
+                value={idInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChange6}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-           
-              
-             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-
-
-             
-              </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>  
-         
-              </Grid>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Unidad Administrativa Auditora:
+              </Typography>
+              <SelectFrag
+                value={iduaa}
+                options={Listuaa}
+                onInputChange={handleFilterChangeuaa}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Área Auditora:
+              </Typography>
+              <SelectFrag
+                value={idaa}
+                options={Listaa}
+                onInputChange={handleFilterChangeaa}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>Ramo:</Typography>
+              <SelectFrag
+                value={idramo}
+                options={CatRamo}
+                onInputChange={handleFilterramo}
+                placeholder={"Seleccione.."}
+                disabled={false}
+              />
+            </Grid>
           </Grid>
 
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                required
+                margin="dense"
+                id="UNIVERSO"
+                label="Universo(miles de pesos)"
+                value={universomilespesos}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setuniversomilespesos(v.target.value)}
+                error={universomilespesos === "" ? true : false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                required
+                margin="dense"
+                id="muestra"
+                label="Muestra(miles de pesos)"
+                value={muestramilespesos}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setmuestramilespesos(v.target.value)}
+                error={muestramilespesos === "" ? true : false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+          </Grid>
 
           <Grid
             container
@@ -380,15 +666,13 @@ console.log(data)
             lg={12}
             sx={{ padding: "2%" }}
           >
-          
-
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
                 // disabled={descripcion === "" || nombre === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >
-                {tipo === 1 ? "Agregar" : "Editar"}
+                {tipo === 1 ? "Agregar" : "Actualizar"}
               </Button>
             </Grid>
           </Grid>
@@ -396,5 +680,4 @@ console.log(data)
       </ModalForm>
     </>
   );
-
 };

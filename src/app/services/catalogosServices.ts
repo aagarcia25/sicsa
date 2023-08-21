@@ -1,7 +1,11 @@
 
-import { post, postDoc } from './apiService';
+import { post, postDoc, postDocument } from './apiService';
 
 export class CatalogosServices {
+
+     public static async areaindex(data : any) {
+        return await post('areaindex', data);
+    };
 
     public static async aniosindex(data : any) {
         return await post('aniosindex', data);
@@ -51,7 +55,14 @@ export class CatalogosServices {
         return await post('Unidad_Admin_Auditora_index', data);
     };
 
+    public static async Ramo_index(data : any) {
+        return await post('Ramo_index', data);
+    };
 
+
+    public static async migraData(data : any) {
+        return await postDocument('migraData', data);
+    };
 
 
 }

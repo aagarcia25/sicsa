@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
@@ -6,8 +6,11 @@ import { USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { CatalogosServices } from "../../services/catalogosServices";
 import { getUser } from "../../services/localStorage";
 import ModalForm from "../componentes/ModalForm";
+import SelectFrag from "../componentes/SelectFrag";
+import SelectValues from "../../interfaces/Share";
+import { ShareService } from "../../services/ShareService";
 
-export const TipoAccionModal = ({
+export const CatAreaAuditoraModal = ({
   open,
   handleClose,
   tipo,
@@ -20,39 +23,42 @@ export const TipoAccionModal = ({
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [id, setId] = useState("");
-  const [abreviatura, setAbreviatura] = useState("");
-  const [descripcion, setDescripcion] = useState("");
+  const [Clave, setClave] = useState("");
+  const [Descripcion, setDescripcion] = useState("");
+  const [idCatUnidadAdmin, setidCatUnidadAdmin] = useState("");
+
+  const [Catunidad, setCatunidad] = useState<SelectValues[]>([]);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const handleSend = () => {
-    if (!abreviatura || !descripcion) {
+    if (!Clave && !Descripcion && !idCatUnidadAdmin) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        DESCRIPCION: descripcion,
-        ABREVIATURA: abreviatura,
+        Clave: Clave,
+        Descripcion: Descripcion,
+        idCatUnidadAdmin: idCatUnidadAdmin,
       };
 
-      handleRequest(data);
+      if (tipo === 1) {
+        //AGREGAR
+        agregar(data);
+      } else if (tipo === 2) {
+        //EDITAR
+        editar(data);
+      }
     }
   };
 
-  const handleRequest = (data: any) => {
-    if (tipo === 1) {
-      //AGREGAR
-      agregar(data);
-    } else if (tipo === 2) {
-      //EDITAR
-
-      editar(data);
-    }
+  const handleFilterChange1 = (v: string) => {
+    setidCatUnidadAdmin(v);
   };
 
   const agregar = (data: any) => {
-    CatalogosServices.TiposAccion_index(data).then((res) => {
+    CatalogosServices.areaindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -65,7 +71,7 @@ export const TipoAccionModal = ({
   };
 
   const editar = (data: any) => {
-    CatalogosServices.TiposAccion_index(data).then((res) => {
+    CatalogosServices.areaindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -77,12 +83,24 @@ export const TipoAccionModal = ({
     });
   };
 
+  const loadFilter = (operacion: number) => {
+    let data = { NUMOPERACION: operacion };
+    ShareService.SelectIndex(data).then((res) => {
+      if (operacion === 10) {
+        setCatunidad(res.RESPONSE);
+      }
+    });
+  };
+
   useEffect(() => {
+    loadFilter(10);
     if (dt === "") {
     } else {
+      console.log("dt", dt);
       setId(dt?.row?.id);
-      setAbreviatura(dt?.row?.Abreviatura);
+      setClave(dt?.row?.Clave);
       setDescripcion(dt?.row?.Descripcion);
+      setidCatUnidadAdmin(dt?.row?.iduaa);
     }
   }, [dt]);
 
@@ -93,6 +111,62 @@ export const TipoAccionModal = ({
         handleClose={handleClose}
       >
         <Box boxShadow={3}>
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Unidad Administrativa Auditora:
+              </Typography>
+              <SelectFrag
+                value={idCatUnidadAdmin}
+                options={Catunidad}
+                onInputChange={handleFilterChange1}
+                placeholder={"Seleccione..."}
+                disabled={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                required
+                margin="dense"
+                id="Clave"
+                label="Clave"
+                value={Clave}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setClave(v.target.value)}
+                error={Clave === "" ? true : false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                required
+                margin="dense"
+                id="descripcion"
+                label="Descripción"
+                value={Descripcion}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setDescripcion(v.target.value)}
+                error={Descripcion === "" ? true : false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+          </Grid>
+
           <Grid
             container
             direction="row"
@@ -106,39 +180,12 @@ export const TipoAccionModal = ({
               justifyContent="center"
               xs={4}
             ></Grid>
-            <Grid item alignItems="center" justifyContent="center" xs={4}>
-              <TextField
-                required
-                margin="dense"
-                id="Descripcion"
-                label="Descripción"
-                value={descripcion}
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={(v) => setDescripcion(v.target.value)}
-                error={descripcion === "" ? true : false}
-                InputProps={{}}
-              />
-
-              <TextField
-                required
-                margin="dense"
-                id="Abreviatura"
-                label="Abreviatura"
-                value={abreviatura}
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={(v) => setAbreviatura(v.target.value)}
-                error={abreviatura === "" ? true : false}
-                InputProps={
-                  {
-                    //readOnly: tipo === 1 ? false : true,
-                  }
-                }
-              />
-            </Grid>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="center"
+              xs={4}
+            ></Grid>
             <Grid
               item
               alignItems="center"
@@ -158,9 +205,10 @@ export const TipoAccionModal = ({
               justifyContent="center"
               xs={5}
             ></Grid>
+
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
-                disabled={descripcion === "" || abreviatura === ""}
+                disabled={Clave === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >
