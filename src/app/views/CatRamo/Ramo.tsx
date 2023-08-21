@@ -100,7 +100,7 @@ export const Ramo = () => {
     },
     { field: "modi", headerName: "Creado Por", width: 100 },
     { field: "creado", headerName: "Modificado Por", width: 100 },
-    { field: "Descripcion", headerName: "Descripcion", width: 350 },
+    { field: "Descripcion", headerName: "Descripción", width: 350 },
   ];
 
   const handleClose = () => {
