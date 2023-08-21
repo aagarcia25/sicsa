@@ -106,7 +106,7 @@ export const EntidadFiscalizada = () => {
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
     {
       field: "Descripcion",
-      headerName: "Descripcion",
+      headerName: "Descripción",
       description: "Descripción",
       width: 100,
     },
