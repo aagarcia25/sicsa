@@ -462,7 +462,7 @@ export const AuditoriaModal = ({
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Clasificación Auditoria:
+                Clasificación Auditoría:
               </Typography>
               <SelectFrag
                 value={idClasificacion}
@@ -474,7 +474,7 @@ export const AuditoriaModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Origen Auditoria:
+                Origen Auditoría:
               </Typography>
               <SelectFrag
                 value={origenauditoria}
@@ -537,7 +537,7 @@ export const AuditoriaModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Tipo de Auditoria:
+                Tipo de Auditoría:
               </Typography>
               <SelectFrag
                 value={idTipoAuditoria}
