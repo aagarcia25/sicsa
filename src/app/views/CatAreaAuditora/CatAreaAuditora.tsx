@@ -111,7 +111,7 @@ export const CatAreaAuditora = () => {
     { field: "Clave", headerName: "Clave", description: "Clave", width: 100 },
     {
       field: "Descripcion",
-      headerName: "Descripcion",
+      headerName: "Descripción",
       description: "Descripcion",
       width: 300,
     },
