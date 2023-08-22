@@ -34,7 +34,9 @@ export const AuditoriaModal = ({
   const [NAUDITORIA, setNAUDITORIA] = useState("");
   const [NombreAudoria, setNombreAudoria] = useState("");
   const [Encargado, setEncargado] = useState("");
-  const [anio, setanio] = useState<Number>(0);
+  //const [anio, setanio] = useState<Number>(0);
+  const [anio, setanio] = useState("");
+
   const [modalidad, setmodalidad] = useState("");
   const [origenauditoria, setorigenauditoria] = useState("");
   const [idGrupoFuncional, setidGrupoFuncional] = useState("");
@@ -109,7 +111,7 @@ export const AuditoriaModal = ({
   };
 
   const handleFilterChange1 = (v: string) => {
-    setanio(Number(anio));
+    setanio(v);
   };
 
   const handleFilterChangeclasificacion = (v: string) => {
@@ -160,6 +162,8 @@ export const AuditoriaModal = ({
           icon: "success",
           title: "¡Registro Agregado!",
         });
+        handleClose();
+
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
@@ -173,6 +177,8 @@ export const AuditoriaModal = ({
           icon: "success",
           title: "¡Registro Editado!",
         });
+        handleClose();
+
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
@@ -230,7 +236,7 @@ export const AuditoriaModal = ({
     } else {
       console.log(dt?.row);
       setId(dt?.row.id);
-      setanio(Number(dt?.row.anio));
+      setanio(String(dt?.row.anio));
       setNAUDITORIA(dt?.row.NAUDITORIA);
       setFolioSIGA(dt?.row.FolioSIGA);
       setmodalidad(dt?.row.Modalidad);
@@ -281,7 +287,7 @@ export const AuditoriaModal = ({
                 Año Cuenta Pública:
               </Typography>
               <SelectFrag
-                value={String(anio)}
+                value={anio}
                 options={ListAnio}
                 onInputChange={handleFilterChange1}
                 placeholder={"Seleccione.."}

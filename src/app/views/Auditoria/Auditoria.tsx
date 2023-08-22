@@ -188,7 +188,7 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
             <ButtonsDetail
-              title={"Notificación Area"}
+              title={"Notificación Área"}
               handleFunction={handleDetalle}
               show={true}
               icon={<ChatIcon />}
@@ -202,7 +202,7 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
             <ButtonsDetail
-              title={"Ver Plan de trabajo"}
+              title={"Ver Plan de Trabajo"}
               handleFunction={handlePlan}
               show={true}
               icon={<AlignHorizontalLeftIcon />}
