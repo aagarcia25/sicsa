@@ -188,7 +188,7 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
             <ButtonsDetail
-              title={"Notificación Area"}
+              title={"Notificación Área"}
               handleFunction={handleDetalle}
               show={true}
               icon={<ChatIcon />}
@@ -202,7 +202,7 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
             <ButtonsDetail
-              title={"Ver Plan de trabajo"}
+              title={"Ver Plan de Trabajo"}
               handleFunction={handlePlan}
               show={true}
               icon={<AlignHorizontalLeftIcon />}
@@ -221,7 +221,7 @@ export const Auditoria = () => {
     { field: "creado", headerName: "Creado Por", width: 100 },
     { field: "modi", headerName: "Modificado Por", width: 100 },
     { field: "anio", headerName: "Año Cuenta Pública", width: 100 },
-    { field: "NAUDITORIA", headerName: "No. De Auditoria", width: 100 },
+    { field: "NAUDITORIA", headerName: "No. De Auditoría", width: 100 },
     { field: "FolioSIGA", headerName: "Folio SIGA", width: 100 },
     { field: "Modalidad", headerName: "Modalidad", width: 100 },
     { field: "Consecutivo", headerName: "Consecutivo", width: 100 },
@@ -236,7 +236,7 @@ export const Auditoria = () => {
     { field: "ctid", headerName: "ctid", width: 300 },
     { field: "ctDescripcion", headerName: "Clasificación", width: 300 },
     { field: "coaid", headerName: "coaid", width: 300 },
-    { field: "coaDescripcion", headerName: "Origen Áuditoria", width: 300 },
+    { field: "coaDescripcion", headerName: "Origen Auditoría", width: 300 },
     { field: "cgfid", headerName: "cgfid", width: 300 },
     { field: "cgfDescripcion", headerName: "Grupo Funcional", width: 300 },
     { field: "csid", headerName: "csid", width: 300 },
@@ -244,13 +244,13 @@ export const Auditoria = () => {
     { field: "cefid", headerName: "cefid", width: 300 },
     { field: "cefDescripcion", headerName: "Entidad Fiscalizada", width: 300 },
     { field: "ctaid", headerName: "ctaid", width: 300 },
-    { field: "ctaDescripcion", headerName: "Tipo de Áuditoria", width: 300 },
+    { field: "ctaDescripcion", headerName: "Tipo de Auditoría", width: 300 },
     { field: "ciid", headerName: "ciid", width: 300 },
     { field: "ciDescripcion", headerName: "Informe", width: 300 },
     { field: "cuaaid", headerName: "cuaaid", width: 300 },
     { field: "cuaaDescripcion", headerName: "UAA", width: 300 },
     { field: "caaid", headerName: "caaid", width: 300 },
-    { field: "caaDescripcion", headerName: "Área Áuditoria", width: 300 },
+    { field: "caaDescripcion", headerName: "Área Auditoría", width: 300 },
     { field: "crid", headerName: "crid", width: 300 },
     { field: "crDescripcion", headerName: "Ramo", width: 300 },
     {
