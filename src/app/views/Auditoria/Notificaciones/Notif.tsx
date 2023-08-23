@@ -17,7 +17,6 @@ import ModalForm from "../../componentes/ModalForm";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
 import { Contestacion } from "./Contestacion";
 import { NotifModal } from "./NotifModal";
-import { OficiosModal } from "../Oficios/OficiosModal";
 
 const Notif = ({
   handleFunction,
@@ -26,8 +25,6 @@ const Notif = ({
   handleFunction: Function;
   obj: any;
 }) => {
-  const [openSlider, setOpenSlider] = useState(false);
-  const [open, setOpen] = useState(false);
   const [openContestacion, setOpenContestacion] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [show, setShow] = useState(false);
@@ -49,9 +46,9 @@ const Notif = ({
           title: "¡Consulta Exitosa!",
         });
         setData(res.RESPONSE);
-        setOpenSlider(false);
+        setShow(false);
       } else {
-        setOpenSlider(false);
+        setShow(false);
         Swal.fire("¡Error!", res.STRMESSAGE, "error");
       }
     });
@@ -67,7 +64,6 @@ const Notif = ({
       denyButtonText: `Cancelar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        //setOpenSlider(false);
         let data = {
           NUMOPERACION: 3,
           CHID: v.data.row.id,
@@ -80,7 +76,6 @@ const Notif = ({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            //consulta({ NUMOPERACION: 4 });
             consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
@@ -103,7 +98,6 @@ const Notif = ({
   };
 
   const handleClose = () => {
-    setOpen(false);
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
@@ -174,7 +168,8 @@ const Notif = ({
     },
     { field: "creado", headerName: "Creado Por", width: 150 },
     { field: "modi", headerName: "Modificado Por", width: 150 },
-    { field: "Dependencia", headerName: "Dependencia", width: 100 },
+    { field: "secretaria", headerName: "Secretaría", width: 100 },
+    { field: "unidad", headerName: "Unidad Responsable", width: 100 },
     { field: "Prorroga", headerName: "Prorroga", width: 100 },
     { field: "Oficio", headerName: "Oficio", width: 150 },
     { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
