@@ -26,6 +26,7 @@ import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
 import GanttModal from "../componentes/GanttModal";
 import SelectFrag from "../componentes/SelectFrag";
 import SelectValues from "../../interfaces/Share";
+import { ShareService } from "../../services/ShareService";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -318,7 +319,28 @@ export const Auditoria = () => {
     });
   };
 
+  const loadFilter = (operacion: number, id?: string) => {
+    let data = { NUMOPERACION: operacion, P_ID: id };
+    ShareService.SelectIndex(data).then((res) => {
+      if (operacion === 5) {
+        //  setCatInforme(res.RESPONSE);
+      } else if (operacion === 1) {
+        setListAnio(res.RESPONSE);
+      } else if (operacion === 12) {
+        setListModalidad(res.RESPONSE);
+      } else if (operacion === 16) {
+        setListInicio(res.RESPONSE);
+      } else if (operacion === 18) {
+        setListIdEstatus(res.RESPONSE);
+      }
+    });
+  };
+
   useEffect(() => {
+    loadFilter(1);
+    loadFilter(12);
+    loadFilter(16);
+    loadFilter(18);
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {
