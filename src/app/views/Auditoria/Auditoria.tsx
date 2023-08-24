@@ -14,7 +14,7 @@ import { AuditoriaModal } from "./AuditoriaModal";
 import ChatIcon from "@mui/icons-material/Chat";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 import Notif from "./Notificaciones/Notif";
-import { Grid, Typography } from "@mui/material";
+import { Button, Collapse, Grid, TextField, Typography } from "@mui/material";
 import VisorDocumentos from "../componentes/VisorDocumentos";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
@@ -27,6 +27,12 @@ import GanttModal from "../componentes/GanttModal";
 import SelectFrag from "../componentes/SelectFrag";
 import SelectValues from "../../interfaces/Share";
 import { ShareService } from "../../services/ShareService";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import ButtonsShare from "../componentes/ButtonsShare";
+import SendIcon from "@mui/icons-material/Send";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -46,15 +52,21 @@ export const Auditoria = () => {
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
+  const [showfilter, setshowfilter] = useState<boolean>(false);
 
+  const [FolioSIGA, setFolioSIGA] = useState("");
+  const [NAUDITORIA, setNAUDITORIA] = useState("");
   const [idEstatus, setidEstatus] = useState("");
-  const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
+  const [municipio, setMunicipio] = useState("");
   const [inicio, setInicio] = useState("");
-  const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [anio, setanio] = useState("");
+
+  const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
+  const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
   const [modalidad, setmodalidad] = useState("");
   const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
+  const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
 
   const handleVerAdjuntos = (data: any) => {
     setVrows(data);
@@ -67,7 +79,7 @@ export const Auditoria = () => {
     setOpenAdjuntos(false);
     setOpenModalAcciones(false);
     setOpenModalOficios(false);
-    consulta({ NUMOPERACION: 4 });
+    consulta();
     setOpenModalgant(false);
   };
 
@@ -86,6 +98,10 @@ export const Auditoria = () => {
     setId(data.id);
     setVrows(data);
     setOpenModalgant(true);
+  };
+
+  const handleFilterChangeMunicipio = (v: string) => {
+    setMunicipio(v);
   };
 
   const handleDetalle = (data: any) => {
@@ -137,7 +153,7 @@ export const Auditoria = () => {
                 icon: "success",
                 title: "¡Registro Eliminado!",
               });
-              consulta({ NUMOPERACION: 4 });
+              consulta();
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -303,7 +319,32 @@ export const Auditoria = () => {
     setVrows(v);
   };
 
-  const consulta = (data: any) => {
+  const verfiltros = () => {
+    if (showfilter) {
+      setshowfilter(false);
+    } else {
+      setshowfilter(true);
+    }
+  };
+
+  const clearFilter = () => {
+    setFolioSIGA("");
+    setNAUDITORIA("");
+    setidEstatus("");
+    setMunicipio("");
+    setInicio("");
+    setanio("");
+  };
+  const consulta = () => {
+    let data = {
+      NUMOPERACION: 4,
+      FolioSIGA: FolioSIGA === "false" ? "" : FolioSIGA,
+      NAUDITORIA: NAUDITORIA === "false" ? "" : NAUDITORIA,
+      idEstatus: idEstatus === "false" ? "" : idEstatus,
+      municipio: municipio === "false" ? "" : municipio,
+      inicio: inicio === "false" ? "" : inicio,
+      anio: anio === "false" ? "" : anio,
+    };
     AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
@@ -332,6 +373,8 @@ export const Auditoria = () => {
         setListInicio(res.RESPONSE);
       } else if (operacion === 18) {
         setListIdEstatus(res.RESPONSE);
+      } else if (operacion === 17) {
+        setListMunicipio(res.RESPONSE);
       }
     });
   };
@@ -341,6 +384,7 @@ export const Auditoria = () => {
     loadFilter(12);
     loadFilter(16);
     loadFilter(18);
+    loadFilter(17);
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {
@@ -354,7 +398,7 @@ export const Auditoria = () => {
         }
       }
     });
-    consulta({ NUMOPERACION: 4 });
+    consulta();
   }, []);
 
   return (
@@ -376,71 +420,168 @@ export const Auditoria = () => {
             show={openSlider}
           />
 
-          <Grid
-            container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
-          >
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Estatus:
-              </Typography>
-              <SelectFrag
-                value={idEstatus}
-                options={ListIdEstatus}
-                onInputChange={handleFilterChangeestatus}
-                placeholder={"Seleccione.."}
-                disabled={false}
-              />
+          <Collapse in={showfilter} timeout="auto" unmountOnExit>
+            <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "1%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Estatus:
+                </Typography>
+                <SelectFrag
+                  value={idEstatus}
+                  options={ListIdEstatus}
+                  onInputChange={handleFilterChangeestatus}
+                  placeholder={"Seleccione.."}
+                  disabled={false}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Origen Áuditoria:
+                </Typography>
+                <SelectFrag
+                  value={inicio}
+                  options={Listinicio}
+                  onInputChange={handleFilterChangeinicio}
+                  placeholder={"Seleccione.."}
+                  disabled={false}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Año Cuenta Pública:
+                </Typography>
+                <SelectFrag
+                  value={anio}
+                  options={ListAnio}
+                  onInputChange={handleFilterChange1}
+                  placeholder={"Seleccione.."}
+                  disabled={false}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Modalidad:
+                </Typography>
+                <SelectFrag
+                  value={modalidad}
+                  options={ListModalidad}
+                  onInputChange={handleFilterChangemodalidad}
+                  placeholder={"Seleccione ..."}
+                  disabled={false}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Origen Áuditoria:
-              </Typography>
-              <SelectFrag
-                value={inicio}
-                options={Listinicio}
-                onInputChange={handleFilterChangeinicio}
-                placeholder={"Seleccione.."}
-                disabled={false}
-              />
+            <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "1%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <TextField
+                  margin="dense"
+                  id="NAUDITORIA"
+                  label="N° de Auditoría"
+                  value={NAUDITORIA}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(v) => setNAUDITORIA(v.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <TextField
+                  margin="dense"
+                  id="FolioSIGA"
+                  label="Folio SIGA"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={FolioSIGA}
+                  onChange={(v) => setFolioSIGA(v.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Ubicación Geografica:
+                </Typography>
+                <SelectFrag
+                  value={municipio}
+                  options={ListMunicipio}
+                  onInputChange={handleFilterChangeMunicipio}
+                  placeholder={"Seleccione.."}
+                  disabled={false}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Año Cuenta Pública:
-              </Typography>
-              <SelectFrag
-                value={anio}
-                options={ListAnio}
-                onInputChange={handleFilterChange1}
-                placeholder={"Seleccione.."}
-                disabled={false}
-              />
+            <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "1%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Button
+                  onClick={consulta}
+                  variant="contained"
+                  color="secondary"
+                  endIcon={<SendIcon sx={{ color: "white" }} />}
+                >
+                  <Typography sx={{ color: "white" }}> Buscar </Typography>
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Button
+                  onClick={clearFilter}
+                  variant="contained"
+                  color="secondary"
+                  endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
+                >
+                  <Typography sx={{ color: "white" }}>
+                    Limpiar Filtros
+                  </Typography>
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
             </Grid>
-
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Modalidad:
-              </Typography>
-              <SelectFrag
-                value={modalidad}
-                options={ListModalidad}
-                onInputChange={handleFilterChangemodalidad}
-                placeholder={"Seleccione ..."}
-                disabled={false}
-              />
-            </Grid>
-          </Grid>
+          </Collapse>
 
           <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+          <ButtonsShare
+            title={showfilter ? "Ocultar Filtros" : "Ver Filtros"}
+            handleFunction={verfiltros}
+            show={true}
+            icon={showfilter ? <FilterAltOffIcon /> : <FilterAltIcon />}
+            row={undefined}
+          />
           <MUIXDataGrid columns={columns} rows={bancos} />
         </div>
       </Grid>

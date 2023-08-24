@@ -4,10 +4,37 @@ import { useEffect, useState } from "react";
 import { AuditoriaService } from "../../services/AuditoriaService";
 import Progress from "../Progress";
 import TitleComponent from "../componentes/TitleComponent";
+import { Box, Grid, Typography } from "@mui/material";
+import { PlanTrabajoAnualModal } from "./PlanTrabajoAnualModal";
+import { getUser } from "../../services/localStorage";
+import ButtonsAdd from "../componentes/ButtonsAdd";
+import { USUARIORESPONSE } from "../../interfaces/UserInfo";
 
-export const PTA = () => {
+
+export const PTA = ({
+ // handleFunction,
+ // obj,
+}: {
+  //handleFunction: Function;
+ // obj: any;
+}) => {
+
+
+
+
   const [openSlider, setOpenSlider] = useState(true);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [agregar, setAgregar] = useState<boolean>(true);
+  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
+  const [vrows, setVrows] = useState({});
+  const [tipoOperacion, setTipoOperacion] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [modo, setModo] = useState("");
+
+
+
+
+
 
   const consulta = () => {
     let data = {
@@ -42,6 +69,27 @@ export const PTA = () => {
     });
   };
 
+  const handleOpen = (v: any) => {
+    setTipoOperacion(1);
+    setModo("Agregar Registro");
+    setOpen(true);
+    setVrows("");
+  };
+
+  const handleOpenEdit = (v: any) => { console.log("v",v);
+  
+    setTipoOperacion(2);
+    setModo("Editar Registro");
+    setOpen(true);
+    setVrows(v);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    //setOpenAdjuntos(false);
+    consulta();
+  };
+
   useEffect(() => {
     consulta();
   }, []);
@@ -49,6 +97,34 @@ export const PTA = () => {
   return (
     <div style={{ height: 600, width: "100%", padding: "1%" }}>
       <TitleComponent title={"Plan de Trabajo Anual"} show={false} />
+
+      {open ? (
+          <PlanTrabajoAnualModal
+            tipo={tipoOperacion}
+            handleClose={handleClose}
+            datos={vrows}
+            //idauditoria={obj.id}
+            user={user}
+
+          />
+        ) : (
+          ""
+        )}
+      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        <Grid item xs={10} sm={10} md={10} lg={10}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              paddingBottom: "10px",
+            }}
+          >
+            {/* <Typography variant="h6">
+              {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
+            </Typography> */}
+          </Box>
+        </Grid>
+
       {tasks.length > 0 ? (
         <Gantt
           viewMode={ViewMode.Month}
