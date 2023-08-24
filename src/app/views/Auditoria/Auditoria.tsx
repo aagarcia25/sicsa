@@ -14,7 +14,7 @@ import { AuditoriaModal } from "./AuditoriaModal";
 import ChatIcon from "@mui/icons-material/Chat";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 import Notif from "./Notificaciones/Notif";
-import { Collapse, Grid, TextField, Typography } from "@mui/material";
+import { Button, Collapse, Grid, TextField, Typography } from "@mui/material";
 import VisorDocumentos from "../componentes/VisorDocumentos";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
@@ -30,6 +30,9 @@ import { ShareService } from "../../services/ShareService";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import ButtonsShare from "../componentes/ButtonsShare";
+import SendIcon from "@mui/icons-material/Send";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -55,10 +58,11 @@ export const Auditoria = () => {
   const [NAUDITORIA, setNAUDITORIA] = useState("");
   const [idEstatus, setidEstatus] = useState("");
   const [municipio, setMunicipio] = useState("");
-  const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
   const [inicio, setInicio] = useState("");
-  const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [anio, setanio] = useState("");
+
+  const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
+  const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
   const [modalidad, setmodalidad] = useState("");
   const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
@@ -75,7 +79,7 @@ export const Auditoria = () => {
     setOpenAdjuntos(false);
     setOpenModalAcciones(false);
     setOpenModalOficios(false);
-    consulta({ NUMOPERACION: 4 });
+    consulta();
     setOpenModalgant(false);
   };
 
@@ -149,7 +153,7 @@ export const Auditoria = () => {
                 icon: "success",
                 title: "¡Registro Eliminado!",
               });
-              consulta({ NUMOPERACION: 4 });
+              consulta();
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -323,7 +327,24 @@ export const Auditoria = () => {
     }
   };
 
-  const consulta = (data: any) => {
+  const clearFilter = () => {
+    setFolioSIGA("");
+    setNAUDITORIA("");
+    setidEstatus("");
+    setMunicipio("");
+    setInicio("");
+    setanio("");
+  };
+  const consulta = () => {
+    let data = {
+      NUMOPERACION: 4,
+      FolioSIGA: FolioSIGA === "false" ? "" : FolioSIGA,
+      NAUDITORIA: NAUDITORIA === "false" ? "" : NAUDITORIA,
+      idEstatus: idEstatus === "false" ? "" : idEstatus,
+      municipio: municipio === "false" ? "" : municipio,
+      inicio: inicio === "false" ? "" : inicio,
+      anio: anio === "false" ? "" : anio,
+    };
     AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
@@ -377,7 +398,7 @@ export const Auditoria = () => {
         }
       }
     });
-    consulta({ NUMOPERACION: 4 });
+    consulta();
   }, []);
 
   return (
@@ -526,21 +547,30 @@ export const Auditoria = () => {
               alignItems="center"
               sx={{ padding: "1%" }}
             >
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-                <TextField
-                  margin="dense"
-                  id="NAUDITORIA"
-                  label="N° de Auditoría"
-                  value={NAUDITORIA}
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  onChange={(v) => setNAUDITORIA(v.target.value)}
-                />
+              <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Button
+                  onClick={consulta}
+                  variant="contained"
+                  color="secondary"
+                  endIcon={<SendIcon sx={{ color: "white" }} />}
+                >
+                  <Typography sx={{ color: "white" }}> Buscar </Typography>
+                </Button>
               </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={2}>
+                <Button
+                  onClick={clearFilter}
+                  variant="contained"
+                  color="secondary"
+                  endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
+                >
+                  <Typography sx={{ color: "white" }}>
+                    Limpiar Filtros
+                  </Typography>
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
             </Grid>
           </Collapse>
 
