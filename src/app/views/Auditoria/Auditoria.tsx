@@ -14,7 +14,7 @@ import { AuditoriaModal } from "./AuditoriaModal";
 import ChatIcon from "@mui/icons-material/Chat";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 import Notif from "./Notificaciones/Notif";
-import { Collapse, Grid, Typography } from "@mui/material";
+import { Collapse, Grid, TextField, Typography } from "@mui/material";
 import VisorDocumentos from "../componentes/VisorDocumentos";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
@@ -51,7 +51,10 @@ export const Auditoria = () => {
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [showfilter, setshowfilter] = useState<boolean>(false);
 
+  const [FolioSIGA, setFolioSIGA] = useState("");
+  const [NAUDITORIA, setNAUDITORIA] = useState("");
   const [idEstatus, setidEstatus] = useState("");
+  const [municipio, setMunicipio] = useState("");
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
   const [inicio, setInicio] = useState("");
   const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
@@ -59,6 +62,7 @@ export const Auditoria = () => {
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
   const [modalidad, setmodalidad] = useState("");
   const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
+  const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
 
   const handleVerAdjuntos = (data: any) => {
     setVrows(data);
@@ -90,6 +94,10 @@ export const Auditoria = () => {
     setId(data.id);
     setVrows(data);
     setOpenModalgant(true);
+  };
+
+  const handleFilterChangeMunicipio = (v: string) => {
+    setMunicipio(v);
   };
 
   const handleDetalle = (data: any) => {
@@ -344,6 +352,8 @@ export const Auditoria = () => {
         setListInicio(res.RESPONSE);
       } else if (operacion === 18) {
         setListIdEstatus(res.RESPONSE);
+      } else if (operacion === 17) {
+        setListMunicipio(res.RESPONSE);
       }
     });
   };
@@ -353,6 +363,7 @@ export const Auditoria = () => {
     loadFilter(12);
     loadFilter(16);
     loadFilter(18);
+    loadFilter(17);
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {
@@ -400,7 +411,7 @@ export const Auditoria = () => {
               direction="row"
               justifyContent="center"
               alignItems="center"
-              sx={{ padding: "2%" }}
+              sx={{ padding: "1%" }}
             >
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Typography sx={{ fontFamily: "sans-serif" }}>
@@ -438,7 +449,6 @@ export const Auditoria = () => {
                   disabled={false}
                 />
               </Grid>
-
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Typography sx={{ fontFamily: "sans-serif" }}>
                   Modalidad:
@@ -452,11 +462,91 @@ export const Auditoria = () => {
                 />
               </Grid>
             </Grid>
+            <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "1%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <TextField
+                  margin="dense"
+                  id="NAUDITORIA"
+                  label="N° de Auditoría"
+                  value={NAUDITORIA}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(v) => setNAUDITORIA(v.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <TextField
+                  margin="dense"
+                  id="FolioSIGA"
+                  label="Folio SIGA"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={FolioSIGA}
+                  onChange={(v) => setFolioSIGA(v.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Ubicación Geografica:
+                </Typography>
+                <SelectFrag
+                  value={municipio}
+                  options={ListMunicipio}
+                  onInputChange={handleFilterChangeMunicipio}
+                  placeholder={"Seleccione.."}
+                  disabled={false}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            </Grid>
+            <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "1%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <TextField
+                  margin="dense"
+                  id="NAUDITORIA"
+                  label="N° de Auditoría"
+                  value={NAUDITORIA}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(v) => setNAUDITORIA(v.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            </Grid>
           </Collapse>
 
           <ButtonsAdd handleOpen={handleOpen} agregar={true} />
           <ButtonsShare
-            title={showfilter ? "Ver Filtros" : "Ocultar Filtros"}
+            title={showfilter ? "Ocultar Filtros" : "Ver Filtros"}
             handleFunction={verfiltros}
             show={true}
             icon={showfilter ? <FilterAltOffIcon /> : <FilterAltIcon />}
