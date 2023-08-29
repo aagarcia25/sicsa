@@ -53,6 +53,7 @@ export const RamoModal = ({
           icon: "success",
           title: "¡Registro Agregado!",
         });
+        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
@@ -66,6 +67,7 @@ export const RamoModal = ({
           icon: "success",
           title: "¡Registro Editado!",
         });
+        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
