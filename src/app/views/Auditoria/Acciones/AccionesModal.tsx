@@ -41,6 +41,9 @@ export const AccionesModal = ({
     SelectValues[]
   >([]);
   const [ListTipoAccion, setListTipoAccion] = useState<SelectValues[]>([]);
+  const [noResultado, setnoResultado] = useState(0);
+  const [Monto, setMonto] = useState(0);
+  
 
   const handleSend = () => {
     if (!TipoAccion || !EstatusAcciones || !ClaveAccion || !TextoAccion) {
@@ -112,6 +115,8 @@ export const AccionesModal = ({
       setTextoAccion(dt?.TextoAccion);
       setId(dt?.id);
       setaccionSuperviviente(dt?.accionSuperviviente);
+      setnoResultado(dt?.noResultado)
+      setMonto(dt?.Monto);
       console.log(dt);
     }
   }, [dt]);
@@ -134,10 +139,26 @@ export const AccionesModal = ({
     consultaListas(3);
   }, []);
 
+  const validarNumero = (dato: string, state: any) => {
+
+    if (/^[0-9]+$/.test(dato)) {
+
+      return dato;
+
+    } else if (dato.length === 0) {
+
+      return "";
+
+    }
+
+    return state;
+
+  };
+
   return (
     <>
       <ModalForm
-        title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}
+        title={tipo === 1 ? "Agregar Observación" : "Editar Observación"}
         handleClose={handleClose}
       >
         <Progress open={show}></Progress>
@@ -171,29 +192,46 @@ export const AccionesModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Tipo de Acción:
+                Tipo de Resultado:
               </Typography>
               <SelectFrag
                 value={TipoAccion}
                 options={ListTipoAccion}
                 onInputChange={handleFilterChange2}
-                placeholder={"Seleccione el Tipo de Acción"}
+                placeholder={"Seleccione el Tipo de Resultado"}
                 disabled={false}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Estatus de las acciones:
+                Estatus de los Resultados:
               </Typography>
               <SelectFrag
                 value={EstatusAcciones}
                 options={ListEstatusAcciones}
                 onInputChange={handleFilterChange4}
-                placeholder={"Seleccione el Estatus de las Acciones"}
+                placeholder={"Seleccione el Estatus de los Resultados"}
                 disabled={false}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
+                margin="dense"
+                id="monto"
+                label="Monto"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={Monto||""}
+                required
+                error={!Monto}
+                onChange={(v) => {
+                  console.log("value",v.target.value)
+                      setMonto(validarNumero(v.target.value,Monto))
+                  }
+                }
+              />
+            </Grid>
           </Grid>
 
           <Grid
@@ -213,7 +251,7 @@ export const AccionesModal = ({
               <TextField
                 margin="dense"
                 id="ClaveAccion"
-                label="Clave de Acción"
+                label="Clave de Resultado"
                 type="text"
                 fullWidth
                 variant="standard"
@@ -227,7 +265,7 @@ export const AccionesModal = ({
               <TextField
                 margin="dense"
                 id="TextoAccion"
-                label="Texto de Acción"
+                label="Resultado/Observación"
                 type="text"
                 fullWidth
                 variant="standard"
@@ -241,7 +279,7 @@ export const AccionesModal = ({
               <TextField
                 margin="dense"
                 id="accionSuperviviente"
-                label="Acción Superveniente"
+                label="Resultado Superveniente"
                 type="text"
                 fullWidth
                 variant="standard"
@@ -251,7 +289,24 @@ export const AccionesModal = ({
                 onChange={(v) => setaccionSuperviviente(v.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
+                margin="dense"
+                id="noResultado"
+                label="Número de Resultado"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={noResultado||""}
+                required
+                error={!noResultado}
+                onChange={(v) => {
+                  console.log("value",v.target.value)
+                      setnoResultado(validarNumero(v.target.value,noResultado))
+                  }
+                }
+              />
+            </Grid>
           </Grid>
 
           <Grid
@@ -268,6 +323,7 @@ export const AccionesModal = ({
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
                 // disabled={descripcion === "" || nombre === ""}
+
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >

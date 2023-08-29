@@ -74,6 +74,9 @@ export const AuditoriaModal = ({
   const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
+  const [MontoAuditado, setMontoAuditado] = useState(0);
+
+  
   const handleSend = () => {
     let data = {
       NUMOPERACION: tipo,
@@ -287,6 +290,15 @@ export const AuditoriaModal = ({
     }
   }, []);
 
+  const validarNumero = (dato: string, state: any) => {
+    if (/^[0-9]+$/.test(dato)) {
+      return dato;
+    } else if (dato.length === 0) {
+      return "";
+    }
+    return state;
+  };
+
   return (
     <>
       <ModalForm
@@ -322,7 +334,7 @@ export const AuditoriaModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Origen Áuditoria:
+                Origen Auditoría:
               </Typography>
               <SelectFrag
                 value={inicio}
@@ -460,7 +472,7 @@ export const AuditoriaModal = ({
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <TextField
                 id="outlined-multiline-static"
-                label="Encargado"
+                label="Responsable de la auditoría"
                 multiline
                 fullWidth
                 variant="standard"
@@ -488,7 +500,7 @@ export const AuditoriaModal = ({
               <TextField
                 margin="dense"
                 id="personalencargado"
-                label="Personal Encargado"
+                label="Personal del Organo Fiscalizador"
                 type="text"
                 multiline
                 fullWidth
@@ -708,8 +720,24 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Ubicación Geografica:
+            <TextField
+                required
+                margin="dense"
+                id="MontoAuditado"
+                label="Monto auditado"
+                value={MontoAuditado||""}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => {
+                  setMontoAuditado(validarNumero(v.target.value,MontoAuditado))
+              }}
+                error={MontoAuditado=== 0 ? true : false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Typography sx={{ fontFamily: "sans-serif" }}>
+                Municipio:
               </Typography>
               <SelectFrag
                 value={municipio}
@@ -719,7 +747,6 @@ export const AuditoriaModal = ({
                 disabled={false}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
 
           <Grid

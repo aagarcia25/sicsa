@@ -13,6 +13,7 @@ export const PlanTrabajoAnualModal = ({
 tipo,
 handleClose,
 datos,
+//anio,
 //idauditoria,
 user,
 } : {
@@ -21,6 +22,7 @@ tipo: number;
 handleClose: Function;
 //idauditoria: string;
 user: USUARIORESPONSE;
+//anio: number;
 
 }) => {
     
@@ -32,10 +34,13 @@ const [end, setend] =useState<Dayjs | null>();
 const [name, setname] =useState("");
 const [id, setId] = useState("");
 const [type, settype] =useState("");
+const [anio, setanio] =useState("");
+const [orden, setorden] =useState("");
+
 
 
 const handleSend = () => {
-    if (!start || !end || !name) {
+    if (!start || !end || !name || !anio || !orden) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {
@@ -46,6 +51,8 @@ const handleSend = () => {
         CHID: id,
         CHUSER: user.Id,
         type: type,
+        anio: anio,
+        orden: orden,
         //idauditoria: idauditoria,
 
       };
@@ -55,6 +62,7 @@ const handleSend = () => {
     }
   };
 
+  
 
   const handleRequest = (data: any) => {
     if (tipo === 1) {
@@ -64,7 +72,7 @@ const handleSend = () => {
             icon: "success",
             title: "¡Registro Agregado!",
           });
-
+          console.log("data al gaurdar" , datos)
           handleClose();
         } else {
           Swal.fire(res.STRMESSAGE, "¡Error!", "info");
@@ -104,6 +112,8 @@ if (datos === ""){
     setend(dayjs(datos?.end));
     setname(datos?.name);
     //setId(datos.id);
+    setanio(datos?.anio);
+    setorden(datos?.orden);
 }
 
 },[datos]);
@@ -148,8 +158,58 @@ sx={{ padding: "2%" }}
 </Grid>
 
 <Grid item xs={12} sm={6} md={4} lg={3}>
-
+<TextField
+                margin="dense"
+                id="anio"
+                label="Año"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={anio}
+                //required
+                //error={!anio}
+                onChange={(v) => setanio(v.target.value)}
+              />
 </Grid>
+
+<Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
+                margin="dense"
+                id="orden"
+                label="Orden"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={orden}
+                //required
+                //error={!orden}
+                onChange={(v) => setorden(v.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              
+            </Grid>
+          </Grid>
+
 <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
                 // disabled={descripcion === "" || nombre === ""}
@@ -161,6 +221,7 @@ sx={{ padding: "2%" }}
             </Grid>
 
 </Grid>
+
 </Box>
 </ModalForm>
 );
