@@ -200,7 +200,7 @@ const Acciones = ({
     },
     {
       field: "DescripcionEstatusAccion",
-      headerName: "Estatus de las Acciones",
+      headerName: "Estatus de los Resultados",
       width: 150,
     },
     { field: "ClaveAccion", headerName: "Clave de Acción", width: 200 },
@@ -210,7 +210,7 @@ const Acciones = ({
       headerName: "Acción Superveniente",
       width: 200,
     },
-    { field: "TextoAccion", headerName: "Texto Acción", width: 900 },
+    { field: "TextoAccion", headerName: "Resultado/Observación", width: 900 },
     { field: "Valor", headerName: "Valor", width: 150 },
   ];
 
@@ -234,7 +234,7 @@ const Acciones = ({
   return (
     <div>
       <ModalForm
-        title={"Administración de Acciones"}
+        title={"Administración de Resultados"}
         handleClose={handleFunction}
       >
         {openAccionesModal ? (

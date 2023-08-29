@@ -322,7 +322,7 @@ export const AuditoriaModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Origen Áuditoria:
+                Origen Auditoría:
               </Typography>
               <SelectFrag
                 value={inicio}
@@ -460,7 +460,7 @@ export const AuditoriaModal = ({
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <TextField
                 id="outlined-multiline-static"
-                label="Encargado"
+                label="Responsable de la auditoría"
                 multiline
                 fullWidth
                 variant="standard"
@@ -488,7 +488,7 @@ export const AuditoriaModal = ({
               <TextField
                 margin="dense"
                 id="personalencargado"
-                label="Personal Encargado"
+                label="Personal del Organo Fiscalizador"
                 type="text"
                 multiline
                 fullWidth
@@ -709,7 +709,7 @@ export const AuditoriaModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Ubicación Geografica:
+                Municipio:
               </Typography>
               <SelectFrag
                 value={municipio}

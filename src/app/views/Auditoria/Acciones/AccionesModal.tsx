@@ -224,7 +224,7 @@ export const AccionesModal = ({
               <TextField
                 margin="dense"
                 id="TextoAccion"
-                label="Texto de Acción"
+                label="Resultado/Observación"
                 type="text"
                 fullWidth
                 variant="standard"

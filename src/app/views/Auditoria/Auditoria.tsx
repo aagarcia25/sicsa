@@ -225,7 +225,7 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
             <ButtonsDetail
-              title={"Acciones"}
+              title={"Resultado de la Auditoria"}
               handleFunction={handleAcciones}
               show={true}
               icon={<Diversity3Icon />}
@@ -276,7 +276,7 @@ export const Auditoria = () => {
       headerName: "Personal Encargado De La Auditoría",
       width: 200,
     },
-    { field: "PersonalEncargado", headerName: "Personal", width: 300 },
+    { field: "PersonalEncargado", headerName: "Responsable", width: 300 },
     { field: "ctid", headerName: "ctid", width: 300 },
     { field: "ctDescripcion", headerName: "Clasificación", width: 300 },
     { field: "coaid", headerName: "coaid", width: 300 },
@@ -294,7 +294,7 @@ export const Auditoria = () => {
     { field: "cuaaid", headerName: "cuaaid", width: 300 },
     { field: "cuaaDescripcion", headerName: "UAA", width: 300 },
     { field: "caaid", headerName: "caaid", width: 300 },
-    { field: "caaDescripcion", headerName: "Área Auditoría", width: 300 },
+    { field: "caaDescripcion", headerName: "Área Auditora", width: 300 },
     { field: "crid", headerName: "crid", width: 300 },
     { field: "crDescripcion", headerName: "Ramo", width: 300 },
     {
@@ -448,7 +448,7 @@ export const Auditoria = () => {
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Typography sx={{ fontFamily: "sans-serif" }}>
-                  Origen Áuditoria:
+                  Origen Auditoría:
                 </Typography>
                 <SelectFrag
                   value={inicio}
@@ -522,7 +522,7 @@ export const Auditoria = () => {
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Typography sx={{ fontFamily: "sans-serif" }}>
-                  Ubicación Geografica:
+                  Municipio:
                 </Typography>
                 <SelectFrag
                   value={municipio}

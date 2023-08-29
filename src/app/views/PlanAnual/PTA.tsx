@@ -105,6 +105,7 @@ export const PTA = ({
             datos={vrows}
             //idauditoria={obj.id}
             user={user}
+           // anio={vrows}
 
           />
         ) : (
@@ -132,6 +133,7 @@ export const PTA = ({
           locale={"es"}
           ganttHeight={400}
           columnWidth={60}
+          onDoubleClick={handleOpenEdit}
           fontSize={"8"}
           listCellWidth={"300px"}
         />

@@ -34,7 +34,7 @@ export const GanttModal = ({
     };
 
 
-////***********revisar mañana */
+
     let ta: Task[] = [];
     AuditoriaService.planindex(data).then((res) => {
       if (res.SUCCESS) {
