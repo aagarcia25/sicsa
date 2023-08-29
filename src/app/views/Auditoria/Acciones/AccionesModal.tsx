@@ -41,6 +41,9 @@ export const AccionesModal = ({
     SelectValues[]
   >([]);
   const [ListTipoAccion, setListTipoAccion] = useState<SelectValues[]>([]);
+  const [noResultado, setnoResultado] = useState(0);
+  const [Monto, setMonto] = useState(0);
+  
 
   const handleSend = () => {
     if (!TipoAccion || !EstatusAcciones || !ClaveAccion || !TextoAccion) {
@@ -112,6 +115,8 @@ export const AccionesModal = ({
       setTextoAccion(dt?.TextoAccion);
       setId(dt?.id);
       setaccionSuperviviente(dt?.accionSuperviviente);
+      setnoResultado(dt?.noResultado)
+      setMonto(dt?.Monto);
       console.log(dt);
     }
   }, [dt]);
@@ -133,6 +138,22 @@ export const AccionesModal = ({
     consultaListas(8);
     consultaListas(3);
   }, []);
+
+  const validarNumero = (dato: string, state: any) => {
+
+    if (/^[0-9]+$/.test(dato)) {
+
+      return dato;
+
+    } else if (dato.length === 0) {
+
+      return "";
+
+    }
+
+    return state;
+
+  };
 
   return (
     <>
@@ -193,7 +214,24 @@ export const AccionesModal = ({
                 disabled={false}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
+                margin="dense"
+                id="monto"
+                label="Monto"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={Monto||""}
+                required
+                error={!Monto}
+                onChange={(v) => {
+                  console.log("value",v.target.value)
+                      setMonto(validarNumero(v.target.value,Monto))
+                  }
+                }
+              />
+            </Grid>
           </Grid>
 
           <Grid
@@ -213,7 +251,7 @@ export const AccionesModal = ({
               <TextField
                 margin="dense"
                 id="ClaveAccion"
-                label="Clave de Acción"
+                label="Clave de Resultado"
                 type="text"
                 fullWidth
                 variant="standard"
@@ -241,7 +279,7 @@ export const AccionesModal = ({
               <TextField
                 margin="dense"
                 id="accionSuperviviente"
-                label="Acción Superveniente"
+                label="Resultado Superveniente"
                 type="text"
                 fullWidth
                 variant="standard"
@@ -251,7 +289,24 @@ export const AccionesModal = ({
                 onChange={(v) => setaccionSuperviviente(v.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
+                margin="dense"
+                id="noResultado"
+                label="Número de Resultado"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={noResultado||""}
+                required
+                error={!noResultado}
+                onChange={(v) => {
+                  console.log("value",v.target.value)
+                      setnoResultado(validarNumero(v.target.value,noResultado))
+                  }
+                }
+              />
+            </Grid>
           </Grid>
 
           <Grid

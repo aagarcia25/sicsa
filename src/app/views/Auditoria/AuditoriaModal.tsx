@@ -74,6 +74,9 @@ export const AuditoriaModal = ({
   const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
+  const [MontoAuditado, setMontoAuditado] = useState(0);
+
+  
   const handleSend = () => {
     let data = {
       NUMOPERACION: tipo,
@@ -286,6 +289,15 @@ export const AuditoriaModal = ({
       setidaa(dt?.row.caaid);
     }
   }, []);
+
+  const validarNumero = (dato: string, state: any) => {
+    if (/^[0-9]+$/.test(dato)) {
+      return dato;
+    } else if (dato.length === 0) {
+      return "";
+    }
+    return state;
+  };
 
   return (
     <>
@@ -708,7 +720,23 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
+            <TextField
+                required
+                margin="dense"
+                id="MontoAuditado"
+                label="Monto auditado"
+                value={MontoAuditado||""}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => {
+                  setMontoAuditado(validarNumero(v.target.value,MontoAuditado))
+              }}
+                error={MontoAuditado=== 0 ? true : false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Typography sx={{ fontFamily: "sans-serif" }}>
                 Municipio:
               </Typography>
               <SelectFrag
@@ -719,7 +747,6 @@ export const AuditoriaModal = ({
                 disabled={false}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
 
           <Grid
