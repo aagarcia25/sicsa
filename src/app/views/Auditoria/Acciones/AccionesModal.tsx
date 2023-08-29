@@ -28,7 +28,7 @@ export const AccionesModal = ({
   useEffect(() => {});
   // CAMPOS DE LOS FORMULARIOS
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [id, setId] = useState("");
 
   const [NoAuditoria, setNoAuditoria] = useState(0);
@@ -46,6 +46,7 @@ export const AccionesModal = ({
     if (!TipoAccion || !EstatusAcciones || !ClaveAccion || !TextoAccion) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
+      setShow(true);
       let data = {
         idTipoAccion: TipoAccion,
         idEstatusAccion: EstatusAcciones,
@@ -70,7 +71,6 @@ export const AccionesModal = ({
             icon: "success",
             title: "¡Registro Agregado!",
           });
-
           handleClose();
         } else {
           Swal.fire(res.STRMESSAGE, "¡Error!", "info");
@@ -83,8 +83,10 @@ export const AccionesModal = ({
             icon: "success",
             title: "¡Registro Editado!",
           });
+          setShow(false);
           handleClose();
         } else {
+          setShow(false);
           Swal.fire(res.STRMESSAGE, "¡Error!", "info");
         }
       });
@@ -122,6 +124,7 @@ export const AccionesModal = ({
       }
       if (catalogo === 3) {
         setListEstatusAcciones(res.RESPONSE);
+        setShow(false);
       }
     });
   };
