@@ -195,7 +195,7 @@ const Acciones = ({
     { field: "NAUDITORIA", headerName: "No. de Auditoría", width: 80 },
     {
       field: "DescripcionTipoDeAccion",
-      headerName: "Tipo de Acción",
+      headerName: "Tipo de Resultado",
       width: 100,
     },
     {
@@ -203,7 +203,7 @@ const Acciones = ({
       headerName: "Estatus de los Resultados",
       width: 150,
     },
-    { field: "ClaveAccion", headerName: "Clave de Acción", width: 200 },
+    { field: "ClaveAccion", headerName: "Clave de Resultado", width: 200 },
     { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
     {
       field: "accionSuperviviente",

@@ -137,7 +137,7 @@ export const AccionesModal = ({
   return (
     <>
       <ModalForm
-        title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}
+        title={tipo === 1 ? "Agregar Observación" : "Editar Observación"}
         handleClose={handleClose}
       >
         <Progress open={show}></Progress>
@@ -171,25 +171,25 @@ export const AccionesModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Tipo de Acción:
+                Tipo de Resultado:
               </Typography>
               <SelectFrag
                 value={TipoAccion}
                 options={ListTipoAccion}
                 onInputChange={handleFilterChange2}
-                placeholder={"Seleccione el Tipo de Acción"}
+                placeholder={"Seleccione el Tipo de Resultado"}
                 disabled={false}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Estatus de las acciones:
+                Estatus de los Resultados:
               </Typography>
               <SelectFrag
                 value={EstatusAcciones}
                 options={ListEstatusAcciones}
                 onInputChange={handleFilterChange4}
-                placeholder={"Seleccione el Estatus de las Acciones"}
+                placeholder={"Seleccione el Estatus de los Resultados"}
                 disabled={false}
               />
             </Grid>
@@ -268,6 +268,7 @@ export const AccionesModal = ({
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
                 // disabled={descripcion === "" || nombre === ""}
+
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >
