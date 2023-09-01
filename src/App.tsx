@@ -17,7 +17,6 @@ import {
   setIdApp,
   setMenus,
   setPerfilFoto,
-  setPerfiles,
   setPermisos,
   setRfToken,
   setRoles,
@@ -28,8 +27,7 @@ import {
 import { BloqueoSesion } from "./app/views/BloqueoSesion";
 import Slider from "./app/views/Progress";
 import Validacion from "./app/views/Validacion";
-import {  USUARIORESPONSE, UserLogin } from "./app/interfaces/UserInfo";
-
+import { USUARIORESPONSE, UserLogin } from "./app/interfaces/UserInfo";
 
 function App() {
   //cambiar a 5 minutos
@@ -47,7 +45,6 @@ function App() {
   const [acceso, setAcceso] = useState(false);
   const [contrseñaValida, setContraseñaValida] = useState(true);
 
-
   const mensaje = (icon: string, title: string, text: string) => {
     setlogin(false);
     setAcceso(false);
@@ -62,13 +59,15 @@ function App() {
       if (result.isConfirmed) {
         localStorage.clear();
         var ventana = window.self;
-        ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN));
+        ventana.location.replace(
+          String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN)
+        );
       }
     });
-  }
+  };
 
   const GetImage = (tipo: string, nameImagen: string) => {
-    AuthService.GetImagenProfile(tipo,nameImagen).then((res) => {
+    AuthService.GetImagenProfile(tipo, nameImagen).then((res) => {
       if (res.SUCCESS) {
         setPerfilFoto(res.RESPONSE.RESPONSE);
       }
@@ -78,35 +77,31 @@ function App() {
   const buscaUsuario = (id: string) => {
     let data = {
       IdUsuario: id,
-      IdApp: JSON.parse(String(getIdApp()))
+      IdApp: JSON.parse(String(getIdApp())),
     };
 
-  
     UserServices.userAppDetail(data).then((res) => {
-       console.log(res);
+      console.log(res);
       if (res?.status === 200) {
         console.log(res.data.data);
         setUser(res.data.data);
         setRoles(res.data.roles[0]);
-        setPerfiles(res.data.perfiles[0]);
         setMenus(res.data.menus[0]);
-        setPermisos(res.data.permisos[0] == undefined ? [] : res.data.permisos[0]);
-        setUserName(res.data.data.NombreUsuario)
-        
+        setPermisos(
+          res.data.permisos[0] == undefined ? [] : res.data.permisos[0]
+        );
+        setUserName(res.data.data.NombreUsuario);
+
         setBloqueoStatus(false);
         setOpenSlider(false);
         setAcceso(true);
         setlogin(true);
-    
       } else if (res.status === 401) {
         setOpenSlider(false);
         setlogin(false);
         setAcceso(false);
-
       }
     });
-
-
 
     // AuthService.adminUser(data).then((res2) => {
     //   const us: UserInfo = res2;
@@ -157,7 +152,6 @@ function App() {
     //         var ventana = window.self;
     //         ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN))
 
-
     //       }
     //     });
     //   }
@@ -173,60 +167,51 @@ function App() {
     //         var ventana = window.self;
     //         ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN));
 
-
     //       }
     //     });
     //   }
     // });
-
-
-
-
-
   };
-
-
 
   const verificatoken = (primerInicio: boolean) => {
     UserServices.verify({}).then((res) => {
       // console.log(res);
       if (res?.status === 200) {
-        setUserName(res.data.data.NombreUsuario)
+        setUserName(res.data.data.NombreUsuario);
         buscaUsuario(res.data.data.IdUsuario);
         setBloqueoStatus(false);
         setOpenSlider(false);
-        if(!primerInicio){
+        if (!primerInicio) {
           var ventana = window.self;
           ventana.location.reload();
-
         }
       } else if (res.status === 401) {
         setOpenSlider(false);
         setlogin(false);
         setAcceso(false);
-
       }
     });
   };
 
-  const handleOnActive = (password: string, user:string) => {
+  const handleOnActive = (password: string, user: string) => {
     const decoded: UserLogin = jwt_decode(String(getToken()));
     const userInfo: USUARIORESPONSE = JSON.parse(String(getUser()));
     let data = {
-      NombreUsuario: decoded.NombreUsuario?decoded.NombreUsuario: userInfo.NombreUsuario,
+      NombreUsuario: decoded.NombreUsuario
+        ? decoded.NombreUsuario
+        : userInfo.NombreUsuario,
       Contrasena: password,
     };
     setOpenSlider(true);
     UserServices.login(data).then((res) => {
-
       if (res.status === 200) {
         setContraseñaValida(true);
         setToken(res.data.token);
         setRfToken(res.data.refreshToken);
         var ventana = window.self;
         ventana.location.reload();
-        
-        if (!getUser() || getUser()===undefined){
+
+        if (!getUser() || getUser() === undefined) {
           verificatoken(false);
         }
       } else if (res.status === 401) {
@@ -241,7 +226,9 @@ function App() {
             setAcceso(false);
             localStorage.clear();
             var ventana = window.self;
-            ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN));
+            ventana.location.replace(
+              String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN)
+            );
           }
         });
       }
@@ -251,9 +238,9 @@ function App() {
   const handleOnIdle = () => {
     setBloqueoStatus(true);
     setAcceso(false);
-  }
+  };
 
-  const { } = useIdleTimer({
+  const {} = useIdleTimer({
     timeout,
     onIdle: handleOnIdle,
   });
@@ -263,12 +250,19 @@ function App() {
       localStorage.clear();
     }
 
-    if (!getToken() && !getRfToken() && jwt !== null && refjwt !== null && !acceso && bloqueoStatus===undefined ) {
+    if (
+      !getToken() &&
+      !getRfToken() &&
+      jwt !== null &&
+      refjwt !== null &&
+      !acceso &&
+      bloqueoStatus === undefined
+    ) {
       const decoded: UserLogin = jwt_decode(String(jwt));
-      if (((decoded.exp - (Date.now() / 1000)) / 60) > 1) {
+      if ((decoded.exp - Date.now() / 1000) / 60 > 1) {
         setToken(jwt);
         setRfToken(refjwt);
-        setIdApp(idapp ); 
+        setIdApp(idapp);
         var ventana = window.self;
         ventana.location.replace("/");
       } else {
@@ -281,52 +275,52 @@ function App() {
           if (result.isConfirmed) {
             localStorage.clear();
             var ventana = window.self;
-            ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN));
-
+            ventana.location.replace(
+              String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN)
+            );
           }
         });
       }
     }
 
-
-    if (!jwt && !refjwt && bloqueoStatus===undefined  && !acceso && !login && getToken() && getRfToken()) {
+    if (
+      !jwt &&
+      !refjwt &&
+      bloqueoStatus === undefined &&
+      !acceso &&
+      !login &&
+      getToken() &&
+      getRfToken()
+    ) {
       const decoded: UserLogin = jwt_decode(String(getToken()));
-      if (((decoded.exp - (Date.now() / 1000)) / 60) > 44.5) {
+      if ((decoded.exp - Date.now() / 1000) / 60 > 44.5) {
         verificatoken(true);
-      } else{
+      } else {
         handleOnIdle();
       }
-
-    }
-    else {
+    } else {
       setOpenSlider(false);
-
     }
-    
-
   }, [bloqueoStatus]);
-
-
 
   return (
     <div>
       <Slider open={openSlider}></Slider>
       {bloqueoStatus ? (
         <BloqueoSesion handlePassword={handleOnActive} />
-      ) : acceso ?
+      ) : acceso ? (
         <>
           <HashRouter basename={"/"}>
             <AppRouter login={login} />
           </HashRouter>
-        </> :
-        !contrseñaValida ? <Validacion /> : ""
-      }
+        </>
+      ) : !contrseñaValida ? (
+        <Validacion />
+      ) : (
+        ""
+      )}
     </div>
   );
 }
 
 export default App;
-
-
-
-
