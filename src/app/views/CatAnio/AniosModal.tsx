@@ -84,13 +84,17 @@ export const AniosModal = ({
     }
   }, [dt]);
 
-  const validarNumero = (dato: string) => {
-    if (/^[0-9]+$/.test(dato)) {
-      setAnio(dato);
+  
+
+//     Verificar si el valor ingresado son 4 dígitos numéricos
+ const validarNumeroAnio = (dato: string) => {
+     if (/^\d{0,4}$/.test(dato)) {
+    setAnio(dato);
     } else if (dato.length === 0) {
       setAnio("");
-    }
-  };
+     }
+   };
+
 
   return (
     <>
@@ -122,7 +126,7 @@ export const AniosModal = ({
                 type="text"
                 fullWidth
                 variant="standard"
-                onChange={(v) => validarNumero(v.target.value)}
+                onChange={(v) => validarNumeroAnio(v.target.value)}
                 error={anio === "" ? true : false}
               />
             </Grid>

@@ -122,10 +122,10 @@ export const UnidadAdminAuditora = () => {
   const consulta = (data: any) => {
     CatalogosServices.Unidad_Admin_Auditora_index(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {
