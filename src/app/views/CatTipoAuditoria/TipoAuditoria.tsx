@@ -122,10 +122,10 @@ export const TipoAuditoria = () => {
   const consulta = (data: any) => {
     CatalogosServices.Tipos_Auditoria_index(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {

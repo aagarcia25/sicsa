@@ -123,10 +123,10 @@ export const GrupoFuncional = () => {
   const consulta = (data: any) => {
     CatalogosServices.Grupo_Funcional_index(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {

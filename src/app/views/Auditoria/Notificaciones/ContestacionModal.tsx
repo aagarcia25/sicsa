@@ -28,16 +28,19 @@ export const ContestacionModal = ({
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
   const [id, setId] = useState("");
-  const [Dependencia, setDependencia] = useState("");
   const [Prorroga, setProrroga] = useState<Dayjs | null>();
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
   const [FOficio, setFechaOficio] = useState<Dayjs | null>();
-
-  const [ListDependencia, setListDependencia] = useState<SelectValues[]>([]);
+  const [FRecibido, setFRecibido] = useState<Dayjs | null>();
+  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>();
+  const [idsecretaria, setidsecretaria] = useState("");
+  const [idunidad, setidunidad] = useState("");
+  const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
+  const [ListUnidades, setListUnidades] = useState<SelectValues[]>([]);
 
   const handleSend = () => {
-    if (!Dependencia || !Oficio) {
+    if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {
@@ -45,11 +48,14 @@ export const ContestacionModal = ({
         CHID: id,
         CHUSER: user.Id,
         idNotificacion: idNotificacion,
-        Dependencia: Dependencia,
         Prorroga: Prorroga,
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
         FOficio: FOficio,
+        FRecibido: FRecibido,
+        FVencimiento: FVencimiento,
+        idsecretaria: idsecretaria,
+        idunidad: idunidad,
       };
 
       handleRequest(data);
@@ -88,27 +94,41 @@ export const ContestacionModal = ({
   };
 
   const handleFilterChange1 = (v: string) => {
-    setDependencia(v);
+    setidsecretaria(v);
+    loadFilter(20, v);
   };
-  const loadFilter = (operacion: number) => {
+
+  const handleFilterChange2 = (v: string) => {
+    setidunidad(v);
+  };
+
+  const handleFilterChangefo = (v: any) => {
+    setFechaOficio(v);
+  };
+
+  const handleFilterChangefr = (v: any) => {
+    setFRecibido(v);
+  };
+
+  const handleFilterChangefv = (v: any) => {
+    setFVencimiento(v);
+  };
+
+  const handleFilterChangep = (v: any) => {
+    setProrroga(v);
+  };
+
+  const loadFilter = (operacion: number, P_ID?: string) => {
     setShow(true);
-    let data = { NUMOPERACION: operacion };
+    let data = { NUMOPERACION: operacion, P_ID: P_ID };
     ShareService.SelectIndex(data).then((res) => {
-      if (operacion === 11) {
-        setListDependencia(res.RESPONSE);
+      if (operacion === 19) {
+        setListSecretarias(res.RESPONSE);
+      } else if (operacion === 20) {
+        setListUnidades(res.RESPONSE);
         setShow(false);
       }
     });
-  };
-
-  const handleFilterChange2 = (v: any) => {
-    setProrroga(v);
-    console.log(v);
-  };
-
-  const handleFilterChange3 = (v: any) => {
-    setFechaOficio(v);
-    console.log(v);
   };
 
   useEffect(() => {
@@ -116,7 +136,6 @@ export const ContestacionModal = ({
     if (dt === "") {
     } else {
       setId(dt?.row?.id);
-      setDependencia(dt?.row?.Dependencia);
       setProrroga(dayjs(dt?.row?.Prorroga));
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
@@ -147,21 +166,26 @@ export const ContestacionModal = ({
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Dependencia:
+                Secretaría:
               </Typography>
               <SelectFrag
-                value={Dependencia}
-                options={ListDependencia}
+                value={idsecretaria}
+                options={ListSecretarias}
                 onInputChange={handleFilterChange1}
-                placeholder={"Seleccione Dependencia"}
+                placeholder={"Seleccione..."}
                 disabled={false}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <CustomizedDate
-                value={Prorroga}
-                label={"Prorroga"}
-                onchange={handleFilterChange2}
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Unidad Administrativa:
+              </Typography>
+              <SelectFrag
+                value={idunidad}
+                options={ListUnidades}
+                onInputChange={handleFilterChange2}
+                placeholder={"Seleccione..."}
+                disabled={false}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -191,7 +215,6 @@ export const ContestacionModal = ({
               />
             </Grid>
           </Grid>
-
           <Grid
             container
             item
@@ -209,14 +232,31 @@ export const ContestacionModal = ({
               <CustomizedDate
                 value={FOficio}
                 label={"Fecha Oficio"}
-                onchange={handleFilterChange3}
+                onchange={handleFilterChangefo}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <CustomizedDate
+                value={FRecibido}
+                label={"Fecha Recibido"}
+                onchange={handleFilterChangefr}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <CustomizedDate
+                value={FVencimiento}
+                label={"Fecha Vencimiento"}
+                onchange={handleFilterChangefv}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <CustomizedDate
+                value={Prorroga}
+                label={"Prorroga"}
+                onchange={handleFilterChangep}
+              />
+            </Grid>
           </Grid>
-
           <Grid
             container
             direction="row"

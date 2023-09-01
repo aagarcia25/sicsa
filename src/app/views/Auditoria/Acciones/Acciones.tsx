@@ -195,22 +195,22 @@ const Acciones = ({
     { field: "NAUDITORIA", headerName: "No. de Auditoría", width: 80 },
     {
       field: "DescripcionTipoDeAccion",
-      headerName: "Tipo de Acción",
+      headerName: "Tipo de Resultado",
       width: 100,
     },
     {
       field: "DescripcionEstatusAccion",
-      headerName: "Estatus de las Acciones",
+      headerName: "Estatus de los Resultados",
       width: 150,
     },
-    { field: "ClaveAccion", headerName: "Clave de Acción", width: 200 },
+    { field: "ClaveAccion", headerName: "Clave de Resultado", width: 200 },
     { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
     {
       field: "accionSuperviviente",
-      headerName: "Acción Superveniente",
+      headerName: "Resultado Superveniente",
       width: 200,
     },
-    { field: "TextoAccion", headerName: "Texto Acción", width: 900 },
+    { field: "TextoAccion", headerName: "Resultado/Observación", width: 900 },
     { field: "Valor", headerName: "Valor", width: 150 },
   ];
 
@@ -234,7 +234,7 @@ const Acciones = ({
   return (
     <div>
       <ModalForm
-        title={"Administración de Acciones"}
+        title={"Administración de Resultados"}
         handleClose={handleFunction}
       >
         {openAccionesModal ? (
