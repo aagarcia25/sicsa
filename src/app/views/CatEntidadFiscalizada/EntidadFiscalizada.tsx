@@ -127,10 +127,10 @@ export const EntidadFiscalizada = () => {
   const consulta = (data: any) => {
     CatalogosServices.Entidad_Fiscalizada_index(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {

@@ -207,7 +207,7 @@ const Acciones = ({
     { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
     {
       field: "accionSuperviviente",
-      headerName: "Acción Superveniente",
+      headerName: "Resultado Superveniente",
       width: 200,
     },
     { field: "TextoAccion", headerName: "Resultado/Observación", width: 900 },

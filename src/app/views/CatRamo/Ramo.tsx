@@ -125,10 +125,10 @@ export const Ramo = () => {
   const consulta = (data: any) => {
     CatalogosServices.Ramo_index(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {

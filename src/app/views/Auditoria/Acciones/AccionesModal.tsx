@@ -140,19 +140,12 @@ export const AccionesModal = ({
   }, []);
 
   const validarNumero = (dato: string, state: any) => {
-
     if (/^[0-9]+$/.test(dato)) {
-
       return dato;
-
     } else if (dato.length === 0) {
-
       return "";
-
     }
-
     return state;
-
   };
 
   return (
@@ -226,7 +219,6 @@ export const AccionesModal = ({
                 required
                 error={!Monto}
                 onChange={(v) => {
-                  console.log("value",v.target.value)
                       setMonto(validarNumero(v.target.value,Monto))
                   }
                 }
@@ -301,7 +293,6 @@ export const AccionesModal = ({
                 required
                 error={!noResultado}
                 onChange={(v) => {
-                  console.log("value",v.target.value)
                       setnoResultado(validarNumero(v.target.value,noResultado))
                   }
                 }
