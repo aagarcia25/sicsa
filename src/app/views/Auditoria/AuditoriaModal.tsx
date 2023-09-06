@@ -77,7 +77,10 @@ export const AuditoriaModal = ({
   const [MontoAuditado, setMontoAuditado] = useState(0);
 
   
-  const handleSend = () => {
+  const handleSend = () => { 
+    if (!NAUDITORIA || !NombreAudoria || !PersonalEncargado || !universomilespesos || !muestramilespesos) {
+      Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
+    } else {
     let data = {
       NUMOPERACION: tipo,
       CHID: id,
@@ -106,14 +109,15 @@ export const AuditoriaModal = ({
       inicio: inicio,
       municipio: municipio,
       idEstatus: idEstatus,
-    };
+    };    
 
-    console.log(data);
+   
+
     if (tipo == 1) {
       agregar(data);
-    } else {
+    } else if (tipo === 2){
       editar(data);
-    }
+    }}
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -261,32 +265,36 @@ export const AuditoriaModal = ({
     loadFilter(17);
     loadFilter(18);
 
-    if (dt === "") {
-    } else {
+    if (dt === "") { 
+    } else {     console.log("d",dt);
+
       console.log(dt?.row);
-      setId(dt?.row.id);
-      setanio(String(dt?.row.anio));
-      setNAUDITORIA(dt?.row.NAUDITORIA);
-      setFolioSIGA(dt?.row.FolioSIGA);
-      setmodalidad(dt?.row.Modalidad);
-      setConsecutivo(dt?.row.Consecutivo);
-      setNombreAudoria(dt?.row.NombreAudoria);
-      setactainicio(dt?.row.ActaInicio);
-      setEncargado(dt?.row.Encargado);
-      setPersonalEncargado(dt?.row.PersonalEncargado);
-      setidClasificacion(dt?.row.ctid);
-      setorigenauditoria(dt?.row.coaid);
-      setIdSector(dt?.row.csid);
-      setIdEntidadFiscalizada(dt?.row.cefid);
-      setIdTipoAuditoria(dt?.row.ctaid);
-      setIdInforme(dt?.row.ciid);
-      setiduaa(dt?.row.cuaaid);
-      setidGrupoFuncional(dt?.row.cgfid);
-      setidramo(dt?.row.crid);
-      setuniversomilespesos(dt?.row.universopesos);
-      setmuestramilespesos(dt?.row.muestrapesos);
-      handleFilterChangeuaa(dt?.row.cuaaid);
-      setidaa(dt?.row.caaid);
+      setId(dt?.row?.id);
+      setanio(String(dt?.row?.anio));
+      setNAUDITORIA(dt?.row?.NAUDITORIA);
+      setFolioSIGA(dt?.row?.FolioSIGA);
+      setmodalidad(dt?.row?.Modalidad);
+      setConsecutivo(dt?.row?.Consecutivo);
+      setNombreAudoria(dt?.row?.NombreAudoria);
+      setactainicio(dt?.row?.ActaInicio);
+      setEncargado(dt?.row?.Encargado);
+      setPersonalEncargado(dt?.row?.PersonalEncargado);
+      setidClasificacion(dt?.row?.ctid);
+      setorigenauditoria(dt?.row?.coaid);
+      setIdSector(dt?.row?.csid);
+      setIdEntidadFiscalizada(dt?.row?.cefid);
+      setIdTipoAuditoria(dt?.row?.ctaid);
+      setIdInforme(dt?.row?.ciid);
+      setiduaa(dt?.row?.cuaaid);
+      setidGrupoFuncional(dt?.row?.cgfid);
+      setidramo(dt?.row?.crid);
+      setuniversomilespesos(dt?.row?.universopesos);
+      setmuestramilespesos(dt?.row?.muestrapesos);
+      handleFilterChangeuaa(dt?.row?.cuaaid);
+      setidaa(dt?.row?.caaid);
+      setidEstatus(dt?.row?.ceaid);
+      setMunicipio(dt?.row?.munid);
+      setInicio(dt?.row?.ciaid);
     }
   }, []);
 

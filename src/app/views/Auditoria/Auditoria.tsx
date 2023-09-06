@@ -264,6 +264,8 @@ export const Auditoria = () => {
     },
     { field: "creado", headerName: "Creado Por", width: 100 },
     { field: "modi", headerName: "Modificado Por", width: 100 },
+    { field: "ceaDescripcion", headerName: "Estatus", width: 100 },
+    { field: "ciaDescripcion", headerName: "Origen de la Auditoría", width: 100 },
     { field: "anio", headerName: "Año Cuenta Pública", width: 100 },
     { field: "NAUDITORIA", headerName: "No. De Auditoría", width: 100 },
     { field: "FolioSIGA", headerName: "Folio SIGA", width: 100 },
@@ -290,7 +292,7 @@ export const Auditoria = () => {
     { field: "ctaid", headerName: "ctaid", width: 300 },
     { field: "ctaDescripcion", headerName: "Tipo de Auditoría", width: 300 },
     { field: "ciid", headerName: "ciid", width: 300 },
-    { field: "ciDescripcion", headerName: "Informe", width: 300 },
+    { field: "ciDescripcion", headerName: "Entrega", width: 300 },
     { field: "cuaaid", headerName: "cuaaid", width: 300 },
     { field: "cuaaDescripcion", headerName: "UAA", width: 300 },
     { field: "caaid", headerName: "caaid", width: 300 },
@@ -300,9 +302,12 @@ export const Auditoria = () => {
     {
       field: "universopesos",
       headerName: "Universo Miles de Pesos",
-      width: 300,
+      width: 300, 
     },
     { field: "muestrapesos", headerName: "Muestra Miles de Pesos", width: 300 },
+    { field: "montoauditado", headerName: "Monto Auditado", width: 300 },
+    { field: "munNombre", headerName: "Municipio", width: 300 },
+    
   ];
 
   const handleOpen = (v: any) => {
