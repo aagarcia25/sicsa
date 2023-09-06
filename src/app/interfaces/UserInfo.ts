@@ -152,46 +152,34 @@ export interface RESPONSEGUIARAPIDA {
 }
 
 export interface USUARIORESPONSE {
-    Id: string
-    Nombre: string
-    ApellidoPaterno: string
-    ApellidoMaterno: string
-    NombreUsuario: string
-    CorreoElectronico: string
-    Puesto: string
-    Curp: string
-    Rfc: string
-    Telefono: string
-    Ext: string
-    Celular: string
-    IdTipoUsuario: string
-    TipoUsuario: string
-    EstaActivo: number
-    PuedeFirmar: number
-    UltimoInicioDeSesion: string
-    Deleted: number
-    IdApp: string
-    Aplicacion: string
-    IdDepartamento: any
-    NombreCortoDepartamento: any
-    Departamento: any
-    IdPerfil: any
-    Perfil: any
-    IdRol: any
-    Rol: any
-    DescRol: any
-    IdUnidadResponsable: any
-    ClaveUResponsable: any
-    UnidadResponsable: any
-    IdDependencia: any
-    Dependencia: any
-    IdTipoDependencia: any
-    TipoDependencia: any
-    IdSecretaria: any
-    NombreCortoSecretaria: any
-    Secretaria: any
-    Acceso: any
-    RutaFoto:any
+      Id: string
+  Nombre: string
+  ApellidoPaterno: string
+  ApellidoMaterno: string
+  NombreUsuario: string
+  CorreoElectronico: string
+  Puesto: string
+  CURP: string
+  RFC: string
+  Telefono: string
+  Ext: string
+  Celular: string
+  IdTipoUsuario: string
+  TipoUsuario: string
+  EstaActivo: number
+  PuedeFirmar: number
+  UltimoInicioDeSesion: string
+  Deleted: number
+  IdApp: string
+  Aplicacion: string
+  IdEntidad: string
+  Entidad: string
+  ControlInternoEntidad: any
+  IdEntidadPerteneceA: any
+  EntidadPerteneceA: any
+  IdTipoEntidad: string
+  TipoEntidad: string
+  RutaFoto: string
 }
 
 export interface UserInfo {
