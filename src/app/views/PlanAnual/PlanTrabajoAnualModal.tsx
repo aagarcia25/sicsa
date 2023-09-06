@@ -10,6 +10,7 @@ import { Toast } from "../../helpers/Toast";
 
 
 export const PlanTrabajoAnualModal = ({
+//id,
 tipo,
 handleClose,
 datos,
@@ -17,6 +18,7 @@ datos,
 //idauditoria,
 user,
 } : {
+//id: string;
 datos:any;
 tipo: number;
 handleClose: Function;
@@ -111,7 +113,7 @@ if (datos === ""){
     setstart(dayjs(datos?.start));
     setend(dayjs(datos?.end));
     setname(datos?.name);
-    //setId(datos.id);
+    setId(datos.id);
     setanio(datos?.anio);
     setorden(datos?.orden);
 }

@@ -45,12 +45,16 @@ export const PTA = ({
     AuditoriaService.planAnualindex(data).then((res) => {
       if (res.SUCCESS) {
         res.RESPONSE.map((item: any) => {
+          console.log("item",item);
+          
           let tes = {
             start: new Date(item.start),
             end: new Date(item.end),
             name: item.name,
             id: item.id,
             type: item.type,
+            anio: item.anio,
+          
             progress: 0,
             isDisabled: false,
             styles: {
@@ -62,7 +66,7 @@ export const PTA = ({
           };
           ta.push(tes);
         });
-        console.log(ta[0]);
+        console.log(ta);
         setTasks(ta);
         setOpenSlider(false);
       }
@@ -106,6 +110,7 @@ export const PTA = ({
             //idauditoria={obj.id}
             user={user}
            // anio={vrows}
+
 
           />
         ) : (
