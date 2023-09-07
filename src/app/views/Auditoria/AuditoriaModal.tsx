@@ -109,6 +109,7 @@ export const AuditoriaModal = ({
       inicio: inicio,
       municipio: municipio,
       idEstatus: idEstatus,
+      //MontoAuditado: MontoAuditado,
     };    
 
    
@@ -295,6 +296,7 @@ export const AuditoriaModal = ({
       setidEstatus(dt?.row?.ceaid);
       setMunicipio(dt?.row?.munid);
       setInicio(dt?.row?.ciaid);
+      //setMontoAuditado(dt?.row.montoauditado);
     }
   }, []);
 

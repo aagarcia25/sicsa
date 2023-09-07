@@ -23,6 +23,7 @@ import { Ramo } from "../views/CatRamo/Ramo";
 import { CatAreaAuditora } from "../views/CatAreaAuditora/CatAreaAuditora";
 import Dashboard from "../views/Dashboard/dashboard";
 import { PTA } from "../views/PlanAnual/PTA";
+import { Municipio } from "../views/CatMunicipios/Municipio";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
   const log = login;
@@ -123,6 +124,10 @@ export const AppRouter = ({ login }: { login: boolean }) => {
           element={log ? <CatAreaAuditora /> : <AuthRouter />}
         />
         <Route path="/inicio/pta" element={log ? <PTA /> : <AuthRouter />} />
+        <Route
+          path="/inicio/catalogos/municipio"
+          element={log ? <Municipio /> : <AuthRouter />}
+        />
 
         {/* SECCION DE PERFIL */}
         <Route

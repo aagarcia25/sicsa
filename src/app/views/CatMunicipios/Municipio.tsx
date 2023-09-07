@@ -1,19 +1,20 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { Toast } from "../../helpers/Toast";
-import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
-import { CatalogosServices } from "../../services/catalogosServices";
-import { getPermisos, getUser } from "../../services/localStorage";
-import MUIXDataGrid from "../MUIXDataGrid";
-import ButtonsAdd from "../componentes/ButtonsAdd";
+import { GridColDef } from "@mui/x-data-grid/models/colDef/gridColDef";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import ButtonsEdit from "../componentes/ButtonsEdit";
+import { useEffect, useState } from "react";
+import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { getPermisos, getUser } from "../../services/localStorage";
+import Swal from "sweetalert2";
+import { CatalogosServices } from "../../services/catalogosServices";
 import TitleComponent from "../componentes/TitleComponent";
-import { TipoAccionModal } from "./TipoAccionModal";
+import ButtonsAdd from "../componentes/ButtonsAdd";
+import MUIXDataGrid from "../MUIXDataGrid";
+import { Toast } from "../../helpers/Toast";
+import { MunicipioModal } from "./MunicipioModal";
 
-export const TipoAccion = () => {
-  const [openSlider, setOpenSlider] = useState(true);
+
+export const Municipio = () => {
+    const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
   const [open, setOpen] = useState(false);
   const [tipoOperacion, setTipoOperacion] = useState(0);
@@ -48,7 +49,7 @@ export const TipoAccion = () => {
             CHUSER: user.Id,
           };
 
-          CatalogosServices.TiposAccion_index(data).then((res) => {
+          CatalogosServices.Municipios_index(data).then((res) => {
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -102,10 +103,12 @@ export const TipoAccion = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "CreadoPor", headerName: "Creado Por", width: 100 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "Descripcion", headerName: "Descripción", width: 350 },
-    { field: "Abreviatura", headerName: "Abreviatura", width: 100 },
+    { field: "creado", headerName: "Creado Por", width: 100 },
+    { field: "modi", headerName: "Modificado Por", width: 100 },
+    { field: "Nombre", headerName: "Nombre", width: 100 },
+    { field: "ClaveEstado", headerName: "Clave Estado", width: 100 },
+    { field: "ClaveINEGI", headerName: "Clave INEGI", width: 100 },
+
   ];
 
   const handleClose = () => {
@@ -121,7 +124,7 @@ export const TipoAccion = () => {
   };
 
   const consulta = (data: any) => {
-    CatalogosServices.TiposAccion_index(data).then((res) => {
+    CatalogosServices.Municipios_index(data).then((res) => {
       if (res.SUCCESS) {
         // Toast.fire({
         //   icon: "success",
@@ -138,7 +141,7 @@ export const TipoAccion = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "TACCIONES") {
+      if (String(item.ControlInterno) === "TINFORMES") {
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
         }
@@ -156,7 +159,7 @@ export const TipoAccion = () => {
   return (
     <div style={{ height: 600, width: "100%", padding: "1%" }}>
       {open ? (
-        <TipoAccionModal
+        <MunicipioModal
           open={open}
           tipo={tipoOperacion}
           handleClose={handleClose}
@@ -166,9 +169,15 @@ export const TipoAccion = () => {
         ""
       )}
 
-      <TitleComponent title={"Tipos de Resultados"} show={openSlider} />
+      <TitleComponent title={"Municipios"} show={openSlider} />
       <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );
 };
+         
+  
+   
+  
+    
+ 
