@@ -65,4 +65,8 @@ export class CatalogosServices {
     };
 
 
+    public static async Municipios_index(data : any) {
+        return await post('Municipios_index', data);
+    };
+
 }

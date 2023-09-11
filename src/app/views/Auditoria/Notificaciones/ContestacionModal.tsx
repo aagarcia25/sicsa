@@ -124,7 +124,11 @@ export const ContestacionModal = ({
     ShareService.SelectIndex(data).then((res) => {
       if (operacion === 19) {
         setListSecretarias(res.RESPONSE);
+        setShow(false);
       } else if (operacion === 20) {
+        setListUnidades(res.RESPONSE);
+        setShow(false);
+      } else if (operacion === 11) {
         setListUnidades(res.RESPONSE);
         setShow(false);
       }
@@ -133,6 +137,9 @@ export const ContestacionModal = ({
 
   useEffect(() => {
     loadFilter(11);
+    loadFilter(19);
+    //loadFilter(20);
+
     if (dt === "") {
     } else {
       setId(dt?.row?.id);

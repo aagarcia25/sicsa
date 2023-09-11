@@ -272,41 +272,42 @@ export const Auditoria = () => {
     { field: "Modalidad", headerName: "Modalidad", width: 100 },
     { field: "Consecutivo", headerName: "Consecutivo", width: 100 },
     { field: "ActaInicio", headerName: "Acta de Inicio", width: 100 },
-    { field: "NombreAudoria", headerName: "Nombre", width: 300 },
+    { field: "NombreAudoria", description: "Nombre", headerName: "Nombre", width: 300 },
     {
       field: "Encargado",
       headerName: "Personal Encargado De La Auditoría",
       width: 200,
     },
-    { field: "PersonalEncargado", headerName: "Responsable", width: 300 },
+    { field: "PersonalEncargado", description: "Responsable", headerName: "Responsable", width: 300 },
     { field: "ctid", headerName: "ctid", width: 300 },
-    { field: "ctDescripcion", headerName: "Clasificación", width: 300 },
+    { field: "ctDescripcion", description: "Clasificación", headerName: "Clasificación", width: 300 },
     { field: "coaid", headerName: "coaid", width: 300 },
-    { field: "coaDescripcion", headerName: "Origen Auditoría", width: 300 },
+    { field: "coaDescripcion", description: "Origen Auditoría", headerName: "Origen Auditoría", width: 300 },
     { field: "cgfid", headerName: "cgfid", width: 300 },
-    { field: "cgfDescripcion", headerName: "Grupo Funcional", width: 300 },
+    { field: "cgfDescripcion", description: "Grupo Funcional", headerName: "Grupo Funcional", width: 300 },
     { field: "csid", headerName: "csid", width: 300 },
-    { field: "csDescripcion", headerName: "Sector", width: 300 },
+    { field: "csDescripcion", description: "Sector", headerName: "Sector", width: 300 },
     { field: "cefid", headerName: "cefid", width: 300 },
-    { field: "cefDescripcion", headerName: "Entidad Fiscalizada", width: 300 },
+    { field: "cefDescripcion", description: "Entidad Fiscalizada", headerName: "Entidad Fiscalizada", width: 300 },
     { field: "ctaid", headerName: "ctaid", width: 300 },
-    { field: "ctaDescripcion", headerName: "Tipo de Auditoría", width: 300 },
+    { field: "ctaDescripcion", description: "Tipo de Auditoría", headerName: "Tipo de Auditoría", width: 300 },
     { field: "ciid", headerName: "ciid", width: 300 },
-    { field: "ciDescripcion", headerName: "Entrega", width: 300 },
+    { field: "ciDescripcion", description: "Entrega", headerName: "Entrega", width: 300 },
     { field: "cuaaid", headerName: "cuaaid", width: 300 },
-    { field: "cuaaDescripcion", headerName: "UAA", width: 300 },
+    { field: "cuaaDescripcion", description: "Unidad Administrativa Auditora", headerName: "UAA", width: 300 },
     { field: "caaid", headerName: "caaid", width: 300 },
-    { field: "caaDescripcion", headerName: "Área Auditora", width: 300 },
+    { field: "caaDescripcion", description: "Área Auditora", headerName: "Área Auditora", width: 300 },
     { field: "crid", headerName: "crid", width: 300 },
-    { field: "crDescripcion", headerName: "Ramo", width: 300 },
+    { field: "crDescripcion", description: "Ramo", headerName: "Ramo", width: 300 },
     {
       field: "universopesos",
+      description: "Universo Miles de Pesos",
       headerName: "Universo Miles de Pesos",
       width: 300, 
     },
-    { field: "muestrapesos", headerName: "Muestra Miles de Pesos", width: 300 },
-    { field: "montoauditado", headerName: "Monto Auditado", width: 300 },
-    { field: "munNombre", headerName: "Municipio", width: 300 },
+    { field: "muestrapesos", description: "Muestra Miles de Pesos", headerName: "Muestra Miles de Pesos", width: 300 },
+    { field: "montoauditado", description: "Monto Auditado", headerName: "Monto Auditado", width: 300 },
+    { field: "munNombre", description: "Nombre", headerName: "Municipio", width: 300 },
     
   ];
 
@@ -352,10 +353,10 @@ export const Auditoria = () => {
     };
     AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {
