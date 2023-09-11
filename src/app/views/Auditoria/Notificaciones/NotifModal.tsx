@@ -11,6 +11,7 @@ import ModalForm from "../../componentes/ModalForm";
 import SelectFrag from "../../componentes/SelectFrag";
 import dayjs, { Dayjs } from "dayjs";
 import CustomizedDate from "../../componentes/CustomizedDate";
+import { log } from "console";
 
 export const NotifModal = ({
   handleClose,
@@ -143,17 +144,27 @@ export const NotifModal = ({
   };
 
   useEffect(() => {
+    console.log("dt",dt);
+
     loadFilter(11);
     loadFilter(19);
     loadFilter(6);
 
     if (dt === "") {
+      setAPE(dt.coaid)
+
     } else {
       setId(dt?.row?.id);
       setProrroga(dayjs(dt?.row?.Prorroga));
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
       setFechaOficio(dayjs(dt?.row?.FOficio));
+      setFRecibido(dayjs(dt?.row?.FRecibido));
+      setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      setidsecretaria(dt?.row?.idsecretaria);
+      setidunidad(dt?.row?.idunidad);
+      setAPE(dt.coaid)
+
     }
   }, [dt]);
 
@@ -187,7 +198,7 @@ export const NotifModal = ({
                 options={ListAPE}
                 onInputChange={handleFilterAPE}
                 placeholder={"Seleccione...."}
-                disabled={false}
+                disabled={true}
               />
             </Grid>
 

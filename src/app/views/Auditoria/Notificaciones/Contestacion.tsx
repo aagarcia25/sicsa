@@ -48,10 +48,10 @@ export const Contestacion = ({
   const consulta = (data: any) => {
     AuditoriaService.Contestacionindex(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setData(res.RESPONSE);
         setOpenSlider(false);
       } else {
@@ -114,10 +114,10 @@ export const Contestacion = ({
     setVrows(data.data);
   };
 
-  const handleOpen = (v: any) => {
+  const handleOpen = () => {
     setOpenModal(true);
     setTipoOperacion(1);
-    setVrows("");
+    setVrows(obj.row);
   };
 
   const columns: GridColDef[] = [

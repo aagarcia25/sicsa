@@ -26,45 +26,95 @@ export const Municipio = () => {
   const [agregar, setAgregar] = useState<boolean>(true);
   const [editar, setEditar] = useState<boolean>(true);
   const [eliminar, setEliminar] = useState<boolean>(true);
+  const [ClaveINEGI, setClaveINEGI] = useState("");
+
 
   const handleAccion = (v: any) => {
-    if (v.tipo == 1) {
-      setTipoOperacion(2);
-      setModo("Editar Registro");
-      setOpen(true);
-      setVrows(v.data);
-    } else if (v.tipo === 2) {
-      Swal.fire({
-        icon: "info",
-        title: "¿Estás seguro de eliminar este registro?",
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: "Confirmar",
-        denyButtonText: `Cancelar`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          let data = {
-            NUMOPERACION: 3,
-            CHID: v.data.row.id,
-            CHUSER: user.Id,
-          };
 
-          CatalogosServices.Municipios_index(data).then((res) => {
-            if (res.SUCCESS) {
-              Toast.fire({
-                icon: "success",
-                title: "¡Registro Eliminado!",
-              });
-              consulta({ NUMOPERACION: 4 });
-            } else {
-              Swal.fire("¡Error!", res.STRMESSAGE, "error");
-            }
-          });
-        } else if (result.isDenied) {
-          Swal.fire("No se realizaron cambios", "", "info");
-        }
-      });
+
+
+    if (Number(ClaveINEGI) >= 19001 && Number(ClaveINEGI) <= 19051) {
+      alert('No puedes editar este registro.');
+    } else {
+      // Permitir la edición
+      if (v.tipo == 1) {
+        setTipoOperacion(2);
+        setModo("Editar Registro");
+        setOpen(true);
+        setVrows(v.data);
+      } else if (v.tipo === 2) {
+        Swal.fire({
+          icon: "info",
+          title: "¿Estás seguro de eliminar este registro?",
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: "Confirmar",
+          denyButtonText: `Cancelar`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            let data = {
+              NUMOPERACION: 3,
+              CHID: v.data.row.id,
+              CHUSER: user.Id,
+            };
+  
+            CatalogosServices.Municipios_index(data).then((res) => {
+              if (res.SUCCESS) {
+                Toast.fire({
+                  icon: "success",
+                  title: "¡Registro Eliminado!",
+                });
+                consulta({ NUMOPERACION: 4 });
+              } else {
+                Swal.fire("¡Error!", res.STRMESSAGE, "error");
+              }
+            });
+          } else if (result.isDenied) {
+            Swal.fire("No se realizaron cambios", "", "info");
+          }
+        });
+      }
     }
+
+
+
+    // if (v.tipo == 1) {
+    //   setTipoOperacion(2);
+    //   setModo("Editar Registro");
+    //   setOpen(true);
+    //   setVrows(v.data);
+    // } else if (v.tipo === 2) {
+    //   Swal.fire({
+    //     icon: "info",
+    //     title: "¿Estás seguro de eliminar este registro?",
+    //     showDenyButton: true,
+    //     showCancelButton: false,
+    //     confirmButtonText: "Confirmar",
+    //     denyButtonText: `Cancelar`,
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       let data = {
+    //         NUMOPERACION: 3,
+    //         CHID: v.data.row.id,
+    //         CHUSER: user.Id,
+    //       };
+
+    //       CatalogosServices.Municipios_index(data).then((res) => {
+    //         if (res.SUCCESS) {
+    //           Toast.fire({
+    //             icon: "success",
+    //             title: "¡Registro Eliminado!",
+    //           });
+    //           consulta({ NUMOPERACION: 4 });
+    //         } else {
+    //           Swal.fire("¡Error!", res.STRMESSAGE, "error");
+    //         }
+    //       });
+    //     } else if (result.isDenied) {
+    //       Swal.fire("No se realizaron cambios", "", "info");
+    //     }
+    //   });
+    // }
   };
 
   const columns: GridColDef[] = [
