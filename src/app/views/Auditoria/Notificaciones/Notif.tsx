@@ -41,10 +41,10 @@ const Notif = ({
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setData(res.RESPONSE);
         setShow(false);
       } else {
@@ -113,7 +113,7 @@ const Notif = ({
   const handleOpen = () => {
     setOpenModal(true);
     setTipoOperacion(1);
-    setVrows("");
+    setVrows(obj.row);
   };
 
   const columns: GridColDef[] = [
@@ -166,18 +166,22 @@ const Notif = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 150 },
-    { field: "modi", headerName: "Modificado Por", width: 150 },
+    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
+    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
     { field: "secretaria", headerName: "Secretaría", width: 100 },
     { field: "unidad", headerName: "Unidad Responsable", width: 100 },
     { field: "Prorroga", headerName: "Prorroga", width: 100 },
-    { field: "Oficio", headerName: "Oficio", width: 150 },
-    { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
+    { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 150 },
+    { field: "SIGAOficio", description: "Folio SIGA", headerName: "Folio SIGA", width: 150 },
     { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
   ];
 
   useEffect(() => {
+    console.log("obj",obj);
+    
     permisos.map((item: PERMISO) => {
+      
+      
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
@@ -212,6 +216,7 @@ const Notif = ({
           dt={vrows}
           user={user}
           idAuditoria={obj.id}
+          
         />
       ) : (
         ""

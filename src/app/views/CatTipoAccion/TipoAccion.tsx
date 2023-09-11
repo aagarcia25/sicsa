@@ -166,7 +166,7 @@ export const TipoAccion = () => {
         ""
       )}
 
-      <TitleComponent title={"Tipos de Acciones"} show={openSlider} />
+      <TitleComponent title={"Tipos de Resultados"} show={openSlider} />
       <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>

@@ -127,7 +127,7 @@ export const Oficios = ({
     },
     { field: "creado", headerName: "Creado Por", width: 100 },
     { field: "modi", headerName: "Modificado Por", width: 100 },
-    { field: "Oficio", headerName: "Oficio", width: 100 },
+    { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 100 },
     { field: "FechaRecibido", headerName: "Fecha Recibido ", width: 150 },
     { field: "FechaVencimiento", headerName: "Fecha Vencimiento", width: 150 },
   ];
@@ -154,10 +154,10 @@ export const Oficios = ({
     };
     AuditoriaService.OficiosA_index(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setData(res.RESPONSE);
         setShow(false);
       } else {
