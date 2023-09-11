@@ -41,8 +41,8 @@ export const AccionesModal = ({
     SelectValues[]
   >([]);
   const [ListTipoAccion, setListTipoAccion] = useState<SelectValues[]>([]);
-  const [noResultado, setnoResultado] = useState(0);
-  const [Monto, setMonto] = useState(0);
+  const [numeroResultado, setnumeroResultado] = useState(0);
+  const [monto, setmonto] = useState(0);
   
 
   const handleSend = () => {
@@ -60,6 +60,8 @@ export const AccionesModal = ({
         CHID: id,
         CHUSER: user.Id,
         accionSuperviviente: accionSuperviviente,
+        numeroResultado: numeroResultado,
+        monto: monto,
       };
 
       handleRequest(data);
@@ -115,8 +117,9 @@ export const AccionesModal = ({
       setTextoAccion(dt?.TextoAccion);
       setId(dt?.id);
       setaccionSuperviviente(dt?.accionSuperviviente);
-      setnoResultado(dt?.noResultado)
-      setMonto(dt?.Monto);
+      setmonto(dt?.monto);
+      setnumeroResultado(dt?.numeroResultado);
+      
       console.log(dt);
     }
   }, [dt]);
@@ -215,11 +218,11 @@ export const AccionesModal = ({
                 type="text"
                 fullWidth
                 variant="standard"
-                value={Monto||""}
+                value={monto||""}
                 required
-                error={!Monto}
+                error={!monto}
                 onChange={(v) => {
-                      setMonto(validarNumero(v.target.value,Monto))
+                      setmonto(validarNumero(v.target.value,monto))
                   }
                 }
               />
@@ -284,16 +287,16 @@ export const AccionesModal = ({
             <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
                 margin="dense"
-                id="noResultado"
+                id="numeroResultado"
                 label="Número de Resultado"
                 type="text"
                 fullWidth
                 variant="standard"
-                value={noResultado||""}
+                value={numeroResultado||""}
                 required
-                error={!noResultado}
+                error={!numeroResultado}
                 onChange={(v) => {
-                      setnoResultado(validarNumero(v.target.value,noResultado))
+                      setnumeroResultado(validarNumero(v.target.value,numeroResultado))
                   }
                 }
               />

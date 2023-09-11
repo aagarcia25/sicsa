@@ -81,10 +81,10 @@ const Acciones = ({
   const consulta = (data: any) => {
     AuditoriaService.Acciones_index(data).then((res) => {
       if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "¡Consulta Exitosa!",
+        // });
         setData(res.RESPONSE);
         setOpenSlider(false);
       } else {
@@ -190,9 +190,9 @@ const Acciones = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 200 },
-    { field: "modi", headerName: "Modificado Por", width: 200 },
-    { field: "NAUDITORIA", headerName: "No. de Auditoría", width: 80 },
+    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 200 },
+    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 200 },
+    { field: "NAUDITORIA", description: "Número de Auditoría", headerName: "No. de Auditoría", width: 80 },
     {
       field: "DescripcionTipoDeAccion",
       headerName: "Tipo de Resultado",
@@ -203,15 +203,22 @@ const Acciones = ({
       headerName: "Estatus de los Resultados",
       width: 150,
     },
-    { field: "ClaveAccion", headerName: "Clave de Resultado", width: 200 },
+    { field: "ClaveAccion", description: "Clave de Resultado", headerName: "Clave de Resultado", width: 200 },
     { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
     {
       field: "accionSuperviviente",
       headerName: "Resultado Superveniente",
       width: 200,
     },
-    { field: "TextoAccion", headerName: "Resultado/Observación", width: 900 },
+    { field: "TextoAccion", description: "Resultado/Observación", headerName: "Resultado/Observación", width: 900 },
     { field: "Valor", headerName: "Valor", width: 150 },
+    { field: "numeroResultado", headerName: "Numero de Resultado", width: 80 },
+    { field: "monto", headerName: "Monto", width: 80 },
+
+    
+
+
+    
   ];
 
   useEffect(() => {

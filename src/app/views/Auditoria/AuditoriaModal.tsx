@@ -74,7 +74,7 @@ export const AuditoriaModal = ({
   const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
-  const [MontoAuditado, setMontoAuditado] = useState(0);
+  const [montoauditado, setmontoauditado] = useState(0);
 
   
   const handleSend = () => { 
@@ -109,7 +109,7 @@ export const AuditoriaModal = ({
       inicio: inicio,
       municipio: municipio,
       idEstatus: idEstatus,
-      //MontoAuditado: MontoAuditado,
+      montoauditado: montoauditado,
     };    
 
    
@@ -296,7 +296,7 @@ export const AuditoriaModal = ({
       setidEstatus(dt?.row?.ceaid);
       setMunicipio(dt?.row?.munid);
       setInicio(dt?.row?.ciaid);
-      //setMontoAuditado(dt?.row.montoauditado);
+      setmontoauditado(dt?.row.montoauditado);
     }
   }, []);
 
@@ -733,16 +733,15 @@ export const AuditoriaModal = ({
             <TextField
                 required
                 margin="dense"
-                id="MontoAuditado"
+                id="montoauditado"
                 label="Monto auditado"
-                value={MontoAuditado||""}
+                value={montoauditado||""}
                 type="text"
                 fullWidth
                 variant="standard"
-                onChange={(v) => {
-                  setMontoAuditado(validarNumero(v.target.value,MontoAuditado))
+                onChange={(v) => {setmontoauditado(validarNumero(v.target.value,montoauditado))
               }}
-                error={MontoAuditado=== 0 ? true : false}
+                error={montoauditado=== 0 ? true : false}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
