@@ -162,7 +162,7 @@ export const NotifModal = ({
       setFVencimiento(dayjs(dt?.row?.FVencimiento));
       setidsecretaria(dt?.row?.secid);
       setidunidad(dt?.row?.uniid);
-      setAPE(dt.coaid)
+      //setAPE(dt.coaid)
 
     }
   }, [dt]);
