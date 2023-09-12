@@ -136,6 +136,7 @@ export const ContestacionModal = ({
   };
 
   useEffect(() => {
+
     loadFilter(11);
     loadFilter(19);
     //loadFilter(20);
@@ -147,6 +148,10 @@ export const ContestacionModal = ({
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
       setFechaOficio(dayjs(dt?.row?.FOficio));
+      setFRecibido(dayjs(dt?.row?.FRecibido));
+      setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      setidsecretaria(dt?.row?.secid);
+      setidunidad(dt?.row?.uniid);
     }
   }, [dt]);
 

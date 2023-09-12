@@ -144,7 +144,6 @@ export const NotifModal = ({
   };
 
   useEffect(() => {
-    console.log("dt",dt);
 
     loadFilter(11);
     loadFilter(19);
@@ -161,9 +160,9 @@ export const NotifModal = ({
       setFechaOficio(dayjs(dt?.row?.FOficio));
       setFRecibido(dayjs(dt?.row?.FRecibido));
       setFVencimiento(dayjs(dt?.row?.FVencimiento));
-      setidsecretaria(dt?.row?.idsecretaria);
-      setidunidad(dt?.row?.idunidad);
-      setAPE(dt.coaid)
+      setidsecretaria(dt?.row?.secid);
+      setidunidad(dt?.row?.uniid);
+      //setAPE(dt.coaid)
 
     }
   }, [dt]);
@@ -176,7 +175,7 @@ export const NotifModal = ({
       >
         <Progress open={show}></Progress>
         <Box boxShadow={3}>
-        <Grid
+        {/* <Grid
             container
             item
             spacing={1}
@@ -213,7 +212,7 @@ export const NotifModal = ({
             <Grid item xs={12} sm={6} md={4} lg={3}>
               
             </Grid>
-          </Grid>
+          </Grid> */}
 
           <Grid
             container
