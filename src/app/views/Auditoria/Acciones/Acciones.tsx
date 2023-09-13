@@ -192,28 +192,28 @@ const Acciones = ({
     },
     { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 200 },
     { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 200 },
-    { field: "NAUDITORIA", description: "Número de Auditoría", headerName: "No. de Auditoría", width: 80 },
+    { field: "NAUDITORIA", description: "Número de Auditoría", headerName: "No. de Auditoría", width: 200 },
     {
       field: "DescripcionTipoDeAccion",
       headerName: "Tipo de Resultado",
-      width: 100,
+      width: 200,
     },
     {
       field: "DescripcionEstatusAccion",
       headerName: "Estatus de los Resultados",
-      width: 150,
+      width: 200,
     },
-    { field: "ClaveAccion", description: "Clave de Resultado", headerName: "Clave de Resultado", width: 200 },
+    { field: "ClaveAccion", description: "Clave de Resultado", headerName: "Clave de Resultado", width: 300 },
     { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
     {
       field: "accionSuperviviente",
       headerName: "Resultado Superveniente",
-      width: 200,
+      width: 300,
     },
     { field: "TextoAccion", description: "Resultado/Observación", headerName: "Resultado/Observación", width: 900 },
-    { field: "Valor", headerName: "Valor", width: 150 },
-    { field: "numeroResultado", headerName: "Numero de Resultado", width: 80 },
-    { field: "monto", headerName: "Monto", width: 80 },
+    { field: "Valor", headerName: "Valor", width: 200 },
+    { field: "numeroResultado", headerName: "Numero de Resultado", width: 200 , align:"center", headerAlign: "center"},
+    { field: "monto", headerName: "Monto", width: 200 },
 
     
 
