@@ -125,11 +125,11 @@ export const Oficios = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 100 },
-    { field: "modi", headerName: "Modificado Por", width: 100 },
-    { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 100 },
-    { field: "FechaRecibido", headerName: "Fecha Recibido ", width: 150 },
-    { field: "FechaVencimiento", headerName: "Fecha Vencimiento", width: 150 },
+    { field: "creado", headerName: "Creado Por", width: 200 },
+    { field: "modi", headerName: "Modificado Por", width: 200 },
+    { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 200 },
+    { field: "FechaRecibido", headerName: "Fecha Recibido ", width: 180 },
+    { field: "FechaVencimiento", headerName: "Fecha Vencimiento", width: 180 },
   ];
 
   const handleOpen = (v: any) => {

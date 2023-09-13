@@ -155,9 +155,9 @@ export const Municipio = () => {
     },
     { field: "creado", headerName: "Creado Por", width: 100 },
     { field: "modi", headerName: "Modificado Por", width: 100 },
-    { field: "Nombre", headerName: "Nombre", width: 100 },
-    { field: "ClaveEstado", headerName: "Clave Estado", width: 100 },
-    { field: "ClaveINEGI", headerName: "Clave INEGI", width: 100 },
+    { field: "Nombre", headerName: "Nombre", width: 300 },
+    { field: "ClaveEstado", headerName: "Clave Estado", width: 100, align:"center", headerAlign: "center" },
+    { field: "ClaveINEGI", headerName: "Clave INEGI", width: 100, align:"center", headerAlign: "center" },
 
   ];
 

@@ -163,14 +163,16 @@ export const Contestacion = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 150 },
-    { field: "modi", headerName: "Modificado Por", width: 150 },
-    { field: "secretaria", headerName: "Secretaría", width: 100 },
-    { field: "unidad", headerName: "Unidad Responsable", width: 100 },
-    { field: "Prorroga", headerName: "Prorroga", width: 100 },
-    { field: "Oficio", headerName: "Oficio", width: 150 },
+    { field: "creado", headerName: "Creado Por", width: 200 },
+    { field: "modi", headerName: "Modificado Por", width: 200 },
+    { field: "secretaria", headerName: "Secretaría", width: 300 },
+    { field: "unidad", headerName: "Unidad Responsable", width: 300 },
+    { field: "Oficio", headerName: "Oficio", width: 200 },
     { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
-    { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
+    { field: "FOficio", headerName: "Fecha de Oficio", width: 200 },
+    { field: "FRecibido", headerName: "Fecha de Recibido", width: 200 },
+    { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 200 },
+    { field: "Prorroga", headerName: "Fecha de Prorroga", width: 200 },
   ];
 
   useEffect(() => {
