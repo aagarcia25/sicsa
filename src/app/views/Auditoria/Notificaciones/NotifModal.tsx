@@ -41,8 +41,6 @@ export const NotifModal = ({
   const [ListUnidades, setListUnidades] = useState<SelectValues[]>([]);
   const [APE, setAPE] = useState("");
   const [ListAPE, setListAPE] = useState<SelectValues[]>([]);
-  
-  
 
   const handleSend = () => {
     if (!Oficio) {
@@ -136,7 +134,7 @@ export const NotifModal = ({
       } else if (operacion === 20) {
         setListUnidades(res.RESPONSE);
         setShow(false);
-      }else if (operacion === 6) {
+      } else if (operacion === 6) {
         setListAPE(res.RESPONSE);
         setShow(false);
       }
@@ -144,14 +142,12 @@ export const NotifModal = ({
   };
 
   useEffect(() => {
-
     loadFilter(11);
     loadFilter(19);
     loadFilter(6);
 
     if (dt === "") {
-      setAPE(dt.coaid)
-
+      setAPE(dt.coaid);
     } else {
       setId(dt?.row?.id);
       setProrroga(dayjs(dt?.row?.Prorroga));
@@ -160,10 +156,10 @@ export const NotifModal = ({
       setFechaOficio(dayjs(dt?.row?.FOficio));
       setFRecibido(dayjs(dt?.row?.FRecibido));
       setFVencimiento(dayjs(dt?.row?.FVencimiento));
-      setidsecretaria(dt?.row?.secid);
+      //setidsecretaria(dt?.row?.secid);
+      handleFilterChange1(dt?.row?.secid);
       setidunidad(dt?.row?.uniid);
       //setAPE(dt.coaid)
-
     }
   }, [dt]);
 
@@ -175,7 +171,7 @@ export const NotifModal = ({
       >
         <Progress open={show}></Progress>
         <Box boxShadow={3}>
-        {/* <Grid
+          {/* <Grid
             container
             item
             spacing={1}
