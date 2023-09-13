@@ -104,7 +104,7 @@ export const OrigenAuditoria = () => {
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 100 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
-    { field: "Descripcion", headerName: "Descripción", width: 100 },
+    { field: "Descripcion", headerName: "Descripción", width: 350 },
   ];
 
   const handleClose = () => {
