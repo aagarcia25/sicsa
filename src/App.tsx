@@ -31,7 +31,7 @@ import { USUARIORESPONSE, UserLogin } from "./app/interfaces/UserInfo";
 
 function App() {
   //cambiar a 5 minutos
-  const timeout = 960000;
+  const timeout = 99999999999;
   const urlParams = window.location.search;
   const query = new URLSearchParams(urlParams);
   const jwt = query.get("jwt");
