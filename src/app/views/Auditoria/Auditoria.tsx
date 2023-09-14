@@ -269,7 +269,7 @@ export const Auditoria = () => {
     { field: "anio", headerName: "Año Cuenta Pública", width: 200 , align:"center", headerAlign: "center"},
     { field: "NAUDITORIA", headerName: "No. De Auditoría", width: 200 , align:"center", headerAlign: "center"},
     { field: "FolioSIGA", headerName: "Folio SIGA", width: 200 },
-    { field: "Modalidad", headerName: "Modalidad", width: 200 },
+    { field: "cmoDescripcion", headerName: "Modalidad", width: 200 },
     { field: "Consecutivo", headerName: "Consecutivo", width: 100 , align:"center", headerAlign: "center"},
     { field: "ActaInicio", headerName: "Acta de Inicio", width: 180 },
     { field: "NombreAudoria", description: "Nombre", headerName: "Nombre", width: 300},

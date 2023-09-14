@@ -35,7 +35,7 @@ export const AuditoriaModal = ({
   const [NombreAudoria, setNombreAudoria] = useState("");
   const [Encargado, setEncargado] = useState("");
   const [anio, setanio] = useState("");
-  const [modalidad, setmodalidad] = useState("");
+  const [idModalidad, setidModalidad] = useState("");
   const [origenauditoria, setorigenauditoria] = useState("");
   const [idGrupoFuncional, setidGrupoFuncional] = useState("");
   const [iduaa, setiduaa] = useState("");
@@ -88,7 +88,7 @@ export const AuditoriaModal = ({
       anio: Number(anio),
       NAUDITORIA: NAUDITORIA,
       FolioSIGA: FolioSIGA,
-      Modalidad: modalidad,
+      idModalidad: idModalidad,
       Consecutivo: Consecutivo,
       NombreAudoria: NombreAudoria,
       ActaInicio: actainicio,
@@ -122,7 +122,7 @@ export const AuditoriaModal = ({
   };
 
   const handleFilterChangemodalidad = (v: string) => {
-    setmodalidad(v);
+    setidModalidad(v);
   };
 
   const handleFilterChange1 = (v: string) => {
@@ -274,7 +274,7 @@ export const AuditoriaModal = ({
       setanio(String(dt?.row?.anio));
       setNAUDITORIA(dt?.row?.NAUDITORIA);
       setFolioSIGA(dt?.row?.FolioSIGA);
-      setmodalidad(dt?.row?.Modalidad);
+      setidModalidad(dt?.row?.cmoid);
       setConsecutivo(dt?.row?.Consecutivo);
       setNombreAudoria(dt?.row?.NombreAudoria);
       setactainicio(dt?.row?.ActaInicio);
@@ -372,7 +372,7 @@ export const AuditoriaModal = ({
                 Modalidad:
               </Typography>
               <SelectFrag
-                value={modalidad}
+                value={idModalidad}
                 options={ListModalidad}
                 onInputChange={handleFilterChangemodalidad}
                 placeholder={"Seleccione ..."}
