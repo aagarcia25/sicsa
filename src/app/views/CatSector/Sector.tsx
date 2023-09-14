@@ -13,6 +13,7 @@ import TitleComponent from "../componentes/TitleComponent";
 import { SectorModal } from "./SectorModal";
 
 export const Sector = () => {
+
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
   const [open, setOpen] = useState(false);
@@ -102,8 +103,8 @@ export const Sector = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "CreadoPor", headerName: "Creado Por", width: 100 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
+    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
+    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
     { field: "Descripcion", headerName: "Descripción", width: 350 },
   ];
 
@@ -122,10 +123,6 @@ export const Sector = () => {
   const consulta = (data: any) => {
     CatalogosServices.Sector_index(data).then((res) => {
       if (res.SUCCESS) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "¡Consulta Exitosa!",
-        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {

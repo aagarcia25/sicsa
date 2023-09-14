@@ -106,8 +106,8 @@ export const CatAreaAuditora = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "CreadoPor", headerName: "Creado Por", width: 100 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
+    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
+    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
     { field: "Clave", headerName: "Clave", description: "Clave", width: 100 },
     {
       field: "Descripcion",

@@ -102,8 +102,8 @@ export const EstatusAcciones = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "CreadoPor", headerName: "Creado Por", width: 100 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 100 },
+    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
+    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
     { field: "Descripcion", headerName: "Descripción", width: 350 },
   ];
 
@@ -165,7 +165,7 @@ export const EstatusAcciones = () => {
         ""
       )}
 
-      <TitleComponent title={"Estatus Acciones"} show={openSlider} />
+      <TitleComponent title={"Estatus Resultados"} show={openSlider} />
       <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
