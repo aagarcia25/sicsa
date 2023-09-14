@@ -78,43 +78,7 @@ export const Municipio = () => {
 
 
 
-    // if (v.tipo == 1) {
-    //   setTipoOperacion(2);
-    //   setModo("Editar Registro");
-    //   setOpen(true);
-    //   setVrows(v.data);
-    // } else if (v.tipo === 2) {
-    //   Swal.fire({
-    //     icon: "info",
-    //     title: "¿Estás seguro de eliminar este registro?",
-    //     showDenyButton: true,
-    //     showCancelButton: false,
-    //     confirmButtonText: "Confirmar",
-    //     denyButtonText: `Cancelar`,
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       let data = {
-    //         NUMOPERACION: 3,
-    //         CHID: v.data.row.id,
-    //         CHUSER: user.Id,
-    //       };
-
-    //       CatalogosServices.Municipios_index(data).then((res) => {
-    //         if (res.SUCCESS) {
-    //           Toast.fire({
-    //             icon: "success",
-    //             title: "¡Registro Eliminado!",
-    //           });
-    //           consulta({ NUMOPERACION: 4 });
-    //         } else {
-    //           Swal.fire("¡Error!", res.STRMESSAGE, "error");
-    //         }
-    //       });
-    //     } else if (result.isDenied) {
-    //       Swal.fire("No se realizaron cambios", "", "info");
-    //     }
-    //   });
-    // }
+    
   };
 
   const columns: GridColDef[] = [
@@ -153,8 +117,8 @@ export const Municipio = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 100 },
-    { field: "modi", headerName: "Modificado Por", width: 100 },
+    { field: "creado", headerName: "Creado Por", width: 200 },
+    { field: "modi", headerName: "Modificado Por", width: 200 },
     { field: "Nombre", headerName: "Nombre", width: 300 },
     { field: "ClaveEstado", headerName: "Clave Estado", width: 100, align:"center", headerAlign: "center" },
     { field: "ClaveINEGI", headerName: "Clave INEGI", width: 100, align:"center", headerAlign: "center" },

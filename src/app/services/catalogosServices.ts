@@ -2,6 +2,9 @@
 import { post, postDoc, postDocument } from './apiService';
 
 export class CatalogosServices {
+    public static async Modalidad_index(data: any) {
+    return await post('Modalidad_index', data);
+  }
 
      public static async areaindex(data : any) {
         return await post('areaindex', data);
