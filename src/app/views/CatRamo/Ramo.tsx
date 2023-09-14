@@ -98,8 +98,8 @@ export const Ramo = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "modi", headerName: "Creado Por", width: 100 },
-    { field: "creado", headerName: "Modificado Por", width: 100 },
+    { field: "modi", headerName: "Creado Por", width: 200 },
+    { field: "creado", headerName: "Modificado Por", width: 200 },
     { field: "Descripcion", headerName: "Descripción", width: 350 },
   ];
 
