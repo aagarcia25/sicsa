@@ -76,49 +76,53 @@ export const AuditoriaModal = ({
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
   const [montoauditado, setmontoauditado] = useState(0);
 
-  
-  const handleSend = () => { 
-    if (!NAUDITORIA || !NombreAudoria || !PersonalEncargado || !universomilespesos || !muestramilespesos) {
-      Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
+  const handleSend = () => {
+    if (
+      !NAUDITORIA ||
+      !NombreAudoria ||
+      !PersonalEncargado ||
+      !universomilespesos ||
+      !muestramilespesos
+    ) {
+      Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
-    let data = {
-      NUMOPERACION: tipo,
-      CHID: id,
-      CHUSER: user.Id,
-      anio: Number(anio),
-      NAUDITORIA: NAUDITORIA,
-      FolioSIGA: FolioSIGA,
-      idModalidad: idModalidad,
-      Consecutivo: Consecutivo,
-      NombreAudoria: NombreAudoria,
-      ActaInicio: actainicio,
-      Encargado: Encargado,
-      PersonalEncargado: PersonalEncargado,
-      idClasificacion: idClasificacion,
-      idcatorigenaud: origenauditoria,
-      idCatGrupoFuncional: idGrupoFuncional,
-      idCatSector: idSector,
-      idCatEntidadFiscalizada: idEntidadFiscalizada,
-      idTipoAuditoria: idTipoAuditoria,
-      idCatInforme: idInforme,
-      idUnidadAdm: iduaa,
-      idAreaAdm: idaa,
-      idRamo: idramo,
-      universopesos: universomilespesos,
-      muestrapesos: muestramilespesos,
-      inicio: inicio,
-      municipio: municipio,
-      idEstatus: idEstatus,
-      montoauditado: montoauditado,
-    };    
+      let data = {
+        NUMOPERACION: tipo,
+        CHID: id,
+        CHUSER: user.Id,
+        anio: Number(anio),
+        NAUDITORIA: NAUDITORIA,
+        FolioSIGA: FolioSIGA,
+        idModalidad: idModalidad,
+        Consecutivo: Consecutivo,
+        NombreAudoria: NombreAudoria,
+        ActaInicio: actainicio,
+        Encargado: Encargado,
+        PersonalEncargado: PersonalEncargado,
+        idClasificacion: idClasificacion,
+        idcatorigenaud: origenauditoria,
+        idCatGrupoFuncional: idGrupoFuncional,
+        idCatSector: idSector,
+        idCatEntidadFiscalizada: idEntidadFiscalizada,
+        idTipoAuditoria: idTipoAuditoria,
+        idCatInforme: idInforme,
+        idUnidadAdm: iduaa,
+        idAreaAdm: idaa,
+        idRamo: idramo,
+        universopesos: universomilespesos,
+        muestrapesos: muestramilespesos,
+        inicio: inicio,
+        municipio: municipio,
+        idEstatus: idEstatus,
+        montoauditado: montoauditado,
+      };
 
-   
-
-    if (tipo == 1) {
-      agregar(data);
-    } else if (tipo === 2){
-      editar(data);
-    }}
+      if (tipo == 1) {
+        agregar(data);
+      } else if (tipo === 2) {
+        editar(data);
+      }
+    }
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -143,6 +147,7 @@ export const AuditoriaModal = ({
 
   const handleFilterChangeclasificacion = (v: string) => {
     setidClasificacion(v);
+    loadFilter(21, v);
   };
 
   const handleFilterChange2 = (v: string) => {
@@ -229,7 +234,6 @@ export const AuditoriaModal = ({
       } else if (operacion === 12) {
         setListModalidad(res.RESPONSE);
       } else if (operacion === 6) {
-        setListorigenauditoria(res.RESPONSE);
       } else if (operacion === 10) {
         setListuaa(res.RESPONSE);
         setShow(false);
@@ -246,6 +250,9 @@ export const AuditoriaModal = ({
         setListMunicipio(res.RESPONSE);
       } else if (operacion === 18) {
         setListIdEstatus(res.RESPONSE);
+      } else if (operacion === 21) {
+        setListorigenauditoria(res.RESPONSE);
+        setShow(false);
       }
     });
   };
@@ -260,14 +267,15 @@ export const AuditoriaModal = ({
     loadFilter(14);
     loadFilter(15);
     loadFilter(12);
-    loadFilter(6);
+    //  loadFilter(6);
     loadFilter(10);
     loadFilter(16);
     loadFilter(17);
     loadFilter(18);
 
-    if (dt === "") { 
-    } else {     console.log("d",dt);
+    if (dt === "") {
+    } else {
+      console.log("d", dt);
 
       console.log(dt?.row);
       setId(dt?.row?.id);
@@ -281,6 +289,7 @@ export const AuditoriaModal = ({
       setEncargado(dt?.row?.Encargado);
       setPersonalEncargado(dt?.row?.PersonalEncargado);
       setidClasificacion(dt?.row?.ctid);
+      handleFilterChangeclasificacion(dt?.row?.ctid);
       setorigenauditoria(dt?.row?.coaid);
       setIdSector(dt?.row?.csid);
       setIdEntidadFiscalizada(dt?.row?.cefid);
@@ -730,22 +739,25 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <TextField
+              <TextField
                 required
                 margin="dense"
                 id="montoauditado"
                 label="Monto auditado"
-                value={montoauditado||""}
+                value={montoauditado || ""}
                 type="text"
                 fullWidth
                 variant="standard"
-                onChange={(v) => {setmontoauditado(validarNumero(v.target.value,montoauditado))
-              }}
-                error={montoauditado=== 0 ? true : false}
+                onChange={(v) => {
+                  setmontoauditado(
+                    validarNumero(v.target.value, montoauditado)
+                  );
+                }}
+                error={montoauditado === 0 ? true : false}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
                 Municipio:
               </Typography>
               <SelectFrag

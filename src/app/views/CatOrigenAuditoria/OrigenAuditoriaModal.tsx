@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
@@ -6,6 +6,9 @@ import { USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { CatalogosServices } from "../../services/catalogosServices";
 import { getUser } from "../../services/localStorage";
 import ModalForm from "../componentes/ModalForm";
+import SelectValues from "../../interfaces/Share";
+import { ShareService } from "../../services/ShareService";
+import SelectFrag from "../componentes/SelectFrag";
 
 export const OrigenAuditoriaModal = ({
   open,
@@ -23,6 +26,22 @@ export const OrigenAuditoriaModal = ({
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
+  const [origenauditoria, setorigenauditoria] = useState("");
+  const [Listorigenauditoria, setListorigenauditoria] = useState<
+    SelectValues[]
+  >([]);
+
+  const handleFilterChangeorigenaud = (v: string) => {
+    setorigenauditoria(v);
+  };
+  const loadFilter = (operacion: number) => {
+    let data = { NUMOPERACION: operacion };
+    ShareService.SelectIndex(data).then((res) => {
+      if (operacion === 14) {
+        setListorigenauditoria(res.RESPONSE);
+      }
+    });
+  };
 
   const handleSend = () => {
     if (!descripcion) {
@@ -32,7 +51,7 @@ export const OrigenAuditoriaModal = ({
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        //NOMBRE: nombre,
+        IDORIGEN: origenauditoria,
         DESCRIPCION: descripcion,
       };
 
@@ -80,11 +99,14 @@ export const OrigenAuditoriaModal = ({
   };
 
   useEffect(() => {
+    loadFilter(14);
     if (dt === "") {
     } else {
+      console.log(dt);
       setId(dt?.row?.id);
       setNombre(dt?.row?.Nombre);
       setDescripcion(dt?.row?.Descripcion);
+      setorigenauditoria(dt?.row?.idtipo);
     }
   }, [dt]);
 
@@ -102,29 +124,7 @@ export const OrigenAuditoriaModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="center"
-              xs={4}
-            ></Grid>
             <Grid item alignItems="center" justifyContent="center" xs={4}>
-              {/* <TextField
-              required
-              margin="dense"
-              id="Nombre"
-              label="Nombre"
-              value={nombre}
-              type="text"
-              fullWidth
-              variant="standard"
-              onChange={(v) => setNombre(v.target.value)}
-              error={nombre === "" ? true : false}
-              InputProps={{
-                readOnly: tipo === 1 ? false : true,
-              }}
-            /> */}
-
               <TextField
                 required
                 margin="dense"
@@ -139,25 +139,35 @@ export const OrigenAuditoriaModal = ({
                 InputProps={{}}
               />
             </Grid>
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="center"
-              xs={4}
-            ></Grid>
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="center"
-              xs={12}
-              height={40}
-            ></Grid>
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="center"
-              xs={5}
-            ></Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item alignItems="center" justifyContent="center" xs={4}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Organo Auditor:
+              </Typography>
+              <SelectFrag
+                value={origenauditoria}
+                options={Listorigenauditoria}
+                onInputChange={handleFilterChangeorigenaud}
+                placeholder={"Seleccione...."}
+                disabled={false}
+              />
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
                 disabled={descripcion === ""}
