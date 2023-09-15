@@ -73,6 +73,11 @@ export const OrigenAuditoria = () => {
       width: 150,
     },
     {
+      field: "idtipo",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
       field: "acciones",
       disableExport: true,
       headerName: "Acciones",
@@ -105,6 +110,7 @@ export const OrigenAuditoria = () => {
     { field: "CreadoPor", headerName: "Creado Por", width: 200 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
     { field: "Descripcion", headerName: "Descripción", width: 350 },
+    { field: "tipodescripcion", headerName: "Tipo Descripción", width: 350 },
   ];
 
   const handleClose = () => {

@@ -31,7 +31,7 @@ import { USUARIORESPONSE, UserLogin } from "./app/interfaces/UserInfo";
 
 function App() {
   //cambiar a 5 minutos
-  const timeout = 960000;
+  const timeout = 900000;
   const urlParams = window.location.search;
   const query = new URLSearchParams(urlParams);
   const jwt = query.get("jwt");
@@ -44,27 +44,6 @@ function App() {
   const [userName, setUserName] = useState<string>();
   const [acceso, setAcceso] = useState(false);
   const [contrseñaValida, setContraseñaValida] = useState(true);
-
-  const mensaje = (icon: string, title: string, text: string) => {
-    setlogin(false);
-    setAcceso(false);
-    Swal.fire({
-      icon: icon === "info" ? "info" : "warning",
-      title: title,
-      text: text,
-      showDenyButton: false,
-      showCancelButton: false,
-      confirmButtonText: "Aceptar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.clear();
-        var ventana = window.self;
-        ventana.location.replace(
-          String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN)
-        );
-      }
-    });
-  };
 
   const GetImage = (tipo: string, nameImagen: string) => {
     AuthService.GetImagenProfile(tipo, nameImagen).then((res) => {
@@ -102,75 +81,6 @@ function App() {
         setAcceso(false);
       }
     });
-
-    // AuthService.adminUser(data).then((res2) => {
-    //   const us: UserInfo = res2;
-    //   setUser(us.RESPONSE);
-
-    //   if (String(us.RESPONSE) === "PrimerInicio") {
-    //     Swal.fire({
-    //       icon: "info",
-    //       title: 'Bienvenid@',
-    //       text: 'Su cuenta Se Confirmo Correctamente',
-    //       showDenyButton: false,
-    //       showCancelButton: false,
-    //       confirmButtonText: "Aceptar",
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         var ventana = window.self;
-    //         ventana.location.reload();
-    //       }
-    //     });
-
-    //   }
-    //   else if (us.SUCCESS && String(us.RESPONSE) !== "PrimerInicio") {
-    //     setRoles(us.RESPONSE.ROLES);
-    //     setPermisos(us.RESPONSE.PERMISOS);
-    //     setMenus(us.RESPONSE.MENUS);
-    //     setPerfiles(us.RESPONSE.PERFILES);
-    //     setDepartamento(us.RESPONSE.DEPARTAMENTOS);
-    //     setOpenSlider(false);
-    //     setlogin(true);
-    //     setAcceso(true);
-    //     setBloqueoStatus(false);
-    //     GetImage("/FOTOPERFIL/", us?.RESPONSE?.RutaFoto);
-
-    //   }
-    //   else if (us.SUCCESS) {
-    //     mensaje('', 'Información', us.STRMESSAGE==="Exito"?"":us.STRMESSAGE + " Contactar Al Departamento Correspondiente");
-    //   }
-    //   else if (us.SUCCESS === false && !us.RESPONSE) {
-    //     Swal.fire({
-    //       icon: "info",
-    //       title: 'Bienvenid@',
-    //       text: us.STRMESSAGE,
-    //       showDenyButton: false,
-    //       showCancelButton: false,
-    //       confirmButtonText: "Aceptar",
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         var ventana = window.self;
-    //         ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN))
-
-    //       }
-    //     });
-    //   }
-    //   else if (us.SUCCESS === false && us.RESPONSE) {
-    //     Swal.fire({
-    //       icon: "info",
-    //       title: us.RESPONSE,
-    //       showDenyButton: false,
-    //       showCancelButton: false,
-    //       confirmButtonText: "Aceptar",
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         var ventana = window.self;
-    //         ventana.location.replace(String(process.env.REACT_APP_APPLICATION_BASE_URL_LOGIN));
-
-    //       }
-    //     });
-    //   }
-    // });
   };
 
   const verificatoken = (primerInicio: boolean) => {
@@ -236,7 +146,7 @@ function App() {
   };
 
   const handleOnIdle = () => {
-    setBloqueoStatus(true);
+    //setBloqueoStatus(true);
     setAcceso(false);
   };
 
