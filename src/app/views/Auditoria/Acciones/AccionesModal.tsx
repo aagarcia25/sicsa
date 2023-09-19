@@ -293,8 +293,8 @@ export const AccionesModal = ({
                 fullWidth
                 variant="standard"
                 value={numeroResultado||""}
-                required
-                error={!numeroResultado}
+                //required
+                //error={!numeroResultado}
                 onChange={(v) => {
                       setnumeroResultado(validarNumero(v.target.value,numeroResultado))
                   }
