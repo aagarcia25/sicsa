@@ -219,8 +219,8 @@ export const AccionesModal = ({
                 fullWidth
                 variant="standard"
                 value={monto||""}
-                required
-                error={!monto}
+                //required
+                //error={!monto}
                 onChange={(v) => {
                       setmonto(validarNumero(v.target.value,monto))
                   }
@@ -265,8 +265,8 @@ export const AccionesModal = ({
                 fullWidth
                 variant="standard"
                 value={TextoAccion}
-                required
-                error={!TextoAccion}
+                //required
+                //error={!TextoAccion}
                 onChange={(v) => setTextoAccion(v.target.value)}
               />
             </Grid>
@@ -279,8 +279,8 @@ export const AccionesModal = ({
                 fullWidth
                 variant="standard"
                 value={accionSuperviviente}
-                required
-                error={!accionSuperviviente}
+                //required
+                //error={!accionSuperviviente}
                 onChange={(v) => setaccionSuperviviente(v.target.value)}
               />
             </Grid>
