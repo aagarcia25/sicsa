@@ -27,6 +27,7 @@ import { Blanco } from "../styles/imagen";
 // import ButtonsTutorial from "./menu/catalogos/Utilerias/ButtonsTutorial";
 import NotesIcon from "@mui/icons-material/Notes";
 import { USUARIORESPONSE } from "../interfaces/UserInfo";
+import ButtonsTutorial from "./componentes/ButtonsTutorial";
 
 interface HeaderProps {
   onDrawerToggle: () => void;
@@ -525,7 +526,10 @@ export default function Header(props: HeaderProps) {
 
                             <Hidden mdDown>
                               <Grid className="containerMenuItemBotones">
-                                {/* <ButtonsTutorial route={"/VIDEOS/TUTORIALES/"} handleCloseMenuVideos={handleCloseMenuVideos} /> */}
+                                <ButtonsTutorial
+                                  route={"/VIDEOS/TUTORIALES/"}
+                                  handleCloseMenuVideos={handleCloseMenuVideos}
+                                />
                               </Grid>
                             </Hidden>
 
