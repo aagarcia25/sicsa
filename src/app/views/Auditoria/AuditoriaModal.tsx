@@ -233,8 +233,10 @@ export const AuditoriaModal = ({
         setListGrupoFuncional(res.RESPONSE);
       } else if (operacion === 12) {
         setListModalidad(res.RESPONSE);
-      } else if (operacion === 6) {
-      } else if (operacion === 10) {
+      } //else if (operacion === 6) {
+        //setListorigenauditoria(res.RESPONSE);
+      //} 
+      else if (operacion === 10) {
         setListuaa(res.RESPONSE);
         setShow(false);
       } else if (operacion === 13) {
@@ -242,6 +244,7 @@ export const AuditoriaModal = ({
         setShow(false);
       } else if (operacion === 14) {
         setLisClasificacion(res.RESPONSE);
+        setShow(false);
       } else if (operacion === 15) {
         setCatRamo(res.RESPONSE);
       } else if (operacion === 16) {
@@ -272,6 +275,7 @@ export const AuditoriaModal = ({
     loadFilter(16);
     loadFilter(17);
     loadFilter(18);
+    loadFilter(21);
 
     if (dt === "") {
     } else {
@@ -288,7 +292,8 @@ export const AuditoriaModal = ({
       setactainicio(dt?.row?.ActaInicio);
       setEncargado(dt?.row?.Encargado);
       setPersonalEncargado(dt?.row?.PersonalEncargado);
-      setidClasificacion(dt?.row?.ctid);
+      //setidClasificacion(dt?.row?.ctid);
+      //handleFilterChangeorigenaud(dt?.row?.coaid);
       handleFilterChangeclasificacion(dt?.row?.ctid);
       setorigenauditoria(dt?.row?.coaid);
       setIdSector(dt?.row?.csid);

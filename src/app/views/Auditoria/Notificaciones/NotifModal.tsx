@@ -147,7 +147,7 @@ export const NotifModal = ({
     loadFilter(6);
 
     if (dt === "") {
-      setAPE(dt.coaid);
+      //setAPE(dt.coaid);
     } else {
       setId(dt?.row?.id);
       setProrroga(dayjs(dt?.row?.Prorroga));
