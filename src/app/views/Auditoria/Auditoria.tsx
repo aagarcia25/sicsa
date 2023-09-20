@@ -14,7 +14,7 @@ import { AuditoriaModal } from "./AuditoriaModal";
 import ChatIcon from "@mui/icons-material/Chat";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 import Notif from "./Notificaciones/Notif";
-import { Button, Collapse, Grid, TextField, Typography } from "@mui/material";
+import { Button, Collapse, Grid, TextField, Tooltip, Typography } from "@mui/material";
 import VisorDocumentos from "../componentes/VisorDocumentos";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
@@ -58,7 +58,7 @@ export const Auditoria = () => {
   const [NAUDITORIA, setNAUDITORIA] = useState("");
   const [idEstatus, setidEstatus] = useState("");
   const [municipio, setMunicipio] = useState("");
-  const [inicio, setInicio] = useState("");
+  const [idInicioauditoria, setidInicioauditoria] = useState("");
   const [anio, setanio] = useState("");
 
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
@@ -118,7 +118,7 @@ export const Auditoria = () => {
   };
 
   const handleFilterChangeinicio = (v: string) => {
-    setInicio(v);
+    setidInicioauditoria(v);
   };
 
   const handleFilterChangeestatus = (v: string) => {
@@ -262,16 +262,16 @@ export const Auditoria = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 200 },
-    { field: "modi", headerName: "Modificado Por", width: 200 },
-    { field: "ceaDescripcion", headerName: "Estatus", width: 200 },
-    { field: "ciaDescripcion", headerName: "Origen de la Auditoría", width: 200 },
-    { field: "anio", headerName: "Año Cuenta Pública", width: 200 , align:"center", headerAlign: "center"},
-    { field: "NAUDITORIA", headerName: "No. De Auditoría", width: 200 , align:"center", headerAlign: "center"},
-    { field: "FolioSIGA", headerName: "Folio SIGA", width: 200 },
-    { field: "cmoDescripcion", headerName: "Modalidad", width: 200 },
+    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 200 },
+    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 200 },
+    { field: "ceaDescripcion", description: "Estatus",headerName: "Estatus", width: 200 },
+    { field: "ciaDescripcion", description: "Origen de la Auditoría", headerName: "Origen de la Auditoría", width: 200 },
+    { field: "anio", description: "Año Cuenta Pública", headerName: "Año Cuenta Pública", width: 200 , align:"center", headerAlign: "center"},
+    { field: "NAUDITORIA", description: "Número de Auditoría", headerName: "No. de Auditoría", width: 200 , align:"center", headerAlign: "center"},
+    { field: "FolioSIGA", description: "Folio SIGA", headerName: "Folio SIGA", width: 200 },
+    { field: "cmoDescripcion", description: "Modalidad", headerName: "Modalidad", width: 200 },
     { field: "Consecutivo", headerName: "Consecutivo", width: 100 , align:"center", headerAlign: "center"},
-    { field: "ActaInicio", headerName: "Acta de Inicio", width: 180 },
+    { field: "ActaInicio", description: "Acta de Inicio", headerName: "Acta de Inicio", width: 180 },
     { field: "NombreAudoria", description: "Nombre", headerName: "Nombre", width: 300},
     {
       field: "Encargado",
@@ -308,7 +308,7 @@ export const Auditoria = () => {
     },
     { field: "muestrapesos", description: "Muestra Miles de Pesos", headerName: "Muestra Miles de Pesos", width: 300 },
     { field: "montoauditado", description: "Monto Auditado", headerName: "Monto Auditado", width: 300 },
-    { field: "munNombre", description: "Nombre", headerName: "Municipio", width: 300 },
+    { field: "munNombre", description: "Municipio", headerName: "Municipio", width: 300 },
     
   ];
 
@@ -335,12 +335,14 @@ export const Auditoria = () => {
   };
 
   const clearFilter = () => {
+    
     setFolioSIGA("");
     setNAUDITORIA("");
     setidEstatus("");
     setMunicipio("");
-    setInicio("");
+    setidInicioauditoria("");
     setanio("");
+    setmodalidad("");
   };
   const consulta = () => {
     let data = {
@@ -348,9 +350,10 @@ export const Auditoria = () => {
       FolioSIGA: FolioSIGA === "false" ? "" : FolioSIGA,
       NAUDITORIA: NAUDITORIA === "false" ? "" : NAUDITORIA,
       idEstatus: idEstatus === "false" ? "" : idEstatus,
-      municipio: municipio === "false" ? "" : municipio,
-      inicio: inicio === "false" ? "" : inicio,
+      idmunicipio: municipio === "false" ? "" : municipio,
+      idInicioauditoria: idInicioauditoria === "false" ? "" : idInicioauditoria,
       anio: anio === "false" ? "" : anio,
+      idModalidad: modalidad === "false" ? "" : modalidad,
     };
     AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
@@ -367,6 +370,20 @@ export const Auditoria = () => {
     });
   };
 
+  useEffect(() =>{
+    if(FolioSIGA===""&&
+      NAUDITORIA===""&&
+      idEstatus===""&&
+      municipio===""&&
+      idInicioauditoria===""&&
+      anio==="")
+    {consulta()}
+  },[FolioSIGA,
+  NAUDITORIA,
+  idEstatus,
+  municipio,
+  idInicioauditoria,
+  anio,])
   const loadFilter = (operacion: number, id?: string) => {
     let data = { NUMOPERACION: operacion, P_ID: id };
     ShareService.SelectIndex(data).then((res) => {
@@ -458,7 +475,7 @@ export const Auditoria = () => {
                   Origen Auditoría:
                 </Typography>
                 <SelectFrag
-                  value={inicio}
+                  value={idInicioauditoria}
                   options={Listinicio}
                   onInputChange={handleFilterChangeinicio}
                   placeholder={"Seleccione.."}
@@ -555,6 +572,7 @@ export const Auditoria = () => {
               sx={{ padding: "1%" }}
             >
               <Grid item xs={12} sm={6} md={4} lg={2}>
+              <Tooltip title="Buscar" >
                 <Button
                   onClick={consulta}
                   variant="contained"
@@ -563,18 +581,22 @@ export const Auditoria = () => {
                 >
                   <Typography sx={{ color: "white" }}> Buscar </Typography>
                 </Button>
+              </Tooltip>
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={2}>
+              <Tooltip title="Limpiar Filtros" >
                 <Button
                   onClick={clearFilter}
                   variant="contained"
                   color="secondary"
                   endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
                 >
+                
                   <Typography sx={{ color: "white" }}>
                     Limpiar Filtros
                   </Typography>
                 </Button>
+                </Tooltip>
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
               <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
