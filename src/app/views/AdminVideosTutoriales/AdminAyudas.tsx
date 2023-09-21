@@ -348,6 +348,12 @@ const AdminAyudas = ({
       width: 600,
     },
     {
+      field: "RutaVideo",
+      headerName: "Ruta Video",
+      description: "Ruta Video",
+      width: 600,
+    },
+    {
       field: "Departamento",
       headerName: "Departamento",
       description: "Departamento",
@@ -471,6 +477,7 @@ const AdminAyudas = ({
       consulta(IdMenu ? IdMenu : idMenu, "11");
     }
     loadFilter(42);
+
     if (dt?.length == 0) {
     } else {
       setNombreArchivo(dt?.row?.nombreOriginal);
@@ -503,7 +510,7 @@ const AdminAyudas = ({
             icon={<OndemandVideoIcon />}
           />
           <BottomNavigationAction
-            label="Guia Rapida"
+            label="Guía Rápida"
             value="guia"
             icon={<MenuBookIcon />}
           />
@@ -522,7 +529,7 @@ const AdminAyudas = ({
         md={6}
         justifyContent="center"
       >
-        <RadioGroup
+        {/* <RadioGroup
           row
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
@@ -539,7 +546,7 @@ const AdminAyudas = ({
             control={<Radio />}
             label="Departamentos internos"
           />
-        </RadioGroup>
+        </RadioGroup> */}
       </Grid>
       <Grid
         container
@@ -595,9 +602,9 @@ const AdminAyudas = ({
                 disabled={
                   !idMenu ||
                   idMenu == "false" ||
-                  !nombreArchivo ||
-                  !newVideo ||
-                  !valueDepartamento
+                  !nombreArchivo //||
+                 // !newVideo ||
+                 // !valueDepartamento
                 }
                 className="guardar"
                 onClick={() => SaveVideo(false)}
@@ -629,14 +636,14 @@ const AdminAyudas = ({
           {value == "guia" ? (
             <>
               <Button
-                disabled={
-                  !idMenu ||
-                  idMenu == "false" ||
-                  !nombreArchivo ||
-                  !pregunta ||
-                  !newVideo ||
-                  !valueDepartamento
-                }
+                // disabled={
+                //   !idMenu ||
+                //   idMenu == "false" ||
+                //   !nombreArchivo ||
+                //   !pregunta //||
+                //  // !newVideo ||
+                //  // !valueDepartamento
+                // }
                 className="guardar"
                 onClick={() => SaveVideo(false)}
               >
@@ -671,7 +678,7 @@ const AdminAyudas = ({
                 disabled={
                   !idMenu ||
                   idMenu == "false" ||
-                  !valueDepartamento ||
+                 // !valueDepartamento ||
                   !pregunta ||
                   !respuesta
                 }

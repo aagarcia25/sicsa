@@ -26,6 +26,9 @@ import { PTA } from "../views/PlanAnual/PTA";
 import { Municipio } from "../views/CatMunicipios/Municipio";
 import { Modalidad } from "../views/CatModalidad/Modalidad";
 import AdminAyudas from "../views/AdminVideosTutoriales/AdminAyudas";
+import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
+import { VisualizadorAyudas } from "../views/componentes/VisualizadorAyudas";
+//import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
   const log = login;
@@ -134,9 +137,13 @@ export const AppRouter = ({ login }: { login: boolean }) => {
           path="/inicio/catalogos/modalidad"
           element={log ? <Modalidad /> : <AuthRouter />}
         />
+        
+        {/* <Route
+          path="/inicio/ayuda" element={log ? <ButtonsTutorial route={""} handleCloseMenuVideos={Function} /> : <AuthRouter />}
+        /> */}
 
         <Route
-          path="/inicio/catalogos/Adminayudas"
+          path="/inicio/ayuda"
           element={
             log ? (
               <AdminAyudas
