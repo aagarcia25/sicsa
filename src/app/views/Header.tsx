@@ -35,6 +35,7 @@ interface HeaderProps {
   id: any;
   imgData: string;
   imgTipo: string;
+  //idMenu:any;
 }
 
 export default function Header(props: HeaderProps) {
@@ -529,6 +530,7 @@ export default function Header(props: HeaderProps) {
                                 <ButtonsTutorial
                                   route={"/VIDEOS/TUTORIALES/"}
                                   handleCloseMenuVideos={handleCloseMenuVideos}
+                                //idMenu={props.idMenu}
                                 />
                               </Grid>
                             </Hidden>
