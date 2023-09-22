@@ -21,3 +21,11 @@ export interface MigraData {
     Nombre: string;
     estatus: string;
 }
+
+export interface responseresult {
+    NUMCODE: number
+    STRMESSAGE: string
+    RESPONSE: any[]
+    SUCCESS: boolean
+  }
+  
