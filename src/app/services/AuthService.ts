@@ -143,7 +143,9 @@ export class AuthService {
     }
 
   
-    
+       public static async obtenerguias(data : any) {
+        return await postDoc('obtenerguias', data);
+    };
 
     
 

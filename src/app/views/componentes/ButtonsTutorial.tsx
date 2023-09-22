@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import {
   ITEMS,
   RESPONSEGUIARAPIDA,
-  RESPONSEPREGUNTASFRECUENTES, 
+  RESPONSEPREGUNTASFRECUENTES,
   RESPONSEVIDEOS,
 } from "../../interfaces/UserInfo";
 import { menus } from "../../interfaces/menu";
@@ -36,11 +36,9 @@ import Progress from "../Progress";
 const ButtonsTutorial = ({
   route,
   handleCloseMenuVideos,
-  //idMenu,
 }: {
   route: string;
   handleCloseMenuVideos: Function;
-  //idMenu: any;
 }) => {
   const [open, setOpen] = React.useState(false);
   const [openCarga, setOpenCarga] = React.useState(false);
@@ -59,6 +57,8 @@ const ButtonsTutorial = ({
   const [modo, setModo] = useState<string>("");
 
   const handleClickOpen = (URLVideo: string, modo: string) => {
+    console.log(URLVideo);
+    console.log(modo);
     setModo(modo);
     setURLVideo(URLVideo);
     setOpen(true);
@@ -67,13 +67,7 @@ const ButtonsTutorial = ({
   const handleObtenerVideos = (idmenu: string) => {
     let data = {
       CHID: idmenu,
-      NUMOPERACION:12,
-        //JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 12 : 9,
-      // TIPO:
-      //   JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
-      //   JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
-      //     ? 1
-      //     : 2,
+      NUMOPERACION: 12,
     };
     AuthService.AdminAyudas(data).then((res) => {
       if (res.SUCCESS) {
@@ -82,72 +76,28 @@ const ButtonsTutorial = ({
         setDataVideos(res.RESPONSE);
       } else {
       }
-    }); 
+    });
   };
 
-  const handleObtenerPreguntasFrecuentes = (idmenu: string) => {
+  const handleObtenerPreguntasFrecuentes = (
+    idmenu: string,
+    numeroOperacion: number
+  ) => {
     let data = {
       CHID: idmenu,
-      NUMOPERACION:11,
-        //JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 12 : 9,
-      // TIPO:
-      //   JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
-      //   JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
-      //     ? 1
-      //     : 2,
+      NUMOPERACION: numeroOperacion,
     };
     AuthService.AdminAyudas(data).then((res) => {
       if (res.SUCCESS) {
-        setDataPreguntasFrecuentes(res.RESPONSE);
-      } else {
+        if (numeroOperacion == 10) {
+          setDataPreguntasFrecuentes(res.RESPONSE);
+        } else {
+          setDataGuiaRapida(res.RESPONSE);
+        }
       }
-    }); 
+    });
   };
 
-  const handleObtenerGuias = (idmenu: string) => {
-    let data = {
-      CHID: idmenu,
-      NUMOPERACION:11,
-        //JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 12 : 9,
-      // TIPO:
-      //   JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
-      //   JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
-      //     ? 1
-      //     : 2,
-    };
-    AuthService.AdminAyudas(data).then((res) => {
-      if (res.SUCCESS) {
-        setDataGuiaRapida(res.RESPONSE);
-      } else {
-      }
-    }); 
-  };
-  
-
-  // const handleObtenerPreguntasFrecuentes = (
-  //   idmenu: string,
-  //   numOperacion: number,
-  // ) => {
-  //   let data = {
-  //     CHID: idmenu,
-  //     NUMOPERACION: numOperacion,
-  //     // TIPO:
-  //     //   JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
-  //     //   JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
-  //     //     ? 1
-  //     //     : 2,
-  //   };
-  //   AuthService.AdminAyudas(data).then((res) => {
-  //     if (res.SUCCESS) {
-  //       if (numOperacion == 7 || numOperacion == 10) {
-  //         setDataPreguntasFrecuentes(res.RESPONSE);
-  //       } else if (numOperacion == 8 || numOperacion == 11) {
-  //         setDataGuiaRapida(res.RESPONSE);
-  //       }
-  //     } else {
-  //     }
-  //   });
-  // };
   const handleClick = (x: number) => {
     openMenu == x ? setOpenMenu(-1) : setOpenMenu(x);
   };
@@ -160,14 +110,6 @@ const ButtonsTutorial = ({
     setOpen(false);
     setOpenCarga(false);
     handleObtenerVideos(idMenu);
-    //handleObtenerPreguntasFrecuentes(;
-    //   idMenu,
-    //   JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 10 : 7
-    // );
-    // handleObtenerPreguntasFrecuentes(
-    //   idMenu,
-    //   JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 11 : 8
-    // );
   };
 
   const handleCloseModal = () => {
@@ -176,31 +118,30 @@ const ButtonsTutorial = ({
 
   useEffect(() => {
     ValidaSesion();
-    handleObtenerVideos(idMenu)
-    handleObtenerPreguntasFrecuentes(idMenu);
-    handleObtenerGuias(idMenu);
-    //idMenu();
-    // list.map((item: any) => {
-    //   item.item.map((itemsMenu: ITEMS) => {
-    //     if (
-    //       String(itemsMenu.Path) ==
-    //       window.location.href
-    //         .slice(window.location.href.indexOf("#") + 1)
-    //         .replace(/%20/g, " ")
-    //     ) {
-    //       setIdMenu(itemsMenu.Id);
-    //       handleObtenerVideos(itemsMenu.Id);
-    //       handleObtenerPreguntasFrecuentes(
-    //         itemsMenu.Id,
-    //         JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 10 : 7
-    //       );
-    //       handleObtenerPreguntasFrecuentes(
-    //         itemsMenu.Id,
-    //         JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 11 : 8
-    //       );
-    //     }
-    //   });
-    // });
+
+    list.map((item: any) => {
+      item.item.map((itemsMenu: ITEMS) => {
+        if (
+          String(itemsMenu.Path) ==
+          window.location.href
+            .slice(window.location.href.indexOf("#") + 1)
+            .replace(/%20/g, " ")
+        ) {
+          console.log(itemsMenu);
+          console.log("ruta");
+          console.log(
+            window.location.href
+              .slice(window.location.href.indexOf("#") + 1)
+              .replace(/%20/g, " ")
+          );
+
+          setIdMenu(itemsMenu.Id);
+          handleObtenerVideos(itemsMenu.Id);
+          handleObtenerPreguntasFrecuentes(itemsMenu.Id, 10);
+          handleObtenerPreguntasFrecuentes(itemsMenu.Id, 11);
+        }
+      });
+    });
   }, [window.location.href]);
 
   return (
