@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import {
   ITEMS,
   RESPONSEGUIARAPIDA,
-  RESPONSEPREGUNTASFRECUENTES,
+  RESPONSEPREGUNTASFRECUENTES, 
   RESPONSEVIDEOS,
 } from "../../interfaces/UserInfo";
 import { menus } from "../../interfaces/menu";
@@ -36,9 +36,11 @@ import Progress from "../Progress";
 const ButtonsTutorial = ({
   route,
   handleCloseMenuVideos,
+  //idMenu,
 }: {
   route: string;
   handleCloseMenuVideos: Function;
+  //idMenu: any;
 }) => {
   const [open, setOpen] = React.useState(false);
   const [openCarga, setOpenCarga] = React.useState(false);
@@ -65,13 +67,13 @@ const ButtonsTutorial = ({
   const handleObtenerVideos = (idmenu: string) => {
     let data = {
       CHID: idmenu,
-      NUMOPERACION:
-        JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 12 : 9,
-      TIPO:
-        JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
-        JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
-          ? 1
-          : 2,
+      NUMOPERACION:12,
+        //JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 12 : 9,
+      // TIPO:
+      //   JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
+      //   JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
+      //     ? 1
+      //     : 2,
     };
     AuthService.AdminAyudas(data).then((res) => {
       if (res.SUCCESS) {
@@ -80,33 +82,72 @@ const ButtonsTutorial = ({
         setDataVideos(res.RESPONSE);
       } else {
       }
-    });
+    }); 
   };
 
-  const handleObtenerPreguntasFrecuentes = (
-    idmenu: string,
-    numOperacion: number
-  ) => {
+  const handleObtenerPreguntasFrecuentes = (idmenu: string) => {
     let data = {
       CHID: idmenu,
-      NUMOPERACION: numOperacion,
-      TIPO:
-        JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
-        JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
-          ? 1
-          : 2,
+      NUMOPERACION:11,
+        //JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 12 : 9,
+      // TIPO:
+      //   JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
+      //   JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
+      //     ? 1
+      //     : 2,
     };
     AuthService.AdminAyudas(data).then((res) => {
       if (res.SUCCESS) {
-        if (numOperacion == 7 || numOperacion == 10) {
-          setDataPreguntasFrecuentes(res.RESPONSE);
-        } else if (numOperacion == 8 || numOperacion == 11) {
-          setDataGuiaRapida(res.RESPONSE);
-        }
+        setDataPreguntasFrecuentes(res.RESPONSE);
       } else {
       }
-    });
+    }); 
   };
+
+  const handleObtenerGuias = (idmenu: string) => {
+    let data = {
+      CHID: idmenu,
+      NUMOPERACION:11,
+        //JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 12 : 9,
+      // TIPO:
+      //   JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
+      //   JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
+      //     ? 1
+      //     : 2,
+    };
+    AuthService.AdminAyudas(data).then((res) => {
+      if (res.SUCCESS) {
+        setDataGuiaRapida(res.RESPONSE);
+      } else {
+      }
+    }); 
+  };
+  
+
+  // const handleObtenerPreguntasFrecuentes = (
+  //   idmenu: string,
+  //   numOperacion: number,
+  // ) => {
+  //   let data = {
+  //     CHID: idmenu,
+  //     NUMOPERACION: numOperacion,
+  //     // TIPO:
+  //     //   JSON.parse(String(getcontrolInternoEntidad())) == "ORG" ||
+  //     //   JSON.parse(String(getcontrolInternoEntidad())) == "MUN"
+  //     //     ? 1
+  //     //     : 2,
+  //   };
+  //   AuthService.AdminAyudas(data).then((res) => {
+  //     if (res.SUCCESS) {
+  //       if (numOperacion == 7 || numOperacion == 10) {
+  //         setDataPreguntasFrecuentes(res.RESPONSE);
+  //       } else if (numOperacion == 8 || numOperacion == 11) {
+  //         setDataGuiaRapida(res.RESPONSE);
+  //       }
+  //     } else {
+  //     }
+  //   });
+  // };
   const handleClick = (x: number) => {
     openMenu == x ? setOpenMenu(-1) : setOpenMenu(x);
   };
@@ -119,14 +160,14 @@ const ButtonsTutorial = ({
     setOpen(false);
     setOpenCarga(false);
     handleObtenerVideos(idMenu);
-    handleObtenerPreguntasFrecuentes(
-      idMenu,
-      JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 10 : 7
-    );
-    handleObtenerPreguntasFrecuentes(
-      idMenu,
-      JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 11 : 8
-    );
+    //handleObtenerPreguntasFrecuentes(;
+    //   idMenu,
+    //   JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 10 : 7
+    // );
+    // handleObtenerPreguntasFrecuentes(
+    //   idMenu,
+    //   JSON.parse(String(getcontrolInternoEntidad())) == "DTI" ? 11 : 8
+    // );
   };
 
   const handleCloseModal = () => {
@@ -135,6 +176,10 @@ const ButtonsTutorial = ({
 
   useEffect(() => {
     ValidaSesion();
+    handleObtenerVideos(idMenu)
+    handleObtenerPreguntasFrecuentes(idMenu);
+    handleObtenerGuias(idMenu);
+    //idMenu();
     // list.map((item: any) => {
     //   item.item.map((itemsMenu: ITEMS) => {
     //     if (
