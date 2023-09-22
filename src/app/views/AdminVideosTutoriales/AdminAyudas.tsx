@@ -3,11 +3,8 @@ import {
   BottomNavigationAction,
   Box,
   Button,
-  FormControlLabel,
   Grid,
   IconButton,
-  Radio,
-  RadioGroup,
   TextField,
   Tooltip,
   Typography,
@@ -20,17 +17,17 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import { GridColDef } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
-import { getToken, getUser } from "../../services/localStorage";
-import { CatalogosServices } from "../../services/catalogosServices";
-import { ValidaSesion } from "../../services/UserServices";
-import { AuthService } from "../../services/AuthService";
 import { Toast } from "../../helpers/Toast";
-import MUIXDataGrid from "../MUIXDataGrid";
-import SelectFrag from "../componentes/SelectFrag";
-import Progress from "../Progress";
+import SelectValues, { responseresult } from "../../interfaces/Share";
 import { USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { AuthService } from "../../services/AuthService";
 import { ShareService } from "../../services/ShareService";
-import SelectValues from "../../interfaces/Share";
+import { ValidaSesion } from "../../services/UserServices";
+import { getToken, getUser } from "../../services/localStorage";
+import MUIXDataGrid from "../MUIXDataGrid";
+import Progress from "../Progress";
+import SelectFrag from "../componentes/SelectFrag";
+import axios from "axios";
 
 const AdminAyudas = ({
   IdMenu,
@@ -58,7 +55,6 @@ const AdminAyudas = ({
   const [pregunta, setPregunta] = useState("");
   const [videoPreview, setVideoPreview] = useState("");
   const [value, setValue] = useState("");
-  const [valueDepartamento, setValueDepartamento] = useState("");
   const [preguntas, setPreguntas] = useState([]);
 
   function enCambioFile(event: any) {
@@ -113,55 +109,76 @@ const AdminAyudas = ({
     ValidaSesion();
     setVideoPreview("");
     setslideropen(true);
+    console.log("Save Video");
+    console.log(newVideo);
     const formData = new FormData();
     formData.append("NUMOPERACION", value == "video" ? "1" : "2");
     formData.append("VIDEO", newVideo, nombreArchivo);
     formData.append("PREGUNTA", pregunta);
-    formData.append("TIPO", valueDepartamento == "ext" ? "1" : "2");
     formData.append("CHUSER", user.Id);
     formData.append("CHID", idMenu);
     formData.append("NAME", nombreArchivo);
     formData.append("TOKEN", JSON.parse(String(getToken())));
+    console.log(formData);
 
-    AuthService.AdminAyudas(formData).then((res) => {
-      if (res.SUCCESS || res.RESPONSE) {
-        Toast.fire({
-          icon: "success",
-          title: "Archivo Cargado ",
-        });
-        if (cerrar) {
-          handleClose();
-        } else {
-          handleLimpiaCampos();
-          if (value == "pregunta") {
-            consulta(IdMenu ? IdMenu : idMenu == "false" ? "" : idMenu, "4");
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: process.env.REACT_APP_APPLICATION_BASE_URL + "AdminAyudas",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "X-Requested-With": "XMLHttpRequest",
+        "Access-Control-Allow-Origin": "*",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((res) => {
+        if (res.data.SUCCESS || res.data.RESPONSE) {
+          Toast.fire({
+            icon: "success",
+            title: "Archivo Cargado ",
+          });
+          if (cerrar) {
+            handleClose();
+          } else {
+            handleLimpiaCampos();
+            if (value == "pregunta") {
+              consulta(IdMenu ? IdMenu : idMenu == "false" ? "" : idMenu, "4");
+            }
+            if (value == "guia") {
+              consulta(IdMenu ? IdMenu : idMenu == "false" ? "" : idMenu, "11");
+            }
+            if (value == "video") {
+              consulta(IdMenu ? IdMenu : idMenu == "false" ? "" : idMenu, "12");
+            }
           }
-          if (value == "guia") {
-            consulta(IdMenu ? IdMenu : idMenu == "false" ? "" : idMenu, "11");
-          }
-          if (value == "video") {
-            consulta(IdMenu ? IdMenu : idMenu == "false" ? "" : idMenu, "12");
-          }
+
+          setslideropen(false);
+          setNombreArchivo("");
+          setNewVideo(null);
         }
+        if (!res.data.SUCCESS) {
+          Toast.fire({
+            icon: "error",
+            title: "Error Carga de Archivo",
+          });
+          if (cerrar) {
+            handleClose();
+          } else {
+            handleLimpiaCampos();
+          }
 
-        setslideropen(false);
-        setNombreArchivo("");
-        setNewVideo(null);
-      }
-      if (!res.SUCCESS) {
-        Toast.fire({
-          icon: "error",
-          title: "Error Carga de Archivo",
-        });
-        if (cerrar) {
-          handleClose();
-        } else {
-          handleLimpiaCampos();
+          setslideropen(false);
         }
-
+      })
+      .catch((error) => {
+        console.log(error);
         setslideropen(false);
-      }
-    });
+      });
+
     // handleClose();
   };
 
@@ -235,7 +252,6 @@ const AdminAyudas = ({
       CHID: idMenu,
       PREGUNTA: pregunta,
       RESPUESTA: respuesta,
-      TIPO: valueDepartamento == "ext" ? "1" : "2",
     };
     AuthService.AdminAyudas(data).then((res) => {
       if (res.SUCCESS || res.RESPONSE) {
@@ -438,18 +454,11 @@ const AdminAyudas = ({
     setPregunta("");
     setRespuesta("");
     setNewVideo(null);
-    setValueDepartamento("");
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
     handleLimpiaCampos();
-  };
-  const handleChangeDepartamento = (
-    event: React.SyntheticEvent,
-    newValue: string
-  ) => {
-    setValueDepartamento(newValue);
   };
 
   const agregar = (data: any) => {
@@ -600,11 +609,9 @@ const AdminAyudas = ({
             <>
               <Button
                 disabled={
-                  !idMenu ||
-                  idMenu == "false" ||
-                  !nombreArchivo //||
-                 // !newVideo ||
-                 // !valueDepartamento
+                  !idMenu || idMenu == "false" || !nombreArchivo //||
+                  // !newVideo ||
+                  // !valueDepartamento
                 }
                 className="guardar"
                 onClick={() => SaveVideo(false)}
@@ -614,11 +621,7 @@ const AdminAyudas = ({
               {IdMenu ? (
                 <Button
                   disabled={
-                    !idMenu ||
-                    idMenu == "false" ||
-                    !nombreArchivo ||
-                    !newVideo ||
-                    !valueDepartamento
+                    !idMenu || idMenu == "false" || !nombreArchivo || !newVideo
                   }
                   className="guardar"
                   onClick={() => SaveVideo(true)}
@@ -656,8 +659,7 @@ const AdminAyudas = ({
                     idMenu == "false" ||
                     !nombreArchivo ||
                     !pregunta ||
-                    !newVideo ||
-                    !valueDepartamento
+                    !newVideo
                   }
                   className="guardar"
                   onClick={() => SaveVideo(true)}
@@ -678,7 +680,7 @@ const AdminAyudas = ({
                 disabled={
                   !idMenu ||
                   idMenu == "false" ||
-                 // !valueDepartamento ||
+                  // !valueDepartamento ||
                   !pregunta ||
                   !respuesta
                 }
@@ -690,11 +692,7 @@ const AdminAyudas = ({
               {IdMenu ? (
                 <Button
                   disabled={
-                    !idMenu ||
-                    idMenu == "false" ||
-                    !valueDepartamento ||
-                    !pregunta ||
-                    !respuesta
+                    !idMenu || idMenu == "false" || !pregunta || !respuesta
                   }
                   className="guardar"
                   onClick={() => SavePreguntasFrecuentes(true)}
