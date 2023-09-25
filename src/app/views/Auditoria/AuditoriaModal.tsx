@@ -234,8 +234,8 @@ export const AuditoriaModal = ({
       } else if (operacion === 12) {
         setListModalidad(res.RESPONSE);
       } //else if (operacion === 6) {
-        //setListorigenauditoria(res.RESPONSE);
-      //} 
+      //setListorigenauditoria(res.RESPONSE);
+      //}
       else if (operacion === 10) {
         setListuaa(res.RESPONSE);
         setShow(false);
@@ -793,6 +793,15 @@ export const AuditoriaModal = ({
                 onClick={() => handleSend()}
               >
                 {tipo === 1 ? "Agregar" : "Actualizar"}
+              </Button>
+            </Grid>
+            <Grid item alignItems="center" justifyContent="center" xs={2}>
+              <Button
+                // disabled={descripcion === "" || nombre === ""}
+                className={"actualizar"}
+                onClick={() => handleClose()}
+              >
+                {"Salir"}
               </Button>
             </Grid>
           </Grid>
