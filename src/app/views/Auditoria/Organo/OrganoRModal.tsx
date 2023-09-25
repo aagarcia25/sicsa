@@ -12,7 +12,7 @@ import SelectFrag from "../../componentes/SelectFrag";
 import dayjs, { Dayjs } from "dayjs";
 import CustomizedDate from "../../componentes/CustomizedDate";
 
-export const ContestacionModal = ({
+export const OrganoRModal = ({
   handleClose,
   tipo,
   dt,
@@ -28,16 +28,15 @@ export const ContestacionModal = ({
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
   const [id, setId] = useState("");
-  const [Prorroga, setProrroga] = useState<Dayjs | null>();
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
   const [FOficio, setFechaOficio] = useState<Dayjs | null>();
   const [FRecibido, setFRecibido] = useState<Dayjs | null>();
   const [FVencimiento, setFVencimiento] = useState<Dayjs | null>();
-  const [idsecretaria, setidsecretaria] = useState("");
-  const [idunidad, setidunidad] = useState("");
-  const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
-  const [ListUnidades, setListUnidades] = useState<SelectValues[]>([]);
+  const [idorigen, setidorigen] = useState("");
+  const [LisOrigen, setLisOrigen] = useState<SelectValues[]>([]);
+  const [idDestino, setidDestino] = useState("");
+  const [LisDestino, setLisDestino] = useState<SelectValues[]>([]);
 
   const handleSend = () => {
     if (!Oficio) {
@@ -47,15 +46,14 @@ export const ContestacionModal = ({
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        idNotificacion: idNotificacion,
-        Prorroga: Prorroga,
+        idOrganoC: idNotificacion,
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
         FOficio: FOficio,
         FRecibido: FRecibido,
         FVencimiento: FVencimiento,
-        idsecretaria: idsecretaria,
-        idunidad: idunidad,
+        idOrganoAuditorOrigen: idorigen,
+        idOrganoAuditorDestino: idDestino,
       };
 
       handleRequest(data);
@@ -64,7 +62,7 @@ export const ContestacionModal = ({
 
   const handleRequest = (data: any) => {
     if (tipo === 1) {
-      AuditoriaService.Contestacionindex(data).then((res) => {
+      AuditoriaService.OrganoRindex(data).then((res) => {
         console.log(res);
 
         if (res.SUCCESS) {
@@ -79,7 +77,7 @@ export const ContestacionModal = ({
         }
       });
     } else if (tipo === 2) {
-      AuditoriaService.Contestacionindex(data).then((res) => {
+      AuditoriaService.OrganoRindex(data).then((res) => {
         if (res.SUCCESS) {
           Toast.fire({
             icon: "success",
@@ -94,12 +92,11 @@ export const ContestacionModal = ({
   };
 
   const handleFilterChange1 = (v: string) => {
-    setidsecretaria(v);
-    loadFilter(20, v);
+    setidorigen(v);
   };
 
   const handleFilterChange2 = (v: string) => {
-    setidunidad(v);
+    setidDestino(v);
   };
 
   const handleFilterChangefo = (v: any) => {
@@ -114,44 +111,31 @@ export const ContestacionModal = ({
     setFVencimiento(v);
   };
 
-  const handleFilterChangep = (v: any) => {
-    setProrroga(v);
-  };
-
   const loadFilter = (operacion: number, P_ID?: string) => {
     setShow(true);
     let data = { NUMOPERACION: operacion, P_ID: P_ID };
     ShareService.SelectIndex(data).then((res) => {
-      if (operacion === 19) {
-        setListSecretarias(res.RESPONSE);
-        setShow(false);
-      } else if (operacion === 20) {
-        setListUnidades(res.RESPONSE);
-        setShow(false);
-      } else if (operacion === 11) {
-        setListUnidades(res.RESPONSE);
+      if (operacion === 6) {
+        setLisOrigen(res.RESPONSE);
+        setLisDestino(res.RESPONSE);
         setShow(false);
       }
     });
   };
 
   useEffect(() => {
-    loadFilter(11);
-    loadFilter(19);
-    //loadFilter(20);
+    loadFilter(6);
 
     if (dt === "") {
     } else {
       setId(dt?.row?.id);
-      setProrroga(dayjs(dt?.row?.Prorroga));
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
       setFechaOficio(dayjs(dt?.row?.FOficio));
       setFRecibido(dayjs(dt?.row?.FRecibido));
       setFVencimiento(dayjs(dt?.row?.FVencimiento));
-      // setidsecretaria(dt?.row?.secid);
-      handleFilterChange1(dt?.row?.secid);
-      setidunidad(dt?.row?.uniid);
+      setidorigen(dt?.row?.uniid);
+      setidDestino(dt?.row?.uniid);
     }
   }, [dt]);
 
@@ -178,11 +162,11 @@ export const ContestacionModal = ({
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Secretaría:
+                Organo Origen:
               </Typography>
               <SelectFrag
-                value={idsecretaria}
-                options={ListSecretarias}
+                value={idorigen}
+                options={LisOrigen}
                 onInputChange={handleFilterChange1}
                 placeholder={"Seleccione..."}
                 disabled={false}
@@ -190,11 +174,11 @@ export const ContestacionModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Unidad Administrativa:
+                Organo Destino:
               </Typography>
               <SelectFrag
-                value={idunidad}
-                options={ListUnidades}
+                value={idDestino}
+                options={LisDestino}
                 onInputChange={handleFilterChange2}
                 placeholder={"Seleccione..."}
                 disabled={false}
@@ -261,13 +245,7 @@ export const ContestacionModal = ({
                 onchange={handleFilterChangefv}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <CustomizedDate
-                value={Prorroga}
-                label={"Prorroga"}
-                onchange={handleFilterChangep}
-              />
-            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
           <Grid
             container
@@ -282,7 +260,6 @@ export const ContestacionModal = ({
           >
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
-                // disabled={descripcion === "" || nombre === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >
@@ -290,11 +267,7 @@ export const ContestacionModal = ({
               </Button>
             </Grid>
             <Grid item alignItems="center" justifyContent="center" xs={2}>
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
-                className={"actualizar"}
-                onClick={() => handleClose()}
-              >
+              <Button className={"actualizar"} onClick={() => handleClose()}>
                 {"Salir"}
               </Button>
             </Grid>

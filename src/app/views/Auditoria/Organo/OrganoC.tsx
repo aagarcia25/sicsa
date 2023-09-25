@@ -1,61 +1,49 @@
-import React, { useEffect, useState } from "react";
-import TitleComponent from "../../componentes/TitleComponent";
-import ModalForm from "../../componentes/ModalForm";
-import ButtonsAdd from "../../componentes/ButtonsAdd";
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
+import { GridColDef } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { Toast } from "../../../helpers/Toast";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { AuditoriaService } from "../../../services/AuditoriaService";
+import { getPermisos, getUser } from "../../../services/localStorage";
 import MUIXDataGrid from "../../MUIXDataGrid";
 import Progress from "../../Progress";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { GridColDef } from "@mui/x-data-grid";
+import ButtonsAdd from "../../componentes/ButtonsAdd";
 import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
-import { AuditoriaService } from "../../../services/AuditoriaService";
-import { Toast } from "../../../helpers/Toast";
-import Swal from "sweetalert2";
-import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
-import { getPermisos, getUser } from "../../../services/localStorage";
-import AttachmentIcon from "@mui/icons-material/Attachment";
+import ModalForm from "../../componentes/ModalForm";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
-import { ContestacionModal } from "./ContestacionModal";
-
-export const Contestacion = ({
+import { OrganoCModal } from "./OrganoCModal";
+import { OrganoR } from "./OrganoR";
+const OrganoC = ({
   handleFunction,
   obj,
 }: {
   handleFunction: Function;
   obj: any;
 }) => {
-  const [openSlider, setOpenSlider] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [openModalDetalle, setOpenModalDetalle] = useState(false);
-  const [vrows, setVrows] = useState({});
-  const [data, setData] = useState([]);
+  const [openContestacion, setOpenContestacion] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [show, setShow] = useState(false);
+  const [vrows, setVrows] = useState({});
+  const [data, setData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [tipoOperacion, setTipoOperacion] = useState(0);
-  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const [agregar, setAgregar] = useState<boolean>(true);
   const [editar, setEditar] = useState<boolean>(true);
   const [eliminar, setEliminar] = useState<boolean>(true);
 
-  const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
-    setOpenAdjuntos(true);
-  };
-
   const consulta = (data: any) => {
-    AuditoriaService.Contestacionindex(data).then((res) => {
+    AuditoriaService.OrganoCindex(data).then((res) => {
       if (res.SUCCESS) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "¡Consulta Exitosa!",
-        // });
         setData(res.RESPONSE);
-        setOpenSlider(false);
+        setShow(false);
       } else {
-        setOpenSlider(false);
+        setShow(false);
         Swal.fire("¡Error!", res.STRMESSAGE, "error");
       }
     });
@@ -71,21 +59,19 @@ export const Contestacion = ({
       denyButtonText: `Cancelar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        //setOpenSlider(false);
         let data = {
           NUMOPERACION: 3,
           CHID: v.data.row.id,
           CHUSER: user.Id,
         };
 
-        AuditoriaService.Contestacionindex(data).then((res) => {
+        AuditoriaService.OrganoCindex(data).then((res) => {
           if (res.SUCCESS) {
             Toast.fire({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            //consulta({ NUMOPERACION: 4 });
-            consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
+            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
           }
@@ -98,14 +84,19 @@ export const Contestacion = ({
 
   const handleDetalle = (data: any) => {
     setVrows(data);
-    setOpenModalDetalle(true);
+    setOpenContestacion(true);
+  };
+
+  const handleVerAdjuntos = (data: any) => {
+    setVrows(data);
+    setOpenAdjuntos(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
-    consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
   };
 
   const handleEdit = (data: any) => {
@@ -147,10 +138,17 @@ export const Contestacion = ({
               show={eliminar}
             ></ButtonsDeleted>
             <ButtonsDetail
-              title={"Ver adjuntos"}
+              title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
               show={true}
               icon={<AttachmentIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Ver Contestación"}
+              handleFunction={handleDetalle}
+              show={true}
+              icon={<DriveFileMoveIcon />}
               row={v}
             ></ButtonsDetail>
           </>
@@ -163,19 +161,39 @@ export const Contestacion = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 200 },
-    { field: "modi", headerName: "Modificado Por", width: 200 },
-    { field: "secretaria", headerName: "Secretaría", width: 300 },
-    { field: "unidad", headerName: "Unidad Responsable", width: 300 },
-    { field: "Oficio", headerName: "Oficio", width: 200 },
-    { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 200,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 200,
+    },
+    { field: "descripcionsec", headerName: "Organo", width: 300 },
+    {
+      field: "Oficio",
+      description: "Oficio",
+      headerName: "Oficio",
+      width: 200,
+    },
+    {
+      field: "SIGAOficio",
+      description: "Folio SIGA",
+      headerName: "Folio SIGA",
+      width: 200,
+    },
     { field: "FOficio", headerName: "Fecha de Oficio", width: 200 },
     { field: "FRecibido", headerName: "Fecha de Recibido", width: 200 },
     { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 200 },
-    { field: "Prorroga", headerName: "Fecha de Prorroga", width: 200 },
   ];
 
   useEffect(() => {
+    console.log("obj", obj);
+
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {
@@ -189,33 +207,37 @@ export const Contestacion = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
   }, []);
 
   return (
     <div>
       <ModalForm
-        title={"Contestación a Notificación"}
+        title={"Contestación a Organo Áuditor"}
         handleClose={handleFunction}
       >
-        <Progress open={openSlider}></Progress>
+        <Progress open={show}></Progress>
         <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
+      {openContestacion ? (
+        <OrganoR handleFunction={handleClose} obj={vrows} />
+      ) : (
+        ""
+      )}
       {openModal ? (
-        <ContestacionModal
+        <OrganoCModal
           tipo={tipoOperacion}
           handleClose={handleClose}
           dt={vrows}
           user={user}
-          idNotificacion={obj.id}
+          idAuditoria={obj.id}
         />
       ) : (
         ""
       )}
-
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={3} />
+        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={6} />
       ) : (
         ""
       )}
@@ -223,4 +245,4 @@ export const Contestacion = ({
   );
 };
 
-export default ContestacionModal;
+export default OrganoC;
