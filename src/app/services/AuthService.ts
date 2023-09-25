@@ -1,5 +1,5 @@
 import { USUARIORESPONSE, User } from "../interfaces/UserInfo";
-import { post, postEasy } from "./apiService";
+import { post, postDoc, postDocument, postEasy } from "./apiService";
 import { getToken, getUser } from "./localStorage";
 
 export class AuthService {
@@ -143,7 +143,9 @@ export class AuthService {
     }
 
   
-    
+       public static async obtenerguias(data : any) {
+        return await postDoc('obtenerguias', data);
+    };
 
     
 

@@ -86,7 +86,7 @@ export interface FPGDetalle {
 }
 
 export interface ITEMS {
-    id: string;
+    Id: string;
     deleted: string;
     UltimaActualizacion: string;
     FechaCreacion: string;

@@ -207,6 +207,7 @@ export default function Inicio({ children, user,imgData,imgTipo }: Props) {
             id={1}
             imgData={imgData}
             imgTipo={imgTipo}
+            //idMenu={idMenu}
            />
           {children}
         </Grid>
