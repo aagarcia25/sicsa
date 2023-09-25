@@ -72,4 +72,8 @@ export class CatalogosServices {
         return await post('Municipios_index', data);
     };
 
+      public static async deleteVideoTutorial(data : any) {
+        return await post('deleteVideoTutorial', data);
+    };
+
 }
