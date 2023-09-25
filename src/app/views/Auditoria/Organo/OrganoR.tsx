@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
-import TitleComponent from "../../componentes/TitleComponent";
-import ModalForm from "../../componentes/ModalForm";
-import ButtonsAdd from "../../componentes/ButtonsAdd";
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import { GridColDef } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { Toast } from "../../../helpers/Toast";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { AuditoriaService } from "../../../services/AuditoriaService";
+import { getPermisos, getUser } from "../../../services/localStorage";
 import MUIXDataGrid from "../../MUIXDataGrid";
 import Progress from "../../Progress";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { GridColDef } from "@mui/x-data-grid";
+import ButtonsAdd from "../../componentes/ButtonsAdd";
 import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
-import { AuditoriaService } from "../../../services/AuditoriaService";
-import { Toast } from "../../../helpers/Toast";
-import Swal from "sweetalert2";
-import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
-import { getPermisos, getUser } from "../../../services/localStorage";
-import AttachmentIcon from "@mui/icons-material/Attachment";
+import ModalForm from "../../componentes/ModalForm";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
-import { ContestacionModal } from "./ContestacionModal";
+import { OrganoRModal } from "./OrganoRModal";
 
-export const Contestacion = ({
+export const OrganoR = ({
   handleFunction,
   obj,
 }: {
@@ -26,12 +24,9 @@ export const Contestacion = ({
   obj: any;
 }) => {
   const [openSlider, setOpenSlider] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [openModalDetalle, setOpenModalDetalle] = useState(false);
   const [vrows, setVrows] = useState({});
   const [data, setData] = useState([]);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
-  const [show, setShow] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [tipoOperacion, setTipoOperacion] = useState(0);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
@@ -46,12 +41,8 @@ export const Contestacion = ({
   };
 
   const consulta = (data: any) => {
-    AuditoriaService.Contestacionindex(data).then((res) => {
+    AuditoriaService.OrganoRindex(data).then((res) => {
       if (res.SUCCESS) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "¡Consulta Exitosa!",
-        // });
         setData(res.RESPONSE);
         setOpenSlider(false);
       } else {
@@ -71,20 +62,18 @@ export const Contestacion = ({
       denyButtonText: `Cancelar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        //setOpenSlider(false);
         let data = {
           NUMOPERACION: 3,
           CHID: v.data.row.id,
           CHUSER: user.Id,
         };
 
-        AuditoriaService.Contestacionindex(data).then((res) => {
+        AuditoriaService.OrganoRindex(data).then((res) => {
           if (res.SUCCESS) {
             Toast.fire({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            //consulta({ NUMOPERACION: 4 });
             consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
@@ -96,13 +85,7 @@ export const Contestacion = ({
     });
   };
 
-  const handleDetalle = (data: any) => {
-    setVrows(data);
-    setOpenModalDetalle(true);
-  };
-
   const handleClose = () => {
-    setOpen(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
@@ -165,14 +148,13 @@ export const Contestacion = ({
     },
     { field: "creado", headerName: "Creado Por", width: 200 },
     { field: "modi", headerName: "Modificado Por", width: 200 },
-    { field: "secretaria", headerName: "Secretaría", width: 300 },
-    { field: "unidad", headerName: "Unidad Responsable", width: 300 },
+    { field: "descripcionorigen", headerName: "Organo Origen", width: 300 },
+    { field: "descripciodestino", headerName: "Organo Destino", width: 300 },
     { field: "Oficio", headerName: "Oficio", width: 200 },
     { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
     { field: "FOficio", headerName: "Fecha de Oficio", width: 200 },
     { field: "FRecibido", headerName: "Fecha de Recibido", width: 200 },
     { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 200 },
-    { field: "Prorroga", headerName: "Fecha de Prorroga", width: 200 },
   ];
 
   useEffect(() => {
@@ -195,7 +177,7 @@ export const Contestacion = ({
   return (
     <div>
       <ModalForm
-        title={"Contestación a Notificación"}
+        title={"Contestación a Organo Áuditor"}
         handleClose={handleFunction}
       >
         <Progress open={openSlider}></Progress>
@@ -203,7 +185,7 @@ export const Contestacion = ({
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
       {openModal ? (
-        <ContestacionModal
+        <OrganoRModal
           tipo={tipoOperacion}
           handleClose={handleClose}
           dt={vrows}
@@ -215,12 +197,10 @@ export const Contestacion = ({
       )}
 
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={3} />
+        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={7} />
       ) : (
         ""
       )}
     </div>
   );
 };
-
-export default ContestacionModal;

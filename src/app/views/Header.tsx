@@ -1,8 +1,6 @@
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import HelpIcon from "@mui/icons-material/Help";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import PersonIcon from "@mui/icons-material/Person";
 import { Backdrop, Button, Fade, Hidden, SpeedDialAction } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -24,13 +22,11 @@ import logoNL from "../assets/img/logo1.svg";
 import { getToken, getUser } from "../services/localStorage";
 import { Blanco } from "../styles/imagen";
 
-// import ButtonsTutorial from "./menu/catalogos/Utilerias/ButtonsTutorial";
 import NotesIcon from "@mui/icons-material/Notes";
-import { USUARIORESPONSE } from "../interfaces/UserInfo";
-import ButtonsTutorial from "./componentes/ButtonsTutorial";
-import { CatalogosServices } from "../services/catalogosServices";
-import { AuthService } from "../services/AuthService";
 import { base64ToArrayBuffer } from "../helpers/Files";
+import { USUARIORESPONSE } from "../interfaces/UserInfo";
+import { AuthService } from "../services/AuthService";
+import ButtonsTutorial from "./componentes/ButtonsTutorial";
 
 interface HeaderProps {
   onDrawerToggle: () => void;
@@ -167,51 +163,7 @@ export default function Header(props: HeaderProps) {
       ),
       name: " Configuración",
     },
-    {
-      icon: (
-        <>
-          <Tooltip title="Calendario">
-            <IconButton
-              className="ButtonColorGenerico"
-              sx={{
-                mt: 0.1,
-                backgroundColor: "#FFFFFF",
-                "&:hover": { backgroundColor: "#CCCCCC" },
-              }}
-              onClick={onOpenCalendar}
-            >
-              <CalendarMonthIcon className="IconoDentroBoton" />
-            </IconButton>
-          </Tooltip>
-        </>
-      ),
-      name: "Calendario",
-    },
 
-    {
-      icon: (
-        <>
-          <Tooltip title="Bandeja de correo">
-            <Badge
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              badgeContent={cnotif}
-              color="primary"
-            >
-              <IconButton
-                className="ButtonColorGenerico"
-                onClick={onNotification}
-              >
-                <NotificationsNoneIcon className="IconoDentroBoton" />
-              </IconButton>
-            </Badge>
-          </Tooltip>
-        </>
-      ),
-      name: "Notificaciones",
-    },
     {
       icon: (
         <>
@@ -515,18 +467,6 @@ export default function Header(props: HeaderProps) {
                                 <ManageAccountsIcon className="IconoDentroBoton" />
                               </IconButton>{" "}
                               Configuración de perfil
-                            </MenuItem>
-                            <MenuItem onClick={onNotification}>
-                              <IconButton onClick={onNotification}>
-                                <NotificationsNoneIcon className="IconoDentroBoton" />
-                              </IconButton>{" "}
-                              Mi Buzón
-                            </MenuItem>
-                            <MenuItem onClick={onOpenCalendar}>
-                              <IconButton onClick={onOpenCalendar}>
-                                <CalendarMonthIcon className="IconoDentroBoton" />
-                              </IconButton>{" "}
-                              Calendario
                             </MenuItem>
 
                             <Hidden mdDown>
