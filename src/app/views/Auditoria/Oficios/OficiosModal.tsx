@@ -14,54 +14,52 @@ export const OficiosModal = ({
   handleClose,
   tipo,
   dt,
-  idauditoria
+  idauditoria,
 }: {
   tipo: number;
   handleClose: Function;
   dt: any;
-  idauditoria:string;
+  idauditoria: string;
 }) => {
-  
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const [show, setShow] = useState(false);
   // CAMPOS DE LOS FORMULARIOS
   const [id, setId] = useState("");
-  const [finicio, setFinicio] =useState<Dayjs | null>();
+  const [finicio, setFinicio] = useState<Dayjs | null>();
   const [ffin, setFfin] = useState<Dayjs | null>();
   const [oficio, setOficio] = useState("");
 
   const handleSend = () => {
-     if (!oficio || !finicio || !ffin) {
-       Swal.fire("Favor de Completar los Campos",  "¡Error!", "info");
-     } else {
-    let data = {
-      CHID:id,
-      NUMOPERACION: tipo,
-      CHUSER: user.Id,
-      idAuditoria:idauditoria,
-      Oficio:oficio,
-      FechaRecibido:finicio,
-      FechaVencimiento:ffin
-    };
+    if (!oficio || !finicio || !ffin) {
+      Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
+    } else {
+      let data = {
+        CHID: id,
+        NUMOPERACION: tipo,
+        CHUSER: user.Id,
+        idAuditoria: idauditoria,
+        Oficio: oficio,
+        FechaRecibido: finicio,
+        FechaVencimiento: ffin,
+      };
 
-    if (tipo === 1) {
-      //AGREGAR
-      agregar(data);
-    } else if (tipo === 2) {
-      //EDITAR
-      editar(data);
+      if (tipo === 1) {
+        //AGREGAR
+        agregar(data);
+      } else if (tipo === 2) {
+        //EDITAR
+        editar(data);
+      }
     }
-  }
   };
 
   const handleFilterChange1 = (v: any) => {
-    setFinicio(v)
+    setFinicio(v);
   };
 
   const handleFilterChange2 = (v: any) => {
-    setFfin(v)
+    setFfin(v);
   };
-
 
   const agregar = (data: any) => {
     AuditoriaService.OficiosA_index(data).then((res) => {
@@ -92,16 +90,14 @@ export const OficiosModal = ({
   };
 
   useEffect(() => {
-     if (dt === "") {
-     } else {
-       setId(dt?.data?.row?.id);
-       setOficio(dt?.data?.row?.Oficio);
-       setFinicio(dayjs(dt?.data?.row?.FechaRecibido) );
-       setFfin(dayjs(dt?.data?.row?.FechaVencimiento) );
-      
-     }
+    if (dt === "") {
+    } else {
+      setId(dt?.data?.row?.id);
+      setOficio(dt?.data?.row?.Oficio);
+      setFinicio(dayjs(dt?.data?.row?.FechaRecibido));
+      setFfin(dayjs(dt?.data?.row?.FechaVencimiento));
+    }
   }, [dt]);
-
 
   return (
     <>
@@ -125,7 +121,7 @@ export const OficiosModal = ({
             sx={{ padding: "1%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-             <Typography sx={{ fontFamily: "sans-serif" }}>Oficio</Typography>
+              <Typography sx={{ fontFamily: "sans-serif" }}>Oficio</Typography>
               <TextField
                 required
                 margin="dense"
@@ -134,7 +130,7 @@ export const OficiosModal = ({
                 value={oficio}
                 type="text"
                 fullWidth
-                focused 
+                focused
                 onChange={(v) => setOficio(v.target.value)}
                 error={oficio === "" ? true : false}
                 // InputProps={{
@@ -143,22 +139,23 @@ export const OficiosModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={2}>
-            <CustomizedDate 
-            value={finicio} 
-            label={"Fecha Recibido"} 
-            onchange={handleFilterChange1}/>
+              <CustomizedDate
+                value={finicio}
+                label={"Fecha Recibido"}
+                onchange={handleFilterChange1}
+              />
             </Grid>
-           
-            <Grid item xs={12} sm={6} md={4} lg={2} >
-            <CustomizedDate value={ffin} label={"Fecha Vencimiento"} onchange={handleFilterChange2}/>
-            </Grid>
-            
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-           
-            </Grid>
-          </Grid>
 
-        
+            <Grid item xs={12} sm={6} md={4} lg={2}>
+              <CustomizedDate
+                value={ffin}
+                label={"Fecha Vencimiento"}
+                onchange={handleFilterChange2}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+          </Grid>
 
           <Grid
             container
@@ -192,11 +189,20 @@ export const OficiosModal = ({
           >
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
-                disabled={oficio === "" || finicio === null || ffin === null }
+                disabled={oficio === "" || finicio === null || ffin === null}
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >
                 {tipo === 1 ? "Agregar" : "Editar"}
+              </Button>
+            </Grid>
+            <Grid item alignItems="center" justifyContent="center" xs={2}>
+              <Button
+                // disabled={descripcion === "" || nombre === ""}
+                className={"actualizar"}
+                onClick={() => handleClose()}
+              >
+                {"Salir"}
               </Button>
             </Grid>
           </Grid>

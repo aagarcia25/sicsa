@@ -35,6 +35,12 @@ export class AuditoriaService {
       return await post('planAnualindex', data);
     };
 
-    
+    public static async OrganoRindex(data : any) {
+        return await post('OrganoRindex', data);
+    };
+
+    public static async OrganoCindex(data : any) {
+        return await post('OrganoCindex', data);
+    };
 
 }
