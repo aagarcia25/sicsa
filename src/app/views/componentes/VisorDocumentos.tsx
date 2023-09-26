@@ -412,7 +412,7 @@ const VisorDocumentos = ({
                   <input
                     multiple
                     hidden
-                    accept=".pdf"
+                    accept=".*"
                     type="file"
                     value=""
                     onChange={(v) => ProcesaSPeis(v)}
