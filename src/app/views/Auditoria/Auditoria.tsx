@@ -183,7 +183,9 @@ export const Auditoria = () => {
     }
   };
 
-  const columns: GridColDef[] = [
+  /**
+   * 
+   * const columns: GridColDef[] = [
     {
       field: "id",
       headerName: "Identificador",
@@ -470,6 +472,149 @@ export const Auditoria = () => {
       description: "Municipio",
       headerName: "Municipio",
       width: 300,
+    },
+  ];
+   */
+  const columns: GridColDef[] = [
+    {
+      field: "id",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "ciid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "ctaid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "cefid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "cgfid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "csid",
+      headerName: "Identificador",
+      width: 150,
+    },
+
+    {
+      field: "acciones",
+      disableExport: true,
+      headerName: "Acciones",
+      description: "Campo de Acciones",
+      sortable: false,
+      width: 400,
+      renderCell: (v) => {
+        return (
+          <>
+            <ButtonsDeleted
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsDeleted>
+            <ButtonsEdit
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+            <ButtonsDetail
+              title={"Ver Oficios"}
+              handleFunction={handleOficios}
+              show={true}
+              icon={<AssignmentIcon />}
+              row={v}
+            ></ButtonsDetail>
+
+            <ButtonsDetail
+              title={"Notificación Área"}
+              handleFunction={handleDetalle}
+              show={true}
+              icon={<ChatIcon />}
+              row={v}
+            ></ButtonsDetail>
+
+            <ButtonsDetail
+              title={"Contestación a Organo Auditor"}
+              handleFunction={handleORgano}
+              show={true}
+              icon={<BusinessIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Cambiar Entrega"}
+              handleFunction={handlePlan}
+              show={true}
+              icon={<FactCheckIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Resultado de la Auditoria"}
+              handleFunction={handleAcciones}
+              show={true}
+              icon={<Diversity3Icon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Ver Adjuntos"}
+              handleFunction={handleVerAdjuntos}
+              show={true}
+              icon={<AttachmentIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Ver Plan de Trabajo"}
+              handleFunction={handlePlan}
+              show={true}
+              icon={<AlignHorizontalLeftIcon />}
+              row={v}
+            ></ButtonsDetail>
+          </>
+        );
+      },
+    },
+    {
+      field: "anio",
+      description: "Año Cuenta Pública",
+      headerName: "Año Cuenta Pública",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "NAUDITORIA",
+      description: "Número de Auditoría",
+      headerName: "No. de Auditoría",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "NombreAudoria",
+      description: "Nombre",
+      headerName: "Nombre",
+      width: 300,
+    },
+    {
+      field: "cmoDescripcion",
+      description: "Modalidad",
+      headerName: "Modalidad",
+      width: 200,
+    },
+    {
+      field: "ActaInicio",
+      description: "Acta de Inicio",
+      headerName: "Acta de Inicio",
+      width: 180,
     },
   ];
 
