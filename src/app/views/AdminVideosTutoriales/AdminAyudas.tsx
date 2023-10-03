@@ -297,7 +297,7 @@ const AdminAyudas = ({
       renderCell: (v: any) => {
         return (
           <Box>
-            <Tooltip title="Eliminar Descuento">
+            <Tooltip title="Eliminar Guía">
               <IconButton onClick={() => handleBorrarRegistro(v.row.id)}>
                 <DeleteForeverIcon />
               </IconButton>
@@ -347,7 +347,7 @@ const AdminAyudas = ({
       renderCell: (v: any) => {
         return (
           <Box>
-            <Tooltip title="Eliminar Descuento">
+            <Tooltip title="Eliminar Video">
               <IconButton onClick={() => handleBorrarRegistro(v.row.id)}>
                 <DeleteForeverIcon />
               </IconButton>
@@ -397,7 +397,7 @@ const AdminAyudas = ({
       renderCell: (v: any) => {
         return (
           <Box>
-            <Tooltip title="Eliminar Descuento">
+            <Tooltip title="Eliminar Pregunta">
               <IconButton onClick={() => handleBorrarRegistro(v.row.id)}>
                 <DeleteForeverIcon />
               </IconButton>
