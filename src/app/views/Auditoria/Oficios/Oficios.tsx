@@ -15,6 +15,7 @@ import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
 import { OficiosModal } from "./OficiosModal";
+import { Typography } from "@mui/material";
 export const Oficios = ({
   handleFunction,
   obj,
@@ -127,7 +128,12 @@ export const Oficios = ({
     },
     { field: "creado", headerName: "Creado Por", width: 200 },
     { field: "modi", headerName: "Modificado Por", width: 200 },
-    { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 200 },
+    {
+      field: "Oficio",
+      description: "Oficio",
+      headerName: "Oficio",
+      width: 200,
+    },
     { field: "FechaRecibido", headerName: "Fecha Recibido ", width: 180 },
     { field: "FechaVencimiento", headerName: "Fecha Vencimiento", width: 180 },
   ];
@@ -200,8 +206,10 @@ export const Oficios = ({
         ) : (
           ""
         )}
-
         <Progress open={show}></Progress>
+        <Typography variant="h6">
+          {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
+        </Typography>
         <ButtonsAdd handleOpen={handleOpen} agregar={true} />
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
