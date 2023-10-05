@@ -195,6 +195,7 @@ const Acciones = ({
     { field: "NAUDITORIA", description: "Número de Auditoría", headerName: "No. de Auditoría", width: 200 },
     {
       field: "DescripcionTipoDeAccion",
+      description: "Tipo de Resultado",
       headerName: "Tipo de Resultado",
       width: 200,
     },
@@ -207,13 +208,14 @@ const Acciones = ({
     { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
     {
       field: "accionSuperviviente",
+      description: "Resultado Superveniente",
       headerName: "Resultado Superveniente",
       width: 300,
     },
     { field: "TextoAccion", description: "Resultado/Observación", headerName: "Resultado/Observación", width: 900 },
-    { field: "Valor", headerName: "Valor", width: 200 },
-    { field: "numeroResultado", headerName: "Numero de Resultado", width: 200 , align:"center", headerAlign: "center"},
-    { field: "monto", headerName: "Monto", width: 200 },
+    { field: "Valor", description: "Valor", headerName: "Valor", width: 200 },
+    { field: "numeroResultado", description: "Número de Resultado", headerName: "Número de Resultado", width: 200 , align:"center", headerAlign: "center"},
+    { field: "monto", description: "Monto", headerName: "Monto", width: 200 },
 
     
 
