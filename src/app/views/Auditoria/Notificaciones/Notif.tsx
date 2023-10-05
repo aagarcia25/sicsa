@@ -1,5 +1,5 @@
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
 import { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -17,7 +17,6 @@ import ModalForm from "../../componentes/ModalForm";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
 import { Contestacion } from "./Contestacion";
 import { NotifModal } from "./NotifModal";
-
 const Notif = ({
   handleFunction,
   obj,
@@ -153,7 +152,7 @@ const Notif = ({
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
               show={true}
-              icon={<RemoveRedEyeIcon />}
+              icon={<DriveFileMoveIcon />}
               row={v}
             ></ButtonsDetail>
           </>
@@ -166,12 +165,32 @@ const Notif = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 200 },
-    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 200 },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 200,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 200,
+    },
     { field: "secretaria", headerName: "Secretaría", width: 300 },
     { field: "unidad", headerName: "Unidad Responsable", width: 300 },
-    { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 200 },
-    { field: "SIGAOficio", description: "Folio SIGA", headerName: "Folio SIGA", width: 200 },
+    {
+      field: "Oficio",
+      description: "Oficio",
+      headerName: "Oficio",
+      width: 200,
+    },
+    {
+      field: "SIGAOficio",
+      description: "Folio SIGA",
+      headerName: "Folio SIGA",
+      width: 200,
+    },
     { field: "FOficio", headerName: "Fecha de Oficio", width: 200 },
     { field: "FRecibido", headerName: "Fecha de Recibido", width: 200 },
     { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 200 },
@@ -179,11 +198,9 @@ const Notif = ({
   ];
 
   useEffect(() => {
-    console.log("obj",obj);
-    
+    console.log("obj", obj);
+
     permisos.map((item: PERMISO) => {
-      
-      
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {
           setAgregar(true);
@@ -218,7 +235,6 @@ const Notif = ({
           dt={vrows}
           user={user}
           idAuditoria={obj.id}
-          
         />
       ) : (
         ""

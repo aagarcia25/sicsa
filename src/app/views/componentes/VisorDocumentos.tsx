@@ -3,6 +3,7 @@ import DownloadingIcon from "@mui/icons-material/Downloading";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import {
+  Box,
   DialogContent,
   Grid,
   IconButton,
@@ -366,6 +367,7 @@ const VisorDocumentos = ({
   };
 
   useEffect(() => {
+    console.log(obj);
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {
@@ -387,6 +389,10 @@ const VisorDocumentos = ({
       <ModalForm title={"Visor de Documentos"} handleClose={handleFunction}>
         <Progress open={openSlider}></Progress>
 
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Typography variant="h4">{obj.row.Oficio}</Typography>
+        </Box>
+
         {true ? (
           <>
             <TooltipPersonalizado
@@ -407,7 +413,7 @@ const VisorDocumentos = ({
                   <input
                     multiple
                     hidden
-                    accept=".pdf"
+                    accept=".*"
                     type="file"
                     value=""
                     onChange={(v) => ProcesaSPeis(v)}

@@ -341,6 +341,15 @@ export const NotifModal = ({
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
             </Grid>
+            <Grid item alignItems="center" justifyContent="center" xs={2}>
+              <Button
+                // disabled={descripcion === "" || nombre === ""}
+                className={"actualizar"}
+                onClick={() => handleClose()}
+              >
+                {"Salir"}
+              </Button>
+            </Grid>
           </Grid>
         </Box>
       </ModalForm>

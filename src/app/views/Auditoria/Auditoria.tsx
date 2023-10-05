@@ -14,7 +14,14 @@ import { AuditoriaModal } from "./AuditoriaModal";
 import ChatIcon from "@mui/icons-material/Chat";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 import Notif from "./Notificaciones/Notif";
-import { Button, Collapse, Grid, TextField, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  Collapse,
+  Grid,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import VisorDocumentos from "../componentes/VisorDocumentos";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
@@ -32,6 +39,10 @@ import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import ButtonsShare from "../componentes/ButtonsShare";
 import SendIcon from "@mui/icons-material/Send";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+import BusinessIcon from "@mui/icons-material/Business";
+
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import OrganoC from "./Organo/OrganoC";
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -46,6 +57,7 @@ export const Auditoria = () => {
   const [openModalOficios, setOpenModalOficios] = useState(false);
   const [openModalgant, setOpenModalgant] = useState(false);
   const [openModalNotificacion, setOpenModalDetalle] = useState<boolean>(false);
+  const [openModalOrgano, setopenModalOrgano] = useState<boolean>(false);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
@@ -81,6 +93,7 @@ export const Auditoria = () => {
     setOpenModalOficios(false);
     consulta();
     setOpenModalgant(false);
+    setopenModalOrgano(false);
   };
 
   const handleAcciones = (data: any) => {
@@ -107,6 +120,11 @@ export const Auditoria = () => {
   const handleDetalle = (data: any) => {
     setVrows(data);
     setOpenModalDetalle(true);
+  };
+
+  const handleORgano = (data: any) => {
+    setVrows(data);
+    setopenModalOrgano(true);
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -165,7 +183,9 @@ export const Auditoria = () => {
     }
   };
 
-  const columns: GridColDef[] = [
+  /**
+   * 
+   * const columns: GridColDef[] = [
     {
       field: "id",
       headerName: "Identificador",
@@ -203,7 +223,7 @@ export const Auditoria = () => {
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
-      width: 300,
+      width: 400,
       renderCell: (v) => {
         return (
           <>
@@ -252,6 +272,20 @@ export const Auditoria = () => {
               icon={<AlignHorizontalLeftIcon />}
               row={v}
             ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Contestación a Organo Auditor"}
+              handleFunction={handleORgano}
+              show={true}
+              icon={<BusinessIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Cambiar Entrega"}
+              handleFunction={handlePlan}
+              show={true}
+              icon={<FactCheckIcon />}
+              row={v}
+            ></ButtonsDetail>
           </>
         );
       },
@@ -262,54 +296,326 @@ export const Auditoria = () => {
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 200 },
-    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 200 },
-    { field: "ceaDescripcion", description: "Estatus",headerName: "Estatus", width: 200 },
-    { field: "ciaDescripcion", description: "Origen de la Auditoría", headerName: "Origen de la Auditoría", width: 200 },
-    { field: "anio", description: "Año Cuenta Pública", headerName: "Año Cuenta Pública", width: 200 , align:"center", headerAlign: "center"},
-    { field: "NAUDITORIA", description: "Número de Auditoría", headerName: "No. de Auditoría", width: 200 , align:"center", headerAlign: "center"},
-    { field: "FolioSIGA", description: "Folio SIGA", headerName: "Folio SIGA", width: 200 },
-    { field: "cmoDescripcion", description: "Modalidad", headerName: "Modalidad", width: 200 },
-    { field: "Consecutivo", headerName: "Consecutivo", width: 100 , align:"center", headerAlign: "center"},
-    { field: "ActaInicio", description: "Acta de Inicio", headerName: "Acta de Inicio", width: 180 },
-    { field: "NombreAudoria", description: "Nombre", headerName: "Nombre", width: 300},
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 200,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 200,
+    },
+    {
+      field: "ceaDescripcion",
+      description: "Estatus",
+      headerName: "Estatus",
+      width: 200,
+    },
+    {
+      field: "ciaDescripcion",
+      description: "Origen de la Auditoría",
+      headerName: "Origen de la Auditoría",
+      width: 200,
+    },
+    {
+      field: "anio",
+      description: "Año Cuenta Pública",
+      headerName: "Año Cuenta Pública",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "NAUDITORIA",
+      description: "Número de Auditoría",
+      headerName: "No. de Auditoría",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "FolioSIGA",
+      description: "Folio SIGA",
+      headerName: "Folio SIGA",
+      width: 200,
+    },
+    {
+      field: "cmoDescripcion",
+      description: "Modalidad",
+      headerName: "Modalidad",
+      width: 200,
+    },
+    {
+      field: "Consecutivo",
+      headerName: "Consecutivo",
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "ActaInicio",
+      description: "Acta de Inicio",
+      headerName: "Acta de Inicio",
+      width: 180,
+    },
+    {
+      field: "NombreAudoria",
+      description: "Nombre",
+      headerName: "Nombre",
+      width: 300,
+    },
     {
       field: "Encargado",
-      headerName: "Responsable de la auditoría" ,
+      headerName: "Responsable de la auditoría",
       description: "Responsable de la auditoría",
       width: 300,
     },
-    { field: "PersonalEncargado", description: "Personal del Organo Fiscalizador", headerName: "Personal del Organo Fiscalizador", width: 300 },
+    {
+      field: "PersonalEncargado",
+      description: "Personal del Organo Fiscalizador",
+      headerName: "Personal del Organo Fiscalizador",
+      width: 300,
+    },
     { field: "ctid", headerName: "ctid", width: 300 },
-    { field: "ctDescripcion", description: "Clasificación", headerName: "Clasificación", width: 300 },
+    {
+      field: "ctDescripcion",
+      description: "Clasificación",
+      headerName: "Clasificación",
+      width: 300,
+    },
     { field: "coaid", headerName: "coaid", width: 300 },
-    { field: "coaDescripcion", description: "Organo Auditor", headerName: "Organo Auditor", width: 300 },
+    {
+      field: "coaDescripcion",
+      description: "Organo Auditor",
+      headerName: "Organo Auditor",
+      width: 300,
+    },
     { field: "cgfid", headerName: "cgfid", width: 300 },
-    { field: "cgfDescripcion", description: "Grupo Funcional", headerName: "Grupo Funcional", width: 300 },
+    {
+      field: "cgfDescripcion",
+      description: "Grupo Funcional",
+      headerName: "Grupo Funcional",
+      width: 300,
+    },
     { field: "csid", headerName: "csid", width: 300 },
-    { field: "csDescripcion", description: "Sector", headerName: "Sector", width: 300 },
+    {
+      field: "csDescripcion",
+      description: "Sector",
+      headerName: "Sector",
+      width: 300,
+    },
     { field: "cefid", headerName: "cefid", width: 300 },
-    { field: "cefDescripcion", description: "Entidad Fiscalizada", headerName: "Entidad Fiscalizada", width: 300 },
+    {
+      field: "cefDescripcion",
+      description: "Entidad Fiscalizada",
+      headerName: "Entidad Fiscalizada",
+      width: 300,
+    },
     { field: "ctaid", headerName: "ctaid", width: 300 },
-    { field: "ctaDescripcion", description: "Tipo de Auditoría", headerName: "Tipo de Auditoría", width: 300 },
+    {
+      field: "ctaDescripcion",
+      description: "Tipo de Auditoría",
+      headerName: "Tipo de Auditoría",
+      width: 300,
+    },
     { field: "ciid", headerName: "ciid", width: 300 },
-    { field: "ciDescripcion", description: "Entrega", headerName: "Entrega", width: 300 },
+    {
+      field: "ciDescripcion",
+      description: "Entrega",
+      headerName: "Entrega",
+      width: 300,
+    },
     { field: "cuaaid", headerName: "cuaaid", width: 300 },
-    { field: "cuaaDescripcion", description: "Unidad Administrativa Auditora", headerName: "UAA", width: 300 },
+    {
+      field: "cuaaDescripcion",
+      description: "Unidad Administrativa Auditora",
+      headerName: "UAA",
+      width: 300,
+    },
     { field: "caaid", headerName: "caaid", width: 300 },
-    { field: "caaDescripcion", description: "Área Auditora", headerName: "Área Auditora", width: 300 },
+    {
+      field: "caaDescripcion",
+      description: "Área Auditora",
+      headerName: "Área Auditora",
+      width: 300,
+    },
     { field: "crid", headerName: "crid", width: 300 },
-    { field: "crDescripcion", description: "Ramo", headerName: "Ramo", width: 300 },
+    {
+      field: "crDescripcion",
+      description: "Ramo",
+      headerName: "Ramo",
+      width: 300,
+    },
     {
       field: "universopesos",
       description: "Universo Miles de Pesos",
       headerName: "Universo Miles de Pesos",
-      width: 300, 
+      width: 300,
     },
-    { field: "muestrapesos", description: "Muestra Miles de Pesos", headerName: "Muestra Miles de Pesos", width: 300 },
-    { field: "montoauditado", description: "Monto Auditado", headerName: "Monto Auditado", width: 300 },
-    { field: "munNombre", description: "Municipio", headerName: "Municipio", width: 300 },
-    
+    {
+      field: "muestrapesos",
+      description: "Muestra Miles de Pesos",
+      headerName: "Muestra Miles de Pesos",
+      width: 300,
+    },
+    {
+      field: "montoauditado",
+      description: "Monto Auditado",
+      headerName: "Monto Auditado",
+      width: 300,
+    },
+    {
+      field: "munNombre",
+      description: "Municipio",
+      headerName: "Municipio",
+      width: 300,
+    },
+  ];
+   */
+  const columns: GridColDef[] = [
+    {
+      field: "id",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "ciid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "ctaid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "cefid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "cgfid",
+      headerName: "Identificador",
+      width: 150,
+    },
+    {
+      field: "csid",
+      headerName: "Identificador",
+      width: 150,
+    },
+
+    {
+      field: "acciones",
+      disableExport: true,
+      headerName: "Acciones",
+      description: "Campo de Acciones",
+      sortable: false,
+      width: 400,
+      renderCell: (v) => {
+        return (
+          <>
+            <ButtonsDeleted
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsDeleted>
+            <ButtonsEdit
+              handleAccion={handleAccion}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+            <ButtonsDetail
+              title={"Ver Oficios"}
+              handleFunction={handleOficios}
+              show={true}
+              icon={<AssignmentIcon />}
+              row={v}
+            ></ButtonsDetail>
+
+            <ButtonsDetail
+              title={"Notificación Área"}
+              handleFunction={handleDetalle}
+              show={true}
+              icon={<ChatIcon />}
+              row={v}
+            ></ButtonsDetail>
+
+            <ButtonsDetail
+              title={"Contestación a Organo Auditor"}
+              handleFunction={handleORgano}
+              show={true}
+              icon={<BusinessIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Cambiar Entrega"}
+              handleFunction={handlePlan}
+              show={true}
+              icon={<FactCheckIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Resultado de la Auditoria"}
+              handleFunction={handleAcciones}
+              show={true}
+              icon={<Diversity3Icon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Ver Adjuntos"}
+              handleFunction={handleVerAdjuntos}
+              show={true}
+              icon={<AttachmentIcon />}
+              row={v}
+            ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Ver Plan de Trabajo"}
+              handleFunction={handlePlan}
+              show={true}
+              icon={<AlignHorizontalLeftIcon />}
+              row={v}
+            ></ButtonsDetail>
+          </>
+        );
+      },
+    },
+    {
+      field: "anio",
+      description: "Año Cuenta Pública",
+      headerName: "Año Cuenta Pública",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "NAUDITORIA",
+      description: "Número de Auditoría",
+      headerName: "No. de Auditoría",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "NombreAudoria",
+      description: "Nombre",
+      headerName: "Nombre",
+      width: 300,
+    },
+    {
+      field: "cmoDescripcion",
+      description: "Modalidad",
+      headerName: "Modalidad",
+      width: 200,
+    },
+    {
+      field: "ActaInicio",
+      description: "Acta de Inicio",
+      headerName: "Acta de Inicio",
+      width: 180,
+    },
   ];
 
   const handleOpen = (v: any) => {
@@ -335,7 +641,6 @@ export const Auditoria = () => {
   };
 
   const clearFilter = () => {
-    
     setFolioSIGA("");
     setNAUDITORIA("");
     setidEstatus("");
@@ -370,20 +675,18 @@ export const Auditoria = () => {
     });
   };
 
-  useEffect(() =>{
-    if(FolioSIGA===""&&
-      NAUDITORIA===""&&
-      idEstatus===""&&
-      municipio===""&&
-      idInicioauditoria===""&&
-      anio==="")
-    {consulta()}
-  },[FolioSIGA,
-  NAUDITORIA,
-  idEstatus,
-  municipio,
-  idInicioauditoria,
-  anio,])
+  useEffect(() => {
+    if (
+      FolioSIGA === "" &&
+      NAUDITORIA === "" &&
+      idEstatus === "" &&
+      municipio === "" &&
+      idInicioauditoria === "" &&
+      anio === ""
+    ) {
+      consulta();
+    }
+  }, [FolioSIGA, NAUDITORIA, idEstatus, municipio, idInicioauditoria, anio]);
   const loadFilter = (operacion: number, id?: string) => {
     let data = { NUMOPERACION: operacion, P_ID: id };
     ShareService.SelectIndex(data).then((res) => {
@@ -572,30 +875,29 @@ export const Auditoria = () => {
               sx={{ padding: "1%" }}
             >
               <Grid item xs={12} sm={6} md={4} lg={2}>
-              <Tooltip title="Buscar" >
-                <Button
-                  onClick={consulta}
-                  variant="contained"
-                  color="secondary"
-                  endIcon={<SendIcon sx={{ color: "white" }} />}
-                >
-                  <Typography sx={{ color: "white" }}> Buscar </Typography>
-                </Button>
-              </Tooltip>
+                <Tooltip title="Buscar">
+                  <Button
+                    onClick={consulta}
+                    variant="contained"
+                    color="secondary"
+                    endIcon={<SendIcon sx={{ color: "white" }} />}
+                  >
+                    <Typography sx={{ color: "white" }}> Buscar </Typography>
+                  </Button>
+                </Tooltip>
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={2}>
-              <Tooltip title="Limpiar Filtros" >
-                <Button
-                  onClick={clearFilter}
-                  variant="contained"
-                  color="secondary"
-                  endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
-                >
-                
-                  <Typography sx={{ color: "white" }}>
-                    Limpiar Filtros
-                  </Typography>
-                </Button>
+                <Tooltip title="Limpiar Filtros">
+                  <Button
+                    onClick={clearFilter}
+                    variant="contained"
+                    color="secondary"
+                    endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
+                  >
+                    <Typography sx={{ color: "white" }}>
+                      Limpiar Filtros
+                    </Typography>
+                  </Button>
                 </Tooltip>
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
@@ -614,6 +916,13 @@ export const Auditoria = () => {
           <MUIXDataGrid columns={columns} rows={bancos} />
         </div>
       </Grid>
+
+      {openModalOrgano ? (
+        <OrganoC handleFunction={handleClose} obj={vrows} />
+      ) : (
+        ""
+      )}
+
       {openModalNotificacion ? (
         <Notif handleFunction={handleClose} obj={vrows} />
       ) : (
