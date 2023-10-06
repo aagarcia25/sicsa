@@ -9,7 +9,15 @@ import { getPermisos, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 
-export const AuditoriaFlex = () => {
+export const AuditoriaFlex = ({
+  anio,
+  tipo,
+  ente,
+}: {
+  anio: string;
+  tipo: string;
+  ente: string;
+}) => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
   const [id, setId] = useState("");
@@ -117,7 +125,9 @@ export const AuditoriaFlex = () => {
       // idEstatus: idEstatus === "false" ? "" : idEstatus,
       // idmunicipio: municipio === "false" ? "" : municipio,
       // idInicioauditoria: idInicioauditoria === "false" ? "" : idInicioauditoria,
-      // anio: anio === "false" ? "" : anio,
+      anio: anio,
+      tipo: tipo,
+      ente: ente,
       // idModalidad: modalidad === "false" ? "" : modalidad,
     };
     AuditoriaService.Auditoriaindex(data).then((res) => {
@@ -130,10 +140,6 @@ export const AuditoriaFlex = () => {
       }
     });
   };
-
-  useEffect(() => {
-    consulta();
-  }, []);
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
