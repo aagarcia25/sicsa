@@ -13,6 +13,8 @@ import { animated, useSpring } from "@react-spring/web";
 import * as React from "react";
 import SelectValues from "../../interfaces/Share";
 import { ShareService } from "../../services/ShareService";
+import { AuditoriaFlex } from "../Auditoria/AuditoriaFlex";
+import { Grid } from "@mui/material";
 
 export const Dash = () => {
   function MinusSquare(props: SvgIconProps) {
@@ -101,7 +103,7 @@ export const Dash = () => {
   }, []);
 
   return (
-    <Box sx={{ minHeight: 270, flexGrow: 1, maxWidth: 900 }}>
+    <Box sx={{ minHeight: 270, flexGrow: 1, maxWidth: 900, maxHeight: "auto" }}>
       <TreeView
         aria-label="customized"
         defaultExpanded={["1"]}
@@ -125,7 +127,19 @@ export const Dash = () => {
                   key={index}
                   nodeId={`7-${index}`} // Unique nodeId for each item
                   label={item.label}
-                ></StyledTreeItem>
+                >
+                  <Grid
+                    container
+                    item
+                    spacing={1}
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                  >
+                    <AuditoriaFlex></AuditoriaFlex>
+                  </Grid>
+                </StyledTreeItem>
               ))}
             </StyledTreeItem>
 
