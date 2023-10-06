@@ -15,6 +15,7 @@ import SelectValues from "../../interfaces/Share";
 import { ShareService } from "../../services/ShareService";
 import { AuditoriaFlex } from "../Auditoria/AuditoriaFlex";
 import { Grid } from "@mui/material";
+import TitleComponent from "../componentes/TitleComponent";
 
 export const Dash = () => {
   function MinusSquare(props: SvgIconProps) {
@@ -103,114 +104,167 @@ export const Dash = () => {
   }, []);
 
   return (
-    <Box sx={{ minHeight: 270, flexGrow: 1, maxWidth: 900, maxHeight: "auto" }}>
-      <TreeView
-        aria-label="customized"
-        defaultExpanded={["1"]}
-        defaultCollapseIcon={<MinusSquare />}
-        defaultExpandIcon={<PlusSquare />}
-        defaultEndIcon={<CloseSquare />}
-        sx={{ overflowX: "hidden" }}
+    <>
+      <TitleComponent
+        title={"Sistema de Control y Seguimiento de Auditoía (SICSA)"}
+        show={false}
+      />
+      <Box
+        sx={{ minHeight: 270, flexGrow: 1, maxWidth: 900, maxHeight: "auto" }}
       >
-        <StyledTreeItem
-          nodeId="1"
-          label="Auditorías Secretaría de Finanzas y Tesorería General del Estado"
+        <TreeView
+          aria-label="customized"
+          defaultExpanded={["1"]}
+          defaultCollapseIcon={<MinusSquare />}
+          defaultExpandIcon={<PlusSquare />}
+          defaultEndIcon={<CloseSquare />}
+          sx={{ overflowX: "hidden" }}
         >
-          <StyledTreeItem nodeId="2" label="Federal">
+          <StyledTreeItem
+            nodeId="1"
+            label="Auditorías Secretaría de Finanzas y Tesorería General del Estado"
+          >
             <StyledTreeItem
-              nodeId="7"
-              label="Auditoría Superior de la Federación (ASF)"
+              nodeId="df988d71-3d7b-11ee-aedd-3cd92b4d9bf4"
+              label="Federal"
             >
-              Cuenta Pública
-              {ListAnio.map((item, index) => (
-                <StyledTreeItem
-                  key={index}
-                  nodeId={`7-${index}`} // Unique nodeId for each item
-                  label={item.label}
-                >
-                  <Grid
-                    container
-                    item
-                    spacing={1}
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    lg={12}
+              <StyledTreeItem
+                nodeId="437435f5-2c35-11ee-aea6-3cd92b4d9bf4"
+                label="Auditoría Superior de la Federación (ASF)"
+              >
+                Cuenta Pública
+                {ListAnio.map((item, index) => (
+                  <StyledTreeItem
+                    key={index}
+                    nodeId={`7-${index}`} // Unique nodeId for each item
+                    label={item.label}
                   >
-                    <AuditoriaFlex></AuditoriaFlex>
-                  </Grid>
-                </StyledTreeItem>
-              ))}
+                    <Grid
+                      container
+                      item
+                      spacing={1}
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                    >
+                      <AuditoriaFlex
+                        anio={item.value}
+                        tipo={"df988d71-3d7b-11ee-aedd-3cd92b4d9bf4"}
+                        ente={"437435f5-2c35-11ee-aea6-3cd92b4d9bf4"}
+                      ></AuditoriaFlex>
+                    </Grid>
+                  </StyledTreeItem>
+                ))}
+              </StyledTreeItem>
+
+              <StyledTreeItem
+                nodeId="16cf5f89-4202-11ee-a8c9-3cd92b4d9bf4"
+                label="Secretaría de la Función Pública (SFP)"
+              >
+                Cuenta Pública
+                {ListAnio.map((item, index) => (
+                  <StyledTreeItem
+                    key={index}
+                    nodeId={`8-${index}`} // Unique nodeId for each item
+                    label={item.label}
+                  >
+                    <Grid
+                      container
+                      item
+                      spacing={1}
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                    >
+                      <AuditoriaFlex
+                        anio={item.value}
+                        tipo={"df988d71-3d7b-11ee-aedd-3cd92b4d9bf4"}
+                        ente={"16cf5f89-4202-11ee-a8c9-3cd92b4d9bf4"}
+                      ></AuditoriaFlex>
+                    </Grid>
+                  </StyledTreeItem>
+                ))}
+              </StyledTreeItem>
+              <StyledTreeItem
+                nodeId="9"
+                label="Órgano Interno de Control (OIC)"
+              >
+                Cuenta Pública
+                {ListAnio.map((item, index) => (
+                  <StyledTreeItem
+                    key={index}
+                    nodeId={`9-${index}`} // Unique nodeId for each item
+                    label={item.label}
+                  ></StyledTreeItem>
+                ))}
+              </StyledTreeItem>
+              <StyledTreeItem
+                nodeId="540eefdc-4202-11ee-a8c9-3cd92b4d9bf4"
+                label="Contraloría y Transparencia Gubernamental (CTG)"
+              >
+                Cuenta Pública
+                {ListAnio.map((item, index) => (
+                  <StyledTreeItem
+                    key={index}
+                    nodeId={`10-${index}`} // Unique nodeId for each item
+                    label={item.label}
+                  >
+                    <Grid
+                      container
+                      item
+                      spacing={1}
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                    >
+                      <AuditoriaFlex
+                        anio={item.value}
+                        tipo={"df988d71-3d7b-11ee-aedd-3cd92b4d9bf4"}
+                        ente={"540eefdc-4202-11ee-a8c9-3cd92b4d9bf4"}
+                      ></AuditoriaFlex>
+                    </Grid>
+                  </StyledTreeItem>
+                ))}
+              </StyledTreeItem>
             </StyledTreeItem>
 
             <StyledTreeItem
-              nodeId="8"
-              label="Secretaría de la Función Pública (SFP)"
+              nodeId="e64df55b-3d7b-11ee-aedd-3cd92b4d9bf4"
+              label="Estatal"
             >
-              Cuenta Pública
-              {ListAnio.map((item, index) => (
-                <StyledTreeItem
-                  key={index}
-                  nodeId={`8-${index}`} // Unique nodeId for each item
-                  label={item.label}
-                ></StyledTreeItem>
-              ))}
-            </StyledTreeItem>
-            <StyledTreeItem nodeId="9" label="Órgano Interno de Control (OIC)">
-              Cuenta Pública
-              {ListAnio.map((item, index) => (
-                <StyledTreeItem
-                  key={index}
-                  nodeId={`9-${index}`} // Unique nodeId for each item
-                  label={item.label}
-                ></StyledTreeItem>
-              ))}
-            </StyledTreeItem>
-            <StyledTreeItem
-              nodeId="10"
-              label="Contraloría y Transparencia Gubernamental (CTG)"
-            >
-              Cuenta Pública
-              {ListAnio.map((item, index) => (
-                <StyledTreeItem
-                  key={index}
-                  nodeId={`10-${index}`} // Unique nodeId for each item
-                  label={item.label}
-                ></StyledTreeItem>
-              ))}
+              <StyledTreeItem
+                nodeId="11"
+                label="Auditoría Superior del Estado de Nuevo León (ASENL)"
+              >
+                Cuenta Pública
+                {ListAnio.map((item, index) => (
+                  <StyledTreeItem
+                    key={index}
+                    nodeId={`11-${index}`} // Unique nodeId for each item
+                    label={item.label}
+                  ></StyledTreeItem>
+                ))}
+              </StyledTreeItem>
+              <StyledTreeItem
+                nodeId="12"
+                label="Requerimiento de Auditorías Contraloría y Transparencia Gubernamental (CTG)"
+              >
+                Cuenta Pública
+                {ListAnio.map((item, index) => (
+                  <StyledTreeItem
+                    key={index}
+                    nodeId={`12-${index}`} // Unique nodeId for each item
+                    label={item.label}
+                  ></StyledTreeItem>
+                ))}
+              </StyledTreeItem>
             </StyledTreeItem>
           </StyledTreeItem>
-
-          <StyledTreeItem nodeId="3" label="Estatal">
-            <StyledTreeItem
-              nodeId="11"
-              label="Auditoría Superior del Estado de Nuevo León (ASENL)"
-            >
-              Cuenta Pública
-              {ListAnio.map((item, index) => (
-                <StyledTreeItem
-                  key={index}
-                  nodeId={`11-${index}`} // Unique nodeId for each item
-                  label={item.label}
-                ></StyledTreeItem>
-              ))}
-            </StyledTreeItem>
-            <StyledTreeItem
-              nodeId="12"
-              label="Requerimiento de Auditorías Contraloría y Transparencia Gubernamental (CTG)"
-            >
-              Cuenta Pública
-              {ListAnio.map((item, index) => (
-                <StyledTreeItem
-                  key={index}
-                  nodeId={`12-${index}`} // Unique nodeId for each item
-                  label={item.label}
-                ></StyledTreeItem>
-              ))}
-            </StyledTreeItem>
-          </StyledTreeItem>
-        </StyledTreeItem>
-      </TreeView>
-    </Box>
+        </TreeView>
+      </Box>
+    </>
   );
 };
