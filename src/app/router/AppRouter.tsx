@@ -1,33 +1,31 @@
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
+import { RESPONSESTORAGE, USUARIORESPONSE } from "../interfaces/UserInfo";
 import { AuthService } from "../services/AuthService";
 import { getUser } from "../services/localStorage";
+import AdminAyudas from "../views/AdminVideosTutoriales/AdminAyudas";
+import { Auditoria } from "../views/Auditoria/Auditoria";
 import Bienvenido from "../views/Bienvenido";
-import { Eo404 } from "../views/Eo404";
-import Inicio from "../views/Inicio";
-import { Perfil } from "../views/perfil/Perfil";
-import { AuthRouter } from "./AuthRouter";
 import { Anios } from "../views/CatAnio/Anios";
-import { RESPONSESTORAGE, USUARIORESPONSE } from "../interfaces/UserInfo";
+import { CatAreaAuditora } from "../views/CatAreaAuditora/CatAreaAuditora";
 import { EntidadFiscalizada } from "../views/CatEntidadFiscalizada/EntidadFiscalizada";
 import { EstatusAcciones } from "../views/CatEstatusAcciones/EstatusAcciones";
 import { GrupoFuncional } from "../views/CatGrupoFuncional/GrupoFuncional";
 import { Informe } from "../views/CatInforme/Informe";
+import { Modalidad } from "../views/CatModalidad/Modalidad";
+import { Municipio } from "../views/CatMunicipios/Municipio";
 import { OrigenAuditoria } from "../views/CatOrigenAuditoria/OrigenAuditoria";
+import { Ramo } from "../views/CatRamo/Ramo";
 import { Sector } from "../views/CatSector/Sector";
 import { TipoAccion } from "../views/CatTipoAccion/TipoAccion";
 import { TipoAuditoria } from "../views/CatTipoAuditoria/TipoAuditoria";
 import { UnidadAdminAuditora } from "../views/CatUnidadAdminAuditora/UnidadAdminAuditora";
-import { Auditoria } from "../views/Auditoria/Auditoria";
-import { Ramo } from "../views/CatRamo/Ramo";
-import { CatAreaAuditora } from "../views/CatAreaAuditora/CatAreaAuditora";
-import Dashboard from "../views/Dashboard/dashboard";
+import { Eo404 } from "../views/Eo404";
+import Inicio from "../views/Inicio";
 import { PTA } from "../views/PlanAnual/PTA";
-import { Municipio } from "../views/CatMunicipios/Municipio";
-import { Modalidad } from "../views/CatModalidad/Modalidad";
-import AdminAyudas from "../views/AdminVideosTutoriales/AdminAyudas";
-import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
-import { VisualizadorAyudas } from "../views/componentes/VisualizadorAyudas";
+import { Perfil } from "../views/perfil/Perfil";
+import { AuthRouter } from "./AuthRouter";
+import { Dash } from "../views/Dashboard/Dash";
 //import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
@@ -72,7 +70,7 @@ export const AppRouter = ({ login }: { login: boolean }) => {
         {/* SECCION ADMINISTRACION AUDITORIA */}
         <Route
           path="/inicio/admin/dash"
-          element={log ? <Dashboard /> : <AuthRouter />}
+          element={log ? <Dash /> : <AuthRouter />}
         />
         <Route
           path="/inicio/admin/ad"
@@ -137,7 +135,7 @@ export const AppRouter = ({ login }: { login: boolean }) => {
           path="/inicio/catalogos/modalidad"
           element={log ? <Modalidad /> : <AuthRouter />}
         />
-        
+
         {/* <Route
           path="/inicio/ayuda" element={log ? <ButtonsTutorial route={""} handleCloseMenuVideos={Function} /> : <AuthRouter />}
         /> */}
