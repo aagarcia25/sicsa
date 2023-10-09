@@ -39,3 +39,15 @@
 .MuiDataGrid-cellContent{
   text-transform: capitalize;
 }
+
+.css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  background-color: transparent !important;
+}
+
+.MuiBackdrop-root .MuiModal-backdrop .css-919eu4 {
+  background-color: transparent !important;
+}
+
+.css-919eu4 {
+  background-color: transparent !important;
+}

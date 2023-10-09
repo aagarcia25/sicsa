@@ -616,6 +616,12 @@ export const Auditoria = () => {
       headerName: "Acta de Inicio",
       width: 180,
     },
+    {
+      field: "ceaDescripcion",
+      description: "Estatus",
+      headerName: "Estatus",
+      width: 200,
+    },
   ];
 
   const handleOpen = (v: any) => {
