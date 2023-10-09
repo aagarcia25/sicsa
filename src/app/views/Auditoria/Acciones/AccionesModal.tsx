@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, InputAdornment, TextField, Typography,  } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
@@ -143,7 +143,11 @@ export const AccionesModal = ({
   }, []);
 
   const validarNumero = (dato: string, state: any) => {
-    if (/^[0-9]+$/.test(dato)) {
+    //const nuevovalor=dato.target.value;
+
+    //setmonto(nuevovalor);
+
+    if (/^\d+(\.\d*)?$/.test(dato)) {
       return dato;
     } else if (dato.length === 0) {
       return "";
@@ -218,6 +222,15 @@ export const AccionesModal = ({
                 type="text"
                 fullWidth
                 variant="standard"
+
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                       $
+                    </InputAdornment>
+                  ),
+                }}
+
                 value={monto||""}
                 //required
                 //error={!monto}
