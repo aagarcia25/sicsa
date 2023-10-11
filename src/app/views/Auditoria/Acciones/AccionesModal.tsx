@@ -43,7 +43,6 @@ export const AccionesModal = ({
   const [ListTipoAccion, setListTipoAccion] = useState<SelectValues[]>([]);
   const [numeroResultado, setnumeroResultado] = useState(0);
   const [monto, setmonto] = useState(0);
-  
 
   const handleSend = () => {
     if (!TipoAccion || !EstatusAcciones || !ClaveAccion || !TextoAccion) {
@@ -119,8 +118,6 @@ export const AccionesModal = ({
       setaccionSuperviviente(dt?.accionSuperviviente);
       setmonto(dt?.monto);
       setnumeroResultado(dt?.numeroResultado);
-      
-      console.log(dt);
     }
   }, [dt]);
 
@@ -215,14 +212,13 @@ export const AccionesModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <TextField
+              <TextField
                 margin="dense"
                 id="monto"
                 label="Monto"
                 type="text"
                 fullWidth
                 variant="standard"
-
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -230,14 +226,12 @@ export const AccionesModal = ({
                     </InputAdornment>
                   ),
                 }}
-
-                value={monto||""}
+                value={monto || ""}
                 //required
                 //error={!monto}
                 onChange={(v) => {
-                      setmonto(validarNumero(v.target.value,monto))
-                  }
-                }
+                  setmonto(validarNumero(v.target.value, monto));
+                }}
               />
             </Grid>
           </Grid>
@@ -298,20 +292,21 @@ export const AccionesModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-            <TextField
+              <TextField
                 margin="dense"
                 id="numeroResultado"
                 label="Número de Resultado"
                 type="text"
                 fullWidth
                 variant="standard"
-                value={numeroResultado||""}
+                value={numeroResultado || ""}
                 //required
                 //error={!numeroResultado}
                 onChange={(v) => {
-                      setnumeroResultado(validarNumero(v.target.value,numeroResultado))
-                  }
-                }
+                  setnumeroResultado(
+                    validarNumero(v.target.value, numeroResultado)
+                  );
+                }}
               />
             </Grid>
           </Grid>

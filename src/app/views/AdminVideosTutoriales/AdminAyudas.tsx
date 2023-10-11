@@ -109,8 +109,6 @@ const AdminAyudas = ({
     ValidaSesion();
     setVideoPreview("");
     setslideropen(true);
-    console.log("Save Video");
-    console.log(newVideo);
     const formData = new FormData();
     formData.append("NUMOPERACION", value == "video" ? "1" : "2");
     formData.append("VIDEO", newVideo, nombreArchivo);
@@ -119,7 +117,6 @@ const AdminAyudas = ({
     formData.append("CHID", idMenu);
     formData.append("NAME", nombreArchivo);
     formData.append("TOKEN", JSON.parse(String(getToken())));
-    console.log(formData);
 
     let config = {
       method: "post",
@@ -175,7 +172,6 @@ const AdminAyudas = ({
         }
       })
       .catch((error) => {
-        console.log(error);
         setslideropen(false);
       });
 

@@ -98,7 +98,6 @@ const Acciones = ({
     setTipoOperacion(2);
     setOpenAccionesModal(true);
     setVrows(v.data.row);
-    console.log("v", v.data.row);
   };
 
   const handleDetalle = (data: any) => {
@@ -190,9 +189,24 @@ const Acciones = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 200 },
-    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 200 },
-    { field: "NAUDITORIA", description: "Número de Auditoría", headerName: "No. de Auditoría", width: 200 },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 200,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 200,
+    },
+    {
+      field: "NAUDITORIA",
+      description: "Número de Auditoría",
+      headerName: "No. de Auditoría",
+      width: 200,
+    },
     {
       field: "DescripcionTipoDeAccion",
       description: "Tipo de Resultado",
@@ -204,7 +218,12 @@ const Acciones = ({
       headerName: "Estatus de los Resultados",
       width: 200,
     },
-    { field: "ClaveAccion", description: "Clave de Resultado", headerName: "Clave de Resultado", width: 300 },
+    {
+      field: "ClaveAccion",
+      description: "Clave de Resultado",
+      headerName: "Clave de Resultado",
+      width: 300,
+    },
     { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
     {
       field: "accionSuperviviente",
@@ -212,15 +231,24 @@ const Acciones = ({
       headerName: "Resultado Superveniente",
       width: 300,
     },
-    { field: "TextoAccion", description: "Resultado/Observación", headerName: "Resultado/Observación", width: 900 },
-    { field: "Valor", description: "Valor", headerName: "Valor", width: 200 },
-    { field: "numeroResultado", description: "Número de Resultado", headerName: "Número de Resultado", width: 200 , align:"center", headerAlign: "center"},
-    { field: "monto", description: "Monto", headerName: "Monto", width: 200 },
 
-    
+    {
+      field: "TextoAccion",
+      description: "Resultado/Observación",
+      headerName: "Resultado/Observación",
+      width: 900,
+    },
+    { field: "Valor",  description: "Valor" headerName: "Valor", width: 200 },
+    {
+      field: "numeroResultado",
+      headerName: "Numero de Resultado",
+        description: "Número de Resultado",
+      width: 200,
+      align: "center",
+      headerAlign: "center",
+    },
+    { field: "monto", headerName: "Monto", description: "Monto",width: 200 },
 
-
-    
   ];
 
   useEffect(() => {

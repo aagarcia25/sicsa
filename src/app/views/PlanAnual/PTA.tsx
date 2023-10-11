@@ -10,18 +10,12 @@ import { getUser } from "../../services/localStorage";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import { USUARIORESPONSE } from "../../interfaces/UserInfo";
 
-
-export const PTA = ({
- // handleFunction,
- // obj,
-}: {
+export const PTA = ({}: // handleFunction,
+// obj,
+{
   //handleFunction: Function;
- // obj: any;
+  // obj: any;
 }) => {
-
-
-
-
   const [openSlider, setOpenSlider] = useState(true);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [agregar, setAgregar] = useState<boolean>(true);
@@ -30,11 +24,6 @@ export const PTA = ({
   const [tipoOperacion, setTipoOperacion] = useState(0);
   const [open, setOpen] = useState(false);
   const [modo, setModo] = useState("");
-
-
-
-
-
 
   const consulta = () => {
     let data = {
@@ -45,8 +34,6 @@ export const PTA = ({
     AuditoriaService.planAnualindex(data).then((res) => {
       if (res.SUCCESS) {
         res.RESPONSE.map((item: any) => {
-          console.log("item",item);
-          
           let tes = {
             start: new Date(item.start),
             end: new Date(item.end),
@@ -54,7 +41,7 @@ export const PTA = ({
             id: item.id,
             type: item.type,
             anio: item.anio,
-          
+
             progress: 0,
             isDisabled: false,
             styles: {
@@ -66,7 +53,6 @@ export const PTA = ({
           };
           ta.push(tes);
         });
-        console.log(ta);
         setTasks(ta);
         setOpenSlider(false);
       }
@@ -80,8 +66,9 @@ export const PTA = ({
     setVrows("");
   };
 
-  const handleOpenEdit = (v: any) => { console.log("v",v);
-  
+  const handleOpenEdit = (v: any) => {
+    console.log("v", v);
+
     setTipoOperacion(2);
     setModo("Editar Registro");
     setOpen(true);
@@ -103,33 +90,31 @@ export const PTA = ({
       <TitleComponent title={"Plan de Trabajo Anual"} show={false} />
 
       {open ? (
-          <PlanTrabajoAnualModal
-            tipo={tipoOperacion}
-            handleClose={handleClose}
-            datos={vrows}
-            //idauditoria={obj.id}
-            user={user}
-           // anio={vrows}
-
-
-          />
-        ) : (
-          ""
-        )}
+        <PlanTrabajoAnualModal
+          tipo={tipoOperacion}
+          handleClose={handleClose}
+          datos={vrows}
+          //idauditoria={obj.id}
+          user={user}
+          // anio={vrows}
+        />
+      ) : (
+        ""
+      )}
       <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
-        <Grid item xs={10} sm={10} md={10} lg={10}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              paddingBottom: "10px",
-            }}
-          >
-            {/* <Typography variant="h6">
+      <Grid item xs={10} sm={10} md={10} lg={10}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "10px",
+          }}
+        >
+          {/* <Typography variant="h6">
               {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
             </Typography> */}
-          </Box>
-        </Grid>
+        </Box>
+      </Grid>
 
       {tasks.length > 0 ? (
         <Gantt

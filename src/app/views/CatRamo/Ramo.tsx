@@ -27,9 +27,6 @@ export const Ramo = () => {
   const [eliminar, setEliminar] = useState<boolean>(false);
 
   const handleAccion = (v: any) => {
-    console.log("imprimiendo contenido");
-    console.log(v);
-
     Swal.fire({
       icon: "info",
       title: "¿Estás seguro de eliminar este registro?",

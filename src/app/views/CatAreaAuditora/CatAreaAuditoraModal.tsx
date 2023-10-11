@@ -98,7 +98,6 @@ export const CatAreaAuditoraModal = ({
     loadFilter(10);
     if (dt === "") {
     } else {
-      console.log("dt", dt);
       setId(dt?.row?.id);
       setClave(dt?.row?.Clave);
       setDescripcion(dt?.row?.Descripcion);

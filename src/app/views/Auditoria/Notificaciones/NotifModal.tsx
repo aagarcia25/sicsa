@@ -68,8 +68,6 @@ export const NotifModal = ({
   const handleRequest = (data: any) => {
     if (tipo === 1) {
       AuditoriaService.Notificacionindex(data).then((res) => {
-        console.log(res);
-
         if (res.SUCCESS) {
           Toast.fire({
             icon: "success",

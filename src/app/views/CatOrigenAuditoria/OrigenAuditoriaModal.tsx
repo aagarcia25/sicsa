@@ -102,7 +102,6 @@ export const OrigenAuditoriaModal = ({
     loadFilter(14);
     if (dt === "") {
     } else {
-      console.log(dt);
       setId(dt?.row?.id);
       setNombre(dt?.row?.Nombre);
       setDescripcion(dt?.row?.Descripcion);

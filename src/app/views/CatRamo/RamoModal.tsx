@@ -77,7 +77,6 @@ export const RamoModal = ({
   useEffect(() => {
     if (dt === "") {
     } else {
-      console.log(dt?.data);
       setId(dt?.data?.row?.id);
       setDescripcion(dt?.data?.row?.Descripcion);
     }

@@ -26,14 +26,11 @@ export const GanttModal = ({
   const [agregar, setAgregar] = useState<boolean>(true);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
-
   const consulta = () => {
     let data = {
       NUMOPERACION: 4,
       P_IDAUDITORIA: obj.id,
     };
-
-
 
     let ta: Task[] = [];
     AuditoriaService.planindex(data).then((res) => {
@@ -55,7 +52,6 @@ export const GanttModal = ({
           };
           ta.push(tes);
         });
-        console.log(ta[0]);
         setTasks(ta);
         setOpenSlider(false);
       }
@@ -69,8 +65,9 @@ export const GanttModal = ({
     setVrows("");
   };
 
-  const handleOpenEdit = (v: any) => { console.log("v",v);
-  
+  const handleOpenEdit = (v: any) => {
+    console.log("v", v);
+
     setTipoOperacion(2);
     setModo("Editar Registro");
     setOpen(true);
@@ -84,27 +81,24 @@ export const GanttModal = ({
   };
 
   useEffect(() => {
-    console.log(obj);
     consulta();
   }, []);
 
   return (
     <div>
       <ModalForm title={"PLAN DE TRABAJO"} handleClose={handleFunction}>
-      {open ? (
+        {open ? (
           <PlanTrabajoModal
             tipo={tipoOperacion}
             handleClose={handleClose}
             datos={vrows}
             idauditoria={obj.id}
             obj={vrows}
-            
-
           />
         ) : (
           ""
         )}
-      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         <Grid item xs={10} sm={10} md={10} lg={10}>
           <Box
             sx={{
