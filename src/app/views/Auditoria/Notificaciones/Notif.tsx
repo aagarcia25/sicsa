@@ -177,8 +177,8 @@ const Notif = ({
       headerName: "Modificado Por",
       width: 200,
     },
-    { field: "secretaria", headerName: "Secretaría", width: 300 },
-    { field: "unidad", headerName: "Unidad Responsable", width: 300 },
+    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
+    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
     {
       field: "Oficio",
       description: "Oficio",
@@ -191,15 +191,13 @@ const Notif = ({
       headerName: "Folio SIGA",
       width: 200,
     },
-    { field: "FOficio", headerName: "Fecha de Oficio", width: 200 },
-    { field: "FRecibido", headerName: "Fecha de Recibido", width: 200 },
-    { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 200 },
-    { field: "Prorroga", headerName: "Fecha de Prorroga", width: 200 },
+    { field: "FOficio", description: "Fecha de Oficio", headerName: "Fecha de Oficio", width: 200 },
+    { field: "FRecibido", description: "Fecha de Recibido", headerName: "Fecha de Recibido", width: 200 },
+    { field: "FVencimiento", description: "Fecha de Vencimiento", headerName: "Fecha de Vencimiento", width: 200 },
+    { field: "Prorroga", description: "Fecha de Prorroga", headerName: "Fecha de Prorroga", width: 200 },
   ];
 
   useEffect(() => {
-    console.log("obj", obj);
-
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {

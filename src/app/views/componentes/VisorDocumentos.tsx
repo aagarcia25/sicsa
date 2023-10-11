@@ -346,6 +346,7 @@ const VisorDocumentos = ({
     },
     {
       field: "estatus",
+      description: "Estatus",
       headerName: "Estatus",
       width: 150,
     },
@@ -355,9 +356,9 @@ const VisorDocumentos = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 150 },
-    { field: "modi", headerName: "Modificado Por", width: 150 },
-    { field: "Nombre", headerName: "Nombre", width: 250 },
+    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
+    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
+    { field: "Nombre", description: "Nombre", headerName: "Nombre", width: 250 },
   ];
 
   const handleOpen = (v: any) => {

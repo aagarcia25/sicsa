@@ -65,8 +65,6 @@ export const ContestacionModal = ({
   const handleRequest = (data: any) => {
     if (tipo === 1) {
       AuditoriaService.Contestacionindex(data).then((res) => {
-        console.log(res);
-
         if (res.SUCCESS) {
           Toast.fire({
             icon: "success",
