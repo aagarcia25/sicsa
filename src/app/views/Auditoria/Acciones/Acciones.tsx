@@ -238,17 +238,16 @@ const Acciones = ({
       headerName: "Resultado/Observación",
       width: 900,
     },
-    { field: "Valor",  description: "Valor" headerName: "Valor", width: 200 },
+    { field: "Valor", description: "Valor", headerName: "Valor", width: 200 },
     {
       field: "numeroResultado",
       headerName: "Numero de Resultado",
-        description: "Número de Resultado",
+      description: "Número de Resultado",
       width: 200,
       align: "center",
       headerAlign: "center",
     },
-    { field: "monto", headerName: "Monto", description: "Monto",width: 200 },
-
+    { field: "monto", headerName: "Monto", description: "Monto", width: 200 },
   ];
 
   useEffect(() => {
