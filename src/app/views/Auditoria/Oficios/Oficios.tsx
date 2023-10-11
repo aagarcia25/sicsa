@@ -126,16 +126,16 @@ export const Oficios = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", headerName: "Creado Por", width: 200 },
-    { field: "modi", headerName: "Modificado Por", width: 200 },
+    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 200 },
+    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 200 },
     {
       field: "Oficio",
       description: "Oficio",
       headerName: "Oficio",
       width: 200,
     },
-    { field: "FechaRecibido", headerName: "Fecha Recibido ", width: 180 },
-    { field: "FechaVencimiento", headerName: "Fecha Vencimiento", width: 180 },
+    { field: "FechaRecibido", description: "Fecha Recibido", headerName: "Fecha Recibido ", width: 180 },
+    { field: "FechaVencimiento", description: "Fecha Vencimiento", headerName: "Fecha Vencimiento", width: 180 },
   ];
 
   const handleOpen = (v: any) => {
@@ -153,7 +153,6 @@ export const Oficios = ({
   };
 
   const consulta = () => {
-    console.log(obj);
     let data = {
       NUMOPERACION: 4,
       P_IDAUDITORIA: obj.row.id,

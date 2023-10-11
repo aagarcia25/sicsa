@@ -60,8 +60,6 @@ export const OrganoCModal = ({
   const handleRequest = (data: any) => {
     if (tipo === 1) {
       AuditoriaService.OrganoCindex(data).then((res) => {
-        console.log(res);
-
         if (res.SUCCESS) {
           Toast.fire({
             icon: "success",

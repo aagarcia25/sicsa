@@ -10,6 +10,7 @@
     "@mui/lab": "^5.0.0-alpha.140",
     "@mui/material": "^5.14.12",
     "@mui/styled-engine-sc": "^5.14.12",
+    "@mui/x-charts": "^6.0.0-alpha.14",
     "@mui/x-data-grid": "^6.9.2",
     "@mui/x-date-pickers": "^6.10.1",
     "@mui/x-tree-view": "^6.0.0-beta.0",
