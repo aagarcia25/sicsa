@@ -53,7 +53,6 @@ export const AniosModal = ({
           title: "¡Registro Agregado!",
         });
         handleClose();
-
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
@@ -68,7 +67,6 @@ export const AniosModal = ({
           title: "¡Registro Editado!",
         });
         handleClose();
-
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
@@ -78,23 +76,19 @@ export const AniosModal = ({
   useEffect(() => {
     if (dt === "") {
     } else {
-      console.log("dt", dt);
       setId(dt?.row?.id);
       setAnio(dt?.row?.anio);
     }
   }, [dt]);
 
-  
-
-//     Verificar si el valor ingresado son 4 dígitos numéricos
- const validarNumeroAnio = (dato: string) => {
-     if (/^\d{0,4}$/.test(dato)) {
-    setAnio(dato);
+  //     Verificar si el valor ingresado son 4 dígitos numéricos
+  const validarNumeroAnio = (dato: string) => {
+    if (/^\d{0,4}$/.test(dato)) {
+      setAnio(dato);
     } else if (dato.length === 0) {
       setAnio("");
-     }
-   };
-
+    }
+  };
 
   return (
     <>

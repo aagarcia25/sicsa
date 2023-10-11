@@ -153,7 +153,6 @@ export const Oficios = ({
   };
 
   const consulta = () => {
-    console.log(obj);
     let data = {
       NUMOPERACION: 4,
       P_IDAUDITORIA: obj.row.id,

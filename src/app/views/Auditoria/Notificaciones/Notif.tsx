@@ -198,8 +198,6 @@ const Notif = ({
   ];
 
   useEffect(() => {
-    console.log("obj", obj);
-
     permisos.map((item: PERMISO) => {
       if (String(item.ControlInterno) === "AUDITOR") {
         if (String(item.Referencia) === "AGREG") {

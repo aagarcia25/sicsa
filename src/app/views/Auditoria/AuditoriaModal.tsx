@@ -279,9 +279,6 @@ export const AuditoriaModal = ({
 
     if (dt === "") {
     } else {
-      console.log("d", dt);
-
-      console.log(dt?.row);
       setId(dt?.row?.id);
       setanio(String(dt?.row?.anio));
       setNAUDITORIA(dt?.row?.NAUDITORIA);

@@ -60,9 +60,7 @@ function App() {
     };
 
     UserServices.userAppDetail(data).then((res) => {
-      console.log(res);
       if (res?.status === 200) {
-        console.log(res.data.data);
         setUser(res.data.data);
         setRoles(res.data.roles[0]);
         setMenus(res.data.menus[0]);
@@ -85,7 +83,6 @@ function App() {
 
   const verificatoken = (primerInicio: boolean) => {
     UserServices.verify({}).then((res) => {
-      // console.log(res);
       if (res?.status === 200) {
         setUserName(res.data.data.NombreUsuario);
         buscaUsuario(res.data.data.IdUsuario);
