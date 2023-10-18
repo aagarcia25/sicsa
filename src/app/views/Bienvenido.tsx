@@ -1,11 +1,11 @@
-import { Grid, Typography } from "@mui/material";
+import { Card, Grid, Typography } from "@mui/material";
 import TitleComponent from "./componentes/TitleComponent";
 
 export default function Bienvenido({ user }: { user: any }) {
   return (
     <Grid height="85%" width="100%" sx={{ padding: "16px" }}>
       <TitleComponent
-        title={"Sistema de Control y Seguimiento de Auditoía (SICSA)"}
+        title={"Sistema de Control y Seguimiento de Auditoría (SICSA)"}
         show={false}
       />
       <Typography
@@ -14,7 +14,7 @@ export default function Bienvenido({ user }: { user: any }) {
           fontFamily: "sans-serif",
           textAlign: "center",
           justifyContent: "center",
-          padding: "16px",
+          padding: "10px",
         }}
       >
         Auditorías de la Secretaría de Finanzas y Tesorería General del Estado
@@ -31,7 +31,7 @@ export default function Bienvenido({ user }: { user: any }) {
         direction="row"
         justifyContent="center"
         alignItems="center"
-        sx={{ padding: "16px" }}
+        sx={{ padding: "10px" }}
       >
         <Grid item xs={12} sm={7} md={7} lg={7}>
           <Typography
@@ -65,7 +65,7 @@ export default function Bienvenido({ user }: { user: any }) {
         direction="row"
         justifyContent="center"
         alignItems="center"
-        sx={{ padding: "16px" }}
+        sx={{ padding: "10px" }}
       >
         <Grid item xs={12} sm={7} md={7} lg={7}>
           <Typography
@@ -97,7 +97,7 @@ export default function Bienvenido({ user }: { user: any }) {
         direction="row"
         justifyContent="center"
         alignItems="center"
-        sx={{ padding: "16px" }}
+        sx={{ padding: "10px" }}
       >
         <Grid item xs={12} sm={7} md={7} lg={7}>
           <Typography
@@ -131,13 +131,15 @@ export default function Bienvenido({ user }: { user: any }) {
       >
         <Grid item xs={12} sm={12} md={4} lg={1}></Grid>
         <Grid item xs={12} sm={12} md={4} lg={2}>
-          <iframe
-            width="300"
-            height="250"
-            loading="lazy"
-            allowFullScreen
-            src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3595.725675170027!2d-100.31389362460231!3d25.680386877403066!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sEdificio%20V%C3%ADctor%20G%C3%B3mez%20Garza%20Gral.%20Mariano%20Escobedo%20333%20Zona%20Centro%20Monterrey%2C%20Nuevo%20Le%C3%B3n%20CP%2064000!5e0!3m2!1ses-419!2smx!4v1697666927641!5m2!1ses-419!2smx"
-          ></iframe>
+          <Card>
+            <iframe
+              width="300"
+              height="240"
+              loading="lazy"
+              allowFullScreen
+              src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3595.725675170027!2d-100.31389362460231!3d25.680386877403066!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sEdificio%20V%C3%ADctor%20G%C3%B3mez%20Garza%20Gral.%20Mariano%20Escobedo%20333%20Zona%20Centro%20Monterrey%2C%20Nuevo%20Le%C3%B3n%20CP%2064000!5e0!3m2!1ses-419!2smx!4v1697666927641!5m2!1ses-419!2smx"
+            ></iframe>
+          </Card>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={2} sx={{ textAlign: "center" }}>
           <Typography
