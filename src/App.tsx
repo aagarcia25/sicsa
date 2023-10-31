@@ -5,6 +5,7 @@ import { HashRouter } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Fonts.css";
 import "./Globals.css";
+import { USUARIORESPONSE, UserLogin } from "./app/interfaces/UserInfo";
 import { AppRouter } from "./app/router/AppRouter";
 import { AuthService } from "./app/services/AuthService";
 import { UserServices } from "./app/services/UserServices";
@@ -13,7 +14,6 @@ import {
   getRfToken,
   getToken,
   getUser,
-  setDepartamento,
   setIdApp,
   setMenus,
   setPerfilFoto,
@@ -22,12 +22,10 @@ import {
   setRoles,
   setToken,
   setUser,
-  validaLocalStorage,
 } from "./app/services/localStorage";
 import { BloqueoSesion } from "./app/views/BloqueoSesion";
 import Slider from "./app/views/Progress";
 import Validacion from "./app/views/Validacion";
-import { USUARIORESPONSE, UserLogin } from "./app/interfaces/UserInfo";
 
 function App() {
   //cambiar a 5 minutos
@@ -41,17 +39,8 @@ function App() {
   const [openSlider, setOpenSlider] = useState(true);
   const [bloqueoStatus, setBloqueoStatus] = useState<boolean>();
   const [login, setlogin] = useState<boolean>(false);
-  const [userName, setUserName] = useState<string>();
   const [acceso, setAcceso] = useState(false);
   const [contrseñaValida, setContraseñaValida] = useState(true);
-
-  const GetImage = (tipo: string, nameImagen: string) => {
-    AuthService.GetImagenProfile(tipo, nameImagen).then((res) => {
-      if (res.SUCCESS) {
-        setPerfilFoto(res.RESPONSE.RESPONSE);
-      }
-    });
-  };
 
   const buscaUsuario = (id: string) => {
     let data = {
@@ -67,7 +56,6 @@ function App() {
         setPermisos(
           res.data.permisos[0] == undefined ? [] : res.data.permisos[0]
         );
-        setUserName(res.data.data.NombreUsuario);
 
         setBloqueoStatus(false);
         setOpenSlider(false);
@@ -84,7 +72,6 @@ function App() {
   const verificatoken = (primerInicio: boolean) => {
     UserServices.verify({}).then((res) => {
       if (res?.status === 200) {
-        setUserName(res.data.data.NombreUsuario);
         buscaUsuario(res.data.data.IdUsuario);
         setBloqueoStatus(false);
         setOpenSlider(false);
@@ -143,7 +130,6 @@ function App() {
   };
 
   const handleOnIdle = () => {
-    //setBloqueoStatus(true);
     setAcceso(false);
   };
 
@@ -171,7 +157,7 @@ function App() {
         setRfToken(refjwt);
         setIdApp(idapp);
         var ventana = window.self;
-        ventana.location.replace("/sicsa/");
+        ventana.location.replace(String(process.env.REACT_APP_APPLICATION_ENV));
       } else {
         Swal.fire({
           title: "Token no valido",

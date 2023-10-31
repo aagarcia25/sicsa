@@ -1,7 +1,7 @@
 import { Card, Grid } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import SvgIcon, { SvgIconProps } from "@mui/material/SvgIcon";
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { TransitionProps } from "@mui/material/transitions";
 import { BarChart } from "@mui/x-charts";
 import {
@@ -20,7 +20,7 @@ import TitleComponent from "../componentes/TitleComponent";
 
 export const Dash = () => {
   const [dataset, setdataset] = React.useState(null);
-
+  const [expanded, setExpanded] = React.useState<string[]>([]);
   function MinusSquare(props: SvgIconProps) {
     return (
       <SvgIcon fontSize="inherit" style={{ width: 14, height: 14 }} {...props}>
@@ -88,14 +88,12 @@ export const Dash = () => {
     [`& .${treeItemClasses.group}`]: {
       marginLeft: 15,
       paddingLeft: 18,
-      borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
     },
   }));
 
   const [ListAnio, setListAnio] = React.useState<SelectValues[]>([]);
 
   const loadFilter = (operacion: number, id?: string) => {
-    // eslint-disable-next-line prefer-const
     let data = { NUMOPERACION: operacion, P_ID: id };
     ShareService.SelectIndex(data).then((res) => {
       if (operacion === 1) {
@@ -104,8 +102,7 @@ export const Dash = () => {
     });
   };
 
-  const loadGrafica = (nivel: number, id?: string) => {
-    // eslint-disable-next-line prefer-const
+  const loadGrafica = (nivel: number, id: string) => {
     const data = { nivel: nivel, P_ID: id };
     CatalogosServices.graficas(data).then((res) => {
       setdataset(res.RESPONSE);
@@ -113,7 +110,7 @@ export const Dash = () => {
   };
 
   React.useEffect(() => {
-    loadGrafica(0);
+    loadGrafica(0, "");
     loadFilter(1);
   }, []);
 
@@ -139,6 +136,7 @@ export const Dash = () => {
         <Grid item xs={12} sm={6} md={7} lg={7}>
           <TreeView
             aria-label="customized"
+            expanded={expanded}
             defaultExpanded={["1"]}
             defaultCollapseIcon={<MinusSquare />}
             defaultExpandIcon={<PlusSquare />}
