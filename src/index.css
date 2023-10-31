@@ -28,3 +28,60 @@ code {
 .css-919eu4 {
   background-color: transparent !important;
 }
+
+.full-screen-image {
+  max-width: 100%;
+  /* Ancho máximo del contenedor */
+  max-height: 80vh;
+  /* Alto máximo del contenedor (ajústalo según tus necesidades) */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* Evita que las imágenes se desborden del contenedor */
+}
+
+.full-screen-image img {
+  max-width: 100%;
+  /* Ancho máximo de la imagen */
+  max-height: 100%;
+  /* Alto máximo de la imagen */
+  width: 100%;
+  /* Permite que la imagen ajuste su ancho automáticamente */
+  height: 100%;
+  /* Permite que la imagen ajuste su alto automáticamente */
+  object-fit: cover;
+  /* Ajustar la imagen manteniendo la proporción y encajando dentro del contenedor */
+}
+
+
+
+.contact-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* Diseño responsivo de columnas */
+  gap: 20px;
+  /* Espacio entre cajas */
+  max-width: 800px;
+  /* Ancho máximo del contenedor */
+
+  /* Estilos adicionales para el contenedor si es necesario */
+}
+
+.info-box {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Estilos adicionales para h2, p y address si es necesario */
+
