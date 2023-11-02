@@ -43,6 +43,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import OrganoC from "./Organo/OrganoC";
+import { render } from "@testing-library/react";
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -79,10 +80,14 @@ export const Auditoria = () => {
   const [modalidad, setmodalidad] = useState("");
   const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
+  const [Entregado, setEntregado] = useState("")
 
   const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
+    if(data.row.entregado !== "1"){
+      setVrows(data);
     setOpenAdjuntos(true);
+    }
+    
   };
 
   const handleClose = () => {
@@ -97,20 +102,28 @@ export const Auditoria = () => {
   };
 
   const handleAcciones = (data: any) => {
-    setVrows(data);
+    if(data.row.entregado !== "1"){
+      setVrows(data);
     setOpenModalAcciones(true);
+    }
+    
   };
 
   const handleOficios = (data: any) => {
-    setId(data.id);
+    if(data.row.entregado !== "1"){
+      setId(data.id);
     setVrows(data);
-    setOpenModalOficios(true);
+      setOpenModalOficios(true);
+    }
   };
 
   const handlePlan = (data: any) => {
-    setId(data.id);
+    if(data.row.entregado !== "1"){
+      setId(data.id);
     setVrows(data);
     setOpenModalgant(true);
+    }
+    
   };
 
   const handleFilterChangeMunicipio = (v: string) => {
@@ -118,13 +131,20 @@ export const Auditoria = () => {
   };
 
   const handleDetalle = (data: any) => {
-    setVrows(data);
+
+    if(data.row.entregado !== "1"){
+      setVrows(data);
     setOpenModalDetalle(true);
+    }
+    
   };
 
   const handleORgano = (data: any) => {
-    setVrows(data);
+    if(data.row.entregado !== "1"){
+      setVrows(data);
     setopenModalOrgano(true);
+    }
+    
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -144,6 +164,7 @@ export const Auditoria = () => {
   };
 
   const handleAccion = (v: any) => {
+
     if (v.tipo == 1) {
       setTipoOperacion(2);
       setModo("Editar Registro");
@@ -182,6 +203,51 @@ export const Auditoria = () => {
       });
     }
   };
+
+  const handleEntregar = (v: any) => {
+    if (v.row.entregado == 1){
+      Toast.fire({
+        icon: "success",
+        title: "¡La auditoría ya ha sido entregada anteriormente!",
+      });
+    }else{
+      Swal.fire({
+      icon: "info",
+      title: "¿Desea entregar esta auditoría?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        let data = {
+          NUMOPERACION: 5,
+          CHID: v.row.id,
+          CHUSER: user.Id,
+        };
+
+        AuditoriaService.Auditoriaindex(data).then((res) => {
+          if (res.SUCCESS) {
+            Toast.fire({
+              icon: "success",
+              title: "Auditoría Entregada",
+            })
+            consulta();
+
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+          }
+        })
+      } else if (result.isDenied) {
+        Swal.fire("No se realizaron cambios", "", "info")
+      }
+    })
+    }
+    
+
+  }
 
   /**
    * 
@@ -507,6 +573,47 @@ export const Auditoria = () => {
       width: 150,
     },
 
+    
+    {
+      field: "anio",
+      description: "Año Cuenta Pública",
+      headerName: "Año Cuenta Pública",
+      width: 123,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "NAUDITORIA",
+      description: "Número de Auditoría",
+      headerName: "No. de Auditoría",
+      width: 120,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "NombreAudoria",
+      description: "Nombre",
+      headerName: "Nombre",
+      width: 325,
+    },
+    {
+      field: "cmoDescripcion",
+      description: "Modalidad",
+      headerName: "Modalidad",
+      width: 200,
+    },
+    {
+      field: "ActaInicio",
+      description: "Acta de Inicio",
+      headerName: "Acta de Inicio",
+      width: 185,
+    },
+    {
+      field: "ceaDescripcion",
+      description: "Estatus",
+      headerName: "Estatus",
+      width: 170,
+    },
     {
       field: "acciones",
       disableExport: true,
@@ -517,16 +624,25 @@ export const Auditoria = () => {
       renderCell: (v) => {
         return (
           <>
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsDeleted>
+
+            {String(v.row.entregado) !== "1" ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )
+            }
+
+              
             <ButtonsEdit
               handleAccion={handleAccion}
               row={v}
               show={true}
             ></ButtonsEdit>
+
             <ButtonsDetail
               title={"Ver Oficios"}
               handleFunction={handleOficios}
@@ -550,9 +666,12 @@ export const Auditoria = () => {
               icon={<BusinessIcon />}
               row={v}
             ></ButtonsDetail>
+
+
+
             <ButtonsDetail
               title={"Cambiar Entrega"}
-              handleFunction={handlePlan}
+              handleFunction={handleEntregar}
               show={true}
               icon={<FactCheckIcon />}
               row={v}
@@ -581,46 +700,6 @@ export const Auditoria = () => {
           </>
         );
       },
-    },
-    {
-      field: "anio",
-      description: "Año Cuenta Pública",
-      headerName: "Año Cuenta Pública",
-      width: 200,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "NAUDITORIA",
-      description: "Número de Auditoría",
-      headerName: "No. de Auditoría",
-      width: 200,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "NombreAudoria",
-      description: "Nombre",
-      headerName: "Nombre",
-      width: 300,
-    },
-    {
-      field: "cmoDescripcion",
-      description: "Modalidad",
-      headerName: "Modalidad",
-      width: 200,
-    },
-    {
-      field: "ActaInicio",
-      description: "Acta de Inicio",
-      headerName: "Acta de Inicio",
-      width: 180,
-    },
-    {
-      field: "ceaDescripcion",
-      description: "Estatus",
-      headerName: "Estatus",
-      width: 200,
     },
   ];
 
