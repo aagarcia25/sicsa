@@ -20,7 +20,6 @@ import TitleComponent from "../componentes/TitleComponent";
 
 export const Dash = () => {
   const [dataset, setdataset] = React.useState(null);
-  const [expanded, setExpanded] = React.useState<string[]>([]);
   function MinusSquare(props: SvgIconProps) {
     return (
       <SvgIcon fontSize="inherit" style={{ width: 14, height: 14 }} {...props}>
@@ -136,7 +135,6 @@ export const Dash = () => {
         <Grid item xs={12} sm={6} md={7} lg={7}>
           <TreeView
             aria-label="customized"
-            expanded={expanded}
             defaultExpanded={["1"]}
             defaultCollapseIcon={<MinusSquare />}
             defaultExpandIcon={<PlusSquare />}
