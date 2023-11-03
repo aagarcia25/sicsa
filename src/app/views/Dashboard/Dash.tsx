@@ -20,7 +20,6 @@ import TitleComponent from "../componentes/TitleComponent";
 
 export const Dash = () => {
   const [dataset, setdataset] = React.useState(null);
-  const [expanded, setExpanded] = React.useState<string[]>([]);
   function MinusSquare(props: SvgIconProps) {
     return (
       <SvgIcon fontSize="inherit" style={{ width: 14, height: 14 }} {...props}>
@@ -117,7 +116,7 @@ export const Dash = () => {
   return (
     <>
       <TitleComponent
-        title={"Sistema de Control y Seguimiento de Auditoía (SICSA)"}
+        title={"Sistema de Control y Seguimiento de Auditoría (SICSA)"}
         show={false}
       />
 
@@ -131,12 +130,36 @@ export const Dash = () => {
         lg={12}
         direction="row"
         justifyContent="center"
-        alignItems="center"
+        alignItems="flex-start"
       >
-        <Grid item xs={12} sm={6} md={7} lg={7}>
+
+        <Grid
+        item
+        spacing={1}
+        xs={12}
+        sm={12}
+        md={12}
+        lg={12}
+        direction="row"
+        justifyContent="center"
+        alignItems="flex-start"
+      ></Grid>
+
+        <Grid
+        container
+        item
+        spacing={1}
+        xs={12}
+        sm={12}
+        md={12}
+        lg={12}
+        direction="row"
+        justifyContent="center"
+        alignItems="flex-start"
+      >
+<Grid item xs={12} sm={6} md={7} lg={7}>
           <TreeView
             aria-label="customized"
-            expanded={expanded}
             defaultExpanded={["1"]}
             defaultCollapseIcon={<MinusSquare />}
             defaultExpandIcon={<PlusSquare />}
@@ -288,16 +311,18 @@ export const Dash = () => {
             </StyledTreeItem>
           </TreeView>
         </Grid>
-        <Grid item xs={12} sm={6} md={5} lg={5}>
+
+
+<Grid item xs={12} sm={6} md={5} lg={5} sx={{display:"flex", alignItems:"flex-center"}}>
           {dataset ? (
-            <Card sx={{ position: "fixed", zIndex: 999 }}>
+            <Card sx={{ position: "fixed", zIndex: 999 , }}>
               <BarChart
                 width={600}
                 height={300}
                 dataset={dataset}
                 xAxis={[{ scaleType: "band", dataKey: "Clasificacion" }]}
-                series={[
-                  { dataKey: "En Proceso", label: "En Proceso" },
+                series={[ 
+                  { dataKey: "En Proceso", label: "En Proceso",  },
                   { dataKey: "Concluida", label: "Concluida" },
                 ]}
               />
@@ -306,6 +331,13 @@ export const Dash = () => {
             ""
           )}
         </Grid>
+      </Grid>
+
+
+        
+
+
+        
       </Grid>
     </>
   );
