@@ -40,9 +40,9 @@ const Acciones = ({
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
 
   const handleDeleted = (v: any) => {
     Swal.fire({
@@ -162,16 +162,17 @@ const Acciones = ({
       renderCell: (v) => {
         return (
           <>
-            <ButtonsEdit
+          {editar ? (<ButtonsEdit
               handleAccion={handleAccion}
               row={v}
               show={editar}
-            ></ButtonsEdit>
-            <ButtonsDeleted
+            ></ButtonsEdit>):("")}
+            {eliminar ? (<ButtonsDeleted
               handleAccion={handleDeleted}
               row={v}
               show={eliminar}
-            ></ButtonsDeleted>
+            ></ButtonsDeleted>):("")}
+            
             <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -252,14 +253,14 @@ const Acciones = ({
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "AUDITOR") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
       }
@@ -292,8 +293,8 @@ const Acciones = ({
         )}
 
         <Progress open={show}></Progress>
-        <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
-        <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
+        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
+        {agregar ? (<ButtonsImport handleOpen={handleUpload} agregar={agregar} />):("")}
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
     </div>

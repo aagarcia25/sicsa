@@ -128,6 +128,8 @@ export const PlanTrabajoAnualModal = ({
               value={start}
               label={"Fecha Inicio"}
               onchange={handleFilterChange1}
+              disabled={false}
+
             />
           </Grid>
 
@@ -136,6 +138,8 @@ export const PlanTrabajoAnualModal = ({
               value={end}
               label={"Fecha Final"}
               onchange={handleFilterChange2}
+              disabled={false}
+
             />
           </Grid>
 

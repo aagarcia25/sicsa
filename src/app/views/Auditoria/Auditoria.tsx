@@ -65,6 +65,8 @@ export const Auditoria = () => {
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
+  const [entrega, setEntrega] = useState<boolean>(false);
+
   const [showfilter, setshowfilter] = useState<boolean>(false);
 
   const [FolioSIGA, setFolioSIGA] = useState("");
@@ -83,11 +85,11 @@ export const Auditoria = () => {
   const [Entregado, setEntregado] = useState("")
 
   const handleVerAdjuntos = (data: any) => {
-    if(data.row.entregado !== "1"){
+    if (data.row.entregado !== "1") {
       setVrows(data);
-    setOpenAdjuntos(true);
+      setOpenAdjuntos(true);
     }
-    
+
   };
 
   const handleClose = () => {
@@ -102,28 +104,28 @@ export const Auditoria = () => {
   };
 
   const handleAcciones = (data: any) => {
-    if(data.row.entregado !== "1"){
+    if (data.row.entregado !== "1") {
       setVrows(data);
-    setOpenModalAcciones(true);
+      setOpenModalAcciones(true);
     }
-    
+
   };
 
   const handleOficios = (data: any) => {
-    if(data.row.entregado !== "1"){
+    if (data.row.entregado !== "1") {
       setId(data.id);
-    setVrows(data);
+      setVrows(data);
       setOpenModalOficios(true);
     }
   };
 
   const handlePlan = (data: any) => {
-    if(data.row.entregado !== "1"){
+    if (data.row.entregado !== "1") {
       setId(data.id);
-    setVrows(data);
-    setOpenModalgant(true);
+      setVrows(data);
+      setOpenModalgant(true);
     }
-    
+
   };
 
   const handleFilterChangeMunicipio = (v: string) => {
@@ -132,19 +134,19 @@ export const Auditoria = () => {
 
   const handleDetalle = (data: any) => {
 
-    if(data.row.entregado !== "1"){
+    if (data.row.entregado !== "1") {
       setVrows(data);
-    setOpenModalDetalle(true);
+      setOpenModalDetalle(true);
     }
-    
+
   };
 
   const handleORgano = (data: any) => {
-    if(data.row.entregado !== "1"){
+    if (data.row.entregado !== "1") {
       setVrows(data);
-    setopenModalOrgano(true);
+      setopenModalOrgano(true);
     }
-    
+
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -205,47 +207,47 @@ export const Auditoria = () => {
   };
 
   const handleEntregar = (v: any) => {
-    if (v.row.entregado == 1){
+    if (v.row.entregado == 1) {
       Toast.fire({
         icon: "success",
         title: "¡La auditoría ya ha sido entregada anteriormente!",
       });
-    }else{
+    } else {
       Swal.fire({
-      icon: "info",
-      title: "¿Desea entregar esta auditoría?",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: "Confirmar",
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
+        icon: "info",
+        title: "¿Desea entregar esta auditoría?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
 
-      if (result.isConfirmed) {
+        if (result.isConfirmed) {
 
-        let data = {
-          NUMOPERACION: 5,
-          CHID: v.row.id,
-          CHUSER: user.Id,
-        };
+          let data = {
+            NUMOPERACION: 5,
+            CHID: v.row.id,
+            CHUSER: user.Id,
+          };
 
-        AuditoriaService.Auditoriaindex(data).then((res) => {
-          if (res.SUCCESS) {
-            Toast.fire({
-              icon: "success",
-              title: "Auditoría Entregada",
-            })
-            consulta();
+          AuditoriaService.Auditoriaindex(data).then((res) => {
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "Auditoría Entregada",
+              })
+              consulta();
 
-          } else {
-            Swal.fire("¡Error!", res.STRMESSAGE, "error");
-          }
-        })
-      } else if (result.isDenied) {
-        Swal.fire("No se realizaron cambios", "", "info")
-      }
-    })
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          })
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info")
+        }
+      })
     }
-    
+
 
   }
 
@@ -573,7 +575,7 @@ export const Auditoria = () => {
       width: 150,
     },
 
-    
+
     {
       field: "anio",
       description: "Año Cuenta Pública",
@@ -624,8 +626,7 @@ export const Auditoria = () => {
       renderCell: (v) => {
         return (
           <>
-
-            {String(v.row.entregado) !== "1" ? (
+          {eliminar ? (String(v.row.entregado) !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -634,9 +635,8 @@ export const Auditoria = () => {
             ) : (
               ""
             )
-            }
-
-              
+            ):("")}
+            
             <ButtonsEdit
               handleAccion={handleAccion}
               row={v}
@@ -667,15 +667,14 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
 
-
-
-            <ButtonsDetail
+            {entrega ? (<ButtonsDetail
               title={"Cambiar Entrega"}
               handleFunction={handleEntregar}
               show={true}
               icon={<FactCheckIcon />}
               row={v}
-            ></ButtonsDetail>
+            ></ButtonsDetail>) : ("")}
+
             <ButtonsDetail
               title={"Resultado de la Auditoria"}
               handleFunction={handleAcciones}
@@ -798,15 +797,18 @@ export const Auditoria = () => {
     loadFilter(18);
     loadFilter(17);
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "AUDITOR") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
+        }
+        if (String(item.ControlInterno) === "ENTREGA") {
+          setEntrega(true);
         }
       }
     });
@@ -989,8 +991,14 @@ export const Auditoria = () => {
               <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
             </Grid>
           </Collapse>
+          {agregar ? (
+            <ButtonsAdd
+              handleOpen={handleOpen}
+              agregar={true}
+            />
+          ) : (""
+          )}
 
-          <ButtonsAdd handleOpen={handleOpen} agregar={true} />
           <ButtonsShare
             title={showfilter ? "Ocultar Filtros" : "Ver Filtros"}
             handleFunction={verfiltros}

@@ -42,7 +42,7 @@ export interface MENU {
 export interface PERMISO {
     ControlInterno: string;
     Referencia: string;
-    Menu: string;
+    menu: string;
 
 }
 

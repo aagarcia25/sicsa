@@ -22,9 +22,9 @@ export const Anios = () => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
 
   const handleAccion = (v: any) => {
     if (v.tipo === 1) {
@@ -72,31 +72,44 @@ export const Anios = () => {
       headerName: "Identificador",
       width: 150,
     },
+    
     {
       field: "acciones",
       disableExport: true,
-      headerName: "Acciones",
-      description: "Campo de Acciones",
+      headerName: eliminar || editar ? "Acciones": "",
+      description: eliminar || editar ? "Campo de Acciones": "",
       sortable: false,
-      width: 200,
+      //width: 200,
+      width: eliminar || editar ? 200 : 0,
+      hideable: true,
+
+      
       renderCell: (v) => {
         return (
           <>
+            {editar ? (
             <ButtonsEdit
               handleAccion={handleAccion}
               row={v}
               show={true}
             ></ButtonsEdit>
+            ) : (""
+            )}
+
+            {eliminar ? (
             <ButtonsDeleted
               handleAccion={handleAccion}
               row={v}
               show={true}
             ></ButtonsDeleted>
+            ) : (""
+            )}
+
           </>
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150  },
     {
       field: "UltimaActualizacion",
       headerName: "Última Actualización",
@@ -143,15 +156,24 @@ export const Anios = () => {
   };
 
   useEffect(() => {
+    console.log("permisos", permisos);
+
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "ANIOS") {
-        if (String(item.Referencia) === "AGREG") {
+      console.log("1if", String(item.menu) === "ANIOS");
+      console.log("2if", String(item.ControlInterno) === "AGREG");
+      console.log("3if", String(item.Referencia) === "EDIT");
+
+
+      if (String(item.menu) === "ANIOS") {
+        if (String(item.ControlInterno) === "AGREG") {
+          console.log("item", item);
+
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
       }
@@ -173,7 +195,15 @@ export const Anios = () => {
       )}
 
       <TitleComponent title={"Años Fiscales"} show={openSlider} />
-      <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+
+      {agregar ? (
+        <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+      ) : (""
+
+      )}
+
+
+
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );
