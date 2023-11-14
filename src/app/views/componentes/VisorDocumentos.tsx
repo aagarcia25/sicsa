@@ -52,6 +52,9 @@ const VisorDocumentos = ({
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
+  const [adjuntar, setAdjuntar] = useState<boolean>(false);
+  const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
+  const [verificar, setVerificar] = useState<boolean>(false);
 
   const consulta = () => {
     let data = {
@@ -298,7 +301,7 @@ const VisorDocumentos = ({
       renderCell: (v) => {
         return (
           <>
-            {String(v.row.estatus) !== "Verificado" ? (
+          {eliminarDocumentos ? (String(v.row.estatus) !== "Verificado" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -306,7 +309,8 @@ const VisorDocumentos = ({
               ></ButtonsDeleted>
             ) : (
               ""
-            )}
+            )):("")}
+            
             <ButtonsDetail
               title={"Ver"}
               handleFunction={handleVer}
@@ -321,7 +325,7 @@ const VisorDocumentos = ({
               icon={<DownloadingIcon />}
               row={v}
             ></ButtonsDetail>
-            {String(v.row.estatus) === "Pendiente de Verificación" ? (
+            {verificar ? (String(v.row.estatus) === "Pendiente de Verificación" ? (
               <ButtonsDetail
                 title={"Verificar Archivo"}
                 handleFunction={handleVerificarArchivo}
@@ -331,7 +335,8 @@ const VisorDocumentos = ({
               ></ButtonsDetail>
             ) : (
               ""
-            )}
+            )):("")}
+            
 
             <ButtonsDetail
               title={"Ver Trazabilidad"}
@@ -369,15 +374,24 @@ const VisorDocumentos = ({
   useEffect(() => {
     console.log(obj);
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "AUDITOR") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
+        }
+        if (String(item.ControlInterno) === "ADJUNTAR") {
+          setAdjuntar(true);
+        }
+        if (String(item.ControlInterno) === "ELIMADJUN") {
+          setEliminarDocumentos(true);
+        }
+        if (String(item.ControlInterno) === "VERIFICARDOC") {
+          setVerificar(true);
         }
       }
     });
@@ -395,7 +409,7 @@ const VisorDocumentos = ({
 
         {true ? (
           <>
-            <TooltipPersonalizado
+          {adjuntar ? (<TooltipPersonalizado
               title={
                 <React.Fragment>
                   <Typography color="inherit">Cargar Documentos</Typography>
@@ -421,7 +435,8 @@ const VisorDocumentos = ({
                   <FileUploadIcon />
                 </IconButton>
               </ToggleButton>
-            </TooltipPersonalizado>
+            </TooltipPersonalizado>):("")}
+            
           </>
         ) : (
           ""

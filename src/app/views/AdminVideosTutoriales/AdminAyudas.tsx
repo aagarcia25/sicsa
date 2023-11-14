@@ -19,15 +19,17 @@ import { GridColDef } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
 import SelectValues, { responseresult } from "../../interfaces/Share";
-import { USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { AuthService } from "../../services/AuthService";
 import { ShareService } from "../../services/ShareService";
 import { ValidaSesion } from "../../services/UserServices";
-import { getToken, getUser } from "../../services/localStorage";
+import { getPermisos, getToken, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import Progress from "../Progress";
 import SelectFrag from "../componentes/SelectFrag";
 import axios from "axios";
+
+
 
 const AdminAyudas = ({
   IdMenu,
@@ -42,6 +44,10 @@ const AdminAyudas = ({
   handleClose: Function;
   dt: any;
 }) => {
+
+const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+const [agregar, setAgregar] = useState<boolean>(false);
+const [eliminar, setEliminar] = useState<boolean>(false);
   // CAMPOS DE LOS FORMULARIOS
 
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
@@ -292,12 +298,14 @@ const AdminAyudas = ({
       width: 150,
       renderCell: (v: any) => {
         return (
+          
           <Box>
-            <Tooltip title="Eliminar Guía">
+            {eliminar ? (<Tooltip title="Eliminar Guía">
               <IconButton onClick={() => handleBorrarRegistro(v.row.id)}>
                 <DeleteForeverIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip>):("")}
+            
           </Box>
         );
       },
@@ -343,11 +351,12 @@ const AdminAyudas = ({
       renderCell: (v: any) => {
         return (
           <Box>
-            <Tooltip title="Eliminar Video">
+            {eliminar ? (<Tooltip title="Eliminar Video">
               <IconButton onClick={() => handleBorrarRegistro(v.row.id)}>
                 <DeleteForeverIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip>):("")}
+            
           </Box>
         );
       },
@@ -393,11 +402,12 @@ const AdminAyudas = ({
       renderCell: (v: any) => {
         return (
           <Box>
-            <Tooltip title="Eliminar Pregunta">
+            {eliminar ? (<Tooltip title="Eliminar Pregunta">
               <IconButton onClick={() => handleBorrarRegistro(v.row.id)}>
                 <DeleteForeverIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip>):("")}
+            
           </Box>
         );
       },
@@ -457,18 +467,18 @@ const AdminAyudas = ({
     handleLimpiaCampos();
   };
 
-  const agregar = (data: any) => {
-    AuthService.rolesindex(data).then((res) => {
-      if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Registro Agregado!",
-        });
-      } else {
-        Swal.fire(res.STRMESSAGE, "¡Error!", "info");
-      }
-    });
-  };
+  // const agregar = (data: any) => {
+  //   AuthService.rolesindex(data).then((res) => {
+  //     if (res.SUCCESS) {
+  //       Toast.fire({
+  //         icon: "success",
+  //         title: "¡Registro Agregado!",
+  //       });
+  //     } else {
+  //       Swal.fire(res.STRMESSAGE, "¡Error!", "info");
+  //     }
+  //   });
+  // };
   useEffect(() => {
     if (value == "pregunta") {
       consulta(IdMenu ? IdMenu : idMenu, "4");
@@ -490,6 +500,21 @@ const AdminAyudas = ({
       }
     }
   }, [dt, value]);
+
+  useEffect(() =>{
+
+    permisos.map((item: PERMISO) =>{
+      if (String(item.menu) === "ADMIAYUDAS") {
+        if (String(item.ControlInterno) === "AGREG") {
+          setAgregar(true);
+        }
+        if (String(item.ControlInterno) === "ELIM") {
+          setEliminar(true);
+        }
+      }
+    })
+
+  },[])
 
   return (
     <Grid container paddingLeft={1} paddingRight={1}>

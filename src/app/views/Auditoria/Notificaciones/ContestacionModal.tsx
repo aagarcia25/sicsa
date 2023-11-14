@@ -243,6 +243,7 @@ export const ContestacionModal = ({
                 value={FOficio}
                 label={"Fecha Oficio"}
                 onchange={handleFilterChangefo}
+                disabled={false}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -250,6 +251,8 @@ export const ContestacionModal = ({
                 value={FRecibido}
                 label={"Fecha Recibido"}
                 onchange={handleFilterChangefr}
+                disabled={false}
+
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -257,6 +260,8 @@ export const ContestacionModal = ({
                 value={FVencimiento}
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChangefv}
+                disabled={false}
+
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -264,6 +269,8 @@ export const ContestacionModal = ({
                 value={Prorroga}
                 label={"Prorroga"}
                 onchange={handleFilterChangep}
+                disabled={false}
+
               />
             </Grid>
           </Grid>

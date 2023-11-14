@@ -209,6 +209,8 @@ export const OrganoCModal = ({
                 value={FOficio}
                 label={"Fecha Oficio"}
                 onchange={handleFilterChangefo}
+                disabled={false}
+
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -216,6 +218,8 @@ export const OrganoCModal = ({
                 value={FRecibido}
                 label={"Fecha Recibido"}
                 onchange={handleFilterChangefr}
+                disabled={false}
+
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -223,6 +227,8 @@ export const OrganoCModal = ({
                 value={FVencimiento}
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChangefv}
+                disabled={false}
+
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>

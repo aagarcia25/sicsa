@@ -36,9 +36,9 @@ export const Contestacion = ({
   const [tipoOperacion, setTipoOperacion] = useState(0);
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
 
   const handleVerAdjuntos = (data: any) => {
     setVrows(data);
@@ -136,16 +136,17 @@ export const Contestacion = ({
       renderCell: (v) => {
         return (
           <>
-            <ButtonsEdit
+          {editar ? (<ButtonsEdit
               handleAccion={handleEdit}
               row={v}
               show={editar}
-            ></ButtonsEdit>
-            <ButtonsDeleted
+            ></ButtonsEdit>):("")}
+            {eliminar ? (<ButtonsDeleted
               handleAccion={handleAccion}
               row={v}
               show={eliminar}
-            ></ButtonsDeleted>
+            ></ButtonsDeleted>):("")}
+            
             <ButtonsDetail
               title={"Ver adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -177,14 +178,14 @@ export const Contestacion = ({
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "AUDITOR") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
       }
@@ -199,7 +200,8 @@ export const Contestacion = ({
         handleClose={handleFunction}
       >
         <Progress open={openSlider}></Progress>
-        <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
+        
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
       {openModal ? (

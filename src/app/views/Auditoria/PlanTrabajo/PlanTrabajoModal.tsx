@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import CustomizedDate from "../../componentes/CustomizedDate";
 import Swal from "sweetalert2";
-import { USUARIORESPONSE } from "../../../interfaces/UserInfo";
-import { getUser } from "../../../services/localStorage";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { getPermisos, getUser } from "../../../services/localStorage";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { Toast } from "../../../helpers/Toast";
 import ModalForm from "../../componentes/ModalForm";
@@ -31,9 +31,11 @@ export const PlanTrabajoModal = ({
   const [name, setname] = useState("");
   const [id, setId] = useState("");
   const [type, settype] = useState("");
-  const [eliminar, setEliminar] = useState<boolean>(true);
   const [bancos, setBancos] = useState([]);
   const [openSlider, setOpenSlider] = useState(true);
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+  const [eliminar, setEliminar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
 
   const consulta = (data: any) => {
     AuditoriaService.Auditoriaindex(data).then((res) => {
@@ -152,10 +154,20 @@ export const PlanTrabajoModal = ({
 
       setId(datos?.id);
     }
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "ELIM") {
+          setEliminar(true);
+        }
+        if (String(item.ControlInterno) === "EDIT") {
+          setEditar(true);
+        }
+      }
+    });
   }, [datos]);
   return (
     <ModalForm
-      title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}
+      title={tipo === 1 ? "Agregar Registro" : editar === true ? "Editar Registro" : "Eliminar Registro"}
       handleClose={handleClose}
     >
       <Box boxShadow={3}>
@@ -177,6 +189,7 @@ export const PlanTrabajoModal = ({
               value={start}
               label={"Fecha Inicio"}
               onchange={handleFilterChange1}
+              disabled={editar === false}
             />
           </Grid>
 
@@ -185,6 +198,9 @@ export const PlanTrabajoModal = ({
               value={end}
               label={"Fecha Final"}
               onchange={handleFilterChange2}
+              disabled={editar === false}
+
+
             />
           </Grid>
 
@@ -200,6 +216,7 @@ export const PlanTrabajoModal = ({
               //required
               //error={!name}
               onChange={(v) => setname(v.target.value)}
+              disabled={editar === false}
             />
           </Grid>
 
@@ -212,13 +229,14 @@ export const PlanTrabajoModal = ({
             alignItems="center"
             justifyContent="center"
           >
-            <ButtonsDeleted
+            {eliminar ? (<ButtonsDeleted
               handleAccion={handleAccion}
               row={datos}
               show={true}
-            ></ButtonsDeleted>
+            ></ButtonsDeleted>):("")}
+            
           </Grid>
-          <Grid item alignItems="center" justifyContent="center" xs={2}>
+          {editar ? (<Grid item alignItems="center" justifyContent="center" xs={2}>
             <Button
               // disabled={descripcion === "" || nombre === ""}
               className={tipo === 1 ? "guardar" : "actualizar"}
@@ -226,7 +244,8 @@ export const PlanTrabajoModal = ({
             >
               {tipo === 1 ? "Agregar" : "Editar"}
             </Button>
-          </Grid>
+          </Grid>):("")}
+          
         </Grid>
       </Box>
     </ModalForm>
