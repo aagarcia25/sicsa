@@ -727,7 +727,7 @@ export const Auditoria = () => {
   const clearFilter = () => {
     setFolioSIGA("");
     setNAUDITORIA("");
-    setidEstatus("");
+    setidEstatus(""); 
     setMunicipio("");
     setidInicioauditoria("");
     setanio("");
