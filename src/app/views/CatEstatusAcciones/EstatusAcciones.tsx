@@ -22,9 +22,9 @@ export const EstatusAcciones = () => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
 
   const handleAccion = (v: any) => {
     if (v.tipo == 1) {
@@ -75,23 +75,31 @@ export const EstatusAcciones = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: "Acciones",
-      description: "Campo de Acciones",
+      headerName: eliminar || editar ? "Acciones": "",
+      description: eliminar || editar ? "Campo de Acciones": "",
       sortable: false,
-      width: 200,
+      //width: 200,
+      width: eliminar || editar ? 200 : 0,
       renderCell: (v) => {
         return (
           <>
-            <ButtonsEdit
-              handleAccion={handleAccion}
-              row={v}
-              show={editar}
-            ></ButtonsEdit>
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={eliminar}
-            ></ButtonsDeleted>
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleAccion}
+                row={v}
+                show={editar}
+              ></ButtonsEdit>
+            ) : (""
+            )}
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={eliminar}
+              ></ButtonsDeleted>
+            ) : (""
+            )}
+
           </>
         );
       },
@@ -137,14 +145,14 @@ export const EstatusAcciones = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "EACCIONES") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "EACCIONES") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
       }
@@ -166,7 +174,14 @@ export const EstatusAcciones = () => {
       )}
 
       <TitleComponent title={"Estatus Resultados"} show={openSlider} />
-      <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+      {agregar ? (
+        <ButtonsAdd
+          handleOpen={handleOpen}
+          agregar={agregar}
+        />
+      ) : (""
+      )}
+
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );

@@ -43,4 +43,8 @@ export class AuditoriaService {
         return await post('OrganoCindex', data);
     };
 
+    public static async ReportesIndex(data : any) {
+        return await post('ReportesIndex', data);
+    };
+
 }

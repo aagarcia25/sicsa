@@ -68,23 +68,32 @@ export const Ramo = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: "Acciones",
-      description: "Campo de Acciones",
+      headerName: eliminar || editar ? "Acciones": "",
+      description: eliminar || editar ? "Campo de Acciones": "",
       sortable: false,
-      width: 200,
+      //width: 200,
+      width: eliminar || editar ? 200 : 0,
+
       renderCell: (v) => {
         return (
           <>
-            <ButtonsEdit
-              handleAccion={handleEdit}
-              row={v}
-              show={true}
-            ></ButtonsEdit>
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsDeleted>
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleEdit}
+                row={v}
+                show={true}
+              ></ButtonsEdit>
+            ) : (""
+            )}
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsDeleted>
+            ) : (""
+            )}
+
           </>
         );
       },
@@ -137,14 +146,14 @@ export const Ramo = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "RAMOS") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "RAMOS") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
       }
@@ -166,7 +175,13 @@ export const Ramo = () => {
       )}
 
       <TitleComponent title={"Ramos"} show={openSlider} />
-      <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+      {agregar ? (
+        <ButtonsAdd
+          handleOpen={handleOpen}
+          agregar={true}
+        />
+      ) : (""
+      )}
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );

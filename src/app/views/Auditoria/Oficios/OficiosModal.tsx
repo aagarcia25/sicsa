@@ -143,6 +143,8 @@ export const OficiosModal = ({
                 value={finicio}
                 label={"Fecha Recibido"}
                 onchange={handleFilterChange1}
+                disabled={false}
+
               />
             </Grid>
 
@@ -151,6 +153,8 @@ export const OficiosModal = ({
                 value={ffin}
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChange2}
+                disabled={false}
+
               />
             </Grid>
 

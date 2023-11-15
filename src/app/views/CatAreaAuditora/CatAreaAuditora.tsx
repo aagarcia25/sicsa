@@ -22,9 +22,9 @@ export const CatAreaAuditora = () => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
 
   const handleAccion = (v: any) => {
     if (v.tipo === 1) {
@@ -79,23 +79,31 @@ export const CatAreaAuditora = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: "Acciones",
-      description: "Campo de Acciones",
+      headerName: eliminar || editar ? "Acciones": "",
+      description: eliminar || editar ? "Campo de Acciones": "",
       sortable: false,
-      width: 100,
+      //width: 200,
+      width: eliminar || editar ? 100 : 0,
       renderCell: (v) => {
         return (
           <>
-            <ButtonsEdit
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsEdit>
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsDeleted>
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsEdit>
+            ) : (""
+            )}
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsDeleted>
+            ) : (""
+            )}
+
           </>
         );
       },
@@ -161,14 +169,14 @@ export const CatAreaAuditora = () => {
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "ANIOS") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "UAU") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
       }
@@ -190,7 +198,13 @@ export const CatAreaAuditora = () => {
       )}
 
       <TitleComponent title={"Área Auditora"} show={openSlider} />
-      <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+      {agregar ? (
+      <ButtonsAdd 
+      handleOpen={handleOpen} 
+      agregar={true} />
+      ):(""
+      )}
+      
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>
   );

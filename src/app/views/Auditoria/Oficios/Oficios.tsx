@@ -99,16 +99,17 @@ export const Oficios = ({
       renderCell: (v) => {
         return (
           <>
-            <ButtonsDeleted
+          {eliminar ? (<ButtonsDeleted
               handleAccion={handleAccion}
               row={v}
               show={true}
-            ></ButtonsDeleted>
-            <ButtonsEdit
+            ></ButtonsDeleted>):("")}
+            {editar ? (<ButtonsEdit
               handleAccion={handleEdit}
               row={v}
               show={true}
-            ></ButtonsEdit>
+            ></ButtonsEdit>):("")}
+            
             <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -174,14 +175,14 @@ export const Oficios = ({
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "AUDITOR") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
       }
@@ -209,7 +210,8 @@ export const Oficios = ({
         <Typography variant="h6">
           {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
         </Typography>
-        <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={true} />):("")}
+        
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
       {openAdjuntos ? (

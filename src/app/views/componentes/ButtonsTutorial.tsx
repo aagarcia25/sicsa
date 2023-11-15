@@ -18,12 +18,13 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   ITEMS,
+  PERMISO,
   RESPONSEGUIARAPIDA,
   RESPONSEPREGUNTASFRECUENTES,
   RESPONSEVIDEOS,
 } from "../../interfaces/UserInfo";
 import { menus } from "../../interfaces/menu";
-import { getMenus, getToken } from "../../services/localStorage";
+import { getMenus, getPermisos, getToken } from "../../services/localStorage";
 import { AuthService } from "../../services/AuthService";
 import { ValidaSesion } from "../../services/UserServices";
 import { TooltipPersonalizado } from "./CustomizedTooltips";
@@ -55,6 +56,8 @@ const ButtonsTutorial = ({
   const [openMenu, setOpenMenu] = useState(-1);
   const [URLVideo, setURLVideo] = useState<string>("");
   const [modo, setModo] = useState<string>("");
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+  const [agregar, setAgregar] = useState<boolean>(false);
 
   const handleClickOpen = (URLVideo: string, modo: string) => {
     setModo(modo);
@@ -132,6 +135,16 @@ const ButtonsTutorial = ({
     });
   }, [window.location.href]);
 
+  React.useEffect(() => {
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "ADMIAYUDAS") {
+        if (String(item.ControlInterno) === "AGREG") {
+          setAgregar(true);
+        }
+      }
+    });
+  }, [])
+
   return (
     <div>
       <Progress open={slideropen}></Progress>
@@ -159,62 +172,62 @@ const ButtonsTutorial = ({
                       {dataVideos.length == 0
                         ? ""
                         : dataVideos.map((datos) => {
-                            return (
-                              <Grid
-                                key={Math.random()}
-                                container
-                                direction="row"
-                                justifyContent="space-around"
-                                alignItems="center"
-                              >
-                                <Grid key={Math.random()} item xs={9.5}>
-                                  <div
+                          return (
+                            <Grid
+                              key={Math.random()}
+                              container
+                              direction="row"
+                              justifyContent="space-around"
+                              alignItems="center"
+                            >
+                              <Grid key={Math.random()} item xs={9.5}>
+                                <div
+                                  key={Math.random()}
+                                  className="div-BotonesVideos"
+                                >
+                                  <IconButton
                                     key={Math.random()}
-                                    className="div-BotonesVideos"
+                                    className="VerVideos"
+                                    onClick={() =>
+                                      handleClickOpen(
+                                        String(datos?.RutaVideo),
+                                        "video"
+                                      )
+                                    }
                                   >
-                                    <IconButton
-                                      key={Math.random()}
-                                      className="VerVideos"
-                                      onClick={() =>
-                                        handleClickOpen(
-                                          String(datos?.RutaVideo),
-                                          "video"
-                                        )
-                                      }
+                                    <OndemandVideoIcon />
+                                    <Typography
+                                      variant="h6"
+                                      className="FuenteDeBotonesTooltip"
                                     >
-                                      <OndemandVideoIcon />
-                                      <Typography
-                                        variant="h6"
-                                        className="FuenteDeBotonesTooltip"
-                                      >
-                                        {datos?.NombreOriginalVideo + " "}
-                                      </Typography>
-                                    </IconButton>
-                                  </div>
-                                </Grid>
-
-                                <Grid key={Math.random()} item xs={2}>
-                                  <div
-                                    key={Math.random()}
-                                    className="div-BotonesVideos"
-                                  >
-                                    <IconButton
-                                      key={Math.random()}
-                                      className="VerVideos"
-                                      onClick={() =>
-                                        handleClickDelet(
-                                          datos?.RutaVideo,
-                                          route
-                                        )
-                                      }
-                                    >
-                                      <DeleteForeverIcon />
-                                    </IconButton>
-                                  </div>
-                                </Grid>
+                                      {datos?.NombreOriginalVideo + " "}
+                                    </Typography>
+                                  </IconButton>
+                                </div>
                               </Grid>
-                            );
-                          })}
+
+                              <Grid key={Math.random()} item xs={2}>
+                                <div
+                                  key={Math.random()}
+                                  className="div-BotonesVideos"
+                                >
+                                  <IconButton
+                                    key={Math.random()}
+                                    className="VerVideos"
+                                    onClick={() =>
+                                      handleClickDelet(
+                                        datos?.RutaVideo,
+                                        route
+                                      )
+                                    }
+                                  >
+                                    <DeleteForeverIcon />
+                                  </IconButton>
+                                </div>
+                              </Grid>
+                            </Grid>
+                          );
+                        })}
                     </Grid>
                   </div>
                 </React.Fragment>
@@ -234,8 +247,7 @@ const ButtonsTutorial = ({
             </TooltipPersonalizado>
           </Grid>
         )}
-
-        <Grid item xs={5}>
+{agregar ? (<Grid item xs={5}>
           <Tooltip title="Cargar Video Tutorial">
             <IconButton
               className="ControlVideosHeader"
@@ -244,7 +256,8 @@ const ButtonsTutorial = ({
               <UploadIcon className="IconoDentroBoton" />
             </IconButton>
           </Tooltip>
-        </Grid>
+        </Grid>):("")}
+        
 
         {dataGuiaRapida.length == 0 ? (
           ""
@@ -270,57 +283,60 @@ const ButtonsTutorial = ({
                         {dataGuiaRapida.length == 0
                           ? ""
                           : dataGuiaRapida.map((datos) => {
-                              return (
+                            return (
+                              <Grid
+                                key={Math.random()}
+                                container
+                                direction="row"
+                                justifyContent="space-around"
+                                alignItems="center"
+                              >
                                 <Grid
                                   key={Math.random()}
-                                  container
-                                  direction="row"
-                                  justifyContent="space-around"
-                                  alignItems="center"
+                                  item
+                                  xs={12}
+                                  padding={0.5}
                                 >
-                                  <Grid
+                                  <div
                                     key={Math.random()}
-                                    item
-                                    xs={12}
-                                    padding={0.5}
+                                    className="div-BotonesVideosTexto"
                                   >
-                                    <div
-                                      key={Math.random()}
-                                      className="div-BotonesVideosTexto"
-                                    >
-                                      <Grid key={Math.random()} item>
-                                        <Button
-                                          className="ButtonGuiaRapida"
-                                          onClick={() =>
-                                            handleClickOpen(
-                                              String(datos?.RutaGuia),
-                                              "guia"
-                                            )
-                                          }
-                                        >
-                                          {datos?.Pregunta + " "}
-                                        </Button>
-                                      </Grid>
-                                    </div>
-                                  </Grid>
+                                    <Grid key={Math.random()} item>
+                                      <Button
+                                        className="ButtonGuiaRapida"
+                                        onClick={() =>
+                                          handleClickOpen(
+                                            String(datos?.RutaGuia),
+                                            "guia"
+                                          )
+                                        }
+                                      >
+                                        {datos?.Pregunta + " "}
+                                      </Button>
+                                    </Grid>
+                                  </div>
                                 </Grid>
-                              );
-                            })}
+                              </Grid>
+                            );
+                          })}
                       </Grid>
                     </div>
                   </React.Fragment>
                 }
               >
+                
                 <IconButton
                   className="ControlMenuHeaderButton"
-                  // onClick={onOpenHelp}
+                // onClick={onOpenHelp}
                 >
-                  <MenuBookIcon className="IconoDentroBoton" />
+                <MenuBookIcon className="IconoDentroBoton" />
+                  
                   <Typography variant="h6" className="TextoMenuHeader">
                     {" "}
                     Guía Rapida
                   </Typography>
                 </IconButton>
+
               </TooltipPersonalizado>
             </Grid>
           </>
@@ -343,78 +359,78 @@ const ButtonsTutorial = ({
                         {dataPreguntasFrecuentes.length == 0
                           ? ""
                           : dataPreguntasFrecuentes.map((datos, indexx) => {
-                              return (
-                                <Grid
-                                  key={Math.random()}
-                                  container
-                                  direction="row"
-                                  justifyContent="space-around"
-                                  alignItems="center"
-                                >
-                                  <Grid container item xs={12}>
-                                    <ListItemButton
-                                      sx={{
-                                        bgcolor:
-                                          openMenu == indexx
-                                            ? "rgba(195, 165, 117)"
-                                            : "rgba(255, 255, 255, 0.291)",
-                                      }}
+                            return (
+                              <Grid
+                                key={Math.random()}
+                                container
+                                direction="row"
+                                justifyContent="space-around"
+                                alignItems="center"
+                              >
+                                <Grid container item xs={12}>
+                                  <ListItemButton
+                                    sx={{
+                                      bgcolor:
+                                        openMenu == indexx
+                                          ? "rgba(195, 165, 117)"
+                                          : "rgba(255, 255, 255, 0.291)",
+                                    }}
+                                    key={indexx}
+                                    onClick={() => handleClick(indexx)}
+                                  >
+                                    <ListItemText
                                       key={indexx}
-                                      onClick={() => handleClick(indexx)}
+                                      primary={
+                                        <Typography
+                                          variant="caption"
+                                          sx={{
+                                            fontFamily: "sans-serif",
+                                            fontWeight: "800",
+                                          }}
+                                          gutterBottom
+                                        >
+                                          {datos?.Pregunta}
+                                        </Typography>
+                                      }
+                                    />
+                                    {/* {openMenu == indexx ? <ExpandLess /> : <ExpandMore />} */}
+                                  </ListItemButton>
+                                </Grid>
+                                <Grid container item xs={12} paddingLeft={2}>
+                                  <Collapse
+                                    key={indexx}
+                                    in={openMenu == indexx}
+                                    timeout="auto"
+                                    unmountOnExit
+                                  >
+                                    <List
+                                      sx={{ borderRadius: "1" }}
+                                      key={indexx}
+                                      component="div"
+                                      disablePadding
                                     >
+                                      <Divider />
                                       <ListItemText
                                         key={indexx}
                                         primary={
-                                          <Typography
-                                            variant="caption"
-                                            sx={{
-                                              fontFamily: "sans-serif",
-                                              fontWeight: "800",
-                                            }}
-                                            gutterBottom
-                                          >
-                                            {datos?.Pregunta}
-                                          </Typography>
+                                          <>
+                                            <Typography
+                                              variant="h5"
+                                              className="menu-Typography"
+                                              gutterBottom
+                                            >
+                                              {datos.Texto}
+                                            </Typography>
+                                          </>
                                         }
                                       />
-                                      {/* {openMenu == indexx ? <ExpandLess /> : <ExpandMore />} */}
-                                    </ListItemButton>
-                                  </Grid>
-                                  <Grid container item xs={12} paddingLeft={2}>
-                                    <Collapse
-                                      key={indexx}
-                                      in={openMenu == indexx}
-                                      timeout="auto"
-                                      unmountOnExit
-                                    >
-                                      <List
-                                        sx={{ borderRadius: "1" }}
-                                        key={indexx}
-                                        component="div"
-                                        disablePadding
-                                      >
-                                        <Divider />
-                                        <ListItemText
-                                          key={indexx}
-                                          primary={
-                                            <>
-                                              <Typography
-                                                variant="h5"
-                                                className="menu-Typography"
-                                                gutterBottom
-                                              >
-                                                {datos.Texto}
-                                              </Typography>
-                                            </>
-                                          }
-                                        />
-                                        <Divider />
-                                      </List>
-                                    </Collapse>
-                                  </Grid>
+                                      <Divider />
+                                    </List>
+                                  </Collapse>
                                 </Grid>
-                              );
-                            })}
+                              </Grid>
+                            );
+                          })}
                       </Grid>
                     </div>
                   </React.Fragment>
@@ -422,7 +438,7 @@ const ButtonsTutorial = ({
               >
                 <IconButton
                   className="ControlMenuHeaderButton"
-                  // onClick={onOpenHelp}
+                // onClick={onOpenHelp}
                 >
                   <HelpIcon className="IconoDentroBoton" />
                   <Typography variant="h6" className="TextoMenuHeader">
