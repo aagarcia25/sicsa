@@ -2,9 +2,9 @@ import { Box, Button, Grid, InputAdornment, TextField, Typography } from "@mui/m
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
-import { USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { AuditoriaService } from "../../services/AuditoriaService";
-import { getUser } from "../../services/localStorage";
+import { getPermisos, getUser } from "../../services/localStorage";
 import ModalForm from "../componentes/ModalForm";
 import SelectFrag from "../componentes/SelectFrag";
 import { ShareService } from "../../services/ShareService";
@@ -76,6 +76,9 @@ export const AuditoriaModal = ({
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
   const [montoauditado, setmontoauditado] = useState(0);
   const [Entregado, setEntregado] = useState("")
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+  const [visualizar, setVisualizar] = useState<boolean>(false);
+  const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
 
 
   const handleSend = () => {
@@ -242,7 +245,7 @@ export const AuditoriaModal = ({
       else if (operacion === 10) {
         setListuaa(res.RESPONSE);
         setShow(false);
-      } else if (operacion === 13) {
+      } else if (operacion === 13) { 
         setListaa(res.RESPONSE);
         setShow(false);
       } else if (operacion === 14) {
@@ -311,7 +314,7 @@ export const AuditoriaModal = ({
       setidEstatus(dt?.row?.ceaid);
       setMunicipio(dt?.row?.munid);
       setInicio(dt?.row?.ciaid);
-      setmontoauditado(dt?.row.montoauditado); 
+      setmontoauditado(dt?.row.montoauditado);
       setEntregado(dt?.row?.entregado);
 
 
@@ -326,6 +329,21 @@ export const AuditoriaModal = ({
     }
     return state;
   };
+
+  useEffect( () => {
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "VISUALDATOS") {
+          setVisualizar(true);
+        }
+        if (String(item.ControlInterno) === "EDIT") {
+          setEditarPermiso(true);
+        }
+      }
+    });
+  }
+    
+  )
 
   return (
     <>
@@ -358,7 +376,7 @@ export const AuditoriaModal = ({
                 onInputChange={handleFilterChangeestatus}
                 placeholder={"Seleccione.."}
                 //disabled={false}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true }
 
               />
             </Grid>
@@ -371,7 +389,7 @@ export const AuditoriaModal = ({
                 options={Listinicio}
                 onInputChange={handleFilterChangeinicio}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }                
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -383,7 +401,7 @@ export const AuditoriaModal = ({
                 options={ListAnio}
                 onInputChange={handleFilterChange1}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }              />
+                disabled={Entregado === "1" || visualizar === true} />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -395,7 +413,7 @@ export const AuditoriaModal = ({
                 options={ListModalidad}
                 onInputChange={handleFilterChangemodalidad}
                 placeholder={"Seleccione ..."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true }
               />
             </Grid>
           </Grid>
@@ -428,7 +446,7 @@ export const AuditoriaModal = ({
                 InputProps={{
                   readOnly: tipo === 1 ? false : true,
                 }}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -441,7 +459,7 @@ export const AuditoriaModal = ({
                 variant="standard"
                 value={Consecutivo}
                 onChange={(v) => setConsecutivo(v.target.value)}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -454,7 +472,7 @@ export const AuditoriaModal = ({
                 variant="standard"
                 value={actainicio}
                 onChange={(v) => setactainicio(v.target.value)}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -469,7 +487,7 @@ export const AuditoriaModal = ({
                 variant="standard"
                 value={FolioSIGA}
                 onChange={(v) => setFolioSIGA(v.target.value)}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -502,7 +520,7 @@ export const AuditoriaModal = ({
                 required
                 error={!NombreAudoria}
                 onChange={(v) => setNombreAudoria(v.target.value)}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -516,7 +534,7 @@ export const AuditoriaModal = ({
                 rows={5}
                 value={Encargado}
                 onChange={(v) => setEncargado(v.target.value)}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -549,7 +567,7 @@ export const AuditoriaModal = ({
                 required
                 error={!PersonalEncargado}
                 onChange={(v) => setPersonalEncargado(v.target.value)}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -578,7 +596,7 @@ export const AuditoriaModal = ({
                 options={LisClasificacion}
                 onInputChange={handleFilterChangeclasificacion}
                 placeholder={"Seleccione...."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -590,7 +608,7 @@ export const AuditoriaModal = ({
                 options={Listorigenauditoria}
                 onInputChange={handleFilterChangeorigenaud}
                 placeholder={"Seleccione...."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
@@ -619,7 +637,7 @@ export const AuditoriaModal = ({
                 options={ListGrupoFuncional}
                 onInputChange={handleFilterChange2}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -629,7 +647,7 @@ export const AuditoriaModal = ({
                 options={CatSector}
                 onInputChange={handleFilterChange3}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -641,7 +659,7 @@ export const AuditoriaModal = ({
                 options={CatEntidadFiscalizada}
                 onInputChange={handleFilterChange4}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -653,7 +671,7 @@ export const AuditoriaModal = ({
                 options={CatTipoAuditoria}
                 onInputChange={handleFilterChange5}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
@@ -680,7 +698,7 @@ export const AuditoriaModal = ({
                 options={CatInforme}
                 onInputChange={handleFilterChange6}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -692,7 +710,7 @@ export const AuditoriaModal = ({
                 options={Listuaa}
                 onInputChange={handleFilterChangeuaa}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -704,7 +722,7 @@ export const AuditoriaModal = ({
                 options={Listaa}
                 onInputChange={handleFilterChangeaa}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -714,7 +732,7 @@ export const AuditoriaModal = ({
                 options={CatRamo}
                 onInputChange={handleFilterramo}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
@@ -744,7 +762,7 @@ export const AuditoriaModal = ({
                 variant="standard"
                 onChange={(v) => setuniversomilespesos(validarNumero(v.target.value, universomilespesos))}
                 error={universomilespesos === "" ? true : false}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -760,7 +778,7 @@ export const AuditoriaModal = ({
                 variant="standard"
                 onChange={(v) => setmuestramilespesos(validarNumero(v.target.value, muestramilespesos))}
                 error={muestramilespesos === "" ? true : false}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -780,7 +798,7 @@ export const AuditoriaModal = ({
                   );
                 }}
                 error={montoauditado === 0 ? true : false}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -793,26 +811,28 @@ export const AuditoriaModal = ({
                 options={ListMunicipio}
                 onInputChange={handleFilterChangeMunicipio}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
 
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            sx={{ padding: "2%" }}
-          >
-            <Grid item alignItems="center" justifyContent="center" xs={2}>
 
 
-              {String(Entregado) !== "1" ? (
+          {(String(Entregado) !== "1" && editarPermiso === true) ? (
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              sx={{ padding: "2%" }}
+            >
+
+
+              <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{ display: "flex" }}>
                 <Button
                   // disabled={descripcion === "" || nombre === ""}
                   className={tipo === 1 ? "guardar" : "actualizar"}
@@ -820,23 +840,50 @@ export const AuditoriaModal = ({
                 >
                   {tipo === 1 ? "Agregar" : "Actualizar"}
                 </Button>
-
-              ) : (""
-              )}
-
+              </Grid>
+              <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{ display: "flex" }}>
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
+                  className={"actualizar"}
+                  onClick={() => handleClose()}
+                >
+                  {"Salir"}
+                </Button>
+              </Grid>
 
 
             </Grid>
-            <Grid item alignItems="center" justifyContent="center" xs={2}>
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
-                className={"actualizar"}
-                onClick={() => handleClose()}
-              >
-                {"Salir"}
-              </Button>
-            </Grid>
+
+          ) : (
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              sx={{ padding: "2%" }}
+            >
+          <Grid item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}>
+            <Button
+              // disabled={descripcion === "" || nombre === ""}
+              className={"actualizar"}
+              onClick={() => handleClose()}
+            >
+              {"Salir"}
+            </Button>
           </Grid>
+          </Grid>
+          )}
+
+
+
+
+
+
+
         </Box>
       </ModalForm>
     </>

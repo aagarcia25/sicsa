@@ -7,8 +7,8 @@ import Progress from "../Progress";
 import { Box, Grid, Typography } from "@mui/material";
 import ButtonsAdd from "./ButtonsAdd";
 import { PlanTrabajoModal } from "../Auditoria/PlanTrabajo/PlanTrabajoModal";
-import { getUser } from "../../services/localStorage";
-import { USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { getPermisos, getUser } from "../../services/localStorage";
+import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 
 export const GanttModal = ({
   handleFunction,
@@ -23,7 +23,11 @@ export const GanttModal = ({
   const [modo, setModo] = useState("");
   const [open, setOpen] = useState(false);
   const [vrows, setVrows] = useState({});
-  const [agregar, setAgregar] = useState<boolean>(true);
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
+
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const consulta = () => {
@@ -67,11 +71,13 @@ export const GanttModal = ({
 
   const handleOpenEdit = (v: any) => {
     console.log("v", v);
-
-    setTipoOperacion(2);
+if(editar===true || eliminar===true){
+  setTipoOperacion(2);
     setModo("Editar Registro");
     setOpen(true);
     setVrows(v);
+}
+    
   };
 
   const handleClose = () => {
@@ -81,6 +87,20 @@ export const GanttModal = ({
   };
 
   useEffect(() => {
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "AGREG") {
+          setAgregar(true);
+        }
+        if (String(item.ControlInterno) === "ELIM") {
+          setEliminar(true);
+        }
+        if (String(item.ControlInterno) === "EDIT") {
+          setEditar(true);
+        }
+       
+      }
+    });
     consulta();
   }, []);
 
@@ -98,7 +118,8 @@ export const GanttModal = ({
         ) : (
           ""
         )}
-        <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
+        
         <Grid item xs={10} sm={10} md={10} lg={10}>
           <Box
             sx={{

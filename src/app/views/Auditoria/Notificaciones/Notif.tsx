@@ -33,9 +33,9 @@ const Notif = ({
   const [tipoOperacion, setTipoOperacion] = useState(0);
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
@@ -131,16 +131,17 @@ const Notif = ({
       renderCell: (v) => {
         return (
           <>
-            <ButtonsEdit
+          {editar ? (<ButtonsEdit
               handleAccion={handleEdit}
               row={v}
               show={editar}
-            ></ButtonsEdit>
-            <ButtonsDeleted
+            ></ButtonsEdit>):("")}
+            {eliminar ? (<ButtonsDeleted
               handleAccion={handleAccion}
               row={v}
               show={eliminar}
-            ></ButtonsDeleted>
+            ></ButtonsDeleted>):("")}
+            
             <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -199,14 +200,14 @@ const Notif = ({
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.ControlInterno) === "AUDITOR") {
-        if (String(item.Referencia) === "AGREG") {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.Referencia) === "ELIM") {
+        if (String(item.menu) === "ELIM") {
           setEliminar(true);
         }
-        if (String(item.Referencia) === "EDIT") {
+        if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
       }
@@ -218,7 +219,8 @@ const Notif = ({
     <div>
       <ModalForm title={"Notificaciones de Áreas"} handleClose={handleFunction}>
         <Progress open={show}></Progress>
-        <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
+        
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
       {openContestacion ? (

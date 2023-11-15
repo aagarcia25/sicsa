@@ -7,10 +7,12 @@ const CustomizedDate = ({
   value,
   label,
   onchange,
+  disabled,
 }: {
   value: any;
   label: string;
   onchange: Function;
+  disabled: boolean;
 }) => {
   return (
     <div>
@@ -20,6 +22,7 @@ const CustomizedDate = ({
           value={value}
           format="DD/MM/YYYY"
           onChange={(v) => onchange(v)}
+          disabled={disabled}
         />
       </LocalizationProvider>
     </div>

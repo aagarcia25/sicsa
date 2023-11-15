@@ -19,12 +19,12 @@ import { styled } from "@mui/material/styles";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import logoNL from "../assets/img/logo1.svg";
-import { getToken, getUser } from "../services/localStorage";
+import { getPermisos, getToken, getUser } from "../services/localStorage";
 import { Blanco } from "../styles/imagen";
 
 import NotesIcon from "@mui/icons-material/Notes";
 import { base64ToArrayBuffer } from "../helpers/Files";
-import { USUARIORESPONSE } from "../interfaces/UserInfo";
+import { PERMISO, USUARIORESPONSE } from "../interfaces/UserInfo";
 import { AuthService } from "../services/AuthService";
 import ButtonsTutorial from "./componentes/ButtonsTutorial";
 
@@ -94,7 +94,7 @@ export default function Header(props: HeaderProps) {
   };
 
   const handleCloseMenuVideos = () => {
-    setOpen((prevOpen) => !prevOpen);
+      setOpen((prevOpen) => !prevOpen);
     setOpen(false);
   };
 
@@ -238,6 +238,8 @@ export default function Header(props: HeaderProps) {
 
     });*/
   }, [props.imgTipo]);
+
+
 
   return (
     <React.Fragment>
@@ -468,13 +470,17 @@ export default function Header(props: HeaderProps) {
                               </IconButton>{" "}
                               Configuración de perfil
                             </MenuItem>
-
+                            
                             <Hidden mdDown>
                               <Grid className="containerMenuItemBotones">
-                                <ButtonsTutorial
+                              
+                              <ButtonsTutorial
                                   route={"/VIDEOS/TUTORIALES/"}
                                   handleCloseMenuVideos={handleCloseMenuVideos}
                                 />
+                              
+
+                                
                               </Grid>
                             </Hidden>
 

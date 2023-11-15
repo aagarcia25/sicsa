@@ -26,6 +26,7 @@ import { PTA } from "../views/PlanAnual/PTA";
 import { Perfil } from "../views/perfil/Perfil";
 import { AuthRouter } from "./AuthRouter";
 import { Dash } from "../views/Dashboard/Dash";
+import { Reportes } from "../views/Reportes/Reportes";
 //import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
@@ -155,6 +156,11 @@ export const AppRouter = ({ login }: { login: boolean }) => {
               <AuthRouter />
             )
           }
+        />
+
+        <Route
+          path="/inicio/admin/reportes"
+          element={log ? <Reportes /> : <AuthRouter />}
         />
 
         {/* SECCION DE PERFIL */}
