@@ -102,12 +102,12 @@ export const Reportes = () => {
 
 
             const archivo = response?.data?.RESPONSE;
-
-
-
+            const identificadorAleatorio = Math.random().toString(36).substring(2, 8);
+            const extension = TIPO;
+            const nuevoNombreArchivo = `REP_01_${identificadorAleatorio}.${extension}`;
 
             // Llamar a la función para descargar el archivo PDF
-            downloadPdfFromBase64(archivo, "REP_01" + "." + TIPO);
+            downloadPdfFromBase64(archivo, nuevoNombreArchivo);
 
           }
           )
