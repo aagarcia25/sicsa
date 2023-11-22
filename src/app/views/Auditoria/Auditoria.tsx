@@ -877,7 +877,7 @@ export const Auditoria = () => {
                   Año Cuenta Pública:
                 </Typography>
                 <SelectFrag
-                  value={anio}
+                  value={anio} 
                   options={ListAnio}
                   onInputChange={handleFilterChange1}
                   placeholder={"Seleccione.."}
