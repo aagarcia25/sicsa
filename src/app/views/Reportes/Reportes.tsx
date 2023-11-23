@@ -1,4 +1,15 @@
-import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import MUIXDataGrid from "../MUIXDataGrid";
 import { AuditoriaService } from "../../services/AuditoriaService";
@@ -6,7 +17,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { getUser } from "../../services/localStorage";
 import { USUARIORESPONSE } from "../../interfaces/UserInfo";
-import ArticleIcon from '@mui/icons-material/Article';
+import ArticleIcon from "@mui/icons-material/Article";
 import SelectFrag from "../componentes/SelectFrag";
 import SelectValues from "../../interfaces/Share";
 import { ShareService } from "../../services/ShareService";
@@ -19,20 +30,20 @@ import { getHeaderInfoReporte } from "../../services/tokenCreator";
 import axios from "axios";
 
 export const Reportes = () => {
-
   const [data, setData] = useState([]);
   const [idOrigenAuditoria, setidOrigenAuditoria] = useState("");
-  const [ListOrigenAuditoria, setListOrigenAuditoria] = useState<SelectValues[]>([]);
+  const [ListOrigenAuditoria, setListOrigenAuditoria] = useState<
+    SelectValues[]
+  >([]);
   const [anio, setanio] = useState("");
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
   const [REPORTE, setREPORTE] = useState("");
   const [TIPO, setTIPO] = useState("");
   const [idEntidadFis, setidEntidadFis] = useState("");
   const [ListEntidadFis, setListEntidadFis] = useState<SelectValues[]>([]);
-  const [selectedValue, setSelectedValue] = React.useState('PDF');
+  const [selectedValue, setSelectedValue] = React.useState("PDF");
   const [Reporte, setReporte] = useState<IReportes>();
   const [listaReportes, setListaReportes] = useState<IReportes[]>([]);
-
 
   const downloadPdfFromBase64 = (base64String: string, fileName: string) => {
     const byteCharacters = atob(base64String); // Decodificar el string base64
@@ -43,10 +54,10 @@ export const Reportes = () => {
     }
 
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    const blob = new Blob([byteArray], { type: "application/pdf" });
 
     // Crear un enlace <a> para descargar el archivo
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
     link.download = fileName;
 
@@ -57,12 +68,9 @@ export const Reportes = () => {
     window.URL.revokeObjectURL(link.href);
   };
 
-
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
-
   const handleGenerar = () => {
-
     //setOpenSlider(true);
     let flag = true;
     if (TIPO === "") {
@@ -78,7 +86,7 @@ export const Reportes = () => {
       const params = {
         TIPO: TIPO,
         P_ANIO: anio,
-        REPORTE: "REP_01.jrxml"
+        REPORTE: "REP_01.jrxml",
       };
 
       let data = {
@@ -86,34 +94,31 @@ export const Reportes = () => {
         TIPO: TIPO,
         PARAMETROS: params,
         P_ANIO: anio,
-        REPORTE: "REP_01.jrxml"
+        REPORTE: "REP_01.jrxml",
       };
 
       try {
         let header = getHeaderInfoReporte();
         axios
           .post(
-            process.env.REACT_APP_APPLICATION_BASE_URL_REPORTES + "ReportesIndex",
-            params,
+            process.env.REACT_APP_APPLICATION_BASE_URL_REPORTES +
+              "ReportesIndex",
+            params
             // { responseType: "blob" }
           )
           .then((response) => {
-
-
-
             const archivo = response?.data?.RESPONSE;
-            const identificadorAleatorio = Math.random().toString(36).substring(2, 8);
+            const identificadorAleatorio = Math.random()
+              .toString(36)
+              .substring(2, 8);
             const extension = TIPO;
             const nuevoNombreArchivo = `REP_01_${identificadorAleatorio}.${extension}`;
 
             // Llamar a la función para descargar el archivo PDF
             downloadPdfFromBase64(archivo, nuevoNombreArchivo);
-
-          }
-          )
+          })
           .catch((error) => {
             //setOpenSlider(false);
-            console.log(error);
             Toast.fire({
               title: "Error en la Generación de Reporte",
               icon: "warning",
@@ -121,12 +126,9 @@ export const Reportes = () => {
           });
       } catch (err: any) {
         //setOpenSlider(false);
-        console.log(err);
       }
     }
   };
-
-
 
   const handleFilterChangeinicio = (v: string) => {
     setidOrigenAuditoria(v);
@@ -140,9 +142,7 @@ export const Reportes = () => {
     setidEntidadFis(v);
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-
     setTIPO(event.target.value);
-
   };
   const handleReporte = (data: IReportes) => {
     setReporte(data);
@@ -155,11 +155,9 @@ export const Reportes = () => {
         //  setCatInforme(res.RESPONSE);
       } else if (operacion === 1) {
         setListAnio(res.RESPONSE);
-      }
-      else if (operacion === 14) {
+      } else if (operacion === 14) {
         setListOrigenAuditoria(res.RESPONSE);
-      }
-      else if (operacion === 2) {
+      } else if (operacion === 2) {
         setListEntidadFis(res.RESPONSE);
       }
       //else if (operacion === 16) {
@@ -172,16 +170,13 @@ export const Reportes = () => {
     });
   };
 
-
   useEffect(() => {
     loadFilter(1);
     loadFilter(14);
     loadFilter(2);
 
     //consulta();
-  }, []
-
-  )
+  }, []);
 
   return (
     <Grid container spacing={1} padding={0}>
@@ -214,9 +209,10 @@ export const Reportes = () => {
         alignItems="center"
         sx={{ padding: "1%" }}
       >
-
         <FormControl component="fieldset">
-          <FormLabel component="legend" sx={{ textAlign: "center" }}>Tipo de Reporte</FormLabel>
+          <FormLabel component="legend" sx={{ textAlign: "center" }}>
+            Tipo de Reporte
+          </FormLabel>
 
           {/* <Grid paddingTop={1} container item xs={12} md={6} justifyContent="center"> */}
           <RadioGroup
@@ -228,7 +224,6 @@ export const Reportes = () => {
           >
             {/* <Grid container item xs={12} md={4} lg={8} sx={{ textAlign: "center" }}> */}
             <Grid item xs={12} sm={6} md={4} lg={4}>
-
               <FormControlLabel value="pdf" control={<Radio />} label="PDF" />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={4}>
@@ -239,8 +234,6 @@ export const Reportes = () => {
               <FormControlLabel value="xls" control={<Radio />} label="XLS" />
             </Grid>
             {/* </Grid> */}
-
-
           </RadioGroup>
           {/* </Grid> */}
         </FormControl>
@@ -259,7 +252,6 @@ export const Reportes = () => {
         alignItems="center"
         sx={{ padding: "1%" }}
       >
-
         {/* <Grid container item xs={12} md={8} lg={8} sx={{ textAlign: "center" }}> */}
 
         <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -313,10 +305,7 @@ export const Reportes = () => {
         alignItems="center"
         sx={{ padding: "1%" }}
       >
-        <Button
-          className={"actualizar"}
-          onClick={() => handleGenerar()}
-        >
+        <Button className={"actualizar"} onClick={() => handleGenerar()}>
           {"Generar Reporte"}
         </Button>
         {/* <Button
@@ -337,9 +326,6 @@ export const Reportes = () => {
               </Tooltip>
             ))} */}
       </Grid>
-
-
-
     </Grid>
   );
-}
+};
