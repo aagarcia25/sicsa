@@ -65,5 +65,6 @@ export interface IReportes {
     Nombre: string
     Descripcion: string
     Auxiliar: string
+    Reporte: string
   }
   
