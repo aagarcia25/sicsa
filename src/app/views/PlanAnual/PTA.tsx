@@ -67,8 +67,6 @@ export const PTA = ({}: // handleFunction,
   };
 
   const handleOpenEdit = (v: any) => {
-    console.log("v", v);
-
     setTipoOperacion(2);
     setModo("Editar Registro");
     setOpen(true);
