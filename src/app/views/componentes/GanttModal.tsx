@@ -70,14 +70,12 @@ export const GanttModal = ({
   };
 
   const handleOpenEdit = (v: any) => {
-    console.log("v", v);
-if(editar===true || eliminar===true){
-  setTipoOperacion(2);
-    setModo("Editar Registro");
-    setOpen(true);
-    setVrows(v);
-}
-    
+    if (editar === true || eliminar === true) {
+      setTipoOperacion(2);
+      setModo("Editar Registro");
+      setOpen(true);
+      setVrows(v);
+    }
   };
 
   const handleClose = () => {
@@ -98,7 +96,6 @@ if(editar===true || eliminar===true){
         if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
-       
       }
     });
     consulta();
@@ -118,8 +115,12 @@ if(editar===true || eliminar===true){
         ) : (
           ""
         )}
-        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
-        
+        {agregar ? (
+          <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        ) : (
+          ""
+        )}
+
         <Grid item xs={10} sm={10} md={10} lg={10}>
           <Box
             sx={{

@@ -72,44 +72,44 @@ export const Anios = () => {
       headerName: "Identificador",
       width: 150,
     },
-    
+
     {
       field: "acciones",
       disableExport: true,
-      headerName: eliminar || editar ? "Acciones": "",
-      description: eliminar || editar ? "Campo de Acciones": "",
+      headerName: eliminar || editar ? "Acciones" : "",
+      description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
       hideable: true,
 
-      
       renderCell: (v) => {
         return (
           <>
             {editar ? (
-            <ButtonsEdit
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsEdit>
-            ) : (""
+              <ButtonsEdit
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsEdit>
+            ) : (
+              ""
             )}
 
             {eliminar ? (
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsDeleted>
-            ) : (""
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsDeleted>
+            ) : (
+              ""
             )}
-
           </>
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150  },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
     {
       field: "UltimaActualizacion",
       headerName: "Última Actualización",
@@ -156,18 +156,9 @@ export const Anios = () => {
   };
 
   useEffect(() => {
-    console.log("permisos", permisos);
-
     permisos.map((item: PERMISO) => {
-      console.log("1if", String(item.menu) === "ANIOS");
-      console.log("2if", String(item.ControlInterno) === "AGREG");
-      console.log("3if", String(item.Referencia) === "EDIT");
-
-
       if (String(item.menu) === "ANIOS") {
         if (String(item.ControlInterno) === "AGREG") {
-          console.log("item", item);
-
           setAgregar(true);
         }
         if (String(item.ControlInterno) === "ELIM") {
@@ -196,13 +187,7 @@ export const Anios = () => {
 
       <TitleComponent title={"Años Fiscales"} show={openSlider} />
 
-      {agregar ? (
-        <ButtonsAdd handleOpen={handleOpen} agregar={true} />
-      ) : (""
-
-      )}
-
-
+      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
 
       <MUIXDataGrid columns={columns} rows={bancos} />
     </div>

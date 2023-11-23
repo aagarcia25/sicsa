@@ -57,7 +57,6 @@ export const postRefresh = async function (url: string) {
 
 export const get = async function (url: string) {
   try {
-    //console.log(token)
     let resp = await axios.get(
       process.env.REACT_APP_APPLICATION_BASE_URL_EXT + url,
       {
@@ -76,7 +75,6 @@ export const get = async function (url: string) {
 
 export const put = async function (refreshToken: string) {
   try {
-    //console.log(refreshToken)
     let resp = await axios.get(
       String(process.env.REACT_APP_APPLICATION_BASE_URL_EXT),
       {
@@ -94,7 +92,6 @@ export const put = async function (refreshToken: string) {
 };
 export const putPass = async function (url: string, body: any) {
   try {
-    //console.log(refreshToken)
     let resp = await axios.put(
       process.env.REACT_APP_APPLICATION_BASE_URL_EXT + url,
       body,
