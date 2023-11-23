@@ -100,7 +100,6 @@ const VisorDocumentos = ({
       formData.append("CHUSER", user.Id);
       formData.append("TOKEN", JSON.parse(String(getToken())));
       formData.append("FILE", item.Archivo, item.NOMBRE);
-      console.log(item.Archivo);
       let p = axios.post(
         process.env.REACT_APP_APPLICATION_BASE_URL + "Filesindex",
         formData,
@@ -193,7 +192,6 @@ const VisorDocumentos = ({
 
     AuditoriaService.Filesindex(data).then((res) => {
       if (res.SUCCESS) {
-        console.log(res);
         var bufferArray = base64ToArrayBuffer(String(res.RESPONSE.FILE));
         var blobStore = new Blob([bufferArray], { type: res.RESPONSE.TIPO });
         var data = window.URL.createObjectURL(blobStore);
@@ -253,7 +251,6 @@ const VisorDocumentos = ({
       denyButtonText: `Cancelar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(v);
         let data = {
           NUMOPERACION: 3,
           CHID: v.data.row.id,
@@ -301,16 +298,20 @@ const VisorDocumentos = ({
       renderCell: (v) => {
         return (
           <>
-          {eliminarDocumentos ? (String(v.row.estatus) !== "Verificado" ? (
-              <ButtonsDeleted
-                handleAccion={handleAccion}
-                row={v}
-                show={true}
-              ></ButtonsDeleted>
+            {eliminarDocumentos ? (
+              String(v.row.estatus) !== "Verificado" ? (
+                <ButtonsDeleted
+                  handleAccion={handleAccion}
+                  row={v}
+                  show={true}
+                ></ButtonsDeleted>
+              ) : (
+                ""
+              )
             ) : (
               ""
-            )):("")}
-            
+            )}
+
             <ButtonsDetail
               title={"Ver"}
               handleFunction={handleVer}
@@ -325,18 +326,21 @@ const VisorDocumentos = ({
               icon={<DownloadingIcon />}
               row={v}
             ></ButtonsDetail>
-            {verificar ? (String(v.row.estatus) === "Pendiente de Verificación" ? (
-              <ButtonsDetail
-                title={"Verificar Archivo"}
-                handleFunction={handleVerificarArchivo}
-                show={true}
-                icon={<ChecklistRtlIcon />}
-                row={v}
-              ></ButtonsDetail>
+            {verificar ? (
+              String(v.row.estatus) === "Pendiente de Verificación" ? (
+                <ButtonsDetail
+                  title={"Verificar Archivo"}
+                  handleFunction={handleVerificarArchivo}
+                  show={true}
+                  icon={<ChecklistRtlIcon />}
+                  row={v}
+                ></ButtonsDetail>
+              ) : (
+                ""
+              )
             ) : (
               ""
-            )):("")}
-            
+            )}
 
             <ButtonsDetail
               title={"Ver Trazabilidad"}
@@ -361,9 +365,24 @@ const VisorDocumentos = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
-    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
-    { field: "Nombre", description: "Nombre", headerName: "Nombre", width: 250 },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 150,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 150,
+    },
+    {
+      field: "Nombre",
+      description: "Nombre",
+      headerName: "Nombre",
+      width: 250,
+    },
   ];
 
   const handleOpen = (v: any) => {
@@ -372,7 +391,6 @@ const VisorDocumentos = ({
   };
 
   useEffect(() => {
-    console.log(obj);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -409,34 +427,37 @@ const VisorDocumentos = ({
 
         {true ? (
           <>
-          {adjuntar ? (<TooltipPersonalizado
-              title={
-                <React.Fragment>
-                  <Typography color="inherit">Cargar Documentos</Typography>
-                  {"Permite la carga de Documentos de Forma Masiva "}
-                </React.Fragment>
-              }
-            >
-              <ToggleButton value="check">
-                <IconButton
-                  color="primary"
-                  aria-label="upload documento"
-                  component="label"
-                  size="small"
-                >
-                  <input
-                    multiple
-                    hidden
-                    accept=".*"
-                    type="file"
-                    value=""
-                    onChange={(v) => ProcesaSPeis(v)}
-                  />
-                  <FileUploadIcon />
-                </IconButton>
-              </ToggleButton>
-            </TooltipPersonalizado>):("")}
-            
+            {adjuntar ? (
+              <TooltipPersonalizado
+                title={
+                  <React.Fragment>
+                    <Typography color="inherit">Cargar Documentos</Typography>
+                    {"Permite la carga de Documentos de Forma Masiva "}
+                  </React.Fragment>
+                }
+              >
+                <ToggleButton value="check">
+                  <IconButton
+                    color="primary"
+                    aria-label="upload documento"
+                    component="label"
+                    size="small"
+                  >
+                    <input
+                      multiple
+                      hidden
+                      accept=".*"
+                      type="file"
+                      value=""
+                      onChange={(v) => ProcesaSPeis(v)}
+                    />
+                    <FileUploadIcon />
+                  </IconButton>
+                </ToggleButton>
+              </TooltipPersonalizado>
+            ) : (
+              ""
+            )}
           </>
         ) : (
           ""

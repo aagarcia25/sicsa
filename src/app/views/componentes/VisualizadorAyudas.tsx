@@ -68,12 +68,10 @@ export const VisualizadorAyudas = ({
             setslideropen(false);
           })
           .catch((error) => {
-            console.log(error);
             setslideropen(false);
           });
       } catch (err: any) {
         setslideropen(false);
-        console.log(err);
       }
     }
   };
