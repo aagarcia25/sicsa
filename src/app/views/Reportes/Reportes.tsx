@@ -5,6 +5,7 @@ import {
   FormLabel,
   Grid,
   MenuItem,
+  MenuList,
   Radio,
   RadioGroup,
   Tooltip,
@@ -35,6 +36,14 @@ export const Reportes = () => {
   const [ListOrigenAuditoria, setListOrigenAuditoria] = useState<
     SelectValues[]
   >([]);
+  const [idTipoReporte, setidTipoReporte] = useState("");
+  const [ListTipoReporte, setListTipoReporte] = useState<
+    SelectValues[]
+  >([]);
+  const [NombreReporte, setNombreReporte] = useState("");
+  const [AuxiliarReporte, setAuxiliarReporte] = useState("");
+
+
   const [anio, setanio] = useState("");
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
   const [REPORTE, setREPORTE] = useState("");
@@ -71,6 +80,8 @@ export const Reportes = () => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const handleGenerar = () => {
+    console.log("NombreReporte",setNombreReporte);
+    
     //setOpenSlider(true);
     let flag = true;
     if (TIPO === "") {
@@ -86,7 +97,7 @@ export const Reportes = () => {
       const params = {
         TIPO: TIPO,
         P_ANIO: anio,
-        REPORTE: "REP_01.jrxml",
+        REPORTE: NombreReporte,
       };
 
       let data = {
@@ -94,14 +105,16 @@ export const Reportes = () => {
         TIPO: TIPO,
         PARAMETROS: params,
         P_ANIO: anio,
-        REPORTE: "REP_01.jrxml",
+        REPORTE: NombreReporte,
       };
 
       try {
+        console.log("NombreReporte",NombreReporte);
+        
         let header = getHeaderInfoReporte();
         axios
           .post(
-            process.env.REACT_APP_APPLICATION_BASE_URL + "ReportesIndex",
+            process.env.REACT_APP_APPLICATION_BASE_URL_REPORTES + "ReportesIndex",
             params
             // { responseType: "blob" }
           )
@@ -111,7 +124,7 @@ export const Reportes = () => {
               .toString(36)
               .substring(2, 8);
             const extension = TIPO;
-            const nuevoNombreArchivo = `REP_01_${identificadorAleatorio}.${extension}`;
+            const nuevoNombreArchivo = NombreReporte + `${identificadorAleatorio}.${extension}`;
 
             // Llamar a la función para descargar el archivo PDF
             downloadPdfFromBase64(archivo, nuevoNombreArchivo);
@@ -129,10 +142,22 @@ export const Reportes = () => {
     }
   };
 
-  const handleFilterChangeinicio = (v: string) => {
-    setidOrigenAuditoria(v);
-  };
+  const handleFilterChangeTipoReporte = (v: string) => {
+    setidTipoReporte(v);
+///console.log("selected",selected?.Reporte);
+    
+    // if(selected){
+    //   setidTipoReporte(selected.id);
+    //   setNombreReporte(selected.Reporte);
+    //   console.log("setNombreReporte",NombreReporte);
+    
+    // }else{
+    //   setidTipoReporte("");
+    //   setNombreReporte("");
+    // }
 
+
+  };
   const handleFilterAnio = (v: string) => {
     setanio(v);
   };
@@ -143,9 +168,17 @@ export const Reportes = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTIPO(event.target.value);
   };
-  const handleReporte = (data: IReportes) => {
-    setReporte(data);
-  };
+  // const handleReporte = (data: IReportes) => {
+  //   setReporte(data);
+  // };
+  
+  // const consultaReportes = (data: any) => {
+  //   //setOpenSlider(true);
+  //   CatalogosServices.reportesAdministracionRelacion(data).then((res) => {
+  //     setListaReportes(res.RESPONSE);
+  //     //setOpenSlider(false);
+  //   });
+  // };
 
   const loadFilter = (operacion: number, id?: string) => {
     let data = { NUMOPERACION: operacion, P_ID: id };
@@ -154,8 +187,8 @@ export const Reportes = () => {
         //  setCatInforme(res.RESPONSE);
       } else if (operacion === 1) {
         setListAnio(res.RESPONSE);
-      } else if (operacion === 14) {
-        setListOrigenAuditoria(res.RESPONSE);
+      } else if (operacion === 23) {
+        setListTipoReporte(res.RESPONSE);
       } else if (operacion === 2) {
         setListEntidadFis(res.RESPONSE);
       }
@@ -171,11 +204,23 @@ export const Reportes = () => {
 
   useEffect(() => {
     loadFilter(1);
-    loadFilter(14);
+    loadFilter(23);
     loadFilter(2);
 
     //consulta();
   }, []);
+  
+  useEffect(() =>{
+
+    if(idTipoReporte!=""){
+        let data = { NUMOPERACION: 24, id: idTipoReporte };
+    ShareService.SelectIndex(data).then((res) => {
+      setNombreReporte(res.RESPONSE[0].Reporte)
+      console.log("res",res.RESPONSE[0].Reporte);
+    });    
+    }
+    
+    },[idTipoReporte]);
 
   return (
     <Grid container spacing={1} padding={0}>
@@ -253,14 +298,16 @@ export const Reportes = () => {
       >
         {/* <Grid container item xs={12} md={8} lg={8} sx={{ textAlign: "center" }}> */}
 
+        
+
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Typography sx={{ fontFamily: "sans-serif" }}>
-            Clasificación Auditoría:
+            Tipo de Reporte:
           </Typography>
           <SelectFrag
-            value={idOrigenAuditoria}
-            options={ListOrigenAuditoria}
-            onInputChange={handleFilterChangeinicio}
+            value={idTipoReporte}
+            options={ListTipoReporte}
+            onInputChange={handleFilterChangeTipoReporte}
             placeholder={"Seleccione.."}
             disabled={false}
           />
@@ -277,7 +324,7 @@ export const Reportes = () => {
             disabled={false}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+        {/* <Grid item xs={12} sm={6} md={4} lg={3}>
           <Typography sx={{ fontFamily: "sans-serif" }}>
             Entidad Fiscalizada:
           </Typography>
@@ -288,7 +335,7 @@ export const Reportes = () => {
             placeholder={"Seleccione.."}
             disabled={false}
           />
-        </Grid>
+        </Grid> */}
         {/* </Grid> */}
       </Grid>
       <Grid
@@ -303,8 +350,9 @@ export const Reportes = () => {
         justifyContent="center"
         alignItems="center"
         sx={{ padding: "1%" }}
+        
       >
-        <Button className={"actualizar"} onClick={() => handleGenerar()}>
+        <Button className={"actualizar"} disabled={anio ==="" || TIPO ==="" || idTipoReporte===""} onClick={() => handleGenerar()}>
           {"Generar Reporte"}
         </Button>
         {/* <Button
