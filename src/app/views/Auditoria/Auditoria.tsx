@@ -44,6 +44,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import OrganoC from "./Organo/OrganoC";
 import { render } from "@testing-library/react";
+import LinkIcon from '@mui/icons-material/Link';
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -125,8 +126,13 @@ export const Auditoria = () => {
       setVrows(data);
       setOpenModalgant(true);
     }
-
   };
+
+  const handleLinkResultado = (data: any) => {
+     
+   window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
+  };
+  
 
   const handleFilterChangeMunicipio = (v: string) => {
     setMunicipio(v);
@@ -696,6 +702,13 @@ export const Auditoria = () => {
               icon={<AlignHorizontalLeftIcon />}
               row={v}
             ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Auditoría individual"}
+              handleFunction={handleLinkResultado}
+              show={true}
+              icon={<LinkIcon />}
+              row={v}
+            ></ButtonsDetail>
           </>
         );
       },
@@ -771,6 +784,7 @@ export const Auditoria = () => {
       consulta();
     }
   }, [FolioSIGA, NAUDITORIA, idEstatus, municipio, idInicioauditoria, anio]);
+
   const loadFilter = (operacion: number, id?: string) => {
     let data = { NUMOPERACION: operacion, P_ID: id };
     ShareService.SelectIndex(data).then((res) => {
