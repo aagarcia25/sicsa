@@ -120,11 +120,15 @@ export const Reportes = () => {
           )
           .then((response) => {
             const archivo = response?.data?.RESPONSE;
+            console.log("archivo",archivo);
+            
             const identificadorAleatorio = Math.random()
               .toString(36)
               .substring(2, 8);
             const extension = TIPO;
-            const nuevoNombreArchivo = NombreReporte + `${identificadorAleatorio}.${extension}`;
+            const nuevoNombreArchivo = AuxiliarReporte + `${identificadorAleatorio}.${extension}`;
+            console.log("nuevoNombreArchivo",nuevoNombreArchivo);
+
 
             // Llamar a la función para descargar el archivo PDF
             downloadPdfFromBase64(archivo, nuevoNombreArchivo);
@@ -144,6 +148,10 @@ export const Reportes = () => {
 
   const handleFilterChangeTipoReporte = (v: string) => {
     setidTipoReporte(v);
+    console.log("setidreporte1",v);
+
+    
+    
 ///console.log("selected",selected?.Reporte);
     
     // if(selected){
@@ -215,8 +223,12 @@ export const Reportes = () => {
     if(idTipoReporte!=""){
         let data = { NUMOPERACION: 24, id: idTipoReporte };
     ShareService.SelectIndex(data).then((res) => {
-      setNombreReporte(res.RESPONSE[0].Reporte)
-      console.log("res",res.RESPONSE[0].Reporte);
+      //setNombreReporte(res.RESPONSE.id)
+      
+let auxResponse = res.RESPONSE.find((item: IReportes) => item.id === idTipoReporte)||"";
+setNombreReporte(auxResponse.Reporte)
+setAuxiliarReporte(auxResponse.Nombre)
+
     });    
     }
     

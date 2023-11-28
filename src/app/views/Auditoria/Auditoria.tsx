@@ -85,6 +85,27 @@ export const Auditoria = () => {
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
   const [Entregado, setEntregado] = useState("")
 
+//   async function verificarExistenciaPagina(url: string): Promise<boolean> {
+//     try {
+//       const response = await fetch(url, { method: 'HEAD' });
+//       return response.ok;
+//     } catch (error) {
+//       return false;
+//     }
+//   }
+//   const url = "https://informe.asf.gob.mx/Documentos/Auditorias/2022_1326_a.pdf";
+// verificarExistenciaPagina(url)
+//   .then(existe => {
+//     if (existe) {
+//       console.log(`El enlace ${url} lleva a una página existente.`);
+//     } else {
+//       console.log(`El enlace ${url} no lleva a una página existente.`);
+//     }
+//   })
+//   .catch(error => {
+//     console.error('Ocurrió un error al verificar la existencia de la página:', error);
+//   });
+
   const handleVerAdjuntos = (data: any) => {
     if (data.row.entregado !== "1") {
       setVrows(data);
@@ -130,7 +151,28 @@ export const Auditoria = () => {
 
   const handleLinkResultado = (data: any) => {
      
-   window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
+  //  window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
+
+   async function verificarExistenciaPagina(url: string): Promise<boolean> {
+    try {
+      const response = await fetch(url, { method: 'HEAD' });
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  }
+  const url = "https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf";
+verificarExistenciaPagina(url)
+  .then(existe => {
+    if (existe) {
+      console.log(`El enlace ${url} lleva a una página existente.`);
+    } else {
+      console.log(`El enlace ${url} no lleva a una página existente.`);
+    }
+  })
+  .catch(error => {
+    console.error('Ocurrió un error al verificar la existencia de la página:', error);
+  });
   };
   
 
@@ -708,7 +750,9 @@ export const Auditoria = () => {
               show={true}
               icon={<LinkIcon />}
               row={v}
+              
             ></ButtonsDetail>
+            
           </>
         );
       },
