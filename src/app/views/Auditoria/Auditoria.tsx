@@ -1,19 +1,13 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { Toast } from "../../helpers/Toast";
-import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
-import { AuditoriaService } from "../../services/AuditoriaService";
-import { getPermisos, getUser } from "../../services/localStorage";
-import MUIXDataGrid from "../MUIXDataGrid";
-import ButtonsAdd from "../componentes/ButtonsAdd";
-import ButtonsDeleted from "../componentes/ButtonsDeleted";
-import ButtonsEdit from "../componentes/ButtonsEdit";
-import TitleComponent from "../componentes/TitleComponent";
-import { AuditoriaModal } from "./AuditoriaModal";
+import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import BusinessIcon from "@mui/icons-material/Business";
 import ChatIcon from "@mui/icons-material/Chat";
-import { ButtonsDetail } from "../componentes/ButtonsDetail";
-import Notif from "./Notificaciones/Notif";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import SendIcon from "@mui/icons-material/Send";
 import {
   Button,
   Collapse,
@@ -22,33 +16,33 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import VisorDocumentos from "../componentes/VisorDocumentos";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import Acciones from "./Acciones/Acciones";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import { Oficios } from "./Oficios/Oficios";
-import { Gantt } from "gantt-task-react";
-import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
+import { GridColDef } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { Toast } from "../../helpers/Toast";
+import SelectValues from "../../interfaces/Share";
+import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { AuditoriaService } from "../../services/AuditoriaService";
+import { ShareService } from "../../services/ShareService";
+import { getPermisos, getUser } from "../../services/localStorage";
+import MUIXDataGrid from "../MUIXDataGrid";
+import ButtonsAdd from "../componentes/ButtonsAdd";
+import ButtonsDeleted from "../componentes/ButtonsDeleted";
+import { ButtonsDetail } from "../componentes/ButtonsDetail";
+import ButtonsEdit from "../componentes/ButtonsEdit";
+import ButtonsShare from "../componentes/ButtonsShare";
 import GanttModal from "../componentes/GanttModal";
 import SelectFrag from "../componentes/SelectFrag";
-import SelectValues from "../../interfaces/Share";
-import { ShareService } from "../../services/ShareService";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-import ButtonsShare from "../componentes/ButtonsShare";
-import SendIcon from "@mui/icons-material/Send";
-import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
-import BusinessIcon from "@mui/icons-material/Business";
+import TitleComponent from "../componentes/TitleComponent";
+import VisorDocumentos from "../componentes/VisorDocumentos";
+import Acciones from "./Acciones/Acciones";
+import { AuditoriaModal } from "./AuditoriaModal";
+import Notif from "./Notificaciones/Notif";
+import { Oficios } from "./Oficios/Oficios";
 
 import FactCheckIcon from "@mui/icons-material/FactCheck";
+import LinkIcon from "@mui/icons-material/Link";
 import OrganoC from "./Organo/OrganoC";
-import { render } from "@testing-library/react";
-import LinkIcon from '@mui/icons-material/Link';
-import axios from "axios";
-import { log } from "console";
-import { ok } from "assert";
-import row from "antd/es/row";
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -87,7 +81,7 @@ export const Auditoria = () => {
   const [modalidad, setmodalidad] = useState("");
   const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
-  const [Entregado, setEntregado] = useState("")
+  const [Entregado, setEntregado] = useState("");
 
   //   async function verificarExistenciaPagina(url: string): Promise<boolean> {
   //     try {
@@ -115,7 +109,6 @@ export const Auditoria = () => {
       setVrows(data);
       setOpenAdjuntos(true);
     }
-
   };
 
   const handleClose = () => {
@@ -134,7 +127,6 @@ export const Auditoria = () => {
       setVrows(data);
       setOpenModalAcciones(true);
     }
-
   };
 
   const handleOficios = (data: any) => {
@@ -154,170 +146,54 @@ export const Auditoria = () => {
   };
 
   const MostrarLink = (data: any) => {
-    window.open("https://informe.asf.gob.mx/Documentos/Auditorias/" + data.row.anio + "_" + data.row.NAUDITORIA + "_a.pdf", "_blank")
-  }
-
-  const handleLinkResultado = (data: any) => {
-
-
-
-    const url = ("https://informe.asf.gob.mx/Documentos/Auditorias/" + data.row.anio + "_" + data.row.NAUDITORIA + "_a.pdf")
-    return new Promise((resolve, reject) => {
-      axios.get(url)
-        .then(response => {
-          if (response.status === 200) {
-            //console.log('La solicitud se completó con éxito.');
-            //console.log('Datos de la respuesta:', response.data);
-            resolve(true);
-          }
-          //console.log('La solicitud tuvo un código de estado distinto de 200.');
-          resolve(false);
-
-        })
-        .catch(error => {
-          // Si cae aquí, la solicitud tuvo un error
-          //console.error('Error de solicitud:', error);
-          reject(false);
-        });
-    })
-
-
-    //async function verificarExistenciaPagina(url: string) {
-    // // try {
-    // //   const response = await fetch(url, { method: 'HEAD' });
-    // //   //return response.ok;
-
-    // //   if (response.ok) {
-    // //         console.log("si existe");
-    // //         window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf")
-
-    // //           //setIsValid(false);
-
-
-    // //         }
-
-    // //         else {
-    // //                 console.log("no existe");
-    // //                 //window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
-    // //                 console.error(`Error: ${response.status} - ${response.statusText}`);
-    // //               }
-
-    // // } 
-    // // catch (error) {
-    // //   return false;
-    // // }
-    //}
-    //   const url = ("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
-    // verificarExistenciaPagina(url)
-    //   .then(existe => {
-    //     if (existe) {
-    //       console.log(`El enlace ${url} lleva a una página existente.`);
-    //       window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
-    //     } else {
-    //       console.log(`El enlace ${url} no lleva a una página existente.`);
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error('Ocurrió un error al verificar la existencia de la página:', error);
-    //   });
-
-    // const [isValid, setIsValid] = useState(true);
-    // const handleLinkResultado = async(data: any) => {
-
-    //   const url = ("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf")
-    //   try {
-    //     const response = await fetch(url, { method: 'HEAD' });
-
-
-    //    if (!response.ok) {
-    //     console.log("no existe");
-    //       setIsValid(false);
-    //       console.error(`Error: ${response.status} - ${response.statusText}`);
-
-    //     }
-    //     else {
-    //       console.log("si existe");
-    //     }
-    //   } catch (error) {
-
-    //     setIsValid(false);
-    //     console.error('Error:', error);
-    //   }
-
-
-    //   if (isValid) {
-    //     // Realizar la acción deseada al hacer clic en el botón
-    //     //window.open(url);
-    //     window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf")
-    //   } else {
-    //     alert('La página no está disponible');
-    //   }
-
-
-
-
-
-
-
-
-
-
-
-
+    window.open(
+      "https://informe.asf.gob.mx/Documentos/Auditorias/" +
+        data.row.anio +
+        "_" +
+        data.row.NAUDITORIA +
+        "_a.pdf",
+      "_blank"
+    );
   };
 
+  async function validarDisponibilidadRecurso(data: any): Promise<boolean> {
+    try {
+      // Uso del método para la URL proporcionada
+      const url =
+        "https://informe.asf.gob.mx/Documentos/Auditorias/" +
+        data.row.anio +
+        "_" +
+        data.row.NAUDITORIA +
+        "_a.pdf";
 
-  ///////////////////////////////////////////////////
-  // const validPage = ({ url:string, label:string }) => {
-  //   const [isValid, setIsValid] = useState(true);
+      const response = await fetch(url, { method: "HEAD", mode: "no-cors" });
 
-
-  //  const checkUrlValidity = async () => {
-  //     try {
-  //       const response = await fetch(url, { method: 'HEAD' });
-
-
-  //      if (!response.ok) {
-  //         setIsValid(false);
-  //         console.error(`Error: ${response.status} - ${response.statusText}`);
-  //       }
-  //     } catch (error) {
-  //       setIsValid(false);
-  //       console.error('Error:', error);
-  //     }
-  //   };
-
-
-  //  const handleClick = () => {
-  //     if (isValid) {
-  //       // Realizar la acción deseada al hacer clic en el botón
-  //       window.location.href = url;
-  //     } else {
-  //       alert('La página no está disponible');
-  //     }
-  //   };
-
-
-  //  return (
-  //     <button onClick={checkUrlValidity} disabled={!isValid} onClick={handleClick}>
-  //       {label}
-  //     </button>
-  //   );
-  // };
-  ////////////////////////////////////////////////////
-
+      if (response.ok) {
+        // Si la respuesta tiene un código de estado 2xx, consideramos que el recurso está disponible
+        return true;
+      } else {
+        // Si la respuesta tiene un código de estado diferente, consideramos que el recurso no está disponible
+        console.error(
+          `La solicitud tuvo un código de estado diferente de 2xx: ${response.status}`
+        );
+        return false;
+      }
+    } catch (error) {
+      // Si la solicitud tuvo un error
+      console.error("Error de solicitud:", error);
+      return false;
+    }
+  }
 
   const handleFilterChangeMunicipio = (v: string) => {
     setMunicipio(v);
   };
 
   const handleDetalle = (data: any) => {
-
     if (data.row.entregado !== "1") {
       setVrows(data);
       setOpenModalDetalle(true);
     }
-
   };
 
   const handleORgano = (data: any) => {
@@ -325,7 +201,6 @@ export const Auditoria = () => {
       setVrows(data);
       setopenModalOrgano(true);
     }
-
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -345,7 +220,6 @@ export const Auditoria = () => {
   };
 
   const handleAccion = (v: any) => {
-
     if (v.tipo == 1) {
       setTipoOperacion(2);
       setModo("Editar Registro");
@@ -400,9 +274,7 @@ export const Auditoria = () => {
         confirmButtonText: "Confirmar",
         denyButtonText: `Cancelar`,
       }).then((result) => {
-
         if (result.isConfirmed) {
-
           let data = {
             NUMOPERACION: 5,
             CHID: v.row.id,
@@ -414,314 +286,19 @@ export const Auditoria = () => {
               Toast.fire({
                 icon: "success",
                 title: "Auditoría Entregada",
-              })
+              });
               consulta();
-
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
-          })
+          });
         } else if (result.isDenied) {
-          Swal.fire("No se realizaron cambios", "", "info")
+          Swal.fire("No se realizaron cambios", "", "info");
         }
-      })
+      });
     }
+  };
 
-
-  }
-
-  /**
-   *
-   * const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "Identificador",
-      width: 150,
-    },
-    {
-      field: "ciid",
-      headerName: "Identificador",
-      width: 150,
-    },
-    {
-      field: "ctaid",
-      headerName: "Identificador",
-      width: 150,
-    },
-    {
-      field: "cefid",
-      headerName: "Identificador",
-      width: 150,
-    },
-    {
-      field: "cgfid",
-      headerName: "Identificador",
-      width: 150,
-    },
-    {
-      field: "csid",
-      headerName: "Identificador",
-      width: 150,
-    },
-
-    {
-      field: "acciones",
-      disableExport: true,
-      headerName: "Acciones",
-      description: "Campo de Acciones",
-      sortable: false,
-      width: 400,
-      renderCell: (v) => {
-        return (
-          <>
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsDeleted>
-            <ButtonsEdit
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsEdit>
-            <ButtonsDetail
-              title={"Ver Oficios"}
-              handleFunction={handleOficios}
-              show={true}
-              icon={<AssignmentIcon />}
-              row={v}
-            ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Resultado de la Auditoria"}
-              handleFunction={handleAcciones}
-              show={true}
-              icon={<Diversity3Icon />}
-              row={v}
-            ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Notificación Área"}
-              handleFunction={handleDetalle}
-              show={true}
-              icon={<ChatIcon />}
-              row={v}
-            ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Ver Adjuntos"}
-              handleFunction={handleVerAdjuntos}
-              show={true}
-              icon={<AttachmentIcon />}
-              row={v}
-            ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Ver Plan de Trabajo"}
-              handleFunction={handlePlan}
-              show={true}
-              icon={<AlignHorizontalLeftIcon />}
-              row={v}
-            ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Contestación a Organo Auditor"}
-              handleFunction={handleORgano}
-              show={true}
-              icon={<BusinessIcon />}
-              row={v}
-            ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Cambiar Entrega"}
-              handleFunction={handlePlan}
-              show={true}
-              icon={<FactCheckIcon />}
-              row={v}
-            ></ButtonsDetail>
-          </>
-        );
-      },
-    },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    {
-      field: "creado",
-      description: "Creado Por",
-      headerName: "Creado Por",
-      width: 200,
-    },
-    {
-      field: "modi",
-      description: "Modificado Por",
-      headerName: "Modificado Por",
-      width: 200,
-    },
-    {
-      field: "ceaDescripcion",
-      description: "Estatus",
-      headerName: "Estatus",
-      width: 200,
-    },
-    {
-      field: "ciaDescripcion",
-      description: "Origen de la Auditoría",
-      headerName: "Origen de la Auditoría",
-      width: 200,
-    },
-    {
-      field: "anio",
-      description: "Año Cuenta Pública",
-      headerName: "Año Cuenta Pública",
-      width: 200,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "NAUDITORIA",
-      description: "Número de Auditoría",
-      headerName: "No. de Auditoría",
-      width: 200,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "FolioSIGA",
-      description: "Folio SIGA",
-      headerName: "Folio SIGA",
-      width: 200,
-    },
-    {
-      field: "cmoDescripcion",
-      description: "Modalidad",
-      headerName: "Modalidad",
-      width: 200,
-    },
-    {
-      field: "Consecutivo",
-      headerName: "Consecutivo",
-      width: 100,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "ActaInicio",
-      description: "Acta de Inicio",
-      headerName: "Acta de Inicio",
-      width: 180,
-    },
-    {
-      field: "NombreAudoria",
-      description: "Nombre",
-      headerName: "Nombre",
-      width: 300,
-    },
-    {
-      field: "Encargado",
-      headerName: "Responsable de la auditoría",
-      description: "Responsable de la auditoría",
-      width: 300,
-    },
-    {
-      field: "PersonalEncargado",
-      description: "Personal del Organo Fiscalizador",
-      headerName: "Personal del Organo Fiscalizador",
-      width: 300,
-    },
-    { field: "ctid", headerName: "ctid", width: 300 },
-    {
-      field: "ctDescripcion",
-      description: "Clasificación",
-      headerName: "Clasificación",
-      width: 300,
-    },
-    { field: "coaid", headerName: "coaid", width: 300 },
-    {
-      field: "coaDescripcion",
-      description: "Organo Auditor",
-      headerName: "Organo Auditor",
-      width: 300,
-    },
-    { field: "cgfid", headerName: "cgfid", width: 300 },
-    {
-      field: "cgfDescripcion",
-      description: "Grupo Funcional",
-      headerName: "Grupo Funcional",
-      width: 300,
-    },
-    { field: "csid", headerName: "csid", width: 300 },
-    {
-      field: "csDescripcion",
-      description: "Sector",
-      headerName: "Sector",
-      width: 300,
-    },
-    { field: "cefid", headerName: "cefid", width: 300 },
-    {
-      field: "cefDescripcion",
-      description: "Entidad Fiscalizada",
-      headerName: "Entidad Fiscalizada",
-      width: 300,
-    },
-    { field: "ctaid", headerName: "ctaid", width: 300 },
-    {
-      field: "ctaDescripcion",
-      description: "Tipo de Auditoría",
-      headerName: "Tipo de Auditoría",
-      width: 300,
-    },
-    { field: "ciid", headerName: "ciid", width: 300 },
-    {
-      field: "ciDescripcion",
-      description: "Entrega",
-      headerName: "Entrega",
-      width: 300,
-    },
-    { field: "cuaaid", headerName: "cuaaid", width: 300 },
-    {
-      field: "cuaaDescripcion",
-      description: "Unidad Administrativa Auditora",
-      headerName: "UAA",
-      width: 300,
-    },
-    { field: "caaid", headerName: "caaid", width: 300 },
-    {
-      field: "caaDescripcion",
-      description: "Área Auditora",
-      headerName: "Área Auditora",
-      width: 300,
-    },
-    { field: "crid", headerName: "crid", width: 300 },
-    {
-      field: "crDescripcion",
-      description: "Ramo",
-      headerName: "Ramo",
-      width: 300,
-    },
-    {
-      field: "universopesos",
-      description: "Universo Miles de Pesos",
-      headerName: "Universo Miles de Pesos",
-      width: 300,
-    },
-    {
-      field: "muestrapesos",
-      description: "Muestra Miles de Pesos",
-      headerName: "Muestra Miles de Pesos",
-      width: 300,
-    },
-    {
-      field: "montoauditado",
-      description: "Monto Auditado",
-      headerName: "Monto Auditado",
-      width: 300,
-    },
-    {
-      field: "munNombre",
-      description: "Municipio",
-      headerName: "Municipio",
-      width: 300,
-    },
-  ];
-   */
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -753,7 +330,6 @@ export const Auditoria = () => {
       headerName: "Identificador",
       width: 150,
     },
-
 
     {
       field: "anio",
@@ -803,30 +379,40 @@ export const Auditoria = () => {
       sortable: false,
       width: 400,
       renderCell: (v) => {
-
         let auxshowbutton;
 
-        handleLinkResultado(v)
-          .then(result => {
-            console.log("El resultado es:", result);
-            auxshowbutton = result;
+        validarDisponibilidadRecurso(v)
+          .then((disponible) => {
+            if (disponible) {
+              console.log("El recurso está disponible.");
+              auxshowbutton = true;
+            } else {
+              console.log("El recurso no está disponible.");
+              auxshowbutton = false;
+            }
           })
-          .catch(error => {
-            console.error("Hubo un error al obtener el resultado:", error);
+          .catch((error) => {
+            console.error(
+              "Error al validar la disponibilidad del recurso:",
+              error
+            );
           });
 
         return (
           <>
-            {eliminar ? (String(v.row.entregado) !== "1" ? (
-              <ButtonsDeleted
-                handleAccion={handleAccion}
-                row={v}
-                show={true}
-              ></ButtonsDeleted>
+            {eliminar ? (
+              String(v.row.entregado) !== "1" ? (
+                <ButtonsDeleted
+                  handleAccion={handleAccion}
+                  row={v}
+                  show={true}
+                ></ButtonsDeleted>
+              ) : (
+                ""
+              )
             ) : (
               ""
-            )
-            ) : ("")}
+            )}
 
             <ButtonsEdit
               handleAccion={handleAccion}
@@ -858,13 +444,17 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
 
-            {entrega ? (<ButtonsDetail
-              title={"Cambiar Entrega"}
-              handleFunction={handleEntregar}
-              show={true}
-              icon={<FactCheckIcon />}
-              row={v}
-            ></ButtonsDetail>) : ("")}
+            {entrega ? (
+              <ButtonsDetail
+                title={"Cambiar Entrega"}
+                handleFunction={handleEntregar}
+                show={true}
+                icon={<FactCheckIcon />}
+                row={v}
+              ></ButtonsDetail>
+            ) : (
+              ""
+            )}
 
             <ButtonsDetail
               title={"Resultado de la Auditoria"}
@@ -887,18 +477,15 @@ export const Auditoria = () => {
               icon={<AlignHorizontalLeftIcon />}
               row={v}
             ></ButtonsDetail>
-            {
-
-              auxshowbutton ? (<ButtonsDetail
+            {auxshowbutton ? (
+              <ButtonsDetail
                 title={"Auditoría individual"}
                 handleFunction={MostrarLink}
                 show={true}
                 icon={<LinkIcon />}
                 row={v}
-
-              ></ButtonsDetail>) : (null)}
-
-
+              ></ButtonsDetail>
+            ) : null}
           </>
         );
       },
@@ -1019,7 +606,6 @@ export const Auditoria = () => {
     consulta();
   }, []);
 
-  
   return (
     <div>
       <Grid container spacing={1} padding={0}>
@@ -1196,13 +782,7 @@ export const Auditoria = () => {
               <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
             </Grid>
           </Collapse>
-          {agregar ? (
-            <ButtonsAdd
-              handleOpen={handleOpen}
-              agregar={true}
-            />
-          ) : (""
-          )}
+          {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
 
           <ButtonsShare
             title={showfilter ? "Ocultar Filtros" : "Ver Filtros"}

@@ -1,14 +1,14 @@
-import { Gantt, Task } from "gantt-task-react";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import ModalForm from "./ModalForm";
-import "gantt-task-react/dist/index.css";
-import { AuditoriaService } from "../../services/AuditoriaService";
-import Progress from "../Progress";
 import { Box, Grid, Typography } from "@mui/material";
-import ButtonsAdd from "./ButtonsAdd";
-import { PlanTrabajoModal } from "../Auditoria/PlanTrabajo/PlanTrabajoModal";
-import { getPermisos, getUser } from "../../services/localStorage";
+import { Gantt, Task } from "gantt-task-react";
+import "gantt-task-react/dist/index.css";
+import { useEffect, useState } from "react";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { AuditoriaService } from "../../services/AuditoriaService";
+import { getPermisos, getUser } from "../../services/localStorage";
+import { PlanTrabajoModal } from "../Auditoria/PlanTrabajo/PlanTrabajoModal";
+import Progress from "../Progress";
+import ButtonsAdd from "./ButtonsAdd";
+import ModalForm from "./ModalForm";
 
 export const GanttModal = ({
   handleFunction,
