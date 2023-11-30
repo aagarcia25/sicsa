@@ -4,31 +4,20 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
-  MenuItem,
-  MenuList,
   Radio,
   RadioGroup,
-  Tooltip,
   Typography,
 } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
-import MUIXDataGrid from "../MUIXDataGrid";
-import { AuditoriaService } from "../../services/AuditoriaService";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { getUser } from "../../services/localStorage";
-import { USUARIORESPONSE } from "../../interfaces/UserInfo";
-import ArticleIcon from "@mui/icons-material/Article";
-import SelectFrag from "../componentes/SelectFrag";
-import SelectValues from "../../interfaces/Share";
-import { ShareService } from "../../services/ShareService";
-import { ReporteService } from "./ReporteService";
-import { log } from "console";
-import { Toast } from "../../helpers/Toast";
-import React from "react";
-import { IReportes } from "../../interfaces/menu";
-import { getHeaderInfoReporte } from "../../services/tokenCreator";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Toast } from "../../helpers/Toast";
+import SelectValues from "../../interfaces/Share";
+import { USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { IReportes } from "../../interfaces/menu";
+import { ShareService } from "../../services/ShareService";
+import { getUser } from "../../services/localStorage";
+import { getHeaderInfoReporte } from "../../services/tokenCreator";
+import SelectFrag from "../componentes/SelectFrag";
 
 export const Reportes = () => {
   const [data, setData] = useState([]);
@@ -37,12 +26,9 @@ export const Reportes = () => {
     SelectValues[]
   >([]);
   const [idTipoReporte, setidTipoReporte] = useState("");
-  const [ListTipoReporte, setListTipoReporte] = useState<
-    SelectValues[]
-  >([]);
+  const [ListTipoReporte, setListTipoReporte] = useState<SelectValues[]>([]);
   const [NombreReporte, setNombreReporte] = useState("");
   const [AuxiliarReporte, setAuxiliarReporte] = useState("");
-
 
   const [anio, setanio] = useState("");
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
@@ -80,8 +66,8 @@ export const Reportes = () => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const handleGenerar = () => {
-    console.log("NombreReporte",setNombreReporte);
-    
+    console.log("NombreReporte", setNombreReporte);
+
     //setOpenSlider(true);
     let flag = true;
     if (TIPO === "") {
@@ -109,26 +95,27 @@ export const Reportes = () => {
       };
 
       try {
-        console.log("NombreReporte",NombreReporte);
-        
+        console.log("NombreReporte", NombreReporte);
+
         let header = getHeaderInfoReporte();
         axios
           .post(
-            process.env.REACT_APP_APPLICATION_BASE_URL_REPORTES + "ReportesIndex",
+            process.env.REACT_APP_APPLICATION_BASE_URL_REPORTES +
+              "ReportesIndex",
             params
             // { responseType: "blob" }
           )
           .then((response) => {
             const archivo = response?.data?.RESPONSE;
-            console.log("archivo",archivo);
-            
+            console.log("archivo", archivo);
+
             const identificadorAleatorio = Math.random()
               .toString(36)
               .substring(2, 8);
             const extension = TIPO;
-            const nuevoNombreArchivo = AuxiliarReporte + `${identificadorAleatorio}.${extension}`;
-            console.log("nuevoNombreArchivo",nuevoNombreArchivo);
-
+            const nuevoNombreArchivo =
+              AuxiliarReporte + `${identificadorAleatorio}.${extension}`;
+            console.log("nuevoNombreArchivo", nuevoNombreArchivo);
 
             // Llamar a la función para descargar el archivo PDF
             downloadPdfFromBase64(archivo, nuevoNombreArchivo);
@@ -148,23 +135,19 @@ export const Reportes = () => {
 
   const handleFilterChangeTipoReporte = (v: string) => {
     setidTipoReporte(v);
-    console.log("setidreporte1",v);
+    console.log("setidreporte1", v);
 
-    
-    
-///console.log("selected",selected?.Reporte);
-    
+    ///console.log("selected",selected?.Reporte);
+
     // if(selected){
     //   setidTipoReporte(selected.id);
     //   setNombreReporte(selected.Reporte);
     //   console.log("setNombreReporte",NombreReporte);
-    
+
     // }else{
     //   setidTipoReporte("");
     //   setNombreReporte("");
     // }
-
-
   };
   const handleFilterAnio = (v: string) => {
     setanio(v);
@@ -179,7 +162,7 @@ export const Reportes = () => {
   // const handleReporte = (data: IReportes) => {
   //   setReporte(data);
   // };
-  
+
   // const consultaReportes = (data: any) => {
   //   //setOpenSlider(true);
   //   CatalogosServices.reportesAdministracionRelacion(data).then((res) => {
@@ -217,22 +200,21 @@ export const Reportes = () => {
 
     //consulta();
   }, []);
-  
-  useEffect(() =>{
 
-    if(idTipoReporte!=""){
-        let data = { NUMOPERACION: 24, id: idTipoReporte };
-    ShareService.SelectIndex(data).then((res) => {
-      //setNombreReporte(res.RESPONSE.id)
-      
-let auxResponse = res.RESPONSE.find((item: IReportes) => item.id === idTipoReporte)||"";
-setNombreReporte(auxResponse.Reporte)
-setAuxiliarReporte(auxResponse.Nombre)
+  useEffect(() => {
+    if (idTipoReporte != "") {
+      let data = { NUMOPERACION: 24, id: idTipoReporte };
+      ShareService.SelectIndex(data).then((res) => {
+        //setNombreReporte(res.RESPONSE.id)
 
-    });    
+        let auxResponse =
+          res.RESPONSE.find((item: IReportes) => item.id === idTipoReporte) ||
+          "";
+        setNombreReporte(auxResponse.Reporte);
+        setAuxiliarReporte(auxResponse.Nombre);
+      });
     }
-    
-    },[idTipoReporte]);
+  }, [idTipoReporte]);
 
   return (
     <Grid container spacing={1} padding={0}>
@@ -310,8 +292,6 @@ setAuxiliarReporte(auxResponse.Nombre)
       >
         {/* <Grid container item xs={12} md={8} lg={8} sx={{ textAlign: "center" }}> */}
 
-        
-
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Typography sx={{ fontFamily: "sans-serif" }}>
             Tipo de Reporte:
@@ -362,9 +342,12 @@ setAuxiliarReporte(auxResponse.Nombre)
         justifyContent="center"
         alignItems="center"
         sx={{ padding: "1%" }}
-        
       >
-        <Button className={"actualizar"} disabled={anio ==="" || TIPO ==="" || idTipoReporte===""} onClick={() => handleGenerar()}>
+        <Button
+          className={"actualizar"}
+          disabled={anio === "" || TIPO === "" || idTipoReporte === ""}
+          onClick={() => handleGenerar()}
+        >
           {"Generar Reporte"}
         </Button>
         {/* <Button
