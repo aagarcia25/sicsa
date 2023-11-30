@@ -45,6 +45,10 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import OrganoC from "./Organo/OrganoC";
 import { render } from "@testing-library/react";
 import LinkIcon from '@mui/icons-material/Link';
+import axios from "axios";
+import { log } from "console";
+import { ok } from "assert";
+import row from "antd/es/row";
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -85,26 +89,26 @@ export const Auditoria = () => {
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
   const [Entregado, setEntregado] = useState("")
 
-//   async function verificarExistenciaPagina(url: string): Promise<boolean> {
-//     try {
-//       const response = await fetch(url, { method: 'HEAD' });
-//       return response.ok;
-//     } catch (error) {
-//       return false;
-//     }
-//   }
-//   const url = "https://informe.asf.gob.mx/Documentos/Auditorias/2022_1326_a.pdf";
-// verificarExistenciaPagina(url)
-//   .then(existe => {
-//     if (existe) {
-//       console.log(`El enlace ${url} lleva a una página existente.`);
-//     } else {
-//       console.log(`El enlace ${url} no lleva a una página existente.`);
-//     }
-//   })
-//   .catch(error => {
-//     console.error('Ocurrió un error al verificar la existencia de la página:', error);
-//   });
+  //   async function verificarExistenciaPagina(url: string): Promise<boolean> {
+  //     try {
+  //       const response = await fetch(url, { method: 'HEAD' });
+  //       return response.ok;
+  //     } catch (error) {
+  //       return false;
+  //     }
+  //   }
+  //   const url = "https://informe.asf.gob.mx/Documentos/Auditorias/2022_1326_a.pdf";
+  // verificarExistenciaPagina(url)
+  //   .then(existe => {
+  //     if (existe) {
+  //       console.log(`El enlace ${url} lleva a una página existente.`);
+  //     } else {
+  //       console.log(`El enlace ${url} no lleva a una página existente.`);
+  //     }
+  //   })
+  //   .catch(error => {
+  //     console.error('Ocurrió un error al verificar la existencia de la página:', error);
+  //   });
 
   const handleVerAdjuntos = (data: any) => {
     if (data.row.entregado !== "1") {
@@ -149,32 +153,159 @@ export const Auditoria = () => {
     }
   };
 
-  const handleLinkResultado = (data: any) => {
-     
-  //  window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
-
-   async function verificarExistenciaPagina(url: string): Promise<boolean> {
-    try {
-      const response = await fetch(url, { method: 'HEAD' });
-      return response.ok;
-    } catch (error) {
-      return false;
-    }
+  const MostrarLink = (data: any) => {
+    window.open("https://informe.asf.gob.mx/Documentos/Auditorias/" + data.row.anio + "_" + data.row.NAUDITORIA + "_a.pdf", "_blank")
   }
-  const url = "https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf";
-verificarExistenciaPagina(url)
-  .then(existe => {
-    if (existe) {
-      console.log(`El enlace ${url} lleva a una página existente.`);
-    } else {
-      console.log(`El enlace ${url} no lleva a una página existente.`);
-    }
-  })
-  .catch(error => {
-    console.error('Ocurrió un error al verificar la existencia de la página:', error);
-  });
+
+  const handleLinkResultado = (data: any) => {
+
+
+
+    const url = ("https://informe.asf.gob.mx/Documentos/Auditorias/" + data.row.anio + "_" + data.row.NAUDITORIA + "_a.pdf")
+    return new Promise((resolve, reject) => {
+      axios.get(url)
+        .then(response => {
+          if (response.status === 200) {
+            //console.log('La solicitud se completó con éxito.');
+            //console.log('Datos de la respuesta:', response.data);
+            resolve(true);
+          }
+          //console.log('La solicitud tuvo un código de estado distinto de 200.');
+          resolve(false);
+
+        })
+        .catch(error => {
+          // Si cae aquí, la solicitud tuvo un error
+          //console.error('Error de solicitud:', error);
+          reject(false);
+        });
+    })
+
+
+    //async function verificarExistenciaPagina(url: string) {
+    // // try {
+    // //   const response = await fetch(url, { method: 'HEAD' });
+    // //   //return response.ok;
+
+    // //   if (response.ok) {
+    // //         console.log("si existe");
+    // //         window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf")
+
+    // //           //setIsValid(false);
+
+
+    // //         }
+
+    // //         else {
+    // //                 console.log("no existe");
+    // //                 //window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
+    // //                 console.error(`Error: ${response.status} - ${response.statusText}`);
+    // //               }
+
+    // // } 
+    // // catch (error) {
+    // //   return false;
+    // // }
+    //}
+    //   const url = ("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
+    // verificarExistenciaPagina(url)
+    //   .then(existe => {
+    //     if (existe) {
+    //       console.log(`El enlace ${url} lleva a una página existente.`);
+    //       window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf","_blank")
+    //     } else {
+    //       console.log(`El enlace ${url} no lleva a una página existente.`);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.error('Ocurrió un error al verificar la existencia de la página:', error);
+    //   });
+
+    // const [isValid, setIsValid] = useState(true);
+    // const handleLinkResultado = async(data: any) => {
+
+    //   const url = ("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf")
+    //   try {
+    //     const response = await fetch(url, { method: 'HEAD' });
+
+
+    //    if (!response.ok) {
+    //     console.log("no existe");
+    //       setIsValid(false);
+    //       console.error(`Error: ${response.status} - ${response.statusText}`);
+
+    //     }
+    //     else {
+    //       console.log("si existe");
+    //     }
+    //   } catch (error) {
+
+    //     setIsValid(false);
+    //     console.error('Error:', error);
+    //   }
+
+
+    //   if (isValid) {
+    //     // Realizar la acción deseada al hacer clic en el botón
+    //     //window.open(url);
+    //     window.open("https://informe.asf.gob.mx/Documentos/Auditorias/"+data.row.anio+"_"+data.row.NAUDITORIA+"_a.pdf")
+    //   } else {
+    //     alert('La página no está disponible');
+    //   }
+
+
+
+
+
+
+
+
+
+
+
+
   };
-  
+
+
+  ///////////////////////////////////////////////////
+  // const validPage = ({ url:string, label:string }) => {
+  //   const [isValid, setIsValid] = useState(true);
+
+
+  //  const checkUrlValidity = async () => {
+  //     try {
+  //       const response = await fetch(url, { method: 'HEAD' });
+
+
+  //      if (!response.ok) {
+  //         setIsValid(false);
+  //         console.error(`Error: ${response.status} - ${response.statusText}`);
+  //       }
+  //     } catch (error) {
+  //       setIsValid(false);
+  //       console.error('Error:', error);
+  //     }
+  //   };
+
+
+  //  const handleClick = () => {
+  //     if (isValid) {
+  //       // Realizar la acción deseada al hacer clic en el botón
+  //       window.location.href = url;
+  //     } else {
+  //       alert('La página no está disponible');
+  //     }
+  //   };
+
+
+  //  return (
+  //     <button onClick={checkUrlValidity} disabled={!isValid} onClick={handleClick}>
+  //       {label}
+  //     </button>
+  //   );
+  // };
+  ////////////////////////////////////////////////////
+
 
   const handleFilterChangeMunicipio = (v: string) => {
     setMunicipio(v);
@@ -300,7 +431,7 @@ verificarExistenciaPagina(url)
   }
 
   /**
-   * 
+   *
    * const columns: GridColDef[] = [
     {
       field: "id",
@@ -672,9 +803,21 @@ verificarExistenciaPagina(url)
       sortable: false,
       width: 400,
       renderCell: (v) => {
+
+        let auxshowbutton;
+
+        handleLinkResultado(v)
+          .then(result => {
+            console.log("El resultado es:", result);
+            auxshowbutton = result;
+          })
+          .catch(error => {
+            console.error("Hubo un error al obtener el resultado:", error);
+          });
+
         return (
           <>
-          {eliminar ? (String(v.row.entregado) !== "1" ? (
+            {eliminar ? (String(v.row.entregado) !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -683,8 +826,8 @@ verificarExistenciaPagina(url)
             ) : (
               ""
             )
-            ):("")}
-            
+            ) : ("")}
+
             <ButtonsEdit
               handleAccion={handleAccion}
               row={v}
@@ -744,15 +887,18 @@ verificarExistenciaPagina(url)
               icon={<AlignHorizontalLeftIcon />}
               row={v}
             ></ButtonsDetail>
-            <ButtonsDetail
-              title={"Auditoría individual"}
-              handleFunction={handleLinkResultado}
-              show={true}
-              icon={<LinkIcon />}
-              row={v}
-              
-            ></ButtonsDetail>
-            
+            {
+
+              auxshowbutton ? (<ButtonsDetail
+                title={"Auditoría individual"}
+                handleFunction={MostrarLink}
+                show={true}
+                icon={<LinkIcon />}
+                row={v}
+
+              ></ButtonsDetail>) : (null)}
+
+
           </>
         );
       },
@@ -784,7 +930,7 @@ verificarExistenciaPagina(url)
   const clearFilter = () => {
     setFolioSIGA("");
     setNAUDITORIA("");
-    setidEstatus(""); 
+    setidEstatus("");
     setMunicipio("");
     setidInicioauditoria("");
     setanio("");
@@ -873,6 +1019,7 @@ verificarExistenciaPagina(url)
     consulta();
   }, []);
 
+  
   return (
     <div>
       <Grid container spacing={1} padding={0}>
@@ -935,7 +1082,7 @@ verificarExistenciaPagina(url)
                   Año Cuenta Pública:
                 </Typography>
                 <SelectFrag
-                  value={anio} 
+                  value={anio}
                   options={ListAnio}
                   onInputChange={handleFilterChange1}
                   placeholder={"Seleccione.."}
