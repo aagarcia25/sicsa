@@ -100,8 +100,7 @@ export const Reportes = () => {
         let header = getHeaderInfoReporte();
         axios
           .post(
-            process.env.REACT_APP_APPLICATION_BASE_URL_REPORTES +
-              "ReportesIndex",
+            process.env.REACT_APP_APPLICATION_BASE_URL + "ReportesIndex",
             params
             // { responseType: "blob" }
           )
