@@ -1,13 +1,19 @@
-import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import BusinessIcon from "@mui/icons-material/Business";
+import { GridColDef } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { Toast } from "../../helpers/Toast";
+import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { AuditoriaService } from "../../services/AuditoriaService";
+import { getPermisos, getUser } from "../../services/localStorage";
+import MUIXDataGrid from "../MUIXDataGrid";
+import ButtonsAdd from "../componentes/ButtonsAdd";
+import ButtonsDeleted from "../componentes/ButtonsDeleted";
+import ButtonsEdit from "../componentes/ButtonsEdit";
+import TitleComponent from "../componentes/TitleComponent";
+import { AuditoriaModal } from "./AuditoriaModal";
 import ChatIcon from "@mui/icons-material/Chat";
-import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-import SendIcon from "@mui/icons-material/Send";
+import { ButtonsDetail } from "../componentes/ButtonsDetail";
+import Notif from "./Notificaciones/Notif";
 import {
   Button,
   Collapse,
@@ -16,33 +22,33 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { Toast } from "../../helpers/Toast";
-import SelectValues from "../../interfaces/Share";
-import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
-import { AuditoriaService } from "../../services/AuditoriaService";
-import { ShareService } from "../../services/ShareService";
-import { getPermisos, getUser } from "../../services/localStorage";
-import MUIXDataGrid from "../MUIXDataGrid";
-import ButtonsAdd from "../componentes/ButtonsAdd";
-import ButtonsDeleted from "../componentes/ButtonsDeleted";
-import { ButtonsDetail } from "../componentes/ButtonsDetail";
-import ButtonsEdit from "../componentes/ButtonsEdit";
-import ButtonsShare from "../componentes/ButtonsShare";
+import VisorDocumentos from "../componentes/VisorDocumentos";
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import Acciones from "./Acciones/Acciones";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import { Oficios } from "./Oficios/Oficios";
+import { Gantt } from "gantt-task-react";
+import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
 import GanttModal from "../componentes/GanttModal";
 import SelectFrag from "../componentes/SelectFrag";
-import TitleComponent from "../componentes/TitleComponent";
-import VisorDocumentos from "../componentes/VisorDocumentos";
-import Acciones from "./Acciones/Acciones";
-import { AuditoriaModal } from "./AuditoriaModal";
-import Notif from "./Notificaciones/Notif";
-import { Oficios } from "./Oficios/Oficios";
+import SelectValues from "../../interfaces/Share";
+import { ShareService } from "../../services/ShareService";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import ButtonsShare from "../componentes/ButtonsShare";
+import SendIcon from "@mui/icons-material/Send";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+import BusinessIcon from "@mui/icons-material/Business";
 
 import FactCheckIcon from "@mui/icons-material/FactCheck";
-import LinkIcon from "@mui/icons-material/Link";
 import OrganoC from "./Organo/OrganoC";
+import { render } from "@testing-library/react";
+import LinkIcon from '@mui/icons-material/Link';
+import axios from "axios";
+import { log } from "console";
+import { ok } from "assert";
+import row from "antd/es/row";
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -81,34 +87,15 @@ export const Auditoria = () => {
   const [modalidad, setmodalidad] = useState("");
   const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
-  const [Entregado, setEntregado] = useState("");
 
-  //   async function verificarExistenciaPagina(url: string): Promise<boolean> {
-  //     try {
-  //       const response = await fetch(url, { method: 'HEAD' });
-  //       return response.ok;
-  //     } catch (error) {
-  //       return false;
-  //     }
-  //   }
-  //   const url = "https://informe.asf.gob.mx/Documentos/Auditorias/2022_1326_a.pdf";
-  // verificarExistenciaPagina(url)
-  //   .then(existe => {
-  //     if (existe) {
-  //       console.log(`El enlace ${url} lleva a una página existente.`);
-  //     } else {
-  //       console.log(`El enlace ${url} no lleva a una página existente.`);
-  //     }
-  //   })
-  //   .catch(error => {
-  //     console.error('Ocurrió un error al verificar la existencia de la página:', error);
-  //   });
+  
 
   const handleVerAdjuntos = (data: any) => {
     if (data.row.entregado !== "1") {
       setVrows(data);
       setOpenAdjuntos(true);
     }
+
   };
 
   const handleClose = () => {
@@ -127,6 +114,7 @@ export const Auditoria = () => {
       setVrows(data);
       setOpenModalAcciones(true);
     }
+
   };
 
   const handleOficios = (data: any) => {
@@ -146,54 +134,21 @@ export const Auditoria = () => {
   };
 
   const MostrarLink = (data: any) => {
-    window.open(
-      "https://informe.asf.gob.mx/Documentos/Auditorias/" +
-        data.row.anio +
-        "_" +
-        data.row.NAUDITORIA +
-        "_a.pdf",
-      "_blank"
-    );
-  };
-
-  async function validarDisponibilidadRecurso(data: any): Promise<boolean> {
-    try {
-      // Uso del método para la URL proporcionada
-      const url =
-        "https://informe.asf.gob.mx/Documentos/Auditorias/" +
-        data.row.anio +
-        "_" +
-        data.row.NAUDITORIA +
-        "_a.pdf";
-
-      const response = await fetch(url, { method: "HEAD", mode: "no-cors" });
-
-      if (response.ok) {
-        // Si la respuesta tiene un código de estado 2xx, consideramos que el recurso está disponible
-        return true;
-      } else {
-        // Si la respuesta tiene un código de estado diferente, consideramos que el recurso no está disponible
-        console.error(
-          `La solicitud tuvo un código de estado diferente de 2xx: ${response.status}`
-        );
-        return false;
-      }
-    } catch (error) {
-      // Si la solicitud tuvo un error
-      console.error("Error de solicitud:", error);
-      return false;
-    }
+    window.open("https://informe.asf.gob.mx/Documentos/Auditorias/" + data.row.anio + "_" + data.row.NAUDITORIA + "_a.pdf", "_blank")
   }
+
 
   const handleFilterChangeMunicipio = (v: string) => {
     setMunicipio(v);
   };
 
   const handleDetalle = (data: any) => {
+
     if (data.row.entregado !== "1") {
       setVrows(data);
       setOpenModalDetalle(true);
     }
+
   };
 
   const handleORgano = (data: any) => {
@@ -201,6 +156,7 @@ export const Auditoria = () => {
       setVrows(data);
       setopenModalOrgano(true);
     }
+
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -220,6 +176,7 @@ export const Auditoria = () => {
   };
 
   const handleAccion = (v: any) => {
+
     if (v.tipo == 1) {
       setTipoOperacion(2);
       setModo("Editar Registro");
@@ -274,7 +231,9 @@ export const Auditoria = () => {
         confirmButtonText: "Confirmar",
         denyButtonText: `Cancelar`,
       }).then((result) => {
+
         if (result.isConfirmed) {
+
           let data = {
             NUMOPERACION: 5,
             CHID: v.row.id,
@@ -286,19 +245,23 @@ export const Auditoria = () => {
               Toast.fire({
                 icon: "success",
                 title: "Auditoría Entregada",
-              });
+              })
               consulta();
+
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
-          });
+          })
         } else if (result.isDenied) {
-          Swal.fire("No se realizaron cambios", "", "info");
+          Swal.fire("No se realizaron cambios", "", "info")
         }
-      });
+      })
     }
-  };
 
+
+  }
+
+  
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -330,6 +293,7 @@ export const Auditoria = () => {
       headerName: "Identificador",
       width: 150,
     },
+
 
     {
       field: "anio",
@@ -379,40 +343,21 @@ export const Auditoria = () => {
       sortable: false,
       width: 400,
       renderCell: (v) => {
-        let auxshowbutton;
 
-        validarDisponibilidadRecurso(v)
-          .then((disponible) => {
-            if (disponible) {
-              console.log("El recurso está disponible.");
-              auxshowbutton = true;
-            } else {
-              console.log("El recurso no está disponible.");
-              auxshowbutton = false;
-            }
-          })
-          .catch((error) => {
-            console.error(
-              "Error al validar la disponibilidad del recurso:",
-              error
-            );
-          });
+        
 
         return (
           <>
-            {eliminar ? (
-              String(v.row.entregado) !== "1" ? (
-                <ButtonsDeleted
-                  handleAccion={handleAccion}
-                  row={v}
-                  show={true}
-                ></ButtonsDeleted>
-              ) : (
-                ""
-              )
+            {eliminar ? (String(v.row.entregado) !== "1" ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsDeleted>
             ) : (
               ""
-            )}
+            )
+            ) : ("")}
 
             <ButtonsEdit
               handleAccion={handleAccion}
@@ -444,17 +389,13 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
 
-            {entrega ? (
-              <ButtonsDetail
-                title={"Cambiar Entrega"}
-                handleFunction={handleEntregar}
-                show={true}
-                icon={<FactCheckIcon />}
-                row={v}
-              ></ButtonsDetail>
-            ) : (
-              ""
-            )}
+            {entrega ? (<ButtonsDetail
+              title={"Cambiar Entrega"}
+              handleFunction={handleEntregar}
+              show={true}
+              icon={<FactCheckIcon />}
+              row={v}
+            ></ButtonsDetail>) : ("")}
 
             <ButtonsDetail
               title={"Resultado de la Auditoria"}
@@ -477,7 +418,7 @@ export const Auditoria = () => {
               icon={<AlignHorizontalLeftIcon />}
               row={v}
             ></ButtonsDetail>
-            {auxshowbutton ? (
+            
               <ButtonsDetail
                 title={"Auditoría individual"}
                 handleFunction={MostrarLink}
@@ -485,7 +426,8 @@ export const Auditoria = () => {
                 icon={<LinkIcon />}
                 row={v}
               ></ButtonsDetail>
-            ) : null}
+
+
           </>
         );
       },
@@ -606,6 +548,7 @@ export const Auditoria = () => {
     consulta();
   }, []);
 
+  
   return (
     <div>
       <Grid container spacing={1} padding={0}>
@@ -782,7 +725,13 @@ export const Auditoria = () => {
               <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
             </Grid>
           </Collapse>
-          {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+          {agregar ? (
+            <ButtonsAdd
+              handleOpen={handleOpen}
+              agregar={true}
+            />
+          ) : (""
+          )}
 
           <ButtonsShare
             title={showfilter ? "Ocultar Filtros" : "Ver Filtros"}
