@@ -8,6 +8,9 @@ import { ShareService } from "../../services/ShareService";
 import { getPermisos, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
+import { AuditoriaModal } from "./AuditoriaModal";
+import { Toast } from "../../helpers/Toast";
+import LinkIcon from '@mui/icons-material/Link';
 
 export const AuditoriaFlex = ({
   anio,
@@ -40,6 +43,22 @@ export const AuditoriaFlex = ({
     setVrows(data);
     setOpenAdjuntos(true);
   };
+  const handleClose = () => {
+    setOpen(false);
+    consulta();
+  };
+  const handleAccion = (v: any) => {
+      setTipoOperacion(2);
+      setModo("Editar Registro");
+      setOpen(true);
+      setVrows(v);
+      console.log("v.row",v.row);
+      
+  };
+  const MostrarLink = (data: any) => {
+    window.open("https://informe.asf.gob.mx/Documentos/Auditorias/" + data.row.anio + "_" + data.row.NAUDITORIA + "_a.pdf", "_blank")
+  }
+
 
   const columns: GridColDef[] = [
     {
@@ -72,24 +91,30 @@ export const AuditoriaFlex = ({
       headerName: "Identificador",
       width: 150,
     },
-
     {
       field: "acciones",
       disableExport: true,
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
-      width: 50,
+      width: 100,
       renderCell: (v) => {
         return (
           <>
             <ButtonsDetail
               title={"Ver Auditoria"}
-              handleFunction={handleVerAdjuntos}
+              handleFunction={handleAccion}
               show={true}
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
+            <ButtonsDetail
+                title={"Auditoría individual"}
+                handleFunction={MostrarLink}
+                show={true}
+                icon={<LinkIcon />}
+                row={v}
+              ></ButtonsDetail>
           </>
         );
       },
@@ -99,7 +124,7 @@ export const AuditoriaFlex = ({
       field: "NAUDITORIA",
       description: "Número de Auditoría",
       headerName: "No. de Auditoría",
-      width: 200,
+      width: 80,
       align: "center",
       headerAlign: "center",
     },
@@ -107,13 +132,13 @@ export const AuditoriaFlex = ({
       field: "NombreAudoria",
       description: "Nombre",
       headerName: "Nombre",
-      width: 300,
+      width: 200,
     },
     {
       field: "cmoDescripcion",
       description: "Modalidad",
       headerName: "Modalidad",
-      width: 200,
+      width: 90,
     },
   ];
 
@@ -160,7 +185,12 @@ export const AuditoriaFlex = ({
 
   return (
     <div>
-      <div style={{ height: 700, width: "100%", padding: "5%" }}>
+      <div style={{ height: 600, width: "100%", padding: "5%" }}>
+        {open ? (<AuditoriaModal
+              tipo={tipoOperacion} 
+              handleClose={handleClose}
+              dt={vrows}
+            />):("")}
         <MUIXDataGrid columns={columns} rows={bancos} />
       </div>
     </div>
