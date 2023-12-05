@@ -138,7 +138,7 @@ export const AuditoriaFlex = ({
       field: "cmoDescripcion",
       description: "Modalidad",
       headerName: "Modalidad",
-      width: 90,
+      width: 100,
     },
   ];
 
@@ -184,6 +184,8 @@ export const AuditoriaFlex = ({
   }, []);
 
   return (
+    <>
+    {bancos.length!==0?
     <div>
       <div style={{ height: 600, width: "100%", padding: "5%" }}>
         {open ? (<AuditoriaModal
@@ -193,6 +195,7 @@ export const AuditoriaFlex = ({
             />):("")}
         <MUIXDataGrid columns={columns} rows={bancos} />
       </div>
-    </div>
-  );
-};
+    </div>:"Sin registros"}
+    </>
+    
+)};
