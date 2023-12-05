@@ -314,7 +314,7 @@ export const AuditoriaModal = ({
       setidEstatus(dt?.row?.ceaid);
       setMunicipio(dt?.row?.munid);
       setInicio(dt?.row?.ciaid);
-      setmontoauditado(dt?.row.montoauditado);
+      setmontoauditado(dt?.row?.montoauditado);
       setEntregado(dt?.row?.entregado);
 
 
