@@ -322,7 +322,7 @@ export const AccionesModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
-            <Grid item alignItems="center" justifyContent="center" xs={2}>
+            <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{display:"flex"}}>
               <Button
                 // disabled={descripcion === "" || nombre === ""}
 
@@ -332,6 +332,15 @@ export const AccionesModal = ({
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
             </Grid>
+            <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{ display: "flex" }}>
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
+                  className={"actualizar"}
+                  onClick={() => handleClose()}
+                >
+                  {"Salir"}
+                </Button>
+              </Grid>
           </Grid>
         </Box>
       </ModalForm>
