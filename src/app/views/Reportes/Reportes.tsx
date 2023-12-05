@@ -259,7 +259,8 @@ export const Reportes = () => {
             onChange={handleChange}
             sx={{ display: "flex", flexDirection: "row" }}
           >
-            {/* <Grid container item xs={12} md={4} lg={8} sx={{ textAlign: "center" }}> */}
+
+            <Grid container item xs={12} md={12} lg={12} sx={{ textAlign: "center" }}>
             <Grid item xs={12} sm={6} md={4} lg={4}>
               <FormControlLabel value="pdf" control={<Radio />} label="PDF" />
             </Grid>
@@ -270,7 +271,7 @@ export const Reportes = () => {
             <Grid item xs={12} sm={6} md={4} lg={4}>
               <FormControlLabel value="xls" control={<Radio />} label="XLS" />
             </Grid>
-            {/* </Grid> */}
+            </Grid>
           </RadioGroup>
           {/* </Grid> */}
         </FormControl>

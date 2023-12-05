@@ -138,7 +138,7 @@ export const AuditoriaFlex = ({
       field: "cmoDescripcion",
       description: "Modalidad",
       headerName: "Modalidad",
-      width: 100,
+      width: 250,
     },
   ];
 
