@@ -18,6 +18,7 @@ import { ShareService } from "../../services/ShareService";
 import { getUser } from "../../services/localStorage";
 import { getHeaderInfoReporte } from "../../services/tokenCreator";
 import SelectFrag from "../componentes/SelectFrag";
+import Item from "antd/es/list/Item";
 
 const resumenResultados = [
   {value: "Gobierno Central", label: "Gobierno Central" },
@@ -81,6 +82,20 @@ export const Reportes = () => {
 
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
+  const ObtenerFiltro = () => {
+    switch(ResumenR)
+      {
+        case "Gobierno Central":
+          return (  ListEntidadFiscalizada.find(Item => Item.value===EntidadFiscalizada)?.label );
+          
+          break;
+        case "Municipios":
+          return (ListMunicipios.find(Item => Item.value===Municipios)?.label);
+          break;
+      }
+
+  }
+
   const handleGenerar = () => {
     console.log("NombreReporte", setNombreReporte);
 
@@ -101,7 +116,8 @@ export const Reportes = () => {
         P_ANIO: anio,
         REPORTE: NombreReporte,
       ResumenResultados: ResumenR,
-      //Filtro: ,
+      Filtro: ObtenerFiltro(),
+      // ResumenR === "Gobierno Central" ? EntidadFiscalizada : ResumenR === "Gobierno Central" ?,
 
       };
 
@@ -132,7 +148,7 @@ export const Reportes = () => {
               .substring(2, 8);
             const extension = TIPO;
             const nuevoNombreArchivo =
-              AuxiliarReporte + `${identificadorAleatorio}.${extension}`;
+              AuxiliarReporte + ' ('+ ResumenR + ') '+ `${identificadorAleatorio}.${extension}`;
             console.log("nuevoNombreArchivo", nuevoNombreArchivo);
 
             // Llamar a la función para descargar el archivo PDF
