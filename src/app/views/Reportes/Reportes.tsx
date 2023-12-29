@@ -86,11 +86,11 @@ export const Reportes = () => {
     switch(ResumenR)
       {
         case "Gobierno Central":
-          return (  ListEntidadFiscalizada.find(Item => Item.value===EntidadFiscalizada)?.label );
+          return (  EntidadFiscalizada);
           
           break;
         case "Municipios":
-          return (ListMunicipios.find(Item => Item.value===Municipios)?.label);
+          return (Municipios);
           break;
       }
 
@@ -254,6 +254,7 @@ export const Reportes = () => {
     loadFilter(1);
     loadFilter(23);
     loadFilter(2);
+    loadFilter(17);
 
     //consulta();
   }, []);
@@ -317,6 +318,9 @@ export const Reportes = () => {
     //setResumenR("")
 
   },[idTipoReporte,ResumenR])
+
+  const deshabilitar: boolean = (anio === "" || TIPO === "" || idTipoReporte === "" || ResumenR === "") || (ResumenR === "Organismos Descentralizados"? (false):(ResumenR === "Gobierno Central" ? (EntidadFiscalizada === "") :  (Municipios === ""))   ) 
+
 
   return (
     <Grid container spacing={1} padding={0}>
@@ -489,7 +493,7 @@ export const Reportes = () => {
       >
         <Button
           className={"actualizar"}
-          disabled={anio === "" || TIPO === "" || idTipoReporte === ""}
+          disabled={deshabilitar }
           onClick={() => handleGenerar()}
         >
           {"Generar Reporte"}
