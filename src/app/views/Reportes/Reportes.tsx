@@ -18,6 +18,14 @@ import { ShareService } from "../../services/ShareService";
 import { getUser } from "../../services/localStorage";
 import { getHeaderInfoReporte } from "../../services/tokenCreator";
 import SelectFrag from "../componentes/SelectFrag";
+import Item from "antd/es/list/Item";
+
+const resumenResultados = [
+  {value: "Gobierno Central", label: "Gobierno Central" },
+  {value: "Organismos Descentralizados", label: "Organismos Descentralizados"  },
+  {value: "Municipios", label: "Municipios"  },
+];
+
 
 export const Reportes = () => {
   const [data, setData] = useState([]);
@@ -39,6 +47,15 @@ export const Reportes = () => {
   const [selectedValue, setSelectedValue] = React.useState("PDF");
   const [Reporte, setReporte] = useState<IReportes>();
   const [listaReportes, setListaReportes] = useState<IReportes[]>([]);
+  const [ResumenR, setResumenR] = useState("");
+  const [ListEntidadFiscalizada, setListEntidadFiscalizada] = useState<SelectValues[]>([]);
+  const [EntidadFiscalizada, setEntidadFiscalizada] = useState("");
+  const [Municipios, setMunicipios] = useState("");
+  const [ListMunicipios, setListMunicipios] = useState<SelectValues[]>([]);
+  const [VisibleResumen, setVisibleResumen] = useState<boolean>(false);
+  const [VisibleEntidadFiscalizada, setVisibleEntidadFiscalizada] = useState<boolean>(false);
+  const [VisibleMunicipios, setVisibleMunicipios] = useState<boolean>(false);
+
 
   const downloadPdfFromBase64 = (base64String: string, fileName: string) => {
     const byteCharacters = atob(base64String); // Decodificar el string base64
@@ -65,6 +82,20 @@ export const Reportes = () => {
 
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
+  const ObtenerFiltro = () => {
+    switch(ResumenR)
+      {
+        case "Gobierno Central":
+          return (  EntidadFiscalizada);
+          
+          break;
+        case "Municipios":
+          return (Municipios);
+          break;
+      }
+
+  }
+
   const handleGenerar = () => {
     console.log("NombreReporte", setNombreReporte);
 
@@ -84,6 +115,10 @@ export const Reportes = () => {
         TIPO: TIPO,
         P_ANIO: anio,
         REPORTE: NombreReporte,
+      ResumenResultados: ResumenR,
+      Filtro: ObtenerFiltro(),
+      // ResumenR === "Gobierno Central" ? EntidadFiscalizada : ResumenR === "Gobierno Central" ?,
+
       };
 
       let data = {
@@ -100,7 +135,7 @@ export const Reportes = () => {
         let header = getHeaderInfoReporte();
         axios
           .post(
-            process.env.REACT_APP_APPLICATION_BASE_URL + "ReportesIndex",
+            process.env.REACT_APP_APPLICATION_BASE_URL_REPORTES + "ReportesIndex",
             params
             // { responseType: "blob" }
           )
@@ -113,7 +148,7 @@ export const Reportes = () => {
               .substring(2, 8);
             const extension = TIPO;
             const nuevoNombreArchivo =
-              AuxiliarReporte + `${identificadorAleatorio}.${extension}`;
+              AuxiliarReporte + ' ('+ ResumenR + ') '+ `${identificadorAleatorio}.${extension}`;
             console.log("nuevoNombreArchivo", nuevoNombreArchivo);
 
             // Llamar a la función para descargar el archivo PDF
@@ -134,7 +169,12 @@ export const Reportes = () => {
 
   const handleFilterChangeTipoReporte = (v: string) => {
     setidTipoReporte(v);
-    console.log("setidreporte1", v);
+    // let opcion
+    // opcion = ListTipoReporte.find((item) => item.label?.includes("Resumen de Resultados"))
+    // if (opcion) {
+    //   setVisibleResumen(true)
+    // }
+    //console.log("setidreporte1", opcion);
 
     ///console.log("selected",selected?.Reporte);
 
@@ -152,9 +192,27 @@ export const Reportes = () => {
     setanio(v);
   };
 
-  const handleFilterEntidadFis = (v: string) => {
-    setidEntidadFis(v);
+
+
+
+  const handleFilterResumenResultados = (v: string) => {
+    setResumenR(v)
+    
+
   };
+
+
+
+  const handleFilterEntidadFiscalizada = (v: string) => {
+    setEntidadFiscalizada(v)
+  };
+
+  const handleFilterMunicipios = (v: string) => {
+    setMunicipios(v)
+  };
+
+
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTIPO(event.target.value);
   };
@@ -180,15 +238,15 @@ export const Reportes = () => {
       } else if (operacion === 23) {
         setListTipoReporte(res.RESPONSE);
       } else if (operacion === 2) {
-        setListEntidadFis(res.RESPONSE);
-      }
+        setListEntidadFiscalizada(res.RESPONSE);
+      }else if (operacion === 17) {
+        setListMunicipios(res.RESPONSE);
+         }
       //else if (operacion === 16) {
       //     setListInicio(res.RESPONSE);
       //   } else if (operacion === 18) {
       //     setListIdEstatus(res.RESPONSE);
-      //   } else if (operacion === 17) {
-      //     setListMunicipio(res.RESPONSE);
-      //   }
+      //   } 
     });
   };
 
@@ -196,6 +254,7 @@ export const Reportes = () => {
     loadFilter(1);
     loadFilter(23);
     loadFilter(2);
+    loadFilter(17);
 
     //consulta();
   }, []);
@@ -214,6 +273,54 @@ export const Reportes = () => {
       });
     }
   }, [idTipoReporte]);
+
+  useEffect(()=> {
+    let resumen
+    resumen = idTipoReporte.includes("3b599aca-9a0d-11ee-b247-3cd92b4d9bf4")
+    if (resumen) {
+      console.log("entre al if 0 ",resumen);
+      setVisibleResumen(true)
+
+      if(VisibleResumen){
+        let opcion
+        opcion = ResumenR.includes("Gobierno Central")
+        if (opcion) {
+          console.log("entre al if 1 ",opcion);
+    
+          setVisibleEntidadFiscalizada(true)
+          setVisibleMunicipios(false)
+        }
+        opcion = ResumenR.includes("Municipios")
+        if (opcion) {
+        console.log("entre al if 2 ",opcion);
+      
+          setVisibleEntidadFiscalizada(false)
+          setVisibleMunicipios(true)
+        }
+        opcion = ResumenR.includes("Organismos Descentralizados")
+        if (opcion) {
+          console.log("entre al if 3 ",opcion);
+    
+          setVisibleEntidadFiscalizada(false)
+          setVisibleMunicipios(false)
+        }
+      }
+
+    }else{
+      setVisibleResumen(false)
+      setVisibleEntidadFiscalizada(false)
+      setVisibleMunicipios(false)
+      console.log("entre al else 0");
+
+    
+    }
+    
+    //setResumenR("")
+
+  },[idTipoReporte,ResumenR])
+
+  const deshabilitar: boolean = (anio === "" || TIPO === "" || idTipoReporte === "" || ResumenR === "") || (ResumenR === "Organismos Descentralizados"? (false):(ResumenR === "Gobierno Central" ? (EntidadFiscalizada === "") :  (Municipios === ""))   ) 
+
 
   return (
     <Grid container spacing={1} padding={0}>
@@ -261,16 +368,16 @@ export const Reportes = () => {
           >
 
             <Grid container item xs={12} md={12} lg={12} sx={{ textAlign: "center" }}>
-            <Grid item xs={12} sm={6} md={4} lg={4}>
-              <FormControlLabel value="pdf" control={<Radio />} label="PDF" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={4}>
-              <FormControlLabel value="XLSX" control={<Radio />} label="XLSX" />
-            </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+                <FormControlLabel value="pdf" control={<Radio />} label="PDF" />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+                <FormControlLabel value="XLSX" control={<Radio />} label="XLSX" />
+              </Grid>
 
-            <Grid item xs={12} sm={6} md={4} lg={4}>
-              <FormControlLabel value="xls" control={<Radio />} label="XLS" />
-            </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+                <FormControlLabel value="xls" control={<Radio />} label="XLS" />
+              </Grid>
             </Grid>
           </RadioGroup>
           {/* </Grid> */}
@@ -304,6 +411,47 @@ export const Reportes = () => {
             disabled={false}
           />
         </Grid>
+
+        {VisibleResumen ? <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Typography sx={{ fontFamily: "sans-serif" }}>
+            Resumen de resultados:
+          </Typography>
+          <SelectFrag
+            value={ResumenR}
+            options={resumenResultados}
+            onInputChange={handleFilterResumenResultados}
+            placeholder={"Seleccione.."}
+            disabled={false}
+          />
+        </Grid> : ""}
+
+        {VisibleEntidadFiscalizada ? <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Typography sx={{ fontFamily: "sans-serif" }}>
+            Entidad Fiscalizada:
+          </Typography>
+          <SelectFrag
+            value={EntidadFiscalizada}
+            options={ListEntidadFiscalizada}
+            onInputChange={handleFilterEntidadFiscalizada}
+            placeholder={"Seleccione.."}
+            disabled={false}
+          />
+        </Grid> : ""}
+        
+        {VisibleMunicipios ? <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Typography sx={{ fontFamily: "sans-serif" }}>
+            Municipios:
+          </Typography>
+          <SelectFrag
+            value={Municipios}
+            options={ListMunicipios}
+            onInputChange={handleFilterMunicipios}
+            placeholder={"Seleccione.."}
+            disabled={false}
+          />
+        </Grid> : ""}
+
+
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Typography sx={{ fontFamily: "sans-serif" }}>
             Año Cuenta Pública:
@@ -345,7 +493,7 @@ export const Reportes = () => {
       >
         <Button
           className={"actualizar"}
-          disabled={anio === "" || TIPO === "" || idTipoReporte === ""}
+          disabled={deshabilitar }
           onClick={() => handleGenerar()}
         >
           {"Generar Reporte"}
