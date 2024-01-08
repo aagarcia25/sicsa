@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import DownloadingIcon from "@mui/icons-material/Downloading";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -12,6 +11,7 @@ import {
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { base64ToArrayBuffer } from "../../helpers/Files";
 import { Toast } from "../../helpers/Toast";
@@ -20,31 +20,21 @@ import { AuditoriaService } from "../../services/AuditoriaService";
 import { getPermisos, getToken, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import Progress from "../Progress";
-import ButtonsDeleted from "./ButtonsDeleted";
 import { ButtonsDetail } from "./ButtonsDetail";
 import { TooltipPersonalizado } from "./CustomizedTooltips";
 import ModalForm from "./ModalForm";
-import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
-import InsightsIcon from "@mui/icons-material/Insights";
-import Trazabilidad from "./Trazabilidad";
-import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-import VisorDocumentosSub from "./VisorDocumentosSub";
-const VisorDocumentos = ({
+import ButtonsDeleted from "./ButtonsDeleted";
+const VisorDocumentosSub = ({
   handleFunction,
   obj,
-  tipo,
 }: {
   handleFunction: Function;
   obj: any;
-  tipo: number;
 }) => {
   const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
   const [verarchivo, setverarchivo] = useState(false);
 
-  const [verTrazabilidad, setVerTrazabilidad] = useState(false);
-  const [openAdjuntos, setOpenAdjuntos] = useState(false);
-  const [openModalDetalle, setOpenModalDetalle] = useState(false);
   const [vrows, setVrows] = useState({});
   const [data, setData] = useState([]);
   const [URLruta, setURLRuta] = useState<string>("");
@@ -65,7 +55,7 @@ const VisorDocumentos = ({
       TOKEN: JSON.parse(String(getToken())),
     };
 
-    AuditoriaService.Filesindex(data).then((res) => {
+    AuditoriaService.FilesSubindex(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -96,14 +86,13 @@ const VisorDocumentos = ({
 
     encontrados.map((item: any) => {
       const formData = new FormData();
-      formData.append("TIPO", String(tipo));
       formData.append("NUMOPERACION", "1");
       formData.append("ID", obj.id);
       formData.append("CHUSER", user.Id);
       formData.append("TOKEN", JSON.parse(String(getToken())));
       formData.append("FILE", item.Archivo, item.NOMBRE);
       let p = axios.post(
-        process.env.REACT_APP_APPLICATION_BASE_URL + "Filesindex",
+        process.env.REACT_APP_APPLICATION_BASE_URL + "FilesSubindex",
         formData,
         {
           headers: {
@@ -144,46 +133,6 @@ const VisorDocumentos = ({
     });
   };
 
-  const handletrazabilidad = (v: any) => {
-    setVrows(v);
-    setVerTrazabilidad(true);
-  };
-
-  const handleVerificarArchivo = (v: any) => {
-    Swal.fire({
-      icon: "info",
-      title: "¿Estás seguro Verificar el Archivo?",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: "Confirmar",
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = {
-          NUMOPERACION: 6,
-          CHID: v.id,
-          CHUSER: user.Id,
-        };
-        setOpenSlider(true);
-        AuditoriaService.Filesindex(data).then((res) => {
-          if (res.SUCCESS) {
-            Toast.fire({
-              icon: "success",
-              title: "¡Registro Verificado!",
-            });
-            consulta();
-            setOpenSlider(false);
-          } else {
-            Swal.fire("¡Error!", res.STRMESSAGE, "error");
-            setOpenSlider(false);
-          }
-        });
-      } else if (result.isDenied) {
-        Swal.fire("No se realizaron cambios", "", "info");
-        setOpenSlider(false);
-      }
-    });
-  };
   const handleDescargarFile = (v: any) => {
     setOpenSlider(true);
     let data = {
@@ -192,7 +141,7 @@ const VisorDocumentos = ({
       TOKEN: JSON.parse(String(getToken())),
     };
 
-    AuditoriaService.Filesindex(data).then((res) => {
+    AuditoriaService.FilesSubindex(data).then((res) => {
       if (res.SUCCESS) {
         var bufferArray = base64ToArrayBuffer(String(res.RESPONSE.FILE));
         var blobStore = new Blob([bufferArray], { type: res.RESPONSE.TIPO });
@@ -214,13 +163,6 @@ const VisorDocumentos = ({
 
   const handleCloseModal = () => {
     setverarchivo(false);
-    setVerTrazabilidad(false);
-    setOpenAdjuntos(false);
-  };
-
-  const handleVerSub = (v: any) => {
-    setVrows(v);
-    setOpenAdjuntos(true);
   };
 
   const handleVer = (v: any) => {
@@ -231,7 +173,7 @@ const VisorDocumentos = ({
       TOKEN: JSON.parse(String(getToken())),
     };
 
-    AuditoriaService.Filesindex(data).then((res) => {
+    AuditoriaService.FilesSubindex(data).then((res) => {
       if (res.SUCCESS) {
         var bufferArray = base64ToArrayBuffer(String(res.RESPONSE.FILE));
         var blobStore = new Blob([bufferArray], { type: res.RESPONSE.TIPO });
@@ -267,7 +209,7 @@ const VisorDocumentos = ({
           TOKEN: JSON.parse(String(getToken())),
         };
 
-        AuditoriaService.Filesindex(data).then((res) => {
+        AuditoriaService.FilesSubindex(data).then((res) => {
           if (res.SUCCESS) {
             Toast.fire({
               icon: "success",
@@ -296,13 +238,7 @@ const VisorDocumentos = ({
       headerName: "Route",
       width: 150,
     },
-   
-    {
-      field: "estatus",
-      description: "Estatus",
-      headerName: "Estatus",
-      width: 150,
-    },
+
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
     {
       field: "UltimaActualizacion",
@@ -337,20 +273,6 @@ const VisorDocumentos = ({
       renderCell: (v) => {
         return (
           <>
-            {eliminarDocumentos ? (
-              String(v.row.estatus) !== "Verificado" ? (
-                <ButtonsDeleted
-                  handleAccion={handleAccion}
-                  row={v}
-                  show={true}
-                ></ButtonsDeleted>
-              ) : (
-                ""
-              )
-            ) : (
-              ""
-            )}
-
             <ButtonsDetail
               title={"Ver"}
               handleFunction={handleVer}
@@ -358,13 +280,7 @@ const VisorDocumentos = ({
               icon={<RemoveRedEyeIcon />}
               row={v}
             ></ButtonsDetail>
-             <ButtonsDetail
-              title={"Soporte del Oficio"}
-              handleFunction={handleVerSub}
-              show={true}
-              icon={<ContentPasteSearchIcon />}
-              row={v}
-            ></ButtonsDetail>
+
             <ButtonsDetail
               title={"Descargar"}
               handleFunction={handleDescargarFile}
@@ -372,29 +288,12 @@ const VisorDocumentos = ({
               icon={<DownloadingIcon />}
               row={v}
             ></ButtonsDetail>
-            {verificar ? (
-              String(v.row.estatus) === "Pendiente de Verificación" ? (
-                <ButtonsDetail
-                  title={"Verificar Archivo"}
-                  handleFunction={handleVerificarArchivo}
-                  show={true}
-                  icon={<ChecklistRtlIcon />}
-                  row={v}
-                ></ButtonsDetail>
-              ) : (
-                ""
-              )
-            ) : (
-              ""
-            )}
 
-            <ButtonsDetail
-              title={"Ver Trazabilidad"}
-              handleFunction={handletrazabilidad}
-              show={true}
-              icon={<InsightsIcon />}
+            <ButtonsDeleted
+              handleAccion={handleAccion}
               row={v}
-            ></ButtonsDetail>
+              show={true}
+            ></ButtonsDeleted>
           </>
         );
       },
@@ -434,7 +333,7 @@ const VisorDocumentos = ({
 
   return (
     <div>
-      <ModalForm title={"Visor de Documentos"} handleClose={handleFunction}>
+      <ModalForm title={"Soporte de Oficio"} handleClose={handleFunction}>
         <Progress open={openSlider}></Progress>
 
         <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -481,11 +380,7 @@ const VisorDocumentos = ({
 
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
-      {verTrazabilidad ? (
-        <Trazabilidad handleFunction={handleCloseModal} obj={vrows} />
-      ) : (
-        ""
-      )}
+
       {verarchivo ? (
         <ModalForm title={"Visualización"} handleClose={handleCloseModal}>
           <DialogContent dividers={true}>
@@ -504,14 +399,8 @@ const VisorDocumentos = ({
       ) : (
         ""
       )}
-
-{openAdjuntos ? (
-        <VisorDocumentosSub handleFunction={handleCloseModal} obj={vrows}  />
-      ) : (
-        ""
-      )}
     </div>
   );
 };
 
-export default VisorDocumentos;
+export default VisorDocumentosSub;
