@@ -27,9 +27,11 @@ import ButtonsDeleted from "./ButtonsDeleted";
 const VisorDocumentosSub = ({
   handleFunction,
   obj,
+  oficio
 }: {
   handleFunction: Function;
   obj: any;
+  oficio:string
 }) => {
   const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
@@ -337,7 +339,7 @@ const VisorDocumentosSub = ({
         <Progress open={openSlider}></Progress>
 
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h4">{obj.row.Oficio}</Typography>
+          <Typography variant="h4">{oficio}</Typography>
         </Box>
 
         {true ? (

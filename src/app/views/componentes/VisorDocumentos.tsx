@@ -506,7 +506,7 @@ const VisorDocumentos = ({
       )}
 
 {openAdjuntos ? (
-        <VisorDocumentosSub handleFunction={handleCloseModal} obj={vrows}  />
+        <VisorDocumentosSub handleFunction={handleCloseModal} obj={vrows} oficio={obj.row.Oficio}  />
       ) : (
         ""
       )}
