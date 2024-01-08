@@ -317,8 +317,6 @@ export const Auditoria = () => {
       headerName: "Identificador",
       width: 150,
     },
-
-
     {
       field: "anio",
       description: "Año Cuenta Pública",
