@@ -49,6 +49,9 @@ import axios from "axios";
 import { log } from "console";
 import { ok } from "assert";
 import row from "antd/es/row";
+import { CatalogosServices } from "../../services/catalogosServices";
+import { ButtonsImport } from "../componentes/ButtonsImport";
+import Progress from "../Progress";
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -87,8 +90,29 @@ export const Auditoria = () => {
   const [modalidad, setmodalidad] = useState("");
   const [ListModalidad, setListModalidad] = useState<SelectValues[]>([]);
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
+  const [show, setShow] = useState(false);
 
-  
+  const handleUpload = (data: any) => {
+    setShow(true);
+    let file = data?.target?.files?.[0] || "";
+    const formData = new FormData();
+    formData.append("inputfile", file, "inputfile.xlxs");
+    formData.append("CHUSER", user.Id);
+    formData.append("tipo", "migraAuditorias");
+    CatalogosServices.migraData(formData).then((res) => {
+      if (res.SUCCESS) {
+        setShow(false);
+        Toast.fire({
+          icon: "success",
+          title: "¡Consulta Exitosa!",
+        });
+        consulta();
+      } else {
+        setShow(false);
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
+      }
+    });
+  };
 
   const handleVerAdjuntos = (data: any) => {
     if (data.row.entregado !== "1") {
@@ -293,8 +317,6 @@ export const Auditoria = () => {
       headerName: "Identificador",
       width: 150,
     },
-
-
     {
       field: "anio",
       description: "Año Cuenta Pública",
@@ -732,6 +754,9 @@ export const Auditoria = () => {
             />
           ) : (""
           )}
+                  <Progress open={show}></Progress>
+
+          {agregar ? (<ButtonsImport handleOpen={handleUpload} agregar={agregar} />):("")}
 
           <ButtonsShare
             title={showfilter ? "Ocultar Filtros" : "Ver Filtros"}
