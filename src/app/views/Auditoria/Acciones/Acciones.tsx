@@ -152,13 +152,79 @@ const Acciones = ({
       headerName: "Identificador",
       width: 150,
     },
+    
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 200,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 150,
+    },
+    {
+      field: "NAUDITORIA",
+      description: "Número de Auditoría",
+      headerName: "No. de Auditoría",
+      width: 150,
+    },
+    {
+      field: "DescripcionTipoDeAccion",
+      description: "Tipo de Resultado",
+      headerName: "Tipo de Resultado",
+      width: 150,
+    },
+    {
+      field: "DescripcionEstatusAccion",
+      headerName: "Estatus de los Resultados",
+      width: 150,
+    },
+    {
+      field: "ClaveAccion",
+      description: "Clave de Resultado",
+      headerName: "Clave de Resultado",
+      width: 150,
+    },
+    { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
+    {
+      field: "accionSuperviviente",
+      description: "Resultado Superveniente",
+      headerName: "Resultado Superveniente",
+      width: 150,
+    },
+
+    {
+      field: "TextoAccion",
+      description: "Resultado/Observación",
+      headerName: "Resultado/Observación",
+      width: 900,
+    },
+    { field: "Valor", description: "Valor", headerName: "Valor", width: 150 },
+    {
+      field: "numeroResultado",
+      headerName: "Numero de Resultado",
+      description: "Número de Resultado",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    { field: "monto", headerName: "Monto", description: "Monto", width: 150 },
     {
       field: "acciones",
       disableExport: true,
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
-      width: 200,
+      width: 150,
       renderCell: (v) => {
         return (
           <>
@@ -184,71 +250,6 @@ const Acciones = ({
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    {
-      field: "creado",
-      description: "Creado Por",
-      headerName: "Creado Por",
-      width: 200,
-    },
-    {
-      field: "modi",
-      description: "Modificado Por",
-      headerName: "Modificado Por",
-      width: 200,
-    },
-    {
-      field: "NAUDITORIA",
-      description: "Número de Auditoría",
-      headerName: "No. de Auditoría",
-      width: 200,
-    },
-    {
-      field: "DescripcionTipoDeAccion",
-      description: "Tipo de Resultado",
-      headerName: "Tipo de Resultado",
-      width: 200,
-    },
-    {
-      field: "DescripcionEstatusAccion",
-      headerName: "Estatus de los Resultados",
-      width: 200,
-    },
-    {
-      field: "ClaveAccion",
-      description: "Clave de Resultado",
-      headerName: "Clave de Resultado",
-      width: 300,
-    },
-    { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
-    {
-      field: "accionSuperviviente",
-      description: "Resultado Superveniente",
-      headerName: "Resultado Superveniente",
-      width: 300,
-    },
-
-    {
-      field: "TextoAccion",
-      description: "Resultado/Observación",
-      headerName: "Resultado/Observación",
-      width: 900,
-    },
-    { field: "Valor", description: "Valor", headerName: "Valor", width: 200 },
-    {
-      field: "numeroResultado",
-      headerName: "Numero de Resultado",
-      description: "Número de Resultado",
-      width: 200,
-      align: "center",
-      headerAlign: "center",
-    },
-    { field: "monto", headerName: "Monto", description: "Monto", width: 200 },
   ];
 
   useEffect(() => {

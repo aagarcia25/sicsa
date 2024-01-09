@@ -109,6 +109,22 @@ export const OrganoR = ({
       headerName: "Identificador",
       width: 150,
     },
+    
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "creado", headerName: "Creado Por", width: 150 },
+    { field: "modi", headerName: "Modificado Por", width: 150 },
+    { field: "descripcionorigen", headerName: "Organo Origen", width: 300 },
+    { field: "descripciodestino", headerName: "Organo Destino", width: 300 },
+    { field: "Oficio", headerName: "Oficio", width: 150 },
+    { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
+    { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
+    { field: "FRecibido", headerName: "Fecha de Recibido", width: 150 },
+    { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 150 },
     {
       field: "acciones",
       disableExport: true,
@@ -141,21 +157,6 @@ export const OrganoR = ({
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "creado", headerName: "Creado Por", width: 200 },
-    { field: "modi", headerName: "Modificado Por", width: 200 },
-    { field: "descripcionorigen", headerName: "Organo Origen", width: 300 },
-    { field: "descripciodestino", headerName: "Organo Destino", width: 300 },
-    { field: "Oficio", headerName: "Oficio", width: 200 },
-    { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
-    { field: "FOficio", headerName: "Fecha de Oficio", width: 200 },
-    { field: "FRecibido", headerName: "Fecha de Recibido", width: 200 },
-    { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 200 },
   ];
 
   useEffect(() => {

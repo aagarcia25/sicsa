@@ -76,6 +76,29 @@ export const CatAreaAuditora = () => {
       field: "iduaa",
       width: 0,
     },
+    
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
+    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
+    { field: "Clave", headerName: "Clave", description: "Clave", width: 100 },
+    {
+      field: "Descripcion",
+      headerName: "Descripción",
+      description: "Descripcion",
+      width: 350,
+    },
+
+    {
+      field: "cuaadesc",
+      headerName: "UAA",
+      description: "Unidad Admnistrativa Auditora",
+      width: 300,
+    },
     {
       field: "acciones",
       disableExport: true,
@@ -107,28 +130,6 @@ export const CatAreaAuditora = () => {
           </>
         );
       },
-    },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
-    { field: "Clave", headerName: "Clave", description: "Clave", width: 100 },
-    {
-      field: "Descripcion",
-      headerName: "Descripción",
-      description: "Descripcion",
-      width: 350,
-    },
-
-    {
-      field: "cuaadesc",
-      headerName: "UAA",
-      description: "Unidad Admnistrativa Auditora",
-      width: 300,
     },
   ];
 
