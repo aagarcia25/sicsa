@@ -400,13 +400,13 @@ useEffect (()=>{console.log(idTipoReporte);
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <FormControlLabel value="pdf" control={<Radio />} label="PDF" />
               </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={4}>
+              {/* <Grid item xs={12} sm={6} md={4} lg={4}>
                 <FormControlLabel value="XLSX" control={<Radio />} label="XLSX" />
               </Grid>
 
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <FormControlLabel value="xls" control={<Radio />} label="XLS" />
-              </Grid>
+              </Grid> */}
             </Grid>
           </RadioGroup>
           {/* </Grid> */}

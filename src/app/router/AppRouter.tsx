@@ -27,6 +27,7 @@ import { Perfil } from "../views/perfil/Perfil";
 import { AuthRouter } from "./AuthRouter";
 import { Dash } from "../views/Dashboard/Dash";
 import { Reportes } from "../views/Reportes/Reportes";
+import { ControlOficios } from "../views/ControlOficios/ControlOficios";
 //import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
@@ -66,6 +67,11 @@ export const AppRouter = ({ login }: { login: boolean }) => {
         <Route
           path="/"
           element={log ? <Bienvenido user={user} /> : <AuthRouter />}
+        />
+
+        <Route
+          path="/inicio/folios"
+          element={log ? <ControlOficios /> : <AuthRouter />}
         />
 
         {/* SECCION ADMINISTRACION AUDITORIA */}
