@@ -72,6 +72,17 @@ export const TipoAccion = () => {
       headerName: "Identificador",
       width: 150,
     },
+    
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
+    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
+    { field: "Descripcion", headerName: "Descripción", width: 350 },
+    { field: "Abreviatura", headerName: "Abreviatura", width: 100 },
     {
       field: "acciones",
       disableExport: true,
@@ -104,16 +115,6 @@ export const TipoAccion = () => {
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
-    { field: "Descripcion", headerName: "Descripción", width: 350 },
-    { field: "Abreviatura", headerName: "Abreviatura", width: 100 },
   ];
 
   const handleClose = () => {

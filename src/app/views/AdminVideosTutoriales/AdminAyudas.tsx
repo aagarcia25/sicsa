@@ -341,26 +341,7 @@ const [eliminar, setEliminar] = useState<boolean>(false);
   ];
   const columnsVideo: GridColDef[] = [
     { field: "id", hideable: false },
-    {
-      field: "Acciones",
-      disableExport: true,
-      headerName: "Acciones",
-      description: "Acciones",
-      sortable: false,
-      width: 150,
-      renderCell: (v: any) => {
-        return (
-          <Box>
-            {eliminar ? (<Tooltip title="Eliminar Video">
-              <IconButton onClick={() => handleBorrarRegistro(v.row.id)}>
-                <DeleteForeverIcon />
-              </IconButton>
-            </Tooltip>):("")}
-            
-          </Box>
-        );
-      },
-    },
+    
     { field: "Menu", headerName: "Menú", description: "Menú", width: 250 },
     {
       field: "NombreOriginalVideo",
@@ -386,6 +367,26 @@ const [eliminar, setEliminar] = useState<boolean>(false);
               ? "Externo: Municipio Organismo"
               : "Area Interna"}
           </>
+        );
+      },
+    },
+    {
+      field: "Acciones",
+      disableExport: true,
+      headerName: "Acciones",
+      description: "Acciones",
+      sortable: false,
+      width: 150,
+      renderCell: (v: any) => {
+        return (
+          <Box>
+            {eliminar ? (<Tooltip title="Eliminar Video">
+              <IconButton onClick={() => handleBorrarRegistro(v.row.id)}>
+                <DeleteForeverIcon />
+              </IconButton>
+            </Tooltip>):("")}
+            
+          </Box>
         );
       },
     },
