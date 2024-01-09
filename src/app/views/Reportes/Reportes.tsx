@@ -92,6 +92,8 @@ export const Reportes = () => {
         case "Municipios":
           return (Municipios);
           break;
+          default:
+            return("")
       }
 
   }
@@ -121,13 +123,13 @@ export const Reportes = () => {
 
       };
 
-      let data = {
-        CHID: Reporte?.id,
-        TIPO: TIPO,
-        PARAMETROS: params,
-        P_ANIO: anio,
-        REPORTE: NombreReporte,
-      };
+      // let data = {
+      //   CHID: Reporte?.id,
+      //   TIPO: TIPO,
+      //   PARAMETROS: params,
+      //   P_ANIO: anio,
+      //   REPORTE: NombreReporte,
+      // };
 
       try {
         console.log("NombreReporte", NombreReporte);
@@ -269,6 +271,8 @@ export const Reportes = () => {
           res.RESPONSE.find((item: IReportes) => item.id === idTipoReporte) ||
           "";
         setNombreReporte(auxResponse.Reporte);
+        console.log("aux",auxResponse);
+        
         setAuxiliarReporte(auxResponse.Nombre);
       });
     }
@@ -319,9 +323,34 @@ export const Reportes = () => {
 
   },[idTipoReporte,ResumenR])
 
-  const deshabilitar: boolean = (anio === "" || TIPO === "" || idTipoReporte === "" || ResumenR === "") || (ResumenR === "Organismos Descentralizados"? (false):(ResumenR === "Gobierno Central" ? (EntidadFiscalizada === "") :  (Municipios === ""))   ) 
+  const disableGenerator=()=>{
 
 
+    let obj=ListTipoReporte.find((item)=>item.value===idTipoReporte)
+     
+
+    switch(obj?.label){
+     case "Resumen de Resultados":
+      console.log("ResumenR",ResumenR);
+      console.log("ObtenerFiltro()",ObtenerFiltro());
+      console.log("todo",(ResumenR === "Gobierno Central"|| ResumenR === "Municipios") && ObtenerFiltro()!=="");
+
+         return ((ResumenR === "Gobierno Central"|| ResumenR === "Municipios") && ObtenerFiltro()==="") || ResumenR === ''
+     default: return false
+     }
+
+
+}
+ 
+
+
+const [deshabilitar,setDeshabilitar]=useState<boolean>(true);
+  //const deshabilitar: boolean = ((anio === "" || TIPO === "" || (idTipoReporte === "") || (ResumenR === "" )) || (!idTipoReporte) || (ResumenR === "Organismos Descentralizados"? (false):(ResumenR === "Gobierno Central" ? (EntidadFiscalizada === "") :  (Municipios === "")) ) ) || (idTipoReporte === "Gobierno" ? true : idTipoReporte === "Desarrollo Social")
+  //(ResumenR=== "Gobierno"?(false):(ResumenR)=== "Desarrollo Social")||
+
+useEffect (()=>{console.log(idTipoReporte);
+  setDeshabilitar (anio === "" || TIPO === "" || idTipoReporte === ""  || disableGenerator())
+},[idTipoReporte,TIPO,anio,ResumenR,EntidadFiscalizada,Municipios])
   return (
     <Grid container spacing={1} padding={0}>
       <Grid

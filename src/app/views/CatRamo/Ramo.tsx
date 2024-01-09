@@ -65,6 +65,16 @@ export const Ramo = () => {
       headerName: "Identificador",
       width: 150,
     },
+    
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "modi", headerName: "Creado Por", width: 200 },
+    { field: "creado", headerName: "Modificado Por", width: 200 },
+    { field: "Descripcion", headerName: "Descripción", width: 350 },
     {
       field: "acciones",
       disableExport: true,
@@ -98,15 +108,6 @@ export const Ramo = () => {
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "modi", headerName: "Creado Por", width: 200 },
-    { field: "creado", headerName: "Modificado Por", width: 200 },
-    { field: "Descripcion", headerName: "Descripción", width: 350 },
   ];
 
   const handleClose = () => {

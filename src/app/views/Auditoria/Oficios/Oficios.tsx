@@ -89,6 +89,23 @@ export const Oficios = ({
       headerName: "Identificador",
       width: 150,
     },
+    
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
+    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
+    {
+      field: "Oficio",
+      description: "Oficio",
+      headerName: "Oficio",
+      width: 150,
+    },
+    { field: "FechaRecibido", description: "Fecha Recibido", headerName: "Fecha Recibido ", width: 150 },
+    { field: "FechaVencimiento", description: "Fecha Vencimiento", headerName: "Fecha Vencimiento", width: 150 },
     {
       field: "acciones",
       disableExport: true,
@@ -121,22 +138,6 @@ export const Oficios = ({
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 200 },
-    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 200 },
-    {
-      field: "Oficio",
-      description: "Oficio",
-      headerName: "Oficio",
-      width: 200,
-    },
-    { field: "FechaRecibido", description: "Fecha Recibido", headerName: "Fecha Recibido ", width: 180 },
-    { field: "FechaVencimiento", description: "Fecha Vencimiento", headerName: "Fecha Vencimiento", width: 180 },
   ];
 
   const handleOpen = (v: any) => {
