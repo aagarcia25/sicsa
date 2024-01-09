@@ -1,21 +1,26 @@
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import ClearIcon from "@mui/icons-material/Clear";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import InsertPageBreakIcon from "@mui/icons-material/InsertPageBreak";
+import { IconButton, ToggleButton, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { AuditoriaService } from "../../services/AuditoriaService";
 import { getPermisos, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
-import ButtonsEdit from "../componentes/ButtonsEdit";
-import TitleComponent from "../componentes/TitleComponent";
-import { AuditoriaService } from "../../services/AuditoriaService";
-import { ControlOficiosModal } from "./ControlOficiosModal";
-import ButtonsShare from "../componentes/ButtonsShare";
-import ClearIcon from "@mui/icons-material/Clear";
-import InsertPageBreakIcon from "@mui/icons-material/InsertPageBreak";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
+import ButtonsEdit from "../componentes/ButtonsEdit";
+import { TooltipPersonalizado } from "../componentes/CustomizedTooltips";
+import TitleComponent from "../componentes/TitleComponent";
+import { ControlOficiosModal } from "./ControlOficiosModal";
+import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
 export const ControlOficios = () => {
+  const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [openSlider, setOpenSlider] = useState(true);
   const [open, setOpen] = useState(false);
   const [tipoOperacion, setTipoOperacion] = useState(0);
@@ -63,6 +68,70 @@ export const ControlOficios = () => {
 
   const CancelarFolio = () => {};
   const generarBS = () => {};
+
+  const ProcesaSPeis = (event: React.ChangeEvent<HTMLInputElement>) => {
+    /*  setOpenSlider(true);
+    let count = 0;
+    let encontrados: any[] = [];
+    let counfiles = event?.target?.files?.length;
+    let peticiones: any[] = [];
+
+    //Recorremos los registros de la busqueda
+    for (let i = 0; i < Number(counfiles); i++) {
+      let file = event?.target?.files?.[i] || "";
+      let namefile = event?.target?.files?.[i].name || "";
+      encontrados.push({ Archivo: file, NOMBRE: namefile });
+    }
+
+    encontrados.map((item: any) => {
+      const formData = new FormData();
+      formData.append("TIPO", String(tipo));
+      formData.append("NUMOPERACION", "1");
+      formData.append("ID", obj.id);
+      formData.append("CHUSER", user.Id);
+      formData.append("TOKEN", JSON.parse(String(getToken())));
+      formData.append("FILE", item.Archivo, item.NOMBRE);
+      let p = axios.post(
+        process.env.REACT_APP_APPLICATION_BASE_URL + "Filesindex",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "X-Requested-With": "XMLHttpRequest",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+      peticiones.push(p);
+    });
+
+    axios.all(peticiones).then((resposeArr) => {
+      resposeArr.map((item) => {
+        if (item.data.SUCCESS) {
+          count++;
+        } else {
+          count--;
+        }
+      });
+
+      if (count == 0 || count == -1) {
+        Swal.fire("¡Error!", "No se Realizo la Operación", "error");
+        setOpenSlider(false);
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Información",
+          text: "Archivos Subidos " + count,
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setOpenSlider(false);
+            consulta();
+          }
+        });
+      }
+    });*/
+  };
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -95,6 +164,13 @@ export const ControlOficios = () => {
       renderCell: (v) => {
         return (
           <>
+            <ButtonsDetail
+              title={"Documentos del Oficio"}
+              handleFunction={handleVer}
+              show={true}
+              icon={<AttachmentIcon />}
+              row={v}
+            ></ButtonsDetail>
             {editar ? (
               <ButtonsEdit
                 handleAccion={handleEdit}
@@ -136,8 +212,14 @@ export const ControlOficios = () => {
   ];
 
   const handleClose = () => {
+    setOpenAdjuntos(false);
     setOpen(false);
     consulta({ NUMOPERACION: 4 });
+  };
+
+  const handleVer = (v: any) => {
+    setVrows(v);
+    setOpenAdjuntos(true);
   };
 
   const handleOpen = (v: any) => {
@@ -195,7 +277,45 @@ export const ControlOficios = () => {
 
       <TitleComponent title={"Control de Oficios"} show={openSlider} />
       {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+      {agregar ? (
+        <TooltipPersonalizado
+          title={
+            <React.Fragment>
+              <Typography color="inherit">Cargar Documentos</Typography>
+              {"Permite la carga de Documentos de Forma Masiva "}
+            </React.Fragment>
+          }
+        >
+          <ToggleButton value="check">
+            <IconButton
+              color="primary"
+              aria-label="upload documento"
+              component="label"
+              size="small"
+            >
+              <input
+                multiple
+                hidden
+                accept=".*"
+                type="file"
+                value=""
+                onChange={(v) => ProcesaSPeis(v)}
+              />
+              <FileUploadIcon />
+            </IconButton>
+          </ToggleButton>
+        </TooltipPersonalizado>
+      ) : (
+        ""
+      )}
+
       <MUIXDataGrid columns={columns} rows={bancos} />
+
+      {openAdjuntos ? (
+        <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };
