@@ -121,6 +121,43 @@ const Notif = ({
       headerName: "Identificador",
       width: 150,
     },
+    
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 150,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 150,
+    },
+    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
+    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
+    {
+      field: "Oficio",
+      description: "Oficio",
+      headerName: "Oficio",
+      width: 150,
+    },
+    {
+      field: "SIGAOficio",
+      description: "Folio SIGA",
+      headerName: "Folio SIGA",
+      width: 150,
+    },
+    { field: "FOficio", description: "Fecha de Oficio", headerName: "Fecha de Oficio", width: 150 },
+    { field: "FRecibido", description: "Fecha de Recibido", headerName: "Fecha de Recibido", width: 150 },
+    { field: "FVencimiento", description: "Fecha de Vencimiento", headerName: "Fecha de Vencimiento", width: 150 },
+    { field: "Prorroga", description: "Fecha de Prorroga", headerName: "Fecha de Prorroga", width: 150 },
     {
       field: "acciones",
       disableExport: true,
@@ -160,42 +197,6 @@ const Notif = ({
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    {
-      field: "creado",
-      description: "Creado Por",
-      headerName: "Creado Por",
-      width: 200,
-    },
-    {
-      field: "modi",
-      description: "Modificado Por",
-      headerName: "Modificado Por",
-      width: 200,
-    },
-    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
-    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
-    {
-      field: "Oficio",
-      description: "Oficio",
-      headerName: "Oficio",
-      width: 200,
-    },
-    {
-      field: "SIGAOficio",
-      description: "Folio SIGA",
-      headerName: "Folio SIGA",
-      width: 200,
-    },
-    { field: "FOficio", description: "Fecha de Oficio", headerName: "Fecha de Oficio", width: 200 },
-    { field: "FRecibido", description: "Fecha de Recibido", headerName: "Fecha de Recibido", width: 200 },
-    { field: "FVencimiento", description: "Fecha de Vencimiento", headerName: "Fecha de Vencimiento", width: 200 },
-    { field: "Prorroga", description: "Fecha de Prorroga", headerName: "Fecha de Prorroga", width: 200 },
   ];
 
   useEffect(() => {

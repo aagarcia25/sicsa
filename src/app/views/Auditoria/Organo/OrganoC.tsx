@@ -117,6 +117,41 @@ const OrganoC = ({
       headerName: "Identificador",
       width: 150,
     },
+    
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 150,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 150,
+    },
+    { field: "descripcionsec", headerName: "Organo", width: 200 },
+    {
+      field: "Oficio",
+      description: "Oficio",
+      headerName: "Oficio",
+      width: 150,
+    },
+    {
+      field: "SIGAOficio",
+      description: "Folio SIGA",
+      headerName: "Folio SIGA",
+      width: 150,
+    },
+    { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
+    { field: "FRecibido", headerName: "Fecha de Recibido", width: 150 },
+    { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 150 },
     {
       field: "acciones",
       disableExport: true,
@@ -156,40 +191,6 @@ const OrganoC = ({
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    {
-      field: "creado",
-      description: "Creado Por",
-      headerName: "Creado Por",
-      width: 200,
-    },
-    {
-      field: "modi",
-      description: "Modificado Por",
-      headerName: "Modificado Por",
-      width: 200,
-    },
-    { field: "descripcionsec", headerName: "Organo", width: 300 },
-    {
-      field: "Oficio",
-      description: "Oficio",
-      headerName: "Oficio",
-      width: 200,
-    },
-    {
-      field: "SIGAOficio",
-      description: "Folio SIGA",
-      headerName: "Folio SIGA",
-      width: 200,
-    },
-    { field: "FOficio", headerName: "Fecha de Oficio", width: 200 },
-    { field: "FRecibido", headerName: "Fecha de Recibido", width: 200 },
-    { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 200 },
   ];
 
   useEffect(() => {
