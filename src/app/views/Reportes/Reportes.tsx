@@ -150,7 +150,7 @@ export const Reportes = () => {
               .substring(2, 8);
             const extension = TIPO;
             const nuevoNombreArchivo =
-            AuxiliarReporte==="REP_04.jrxml"
+            AuxiliarReporte==="Resumen de Resultados"
              ? AuxiliarReporte + ' ('+ ResumenR + ') '+ `${identificadorAleatorio}.${extension}`
             
               :AuxiliarReporte + `${identificadorAleatorio}.${extension}`;
