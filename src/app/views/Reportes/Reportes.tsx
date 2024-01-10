@@ -150,8 +150,13 @@ export const Reportes = () => {
               .substring(2, 8);
             const extension = TIPO;
             const nuevoNombreArchivo =
-              AuxiliarReporte + ' ('+ ResumenR + ') '+ `${identificadorAleatorio}.${extension}`;
+            AuxiliarReporte==="REP_04.jrxml"
+             ? AuxiliarReporte + ' ('+ ResumenR + ') '+ `${identificadorAleatorio}.${extension}`
+            
+              :AuxiliarReporte + `${identificadorAleatorio}.${extension}`;
             console.log("nuevoNombreArchivo", nuevoNombreArchivo);
+            
+              
 
             // Llamar a la función para descargar el archivo PDF
             downloadPdfFromBase64(archivo, nuevoNombreArchivo);
