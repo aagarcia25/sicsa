@@ -100,7 +100,7 @@ export const OrganoR = ({
   const handleOpen = () => {
     setOpenModal(true);
     setTipoOperacion(1);
-    setVrows(obj.row);
+    setVrows({});
   };
 
   const columns: GridColDef[] = [

@@ -29,6 +29,8 @@ import InsightsIcon from "@mui/icons-material/Insights";
 import Trazabilidad from "./Trazabilidad";
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import VisorDocumentosSub from "./VisorDocumentosSub";
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+
 const VisorDocumentos = ({
   handleFunction,
   obj,
@@ -57,6 +59,9 @@ const VisorDocumentos = ({
   const [adjuntar, setAdjuntar] = useState<boolean>(false);
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
+  const [habilitarVerificacion, setHabilitarVerificacion] = useState<boolean>(false);
+
+  
 
   const consulta = () => {
     let data = {
@@ -121,7 +126,7 @@ const VisorDocumentos = ({
         if (item.data.SUCCESS) {
           count++;
         } else {
-          count--;
+          count--; 
         }
       });
 
@@ -184,6 +189,43 @@ const VisorDocumentos = ({
       }
     });
   };
+
+  const handleHabilitarVerificacion = (v: any) => {
+    Swal.fire({
+      icon: "info",
+      title: "¿Desea habilitar la verificación de este documento?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          NUMOPERACION: 8,
+          CHID: v.id,
+          CHUSER: user.Id,
+        };
+        setOpenSlider(true);
+        AuditoriaService.Filesindex(data).then((res) => {
+          if (res.SUCCESS) {
+            Toast.fire({
+              icon: "success",
+              title: "¡Verificación Habilitada!",
+            });
+            consulta();
+            setOpenSlider(false);
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            setOpenSlider(false);
+          }
+        });
+      } else if (result.isDenied) {
+        Swal.fire("No se realizaron cambios", "", "info");
+        setOpenSlider(false);
+      }
+    });
+  };
+
   const handleDescargarFile = (v: any) => {
     setOpenSlider(true);
     let data = {
@@ -335,6 +377,8 @@ const VisorDocumentos = ({
       sortable: false,
       width: 210,
       renderCell: (v) => {
+        console.log("v",v.row);
+        
         return (
           <>
             {eliminarDocumentos ? (
@@ -388,6 +432,23 @@ const VisorDocumentos = ({
               ""
             )}
 
+            {habilitarVerificacion ? (
+              String(v.row.estatus) === "Verificado"?(
+              <ButtonsDetail
+              title={"Habilitar verificación"}
+              handleFunction={handleHabilitarVerificacion}
+              show={true}
+              icon={<PublishedWithChangesIcon />}
+              row={v}
+            ></ButtonsDetail>
+            ):("")
+            ):("")
+
+            }
+            
+            
+
+
             <ButtonsDetail
               title={"Ver Trazabilidad"}
               handleFunction={handletrazabilidad}
@@ -427,9 +488,15 @@ const VisorDocumentos = ({
         if (String(item.ControlInterno) === "VERIFICARDOC") {
           setVerificar(true);
         }
+        if (String(item.ControlInterno) === "HABILVERIF") {
+          setHabilitarVerificacion(true);
+        }
       }
     });
     consulta();
+    console.log("data",obj);
+    
+   
   }, []);
 
   return (
@@ -439,6 +506,9 @@ const VisorDocumentos = ({
 
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h4">{obj.row.Oficio}</Typography>
+          <Typography variant="h4">{obj.row.NAUDITORIA}</Typography>
+
+
         </Box>
 
         {true ? (

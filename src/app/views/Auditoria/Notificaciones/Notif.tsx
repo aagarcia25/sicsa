@@ -17,6 +17,7 @@ import ModalForm from "../../componentes/ModalForm";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
 import { Contestacion } from "./Contestacion";
 import { NotifModal } from "./NotifModal";
+import { Typography } from "@mui/material";
 const Notif = ({
   handleFunction,
   obj,
@@ -112,7 +113,7 @@ const Notif = ({
   const handleOpen = () => {
     setOpenModal(true);
     setTipoOperacion(1);
-    setVrows(obj.row);
+    setVrows({});
   };
 
   const columns: GridColDef[] = [
@@ -140,14 +141,16 @@ const Notif = ({
       headerName: "Modificado Por",
       width: 150,
     },
-    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
-    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
     {
       field: "Oficio",
       description: "Oficio",
       headerName: "Oficio",
       width: 150,
     },
+    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
+
+    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
+    
     {
       field: "SIGAOficio",
       description: "Folio SIGA",
@@ -198,8 +201,10 @@ const Notif = ({
       },
     },
   ];
+  
 
   useEffect(() => {
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -220,6 +225,9 @@ const Notif = ({
     <div>
       <ModalForm title={"Notificaciones de Áreas"} handleClose={handleFunction}>
         <Progress open={show}></Progress>
+        <Typography variant="h6">
+          {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
+        </Typography>
         {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
         
         <MUIXDataGrid columns={columns} rows={data} />

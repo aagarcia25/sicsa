@@ -30,7 +30,7 @@ export const OficiosModal = ({
   const [oficio, setOficio] = useState("");
 
   const handleSend = () => {
-    if (!oficio || !finicio || !ffin) {
+    if (!oficio ) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {
@@ -96,6 +96,7 @@ export const OficiosModal = ({
       setOficio(dt?.data?.row?.Oficio);
       setFinicio(dayjs(dt?.data?.row?.FechaRecibido));
       setFfin(dayjs(dt?.data?.row?.FechaVencimiento));
+      
     }
   }, [dt]);
 
@@ -193,7 +194,7 @@ export const OficiosModal = ({
           >
             <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{display:"flex"}}>
               <Button
-                disabled={oficio === "" || finicio === null || ffin === null}
+                disabled={oficio === "" }
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >

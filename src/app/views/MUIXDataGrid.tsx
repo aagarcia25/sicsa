@@ -31,7 +31,7 @@ export default function MUIXDataGrid(props: any) {
     });
 
   return (
-    <div style={{ height: 600, width: "100%" }}>
+    <div style={{ height: "auto", flex: 1 }}>
       <ThemeProvider theme={theme}>
         <DataGrid
           {...props.rows}
