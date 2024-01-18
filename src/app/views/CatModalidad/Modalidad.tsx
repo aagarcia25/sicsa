@@ -159,7 +159,7 @@ export const Modalidad = () => {
   }, []);
 
   return (
-    <div style={{ height: 600, width: "100%", padding: "1%" }}>
+    <div style={{  width: "100%", padding: "1%" }}>
       {open ? (
         <ModalidadModal
           open={open}

@@ -17,6 +17,7 @@ import { getPermisos, getUser } from "../../../services/localStorage";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
 import { ContestacionModal } from "./ContestacionModal";
+import { Typography } from "@mui/material";
 
 export const Contestacion = ({
   handleFunction,
@@ -101,7 +102,7 @@ export const Contestacion = ({
     setOpenModalDetalle(true);
   };
 
-  const handleClose = () => {
+  const handleClose = () => {                                                                                                                                        
     setOpen(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
@@ -117,7 +118,8 @@ export const Contestacion = ({
   const handleOpen = () => {
     setOpenModal(true);
     setTipoOperacion(1);
-    setVrows(obj.row);
+    setVrows({});
+    
   };
 
   const columns: GridColDef[] = [
@@ -135,9 +137,9 @@ export const Contestacion = ({
     },
     { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
     { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
-    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
-    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
     { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 150 },
+    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
+    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
     { field: "SIGAOficio", description: "Folio SIGA", headerName: "Folio SIGA", width: 150 },
     { field: "FOficio", description: "Fecha de Oficio", headerName: "Fecha de Oficio", width: 150 },
     { field: "FRecibido", description: "Fecha de Recibido", headerName: "Fecha de Recibido", width: 150 },
@@ -192,6 +194,8 @@ export const Contestacion = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
+    console.log("obj",obj.row);
+    
   }, []);
 
   return (
@@ -201,6 +205,9 @@ export const Contestacion = ({
         handleClose={handleFunction}
       >
         <Progress open={openSlider}></Progress>
+        <Typography variant="h6">
+          {obj.row.Oficio +" "+obj.row.unidad}
+        </Typography>
         {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
         
         <MUIXDataGrid columns={columns} rows={data} />

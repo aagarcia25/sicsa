@@ -109,6 +109,8 @@ export const ContestacionModal = ({
   };
 
   const handleFilterChangefv = (v: any) => {
+    console.log("entre ls fincion");
+
     setFVencimiento(v);
   };
 
@@ -136,22 +138,30 @@ export const ContestacionModal = ({
   useEffect(() => {
     loadFilter(11);
     loadFilter(19);
-    //loadFilter(20);
 
-    if (dt === "") {
+    if (Object.keys(dt).length === 0) {
     } else {
       setId(dt?.row?.id);
-      setProrroga(dayjs(dt?.row?.Prorroga));
-      setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
-      setFechaOficio(dayjs(dt?.row?.FOficio));
-      setFRecibido(dayjs(dt?.row?.FRecibido));
-      setFVencimiento(dayjs(dt?.row?.FVencimiento));
-      // setidsecretaria(dt?.row?.secid);
+      setOficio(dt?.row?.Oficio);
       handleFilterChange1(dt?.row?.secid);
       setidunidad(dt?.row?.uniid);
+      if (FRecibido !== null) {
+        setFRecibido(dayjs(dt?.row?.FRecibido));
+      }
+      if (FVencimiento !== null) {
+        setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      }
+      if (FOficio !== null) {
+              setFechaOficio(dayjs(dt?.row?.FOficio));
+      }
+      if (Prorroga !== null) {
+        setProrroga(dayjs(dt?.row?.Prorroga));
+      }
+
     }
   }, [dt]);
+ 
 
   return (
     <>
@@ -285,7 +295,7 @@ export const ContestacionModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
-            <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{display: "flex"}}>
+            <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{ display: "flex" }}>
               <Button
                 // disabled={descripcion === "" || nombre === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
@@ -294,7 +304,7 @@ export const ContestacionModal = ({
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
             </Grid>
-            <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{display: "flex"}}>
+            <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{ display: "flex" }}>
               <Button
                 // disabled={descripcion === "" || nombre === ""}
                 className={"actualizar"}

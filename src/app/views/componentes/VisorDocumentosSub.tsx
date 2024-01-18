@@ -331,6 +331,8 @@ const VisorDocumentosSub = ({
       }
     });
     consulta();
+    console.log("ofuicio",oficio);
+    
   }, []);
 
   return (
