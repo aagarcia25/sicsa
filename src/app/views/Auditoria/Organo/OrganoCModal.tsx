@@ -115,16 +115,25 @@ export const OrganoCModal = ({
   useEffect(() => {
     loadFilter(6);
 
-    if (dt === "") {
+    if (Object.keys(dt).length === 0) {
       //setAPE(dt.coaid);
     } else {
       setId(dt?.row?.id);
       setidorigen(dt?.row?.secid);
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
-      setFechaOficio(dayjs(dt?.row?.FOficio));
-      setFRecibido(dayjs(dt?.row?.FRecibido));
-      setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      //setFechaOficio(dayjs(dt?.row?.FOficio));
+      //setFRecibido(dayjs(dt?.row?.FRecibido));
+      //setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      if (FRecibido !== null) {
+        setFRecibido(dayjs(dt?.row?.FRecibido));
+      }
+      if (FVencimiento !== null) {
+        setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      }
+      if (FOficio !== null) {
+        setFechaOficio(dayjs(dt?.row?.FOficio));
+      }
     }
   }, [dt]);
 

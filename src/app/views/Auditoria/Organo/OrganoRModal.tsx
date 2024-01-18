@@ -124,16 +124,27 @@ export const OrganoRModal = ({
   useEffect(() => {
     loadFilter(6);
 
-    if (dt === "") {
+    if (Object.keys(dt).length === 0) {
     } else {
+      console.log("dt",dt);
+      
       setId(dt?.row?.id);
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
-      setFechaOficio(dayjs(dt?.row?.FOficio));
-      setFRecibido(dayjs(dt?.row?.FRecibido));
-      setFVencimiento(dayjs(dt?.row?.FVencimiento));
-      setidorigen(dt?.row?.uniid);
-      setidDestino(dt?.row?.uniid);
+      //setFechaOficio(dayjs(dt?.row?.FOficio));
+      //setFRecibido(dayjs(dt?.row?.FRecibido));
+      //setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      setidorigen(dt?.row?.origenid);
+      setidDestino(dt?.row?.destinoid);
+      if (FRecibido !== null) {
+        setFRecibido(dayjs(dt?.row?.FRecibido));
+      }
+      if (FVencimiento !== null) {
+        setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      }
+      if (FOficio !== null) {
+        setFechaOficio(dayjs(dt?.row?.FOficio));
+      }
     }
   }, [dt]);
 
