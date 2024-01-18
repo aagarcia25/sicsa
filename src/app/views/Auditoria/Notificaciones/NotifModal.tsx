@@ -111,6 +111,8 @@ export const NotifModal = ({
   };
 
   const handleFilterChangefv = (v: any) => {
+    console.log("entre ls fincion");
+
     setFVencimiento(v);
   };
 
@@ -140,26 +142,36 @@ export const NotifModal = ({
   };
 
   useEffect(() => {
+    console.log("FOficio",FOficio);
+    console.log("FOficio");
+    console.log("dt",dt);
+
     loadFilter(11);
     loadFilter(19);
     loadFilter(6);
 
-    if (dt === "") {
-      //setAPE(dt.coaid);
-    } else {
+    if (Object.keys(dt).length === 0) {
+    } else {      
       setId(dt?.row?.id);
-      setProrroga(dayjs(dt?.row?.Prorroga));
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
-      setFechaOficio(dayjs(dt?.row?.FOficio));
-      setFRecibido(dayjs(dt?.row?.FRecibido));
-      setFVencimiento(dayjs(dt?.row?.FVencimiento));
-      //setidsecretaria(dt?.row?.secid);
       handleFilterChange1(dt?.row?.secid);
       setidunidad(dt?.row?.uniid);
-      //setAPE(dt.coaid)
+      if (FRecibido !== null) {
+        setFRecibido(dayjs(dt?.row?.FRecibido));
+      }
+      if (FVencimiento !== null) {
+        setFVencimiento(dayjs(dt?.row?.FVencimiento));
+      }
+      if (FOficio !== null) {
+              setFechaOficio(dayjs(dt?.row?.FOficio));
+      }
+      if (Prorroga !== null) {
+        setProrroga(dayjs(dt?.row?.Prorroga));
+      }
     }
   }, [dt]);
+  
 
   return (
     <>

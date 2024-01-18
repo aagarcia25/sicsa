@@ -5,12 +5,12 @@ import { Toast } from "../../helpers/Toast";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { CatalogosServices } from "../../services/catalogosServices";
 import { getPermisos, getUser } from "../../services/localStorage";
-import MUIXDataGrid from "../MUIXDataGrid";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import TitleComponent from "../componentes/TitleComponent";
 import { AniosModal } from "./AniosModal";
+import MUIXDataGrid from "../MUIXDataGrid";
 
 export const Anios = () => {
   const [openSlider, setOpenSlider] = useState(true);

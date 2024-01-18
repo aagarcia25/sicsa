@@ -747,6 +747,7 @@ export const Auditoria = () => {
               <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
             </Grid>
           </Collapse>
+          
           {agregar ? (
             <ButtonsAdd
               handleOpen={handleOpen}
