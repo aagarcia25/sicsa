@@ -7,14 +7,13 @@ import ButtonsEdit from "../componentes/ButtonsEdit";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import { GridColDef } from "@mui/x-data-grid";
 import MUIXDataGrid from "../MUIXDataGrid";
-import { PersonalModal } from "./PersonalModal";
 import Swal from "sweetalert2";
 import { CatalogosServices } from "../../services/catalogosServices";
 import { Toast } from "../../helpers/Toast";
-import { TroubleshootRounded } from "@mui/icons-material";
+import { DestinatariosModal } from "./DestinatariosModal";
 
-export const Personal = () => {
-    const [openSlider, setOpenSlider] = useState(true);
+export const DestinatariosOficios = () => {
+    const [openSlider, setOpenSlider] = useState(false);
     const [modo, setModo] = useState("");
     const [open, setOpen] = useState(false);
     const [tipoOperacion, setTipoOperacion] = useState(0);
@@ -44,7 +43,7 @@ export const Personal = () => {
                     CHUSER: user.Id,
                 };
 
-                CatalogosServices.Personal_index(data).then((res) => {
+                CatalogosServices.Destinatarios_index(data).then((res) => {
                     if (res.SUCCESS) {
                         Toast.fire({
                             icon: "success",
@@ -83,7 +82,7 @@ export const Personal = () => {
     };
 
     const consulta = (data: any) => {
-        CatalogosServices.Personal_index(data).then((res) => {
+        CatalogosServices.Destinatarios_index(data).then((res) => {
             if (res.SUCCESS) {
                 // Toast.fire({
                 //   icon: "success",
@@ -113,13 +112,12 @@ export const Personal = () => {
         },
         { field: "creado", headerName: "Creado Por", width: 200 },
         { field: "modi", headerName: "Modificado Por", width: 200 },
-        { field: "Empleado", headerName: "Empleado", width: 300 },
-        { field: "Nombre", headerName: "Nombre", width: 300 },
-        { field: "Puesto", headerName: "Puesto", width: 100, align: "center", headerAlign: "center" },
-        { field: "RFC", headerName: "RFC", width: 100, align: "center", headerAlign: "center" },
-        { field: "CURP", headerName: "CURP", width: 100, align: "center", headerAlign: "center" },
+        { field: "Titular", headerName: "Titular", width: 300 },
+        { field: "Cargo", headerName: "Cargo", width: 300 },
+        { field: "Area", headerName: "Area", width: 100, align: "center", headerAlign: "center" },
         { field: "CorreoElectronico", headerName: "Correo Electrónico", width: 100, align: "center", headerAlign: "center" },
         { field: "Telefono", headerName: "Teléfono", width: 100, align: "center", headerAlign: "center" },
+        { field: "Extension", headerName: "Extension", width: 100, align: "center", headerAlign: "center" },
 
         {
             field: "acciones",
@@ -157,7 +155,7 @@ export const Personal = () => {
 
     useEffect(() => {
         permisos.map((item: PERMISO) => {
-            if (String(item.menu) === "PERSONAL") {
+            if (String(item.menu) === "DOFICIOS") {
                 if (String(item.ControlInterno) === "AGREG") {
                     setAgregar(true);
                 }
@@ -174,9 +172,9 @@ export const Personal = () => {
 
     return (
         <div style={{ height: 600, width: "100%", padding: "1%" }}>
-            <TitleComponent title={"Personal"} show={openSlider} />
+            <TitleComponent title={"Destinatarios de Oficios"} show={openSlider} />
             {open ? (
-                <PersonalModal
+                <DestinatariosModal
                     open={open}
                     tipo={tipoOperacion}
                     handleClose={handleClose}
