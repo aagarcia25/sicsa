@@ -53,6 +53,10 @@ export class CatalogosServices {
     return await post("Ramo_index", data);
   }
 
+  public static async Personal_index(data: any) {
+    return await post("Personal_index", data);
+  }
+
   public static async migraData(data: any) {
     return await postDocument("migraData", data);
   }
