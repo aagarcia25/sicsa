@@ -123,6 +123,9 @@ export const Ramo = () => {
   };
 
   const handleEdit = (v: any) => {
+    console.log(v);
+    
+    
     setTipoOperacion(2);
     setModo("Módificar Registro");
     setOpen(true);

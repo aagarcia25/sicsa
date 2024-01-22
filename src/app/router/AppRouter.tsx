@@ -28,6 +28,7 @@ import { AuthRouter } from "./AuthRouter";
 import { Dash } from "../views/Dashboard/Dash";
 import { Reportes } from "../views/Reportes/Reportes";
 import { ControlOficios } from "../views/ControlOficios/ControlOficios";
+import { Personal } from "../views/Personal/Personal";
 //import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
@@ -37,7 +38,7 @@ export const AppRouter = ({ login }: { login: boolean }) => {
   const [ClearresponseStorage, setClearResponseStorage] =
     useState<RESPONSESTORAGE>();
 
-  const handleCloseModal = () => {};
+  const handleCloseModal = () => { };
   const handleChangeImg = () => {
     //GetImage("/FOTOPERFIL/", user.RutaFoto)
   };
@@ -143,6 +144,11 @@ export const AppRouter = ({ login }: { login: boolean }) => {
           element={log ? <Modalidad /> : <AuthRouter />}
         />
 
+        <Route
+          path="/inicio/catalogos/personal"
+          element={log ? <Personal /> : <AuthRouter />}
+        />
+
         {/* <Route
           path="/inicio/ayuda" element={log ? <ButtonsTutorial route={""} handleCloseMenuVideos={Function} /> : <AuthRouter />}
         /> */}
@@ -163,6 +169,7 @@ export const AppRouter = ({ login }: { login: boolean }) => {
             )
           }
         />
+
 
         <Route
           path="/inicio/admin/reportes"
