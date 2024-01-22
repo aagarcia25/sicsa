@@ -29,6 +29,7 @@ import { Dash } from "../views/Dashboard/Dash";
 import { Reportes } from "../views/Reportes/Reportes";
 import { ControlOficios } from "../views/ControlOficios/ControlOficios";
 import { Personal } from "../views/Personal/Personal";
+import { DestinatariosOficios } from "../views/CatDestinatariosOficio/DestinatariosOficios";
 //import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
@@ -147,6 +148,11 @@ export const AppRouter = ({ login }: { login: boolean }) => {
         <Route
           path="/inicio/catalogos/personal"
           element={log ? <Personal /> : <AuthRouter />}
+        />
+
+        <Route
+          path="/inicio/catalogos/doficios"
+          element={log ? <DestinatariosOficios /> : <AuthRouter />}
         />
 
         {/* <Route
