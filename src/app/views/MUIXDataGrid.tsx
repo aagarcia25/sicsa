@@ -30,8 +30,11 @@ export default function MUIXDataGrid(props: any) {
       idtipo: false,
     });
 
+    const hasData = props.rows.length > 0;
+
+
   return (
-    <div style={{ height: "auto", flex: 1 }}>
+    <div style={{maxHeight: "500px", flex: 1, overflowY: 'auto'  }}>
       <ThemeProvider theme={theme}>
         <DataGrid
           {...props.rows}
@@ -125,6 +128,9 @@ export default function MUIXDataGrid(props: any) {
             filterOperatorIsAnyOf: "Es Cualquiera de",
             filterPanelInputLabel: "Valor",
             filterPanelInputPlaceholder: "Valor Filtrado",
+          }}
+          style={{
+            height: hasData ? 'auto' : 200, // Adjust the height as needed
           }}
         />
       </ThemeProvider>

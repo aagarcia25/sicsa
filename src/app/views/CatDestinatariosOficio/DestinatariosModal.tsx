@@ -81,6 +81,23 @@ export const DestinatariosModal = ({
         });
       };
 
+      const validarNumero = (dato: string, state: any) => {
+        if (/^\d+(\.\d*)?$/.test(dato)) {
+          return dato;
+        } else if (dato.length === 0) {
+          return "";
+        }
+        return state;
+      };
+      const compruebaTelefono = (value: string) => {
+        // Eliminar caracteres no alfanuméricos y convertir a mayúsculas
+        const cleanedValue = value.replace(/[^0-9]/g, '').toUpperCase();
+        // Limitar la longitud a 13 caracteres
+        const truncatedValue = cleanedValue.substring(0, 10);
+        // Actualizar el estado con el valor limpio y truncado
+        setTelefono(truncatedValue);
+      };
+
       useEffect(() => {
         if (dt === "") {
         } else {
@@ -185,7 +202,9 @@ export const DestinatariosModal = ({
                                 fullWidth
                                 variant="standard"
                                 value={Telefono}
-                                onChange={(v) => setTelefono(v.target.value)}
+                                onChange={(v) => {
+                                  (compruebaTelefono(v.target.value));
+                                }}
                             />
 
                         </Grid>
@@ -198,7 +217,9 @@ export const DestinatariosModal = ({
                                 fullWidth
                                 variant="standard"
                                 value={Extension}
-                                onChange={(v) => setExtension(v.target.value)}
+                                onChange={(v) => {
+                                  setExtension(validarNumero(v.target.value, Extension));
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4} lg={3}>
