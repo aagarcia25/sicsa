@@ -2,7 +2,16 @@ import AttachmentIcon from "@mui/icons-material/Attachment";
 import ClearIcon from "@mui/icons-material/Clear";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import InsertPageBreakIcon from "@mui/icons-material/InsertPageBreak";
-import { Button, Collapse, Grid, IconButton, TextField, ToggleButton, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  Collapse,
+  Grid,
+  IconButton,
+  TextField,
+  ToggleButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -27,7 +36,7 @@ import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import SendIcon from "@mui/icons-material/Send";
 import SelectValues from "../../interfaces/Share";
 import { ShareService } from "../../services/ShareService";
-
+import axios from "axios";
 
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
@@ -42,7 +51,6 @@ export const ControlOficios = () => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const [showfilter, setshowfilter] = useState<boolean>(false);
-
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [agregar, setAgregar] = useState<boolean>(true);
@@ -85,12 +93,28 @@ export const ControlOficios = () => {
   const CancelarFolio = () => {};
   const generarBS = () => {};
 
-  const ProcesaSPeis = (event: React.ChangeEvent<HTMLInputElement>) => {
-    /*  setOpenSlider(true);
-    let count = 0;
+  const agregarfolio = (data: any) => {
+    AuditoriaService.Foliosindex(data).then((res) => {
+      if (res.SUCCESS) {
+        Toast.fire({
+          icon: "success",
+          title: "¡Registro Agregado!",
+        });
+        //handleClose();
+      } else {
+        Swal.fire(res.STRMESSAGE, "¡Error!", "info");
+      }
+    });
+  };
+
+  const registrardatos = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOpenSlider(true);
     let encontrados: any[] = [];
     let counfiles = event?.target?.files?.length;
     let peticiones: any[] = [];
+
+    let succesFiles: any[] = [];
+    let failFiles: any[] = [];
 
     //Recorremos los registros de la busqueda
     for (let i = 0; i < Number(counfiles); i++) {
@@ -101,53 +125,63 @@ export const ControlOficios = () => {
 
     encontrados.map((item: any) => {
       const formData = new FormData();
-      formData.append("TIPO", String(tipo));
-      formData.append("NUMOPERACION", "1");
-      formData.append("ID", obj.id);
-      formData.append("CHUSER", user.Id);
-      formData.append("TOKEN", JSON.parse(String(getToken())));
-      formData.append("FILE", item.Archivo, item.NOMBRE);
+      formData.append("file", item.Archivo, item.NOMBRE);
       let p = axios.post(
-        process.env.REACT_APP_APPLICATION_BASE_URL + "Filesindex",
+        "http://10.200.4.105:99/ETL/extraer-informacion",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
             "X-Requested-With": "XMLHttpRequest",
-            "Access-Control-Allow-Origin": "*",
           },
         }
       );
       peticiones.push(p);
     });
 
-    axios.all(peticiones).then((resposeArr) => {
-      resposeArr.map((item) => {
-        if (item.data.SUCCESS) {
-          count++;
-        } else {
-          count--;
-        }
-      });
+    try {
+      axios.all(peticiones).then((resposeArr) => {
+        resposeArr.map((item, index) => {
+          let currentFile = encontrados[index].Archivo;
+          if (item.data.SUCCESS) {
+            succesFiles.push({
+              Archivo: currentFile,
+              Name: currentFile.name,
+              Asunto: item.data.RESPONSE[0].Asunto,
+              fecha: item.data.RESPONSE[0].Fecha,
+              Oficio: item.data.RESPONSE[0].Oficio,
+            });
 
-      if (count == 0 || count == -1) {
-        Swal.fire("¡Error!", "No se Realizo la Operación", "error");
-        setOpenSlider(false);
-      } else {
-        Swal.fire({
-          icon: "success",
-          title: "Información",
-          text: "Archivos Subidos " + count,
-          confirmButtonText: "Ok",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            setOpenSlider(false);
-            consulta();
+            const formData = new FormData();
+            formData.append("NUMOPERACION", "5");
+            formData.append("CHUSER", user.Id);
+            formData.append("Archivo", currentFile, currentFile.name);
+            formData.append("Name", currentFile.name);
+            formData.append("Asunto", item.data.RESPONSE[0].Asunto);
+            formData.append("dia", item.data.RESPONSE[0].Fecha.dia);
+            formData.append("mes", item.data.RESPONSE[0].Fecha.mes);
+            formData.append("anio", item.data.RESPONSE[0].Fecha.anio);
+            formData.append(
+              "Oficio",
+              item.data.RESPONSE[0].Oficio.replace(" ", "").replace("/", "-")
+            );
+            agregarfolio(formData);
+          } else {
+            failFiles.push({
+              Archivo: currentFile.name,
+            });
           }
         });
-      }
-    });*/
+      });
+      console.log(succesFiles);
+      consulta({ NUMOPERACION: 4 });
+      setOpenSlider(false);
+    } catch (error) {
+      setOpenSlider(false);
+      console.error("Error al realizar las peticiones:", error);
+    }
   };
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -163,7 +197,7 @@ export const ControlOficios = () => {
     { field: "cpNombre", headerName: "Solicitante", width: 150 },
 
     { field: "Fecha", headerName: "Fecha", width: 150 },
-    { field: "FechaEntrega",headerName: "Fecha de Entregado", width: 150,},
+    { field: "FechaEntrega", headerName: "Fecha de Entregado", width: 150 },
     { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200 },
     { field: "tipoau", headerName: "Tipo", width: 350 },
     { field: "Observaciones", headerName: "Observaciones", width: 350 },
@@ -260,14 +294,11 @@ export const ControlOficios = () => {
     setanio(v);
   };
   const clearFilter = () => {
-   
     setanio("");
     consulta({ NUMOPERACION: 4 });
-    
   };
 
   const consulta = (data: any) => {
-    
     AuditoriaService.Foliosindex(data).then((res) => {
       if (res.SUCCESS) {
         setBancos(res.RESPONSE);
@@ -286,10 +317,10 @@ export const ControlOficios = () => {
         //  setCatInforme(res.RESPONSE);
       } else if (operacion === 1) {
         setListAnio(res.RESPONSE);
-      } 
+      }
     });
   };
-  
+
   useEffect(() => {
     loadFilter(1);
 
@@ -323,85 +354,86 @@ export const ControlOficios = () => {
 
       <TitleComponent title={"Control de Oficios"} show={openSlider} />
       {/* <Collapse in={showfilter} timeout="auto" unmountOnExit> */}
-            <Grid
-              container
-              item
-              spacing={1}
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ padding: "1%" }}
+      <Grid
+        container
+        item
+        spacing={1}
+        xs={12}
+        sm={12}
+        md={12}
+        lg={12}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ padding: "1%" }}
+      >
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Typography sx={{ fontFamily: "sans-serif" }}>
+            Año Cuenta Pública:
+          </Typography>
+          <SelectFrag
+            value={anio}
+            options={ListAnio}
+            onInputChange={handleFilterChange1}
+            placeholder={"Seleccione.."}
+            disabled={false}
+          />
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={4}
+          lg={3}
+          sx={{ justifyContent: "center", display: "flex" }}
+        >
+          <Tooltip title="Buscar">
+            <Button
+              onClick={() => {
+                consulta({ Anio: anio, NUMOPERACION: 4 });
+              }}
+              variant="contained"
+              color="secondary"
+              endIcon={<SendIcon sx={{ color: "white" }} />}
             >
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                  Año Cuenta Pública:
-                </Typography>
-                <SelectFrag
-                  value={anio}
-                  options={ListAnio}
-                  onInputChange={handleFilterChange1}
-                  placeholder={"Seleccione.."}
-                  disabled={false}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={3} sx={{justifyContent: "center" ,display:"flex"}}>
-              <Tooltip title="Buscar">
-                  <Button
-                    onClick={()=>{consulta({Anio: anio, NUMOPERACION: 4})}}
-                    variant="contained"
-                    color="secondary"
-                    endIcon={<SendIcon sx={{ color: "white" }} />}
-                  >
-                    <Typography sx={{ color: "white" }}> Buscar </Typography>
-                  </Button>
-                </Tooltip>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Tooltip title="Limpiar Filtros">
-                  <Button
-                    onClick={clearFilter}
-                    variant="contained"
-                    color="secondary"
-                    endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
-                  >
-                    <Typography sx={{ color: "white" }}>
-                      Limpiar Filtros
-                    </Typography>
-                  </Button>
-                </Tooltip>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-                
-              </Grid>
-            </Grid>
-           
-            <Grid
-              container
-              item
-              spacing={1}
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              sx={{ padding: "1%" }}
+              <Typography sx={{ color: "white" }}> Buscar </Typography>
+            </Button>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Tooltip title="Limpiar Filtros">
+            <Button
+              onClick={clearFilter}
+              variant="contained"
+              color="secondary"
+              endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
             >
-              <Grid item xs={12} sm={6} md={4} lg={2}>
-                
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={2}>
-                
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
-              <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
-            </Grid>
-          {/* </Collapse> */}
+              <Typography sx={{ color: "white" }}>Limpiar Filtros</Typography>
+            </Button>
+          </Tooltip>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+      </Grid>
+
+      <Grid
+        container
+        item
+        spacing={1}
+        xs={12}
+        sm={12}
+        md={12}
+        lg={12}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ padding: "1%" }}
+      >
+        <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+        <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+        <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+        <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
+      </Grid>
+      {/* </Collapse> */}
       {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
       {agregar ? (
         <TooltipPersonalizado
@@ -422,10 +454,10 @@ export const ControlOficios = () => {
               <input
                 multiple
                 hidden
-                accept=".*"
+                accept=".pdf"
                 type="file"
                 value=""
-                onChange={(v) => ProcesaSPeis(v)}
+                onChange={(v) => registrardatos(v)}
               />
               <FileUploadIcon />
             </IconButton>
@@ -434,8 +466,6 @@ export const ControlOficios = () => {
       ) : (
         ""
       )}
-
-
 
       <MUIXDataGrid columns={columns} rows={bancos} />
 

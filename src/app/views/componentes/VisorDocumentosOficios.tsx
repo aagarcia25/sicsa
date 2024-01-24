@@ -88,6 +88,7 @@ const VisorDocumentosOficios = ({
       const formData = new FormData();
       formData.append("NUMOPERACION", "1");
       formData.append("ID", obj.id);
+      formData.append("FOLIO", obj.row.Oficio);
       formData.append("CHUSER", user.Id);
       formData.append("TOKEN", JSON.parse(String(getToken())));
       formData.append("FILE", item.Archivo, item.NOMBRE);
@@ -306,6 +307,7 @@ const VisorDocumentosOficios = ({
   };
 
   useEffect(() => {
+    console.log(obj);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -336,9 +338,9 @@ const VisorDocumentosOficios = ({
       <ModalForm title={"Documentos del Oficio"} handleClose={handleFunction}>
         <Progress open={openSlider}></Progress>
 
-        {/* <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h4">{oficio}</Typography>
-        </Box> */}
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Typography variant="h4">{obj.row.Oficio}</Typography>
+        </Box>
 
         {true ? (
           <>
@@ -385,9 +387,7 @@ const VisorDocumentosOficios = ({
         <ModalForm title={"Visualización"} handleClose={handleCloseModal}>
           <DialogContent dividers={true}>
             <Grid container spacing={1}>
-              <Grid item xs={12}>
-                {/* <h3>Nombre de archivo: {name}</h3> */}
-              </Grid>
+              <Grid item xs={12}></Grid>
               <Grid item container justifyContent="center" xs={12}>
                 <div className="ContainerVisualizacionSPEI">
                   <iframe width="100%" height="100%" src={URLruta} />
