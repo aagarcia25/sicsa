@@ -2,7 +2,7 @@ import AttachmentIcon from "@mui/icons-material/Attachment";
 import ClearIcon from "@mui/icons-material/Clear";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import InsertPageBreakIcon from "@mui/icons-material/InsertPageBreak";
-import { IconButton, ToggleButton, Typography } from "@mui/material";
+import { Button, Collapse, Grid, IconButton, TextField, ToggleButton, Tooltip, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -19,6 +19,16 @@ import { TooltipPersonalizado } from "../componentes/CustomizedTooltips";
 import TitleComponent from "../componentes/TitleComponent";
 import { ControlOficiosModal } from "./ControlOficiosModal";
 import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
+import ButtonsShare from "../componentes/ButtonsShare";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import SelectFrag from "../componentes/SelectFrag";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+import SendIcon from "@mui/icons-material/Send";
+import SelectValues from "../../interfaces/Share";
+import { ShareService } from "../../services/ShareService";
+
+
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [openSlider, setOpenSlider] = useState(true);
@@ -26,7 +36,13 @@ export const ControlOficios = () => {
   const [tipoOperacion, setTipoOperacion] = useState(0);
   const [vrows, setVrows] = useState({});
   const [bancos, setBancos] = useState([]);
+  const [anio, setanio] = useState("");
+  const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
+
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
+
+  const [showfilter, setshowfilter] = useState<boolean>(false);
+
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [agregar, setAgregar] = useState<boolean>(true);
@@ -138,18 +154,17 @@ export const ControlOficios = () => {
       headerName: "Identificador",
       width: 150,
     },
-    { field: "Fecha", headerName: "Fecha", width: 150 },
     { field: "Oficio", headerName: "Oficio", width: 150 },
-    { field: "Nauditoria", headerName: "N° de Auditoría", width: 100 },
-    { field: "Solicita", headerName: "Solicitante", width: 150 },
-    {
-      field: "FechaEntrega",
-      headerName: "Fecha de Entregado",
-      width: 150,
-    },
-    { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200 },
+    { field: "dfTitular", headerName: "Destinatario", width: 150 },
+    { field: "dfCargo", headerName: "Cargo", width: 150 },
     { field: "Asunto", headerName: "Asunto", width: 200 },
     { field: "Tema", headerName: "Tema", width: 350 },
+    { field: "Nauditoria", headerName: "N° de Auditoría", width: 100 },
+    { field: "cpNombre", headerName: "Solicitante", width: 150 },
+
+    { field: "Fecha", headerName: "Fecha", width: 150 },
+    { field: "FechaEntrega",headerName: "Fecha de Entregado", width: 150,},
+    { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200 },
     { field: "tipoau", headerName: "Tipo", width: 350 },
     { field: "Observaciones", headerName: "Observaciones", width: 350 },
     {
@@ -234,7 +249,25 @@ export const ControlOficios = () => {
     setVrows(v);
   };
 
+  // const verfiltros = () => {
+  //   if (showfilter) {
+  //     setshowfilter(false);
+  //   } else {
+  //     setshowfilter(true);
+  //   }
+  // };
+  const handleFilterChange1 = (v: string) => {
+    setanio(v);
+  };
+  const clearFilter = () => {
+   
+    setanio("");
+    consulta({ NUMOPERACION: 4 });
+    
+  };
+
   const consulta = (data: any) => {
+    
     AuditoriaService.Foliosindex(data).then((res) => {
       if (res.SUCCESS) {
         setBancos(res.RESPONSE);
@@ -246,7 +279,20 @@ export const ControlOficios = () => {
     });
   };
 
+  const loadFilter = (operacion: number, id?: string) => {
+    let data = { NUMOPERACION: operacion, P_ID: id };
+    ShareService.SelectIndex(data).then((res) => {
+      if (operacion === 5) {
+        //  setCatInforme(res.RESPONSE);
+      } else if (operacion === 1) {
+        setListAnio(res.RESPONSE);
+      } 
+    });
+  };
+  
   useEffect(() => {
+    loadFilter(1);
+
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "CFOLIOS") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -276,6 +322,86 @@ export const ControlOficios = () => {
       )}
 
       <TitleComponent title={"Control de Oficios"} show={openSlider} />
+      {/* <Collapse in={showfilter} timeout="auto" unmountOnExit> */}
+            <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "1%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Año Cuenta Pública:
+                </Typography>
+                <SelectFrag
+                  value={anio}
+                  options={ListAnio}
+                  onInputChange={handleFilterChange1}
+                  placeholder={"Seleccione.."}
+                  disabled={false}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3} sx={{justifyContent: "center" ,display:"flex"}}>
+              <Tooltip title="Buscar">
+                  <Button
+                    onClick={()=>{consulta({Anio: anio, NUMOPERACION: 4})}}
+                    variant="contained"
+                    color="secondary"
+                    endIcon={<SendIcon sx={{ color: "white" }} />}
+                  >
+                    <Typography sx={{ color: "white" }}> Buscar </Typography>
+                  </Button>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Tooltip title="Limpiar Filtros">
+                  <Button
+                    onClick={clearFilter}
+                    variant="contained"
+                    color="secondary"
+                    endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
+                  >
+                    <Typography sx={{ color: "white" }}>
+                      Limpiar Filtros
+                    </Typography>
+                  </Button>
+                </Tooltip>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                
+              </Grid>
+            </Grid>
+           
+            <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "1%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={2}>
+                
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={2}>
+                
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
+            </Grid>
+          {/* </Collapse> */}
       {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
       {agregar ? (
         <TooltipPersonalizado
@@ -286,9 +412,9 @@ export const ControlOficios = () => {
             </React.Fragment>
           }
         >
-          <ToggleButton value="check">
+          <ToggleButton value="check" className="guardar" size="small">
             <IconButton
-              color="primary"
+              color="inherit"
               aria-label="upload documento"
               component="label"
               size="small"
@@ -308,6 +434,8 @@ export const ControlOficios = () => {
       ) : (
         ""
       )}
+
+
 
       <MUIXDataGrid columns={columns} rows={bancos} />
 

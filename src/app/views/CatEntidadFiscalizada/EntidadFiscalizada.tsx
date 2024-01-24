@@ -181,8 +181,10 @@ export const EntidadFiscalizada = () => {
 
       <TitleComponent title={"Entidad Fiscalizada"} show={openSlider} />
       {agregar ? (
-        <ButtonsAdd handleOpen={handleOpen}
-          agregar={agregar} />
+        <ButtonsAdd 
+          handleOpen={handleOpen}
+          agregar={agregar} 
+        />
       ) : (""
       )}
 
