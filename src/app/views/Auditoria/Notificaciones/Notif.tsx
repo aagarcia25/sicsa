@@ -249,7 +249,7 @@ const Notif = ({
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={2} />
+        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={2} cat="Notificacion"/>
       ) : (
         ""
       )}
