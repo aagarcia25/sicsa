@@ -35,10 +35,12 @@ const VisorDocumentos = ({
   handleFunction,
   obj,
   tipo,
+  cat,
 }: {
   handleFunction: Function;
   obj: any;
   tipo: number;
+  cat?:string;
 }) => {
   const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
@@ -68,6 +70,7 @@ const VisorDocumentos = ({
       NUMOPERACION: 4,
       P_IDAUDITORIA: obj.id,
       TOKEN: JSON.parse(String(getToken())),
+      CAT:cat,
     };
 
     AuditoriaService.Filesindex(data).then((res) => {

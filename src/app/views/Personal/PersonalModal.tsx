@@ -172,7 +172,7 @@ export const PersonalModal = ({
                             <TextField
                                 margin="dense"
                                 id="Nombre"
-                                label="Nombre"
+                                label="Nombre Completo"
                                 type="text"
                                 fullWidth
                                 variant="standard"
