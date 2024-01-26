@@ -216,7 +216,7 @@ export const Oficios = ({
         <MUIXDataGrid columns={columns} rows={data} />
       </ModalForm>
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={4} />
+        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={4} cat="Folios"/>
       ) : (
         ""
       )}

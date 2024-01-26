@@ -238,7 +238,7 @@ const OrganoC = ({
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={6} />
+        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={6} cat="OrganoC" />
       ) : (
         ""
       )}
