@@ -225,7 +225,7 @@ export const Contestacion = ({
       )}
 
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={3} cat="Contestacion"/>
+        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={3} />
       ) : (
         ""
       )}
