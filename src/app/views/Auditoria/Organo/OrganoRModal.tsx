@@ -38,7 +38,43 @@ export const OrganoRModal = ({
   const [idDestino, setidDestino] = useState("");
   const [LisDestino, setLisDestino] = useState<SelectValues[]>([]);
 
-  const handleSend = () => {
+
+  const handleRequestFOficio = () => {
+    let data = {
+      NUMOPERACION: 5,
+      Oficio: Oficio,
+    };
+
+    if (tipo === 1) {
+      AuditoriaService.Notificacionindex(data).then((res) => {
+        if(res.RESPONSE.length!==0){
+          Swal.fire({
+          icon: "info",
+          title: ' Ya existe una fecha para este Oficio '+ res.RESPONSE[0].Fecha+ ' , ¿deseas guardarla a este registro?',
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: "Confirmar",
+          denyButtonText: `Cancelar`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleSend(res.RESPONSE[0].Fecha)
+          
+          } else if (result.isDenied) {
+            handleSend()
+          }
+        });
+        }else{
+          handleSend()
+        }
+        
+        
+      }).catch((e)=>{console.log("e",e);
+      });
+    }
+
+  };
+
+  const handleSend = (fOficio?:string) => {
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
@@ -49,7 +85,7 @@ export const OrganoRModal = ({
         idOrganoC: idNotificacion,
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
-        FOficio: FOficio,
+        FOficio:  fOficio||FOficio,
         FRecibido: FRecibido,
         FVencimiento: FVencimiento,
         idOrganoAuditorOrigen: idorigen,
@@ -276,7 +312,7 @@ export const OrganoRModal = ({
             <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{ display: "flex" }}>
               <Button
                 className={tipo === 1 ? "guardar" : "actualizar"}
-                onClick={() => handleSend()}
+                onClick={() => handleRequestFOficio()}
               >
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>

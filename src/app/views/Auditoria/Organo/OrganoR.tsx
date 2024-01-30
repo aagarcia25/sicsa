@@ -200,7 +200,7 @@ export const OrganoR = ({
       )}
 
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={7} cat="OrganoR"/>
+        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={7} />
       ) : (
         ""
       )}
