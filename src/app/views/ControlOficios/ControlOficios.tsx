@@ -48,9 +48,9 @@ export const ControlOficios = () => {
   const [showfilter, setshowfilter] = useState<boolean>(false);
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const [agregar, setAgregar] = useState<boolean>(true);
-  const [editar, setEditar] = useState<boolean>(true);
-  const [eliminar, setEliminar] = useState<boolean>(true);
+  const [agregar, setAgregar] = useState<boolean>(false);
+  const [editar, setEditar] = useState<boolean>(false);
+  const [eliminar, setEliminar] = useState<boolean>(false);
   const [cancelar, setCancelar] = useState<boolean>(false);
   const [bs, setBs] = useState<boolean>(false);
 
