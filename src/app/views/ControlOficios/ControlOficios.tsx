@@ -90,8 +90,108 @@ export const ControlOficios = () => {
     });
   };
 
-  const CancelarFolio = () => {};
-  const generarBS = () => {};
+  const CancelarFolio = (v: any) => {
+    console.log("v",v);
+    if (v.row.Cancelado == 'CANCELADO') {
+      Swal.fire({
+        icon: "info",
+        title: "¿Deseas activar este Oficio?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 6,
+            CHID: v.row.id,
+            CHUSER: user.Id,
+          };
+  
+          AuditoriaService.Foliosindex(data).then((res) => {
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Oficio Cancelado!",
+              });
+              consulta({ NUMOPERACION: 4 });
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+    } else{
+      Swal.fire({
+      icon: "info",
+      title: "¿Estás seguro de cancelar este Oficio?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          NUMOPERACION: 6,
+          CHID: v.row.id,
+          CHUSER: user.Id,
+        };
+
+        AuditoriaService.Foliosindex(data).then((res) => {
+          if (res.SUCCESS) {
+            Toast.fire({
+              icon: "success",
+              title: "¡Oficio Cancelado!",
+            });
+            consulta({ NUMOPERACION: 4 });
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+          }
+        });
+      } else if (result.isDenied) {
+        Swal.fire("No se realizaron cambios", "", "info");
+      }
+    });
+    }
+    
+    
+  };
+  const generarBS = (v: any) => {
+    console.log("v",v);
+    
+    Swal.fire({
+      icon: "info",
+      title: "¿Desear generar un BS de este Oficio?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          NUMOPERACION: 7,
+          Oficio: v.row.Oficio,
+          CHUSER: user.Id,
+        };
+
+        AuditoriaService.Foliosindex(data).then((res) => {
+          if (res.SUCCESS) {
+            Toast.fire({
+              icon: "success",
+              title: "¡Oficio Cancelado!",
+            });
+            consulta({ NUMOPERACION: 4 });
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+          }
+        });
+      } else if (result.isDenied) {
+        Swal.fire("No se realizaron cambios", "", "info");
+      }
+    });
+  };
 
   const agregarfolio = (data: any) => {
     AuditoriaService.Foliosindex(data).then((res) => {
@@ -201,6 +301,8 @@ export const ControlOficios = () => {
     { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200 },
     { field: "tipoau", headerName: "Tipo", width: 350 },
     { field: "Observaciones", headerName: "Observaciones", width: 350 },
+    { field: "Cancelado", headerName: "Cancelado", width: 350 },
+
     {
       field: "acciones",
       disableExport: true,
@@ -240,7 +342,7 @@ export const ControlOficios = () => {
             )}
 
             <ButtonsDetail
-              title={"Cancelar Folio"}
+              title={v.row.Cancelado == 'CANCELADO'? "Activar Folio" :'Cancelar Folio'}
               handleFunction={CancelarFolio}
               show={true}
               icon={<ClearIcon />}

@@ -7,6 +7,17 @@ import { CatalogosServices } from "../../services/catalogosServices";
 import { Toast } from "../../helpers/Toast";
 import Swal from "sweetalert2";
 
+interface IError {
+  valid: boolean;
+  text: string;
+}
+
+interface IObjectError {
+  CorreoElectronico: IError;
+  Telefono: IError;
+  Extension: IError;
+}
+
 export const DestinatariosModal = ({
     open,
     tipo,
@@ -22,15 +33,43 @@ export const DestinatariosModal = ({
     const [Titular, setTitular] = useState("");
     const [Cargo, setCargo] = useState("");
     const [Area, setArea] = useState("");
-    const [Extension, setExtension] = useState("");
+    const [Extension, setExtension] = useState(0);
     const [CorreoElectronico, setCorreoElectronico] = useState("");
-    const [Telefono, setTelefono] = useState("");
+    const [Telefono, setTelefono] = useState(0);
     const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
-
+//------------------------Errores---------------------------------------------
+const [errores, setErrores] = useState<IObjectError>({
+  
+  CorreoElectronico: {
+    valid: false,
+    text: "Ingresa correo electrónico válido",
+  },
+  Telefono: {
+    valid: false,
+    text: "Ingresa teléfono",
+  },
+  Extension: {
+    valid: false,
+    text: "Ingresa extensión",
+  },
+});
 
     const handleSend = () => {
-        
+        if(!Titular || !Cargo || !Area || !isValidEmail(CorreoElectronico || "") || errores.Telefono.valid){
+          console.log(!Titular);
+          console.log(!Cargo);
+          console.log(!Area);
+          console.log(!isValidEmail(CorreoElectronico|| ""));
+          console.log(!errores.Telefono.valid);
+
+          
+
+
+
+          
+          Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
+        }else{
           let data = {
             NUMOPERACION: tipo,
             CHID: id,
@@ -50,7 +89,7 @@ export const DestinatariosModal = ({
             //EDITAR
             editar(data);
           }
-        
+        }
       };
 
       const agregar = (data: any) => {
@@ -81,22 +120,43 @@ export const DestinatariosModal = ({
         });
       };
 
+     
+
+      function isValidEmail(email:string) {
+        
+        if(email===""){
+          
+          return(true)
+          
+        }
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+        return emailRegex.test(email);
+      }
+
       const validarNumero = (dato: string, state: any) => {
-        if (/^\d+(\.\d*)?$/.test(dato)) {
+        if (/^[0-9]+$/.test(dato)) {
           return dato;
         } else if (dato.length === 0) {
           return "";
         }
         return state;
       };
-      const compruebaTelefono = (value: string) => {
-        // Eliminar caracteres no alfanuméricos y convertir a mayúsculas
-        const cleanedValue = value.replace(/[^0-9]/g, '').toUpperCase();
-        // Limitar la longitud a 13 caracteres
-        const truncatedValue = cleanedValue.substring(0, 10);
-        // Actualizar el estado con el valor limpio y truncado
-        setTelefono(truncatedValue);
-      };
+
+      // const compruebaTelefono = (value: number) => {
+      //   if (value <= 9999999999) {
+      //     setTelefono(value);
+      //     setErrores({
+      //       ...errores,
+      //       Telefono: {
+      //         valid: false,
+      //         text: "Ingresa teléfono válido",
+      //       },
+      //     });
+      //   } else if (value.toString() === "NaN") {
+      //     setTelefono(0);
+      //   }
+      // };
 
       useEffect(() => {
         if (dt === "") {
@@ -158,7 +218,7 @@ export const DestinatariosModal = ({
                             <TextField
                                 margin="dense"
                                 id="Area"
-                                label="Area"
+                                label="Área"
                                 type="text"
                                 fullWidth
                                 variant="standard"
@@ -176,7 +236,44 @@ export const DestinatariosModal = ({
                                 fullWidth
                                 variant="standard"
                                 value={CorreoElectronico}
-                                onChange={(v) => setCorreoElectronico(v.target.value)}
+                                error={errores.CorreoElectronico.valid}
+                                helperText={errores.CorreoElectronico.valid ? errores.CorreoElectronico.text : ""}
+                                required
+                                inputProps={{ maxLength: 100 }}
+                                onChange={(v) => {
+                                  const inputValue = v.target.value;
+                                  setCorreoElectronico(inputValue);
+                                
+                                  if (inputValue === "") {
+                                    // Si el campo está vacío, no mostramos ningún error
+                                    setErrores({
+                                      ...errores,
+                                      CorreoElectronico: {
+                                        valid: false,
+                                        text: "",
+                                      },
+                                    });
+                                  } else if (!isValidEmail(inputValue)) {
+                                    // Si no está vacío pero no es un correo electrónico válido, mostramos el error
+                                    setErrores({
+                                      ...errores,
+                                      CorreoElectronico: {
+                                        valid: true,
+                                        text: "Ingresa correo electrónico válido",
+                                      },
+                                    });
+                                  } else {
+                                    // Si es un correo electrónico válido, no mostramos ningún error
+                                    setErrores({
+                                      ...errores,
+                                      CorreoElectronico: {
+                                        valid: false,
+                                        text: "",
+                                      },
+                                    });
+                                  }
+                                }}
+                                
                             />
                         </Grid>
                     </Grid>
@@ -202,8 +299,28 @@ export const DestinatariosModal = ({
                                 fullWidth
                                 variant="standard"
                                 value={Telefono}
+                                inputProps={{ maxLength: 10 }}
+                                error={errores.Telefono.valid}
+                                helperText={errores.Telefono.valid ? errores.Telefono.text : ""}
                                 onChange={(v) => {
-                                  (compruebaTelefono(v.target.value));
+                                  setTelefono(validarNumero(v.target.value,setTelefono));
+                                  if(v.target.value.length<10 && v.target.value.length>1){
+                                    setErrores({
+                                    ...errores,
+                                    Telefono: {
+                                      valid: true,
+                                      text: "Ingresa teléfono válido",
+                                    },
+                                  });
+                                  } else{
+                                    setErrores({
+                                      ...errores,
+                                        Telefono: {
+                                        valid: false,
+                                        text: "",
+                                      },
+                                    });
+                                  }
                                 }}
                             />
 
@@ -212,11 +329,12 @@ export const DestinatariosModal = ({
                         <TextField
                                 margin="dense"
                                 id="Extension"
-                                label="Extension"
+                                label="Extensión"
                                 type="text"
                                 fullWidth
                                 variant="standard"
                                 value={Extension}
+                                inputProps={{ maxLength: 10 }}
                                 onChange={(v) => {
                                   setExtension(validarNumero(v.target.value, Extension));
                                 }}

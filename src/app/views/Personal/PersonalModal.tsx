@@ -7,6 +7,19 @@ import { CatalogosServices } from "../../services/catalogosServices";
 import { Toast } from "../../helpers/Toast";
 import Swal from "sweetalert2";
 
+interface IError {
+  valid: boolean;
+  text: string;
+}
+
+interface IObjectError {
+  Nombre: IError;
+  CorreoElectronico: IError;
+  CURP: IError;
+  RFC: IError;
+  Telefono: IError;
+}
+
 export const PersonalModal = ({
     open,
     tipo,
@@ -25,14 +38,52 @@ export const PersonalModal = ({
     const [RFC, setRFC] = useState("");
     const [CURP, setCURP] = useState("");
     const [CorreoElectronico, setCorreoElectronico] = useState("");
-    const [Telefono, setTelefono] = useState("");
+    const [Telefono, setTelefono] = useState(0);
     const user: USUARIORESPONSE = JSON.parse(String(getUser()));
+
+     //------------------------Errores---------------------------------------------
+  const [errores, setErrores] = useState<IObjectError>({
+    Nombre: {
+      valid: false,
+      text: "Ingresa nombre ",
+    },
+    CorreoElectronico: {
+      valid: false,
+      text: "Ingresa correo electrónico válido",
+    },
+    CURP: {
+      valid: false,
+      text: "Ingresa CURP",
+    },
+    RFC: {
+      valid: false,
+      text: "Ingresa RFC",
+    },
+    Telefono: {
+      valid: false,
+      text: "Ingresa teléfono",
+    },
+    
+  });
+  //-------------------------------validaciones de campos-------------------------------------------------------------
+  function validarCadena(nombre: string): boolean {
+    // Expresión regular para validar el nombre
+    const patron = /^(?!.*\s{2})[a-zA-ZáÁéÉíÍóÓúÚñÑ0-9\s']*$/;
+
+    // Comprobamos si el nombre cumple con el patrón
+    return patron.test(nombre);
+  }
+
+  //-------------------------------END validaciones de campos----------------------------------------------------------
+
 
 
 
     const handleSend = () => {
-        
-          let data = {
+        if(!Empleado || !Nombre || !Puesto || !CURP || !RFC || errores.RFC.valid || errores.CURP.valid || errores.CorreoElectronico.valid || errores.Telefono.valid || !isValidEmail(CorreoElectronico)){
+          Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
+        }else{
+           let data = {
             NUMOPERACION: tipo,
             CHID: id,
             CHUSER: user.Id,
@@ -52,7 +103,7 @@ export const PersonalModal = ({
             //EDITAR
             editar(data);
           }
-        
+        }
       };
 
       const agregar = (data: any) => {
@@ -91,35 +142,45 @@ export const PersonalModal = ({
         }
         return state;
       };
-      const compruebaTelefono = (value: string) => {
-        // Eliminar caracteres no alfanuméricos y convertir a mayúsculas
-        const cleanedValue = value.replace(/[^0-9]/g, '').toUpperCase();
-        // Limitar la longitud a 13 caracteres
-        const truncatedValue = cleanedValue.substring(0, 10);
-        // Actualizar el estado con el valor limpio y truncado
-        setTelefono(truncatedValue);
+  
+      const compruebaTelefono = (value: number) => {
+        if (value <= 9999999999) {
+          setTelefono(value);
+          setErrores({
+            ...errores,
+            Telefono: {
+              valid: false,
+              text: "Ingresa teléfono válido",
+            },
+          });
+        } else if (value.toString() === "NaN") {
+          setTelefono(0);
+        }
       };
 
-      
-
-      const compruebaCURP = (value: string) => {
-        // Eliminar caracteres no alfanuméricos y convertir a mayúsculas
-        const cleanedValue = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-        // Limitar la longitud a 13 caracteres
-        const truncatedValue = cleanedValue.substring(0, 18);
-        // Actualizar el estado con el valor limpio y truncado
-        setCURP(truncatedValue);
+      const compruebaCurp = (value: string) => {
+        var format = /[ ¬°`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        if (!format.test(value)) {
+          setCURP(value.toUpperCase());
+        }
       };
 
       const compruebaRfc = (value: string) => {
-        // Eliminar caracteres no alfanuméricos y convertir a mayúsculas
-        const cleanedValue = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-        // Limitar la longitud a 13 caracteres
-        const truncatedValue = cleanedValue.substring(0, 13);
-        // Actualizar el estado con el valor limpio y truncado
-        setRFC(truncatedValue);
+        var format = /[ ¬°`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        if (!format.test(value)) {
+          setRFC(value.toUpperCase());
+        }
       };
 
+      function isValidEmail(email:string) {
+        if(email===""){
+          return(true)
+        }
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+      }
+
+     
       
 
       useEffect(() => {
@@ -172,7 +233,7 @@ export const PersonalModal = ({
                             <TextField
                                 margin="dense"
                                 id="Nombre"
-                                label="Nombre"
+                                label="Nombre Completo"
                                 type="text"
                                 fullWidth
                                 variant="standard"
@@ -203,10 +264,34 @@ export const PersonalModal = ({
                                 fullWidth
                                 variant="standard"
                                 value={RFC}
+                                required
+                                error={errores.RFC.valid}
+                                helperText={errores.RFC.valid ? errores.RFC.text : ""}
+                                inputProps={{ maxLength: 13, minLength: 12 }}
                                 onChange={(v) => {
-                                  (compruebaRfc(v.target.value));
+                                  //(compruebaRfc(v.target.value));
+                                  if (validarCadena(v.target.value)) {
+                                    compruebaRfc(v.target.value);
+                                    if (v.target.value.length <12){ 
+                                      setErrores({
+                                        ...errores,
+                                        RFC: {
+                                          valid: true,
+                                          text: "Ingresa RFC válido",
+                                        },
+                                      });
+                                    }else{
+                                      setErrores({
+                                        ...errores,
+                                        RFC: {
+                                          valid: false,
+                                          text: "",
+                                        },
+                                      });
+                                    }
+                                      
+                                  }
                                 }}
-
                             />
                         </Grid>
                     </Grid>
@@ -232,8 +317,31 @@ export const PersonalModal = ({
                                 fullWidth
                                 variant="standard"
                                 value={CURP}
+                                required
+                                error={errores.CURP.valid}
+                                helperText={errores.CURP.valid ? errores.CURP.text : ""}
+                                inputProps={{ maxLength: 18, minLength: 18 }}
                                 onChange={(v) => {
-                                  (compruebaCURP(v.target.value));
+                                  if (validarCadena(v.target.value)) {
+                                    compruebaCurp(v.target.value);
+                                    if (v.target.value.length <18){
+                                      setErrores({
+                                        ...errores,
+                                        CURP: {
+                                          valid: true,
+                                          text: "Ingresa CURP válido",
+                                        },
+                                      });
+                                    }else{
+                                      setErrores({
+                                        ...errores,
+                                        CURP: {
+                                          valid: false,
+                                          text: "",
+                                        },
+                                      });
+                                    }
+                                  }
                                 }}
                             />
 
@@ -247,7 +355,44 @@ export const PersonalModal = ({
                                 fullWidth
                                 variant="standard"
                                 value={CorreoElectronico}
-                                onChange={(v) => setCorreoElectronico(v.target.value)}
+                                error={errores.CorreoElectronico.valid}
+                                helperText={errores.CorreoElectronico.valid ? errores.CorreoElectronico.text : ""}
+                                required
+                                inputProps={{ maxLength: 100 }}
+                                onChange={(v) => {const inputValue = v.target.value;
+                                  setCorreoElectronico(inputValue);
+                                
+                                  if (inputValue === "") {
+                                    // Si el campo está vacío, no mostramos ningún error
+                                    setErrores({
+                                      ...errores,
+                                      CorreoElectronico: {
+                                        valid: false,
+                                        text: "",
+                                      },
+                                    });
+                                  } else if (!isValidEmail(inputValue)) {
+                                    // Si no está vacío pero no es un correo electrónico válido, mostramos el error
+                                    setErrores({
+                                      ...errores,
+                                      CorreoElectronico: {
+                                        valid: true,
+                                        text: "Ingresa correo electrónico válido",
+                                      },
+                                    });
+                                  } else {
+                                    // Si es un correo electrónico válido, no mostramos ningún error
+                                    setErrores({
+                                      ...errores,
+                                      CorreoElectronico: {
+                                        valid: false,
+                                        text: "",
+                                      },
+                                    });
+                                  }
+                                }
+                                
+                                }
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -259,8 +404,29 @@ export const PersonalModal = ({
                                 fullWidth
                                 variant="standard"
                                 value={Telefono}
+                                inputProps={{ maxLength: 10 }}
+                                error={errores.Telefono.valid}
+                                helperText={errores.Telefono.valid ? errores.Telefono.text : ""}
                                 onChange={(v) => {
-                                  (compruebaTelefono(v.target.value));
+                                  (compruebaTelefono(parseInt(v.target.value)));
+                                  if (v.target.value.length <10){
+                                    setErrores({
+                                    ...errores,
+                                    Telefono: {
+                                      valid: true,
+                                      text: "Ingresa teléfono válido",
+                                    },
+                                  });
+                                  } else{
+                                    setErrores({
+                                      ...errores,
+                                        Telefono: {
+                                        valid: false,
+                                        text: "",
+                                      },
+                                    });
+                                  }
+                                  
                                 }}
                             />
                         </Grid>

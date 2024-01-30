@@ -8,9 +8,14 @@ import {
 } from "@mui/x-data-grid";
 import React from "react";
 
+
 const theme = createTheme(coreEsES, gridEsES);
 
+
 export default function MUIXDataGrid(props: any) {
+	const [pageSize, setPageSize] = React.useState(10);
+
+
   const [columnVisibilityModel, setColumnVisibilityModel] =
     React.useState<GridColumnVisibilityModel>({
       id: false,
@@ -30,11 +35,14 @@ export default function MUIXDataGrid(props: any) {
       idtipo: false,
     });
 
-    const hasData = props.rows.length > 0;
+    const hasData = props.rows.length < 8;
+
+    const Data = props.rows.length === 0;
+
 
 
   return (
-    <div style={{maxHeight: "500px", flex: 1, overflowY: 'auto'  }}>
+    <div style={{height: "70vh",  overflow: 'auto'  }}>
       <ThemeProvider theme={theme}>
         <DataGrid
           {...props.rows}
@@ -46,12 +54,15 @@ export default function MUIXDataGrid(props: any) {
             setColumnVisibilityModel(newModel)
           }
           rowsPerPageOptions={[10, 25, 50, 100]}
+          
           disableSelectionOnClick
           // disableColumnFilter
           // disableColumnSelector
           disableDensitySelector
           getRowId={(row) => (row.Id ? row.Id : row.id)}
           rowHeight={255}
+          pageSize={pageSize}
+
           getRowHeight={() => "auto"}
           sx={{
             fontFamily: "Poppins,sans-serif",
@@ -130,7 +141,7 @@ export default function MUIXDataGrid(props: any) {
             filterPanelInputPlaceholder: "Valor Filtrado",
           }}
           style={{
-            height: hasData ? 'auto' : 200, // Adjust the height as needed
+            height: Data ? '200px' : (hasData ? "auto" : "100%"),  
           }}
         />
       </ThemeProvider>

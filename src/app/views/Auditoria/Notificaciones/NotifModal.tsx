@@ -42,7 +42,45 @@ export const NotifModal = ({
   const [APE, setAPE] = useState("");
   const [ListAPE, setListAPE] = useState<SelectValues[]>([]);
 
-  const handleSend = () => {
+  const handleRequestFOficio = () => {
+    let data = {
+      NUMOPERACION: 5,
+      Oficio: Oficio,
+    };
+
+    if (tipo === 1) {
+      AuditoriaService.Notificacionindex(data).then((res) => {
+        if(res.RESPONSE.length!==0){
+          Swal.fire({
+          icon: "info",
+          title: ' Ya existe una fecha para este Oficio '+ res.RESPONSE[0].Fecha+ ' , ¿deseas guardarla a este registro?',
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: "Confirmar",
+          denyButtonText: `Cancelar`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleSend(res.RESPONSE[0].Fecha)
+          
+          } else if (result.isDenied) {
+            handleSend()
+          }
+        });
+        }else{
+          handleSend()
+        }
+        
+        
+      }).catch((e)=>{console.log("e",e);
+      });
+    }
+
+  };
+
+
+  
+
+  const handleSend = (fOficio?:string) => {
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
@@ -54,13 +92,12 @@ export const NotifModal = ({
         Prorroga: Prorroga,
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
-        FOficio: FOficio,
+        FOficio: fOficio||FOficio,
         FRecibido: FRecibido,
         FVencimiento: FVencimiento,
         idsecretaria: idsecretaria,
         idunidad: idunidad,
       };
-
       handleRequest(data);
     }
   };
@@ -354,7 +391,7 @@ export const NotifModal = ({
               <Button
                 // disabled={descripcion === "" || nombre === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
-                onClick={() => handleSend()}
+                onClick={() => handleRequestFOficio()}
               >
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
