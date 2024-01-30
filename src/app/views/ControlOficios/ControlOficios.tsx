@@ -1,23 +1,26 @@
 import AttachmentIcon from "@mui/icons-material/Attachment";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import ClearIcon from "@mui/icons-material/Clear";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import InsertPageBreakIcon from "@mui/icons-material/InsertPageBreak";
+import SendIcon from "@mui/icons-material/Send";
 import {
   Button,
-  Collapse,
   Grid,
   IconButton,
-  TextField,
   ToggleButton,
   Tooltip,
   Typography,
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
+import SelectValues from "../../interfaces/Share";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { AuditoriaService } from "../../services/AuditoriaService";
+import { ShareService } from "../../services/ShareService";
 import { getPermisos, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import ButtonsAdd from "../componentes/ButtonsAdd";
@@ -25,18 +28,10 @@ import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import { TooltipPersonalizado } from "../componentes/CustomizedTooltips";
-import TitleComponent from "../componentes/TitleComponent";
-import { ControlOficiosModal } from "./ControlOficiosModal";
-import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
-import ButtonsShare from "../componentes/ButtonsShare";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import SelectFrag from "../componentes/SelectFrag";
-import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
-import SendIcon from "@mui/icons-material/Send";
-import SelectValues from "../../interfaces/Share";
-import { ShareService } from "../../services/ShareService";
-import axios from "axios";
+import TitleComponent from "../componentes/TitleComponent";
+import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
+import { ControlOficiosModal } from "./ControlOficiosModal";
 
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
@@ -91,8 +86,8 @@ export const ControlOficios = () => {
   };
 
   const CancelarFolio = (v: any) => {
-    console.log("v",v);
-    if (v.row.Cancelado == 'CANCELADO') {
+    console.log("v", v);
+    if (v.row.Cancelado == "CANCELADO") {
       Swal.fire({
         icon: "info",
         title: "¿Deseas activar este Oficio?",
@@ -107,7 +102,7 @@ export const ControlOficios = () => {
             CHID: v.row.id,
             CHUSER: user.Id,
           };
-  
+
           AuditoriaService.Foliosindex(data).then((res) => {
             if (res.SUCCESS) {
               Toast.fire({
@@ -123,44 +118,42 @@ export const ControlOficios = () => {
           Swal.fire("No se realizaron cambios", "", "info");
         }
       });
-    } else{
+    } else {
       Swal.fire({
-      icon: "info",
-      title: "¿Estás seguro de cancelar este Oficio?",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: "Confirmar",
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = {
-          NUMOPERACION: 6,
-          CHID: v.row.id,
-          CHUSER: user.Id,
-        };
+        icon: "info",
+        title: "¿Estás seguro de cancelar este Oficio?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 6,
+            CHID: v.row.id,
+            CHUSER: user.Id,
+          };
 
-        AuditoriaService.Foliosindex(data).then((res) => {
-          if (res.SUCCESS) {
-            Toast.fire({
-              icon: "success",
-              title: "¡Oficio Cancelado!",
-            });
-            consulta({ NUMOPERACION: 4 });
-          } else {
-            Swal.fire("¡Error!", res.STRMESSAGE, "error");
-          }
-        });
-      } else if (result.isDenied) {
-        Swal.fire("No se realizaron cambios", "", "info");
-      }
-    });
+          AuditoriaService.Foliosindex(data).then((res) => {
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Oficio Cancelado!",
+              });
+              consulta({ NUMOPERACION: 4 });
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
     }
-    
-    
   };
   const generarBS = (v: any) => {
-    console.log("v",v);
-    
+    console.log("v", v);
+
     Swal.fire({
       icon: "info",
       title: "¿Desear generar un BS de este Oficio?",
@@ -227,7 +220,7 @@ export const ControlOficios = () => {
       const formData = new FormData();
       formData.append("file", item.Archivo, item.NOMBRE);
       let p = axios.post(
-        "http://10.200.4.105:99/ETL/extraer-informacion",
+        "https://tesoreria-virtual-servicios.nl.gob.mx/ETL/extraer-informacion",
         formData,
         {
           headers: {
@@ -274,11 +267,12 @@ export const ControlOficios = () => {
         });
       });
       console.log(succesFiles);
-      consulta({ NUMOPERACION: 4 });
-      setOpenSlider(false);
     } catch (error) {
       setOpenSlider(false);
       console.error("Error al realizar las peticiones:", error);
+    } finally {
+      setOpenSlider(false);
+      consulta({ NUMOPERACION: 4 });
     }
   };
 
@@ -342,7 +336,11 @@ export const ControlOficios = () => {
             )}
 
             <ButtonsDetail
-              title={v.row.Cancelado == 'CANCELADO'? "Activar Folio" :'Cancelar Folio'}
+              title={
+                v.row.Cancelado == "CANCELADO"
+                  ? "Activar Folio"
+                  : "Cancelar Folio"
+              }
               handleFunction={CancelarFolio}
               show={true}
               icon={<ClearIcon />}
@@ -401,6 +399,7 @@ export const ControlOficios = () => {
   };
 
   const consulta = (data: any) => {
+    setOpenSlider(true);
     AuditoriaService.Foliosindex(data).then((res) => {
       if (res.SUCCESS) {
         setBancos(res.RESPONSE);
