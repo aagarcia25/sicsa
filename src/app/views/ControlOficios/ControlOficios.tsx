@@ -223,7 +223,7 @@ export const ControlOficios = () => {
       const formData = new FormData();
       formData.append("file", item.Archivo, item.NOMBRE);
       let p = axios.post(
-        "https://tesoreria-virtual-servicios.nl.gob.mx/ETL/extraer-informacion",
+        "https://tesoreria-virtual-servicios.nl.gob.mx/US/ETL/extraer-informacion",
         formData,
         {
           headers: {
