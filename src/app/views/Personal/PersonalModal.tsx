@@ -80,7 +80,7 @@ export const PersonalModal = ({
 
 
     const handleSend = () => {
-        if(!Empleado || !Nombre || !Puesto || !CURP || !RFC || errores.RFC.valid || errores.CURP.valid || errores.CorreoElectronico.valid || errores.Telefono.valid || !isValidEmail(CorreoElectronico)){
+        if(!Empleado || !Nombre || !Puesto || !CURP || !RFC || errores.RFC.valid || errores.CURP.valid || errores.Telefono.valid || !isValidEmail(CorreoElectronico)){
           Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
         }else{
            let data = {
@@ -143,20 +143,7 @@ export const PersonalModal = ({
         return state;
       };
   
-      const compruebaTelefono = (value: number) => {
-        if (value <= 9999999999) {
-          setTelefono(value);
-          setErrores({
-            ...errores,
-            Telefono: {
-              valid: false,
-              text: "Ingresa teléfono válido",
-            },
-          });
-        } else if (value.toString() === "NaN") {
-          setTelefono(0);
-        }
-      };
+      
 
       const compruebaCurp = (value: string) => {
         var format = /[ ¬°`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
@@ -408,8 +395,8 @@ export const PersonalModal = ({
                                 error={errores.Telefono.valid}
                                 helperText={errores.Telefono.valid ? errores.Telefono.text : ""}
                                 onChange={(v) => {
-                                  (compruebaTelefono(parseInt(v.target.value)));
-                                  if (v.target.value.length <10){
+                                  setTelefono(validarNumero(v.target.value,setTelefono));
+                                  if(v.target.value.length<10 && v.target.value.length>1){
                                     setErrores({
                                     ...errores,
                                     Telefono: {
