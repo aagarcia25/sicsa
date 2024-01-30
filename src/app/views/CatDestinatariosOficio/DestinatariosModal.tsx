@@ -143,21 +143,7 @@ const [errores, setErrores] = useState<IObjectError>({
         return state;
       };
 
-      // const compruebaTelefono = (value: number) => {
-      //   if (value <= 9999999999) {
-      //     setTelefono(value);
-      //     setErrores({
-      //       ...errores,
-      //       Telefono: {
-      //         valid: false,
-      //         text: "Ingresa teléfono válido",
-      //       },
-      //     });
-      //   } else if (value.toString() === "NaN") {
-      //     setTelefono(0);
-      //   }
-      // };
-
+      
       useEffect(() => {
         if (dt === "") {
         } else {

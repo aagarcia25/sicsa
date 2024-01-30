@@ -51,6 +51,9 @@ export const ControlOficios = () => {
   const [agregar, setAgregar] = useState<boolean>(true);
   const [editar, setEditar] = useState<boolean>(true);
   const [eliminar, setEliminar] = useState<boolean>(true);
+  const [cancelar, setCancelar] = useState<boolean>(false);
+  const [bs, setBs] = useState<boolean>(false);
+
 
   const handleAccion = (v: any) => {
     Swal.fire({
@@ -335,25 +338,26 @@ export const ControlOficios = () => {
               ""
             )}
 
-            <ButtonsDetail
-              title={
-                v.row.Cancelado == "CANCELADO"
-                  ? "Activar Folio"
-                  : "Cancelar Folio"
-              }
+            {cancelar ? (
+              <ButtonsDetail
+              title={v.row.Cancelado == 'CANCELADO'? "Activar Folio" :'Cancelar Folio'}
               handleFunction={CancelarFolio}
               show={true}
               icon={<ClearIcon />}
               row={v}
             ></ButtonsDetail>
-
-            <ButtonsDetail
+            ):("")
+            }
+            
+            {bs ? (
+              <ButtonsDetail
               title={"Generar BS"}
               handleFunction={generarBS}
               show={true}
               icon={<InsertPageBreakIcon />}
               row={v}
             ></ButtonsDetail>
+            ):("")}
           </>
         );
       },
@@ -435,6 +439,12 @@ export const ControlOficios = () => {
         }
         if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
+        }
+        if (String(item.ControlInterno) === "CENCEL") {
+          setCancelar(true);
+        }
+        if (String(item.ControlInterno) === "BS") {
+          setBs(true);
         }
       }
     });
