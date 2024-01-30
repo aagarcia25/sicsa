@@ -105,21 +105,21 @@ export const Personal = () => {
             width: 150,
         },
 
-        { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+        { field: "FechaCreacion", headerName: "Fecha de Creación", width: 140 },
         {
             field: "UltimaActualizacion",
             headerName: "Última Actualización",
-            width: 150,
+            width: 140,
         },
-        { field: "creado", headerName: "Creado Por", width: 200 },
-        { field: "modi", headerName: "Modificado Por", width: 200 },
-        { field: "Empleado", headerName: "Empleado", width: 300 },
-        { field: "Nombre", headerName: "Nombre", width: 300 },
-        { field: "Puesto", headerName: "Puesto", width: 100, align: "center", headerAlign: "center" },
-        { field: "RFC", headerName: "RFC", width: 100, align: "center", headerAlign: "center" },
-        { field: "CURP", headerName: "CURP", width: 100, align: "center", headerAlign: "center" },
-        { field: "CorreoElectronico", headerName: "Correo Electrónico", width: 100, align: "center", headerAlign: "center" },
-        { field: "Telefono", headerName: "Teléfono", width: 100, align: "center", headerAlign: "center" },
+        { field: "creado", headerName: "Creado Por", width: 180,headerAlign: "left" },
+        { field: "modi", headerName: "Modificado Por", width: 180,headerAlign: "left" },
+        { field: "Empleado", headerName: "Empleado", width: 80,headerAlign: "left" },
+        { field: "Nombre", headerName: "Nombre", width: 200,headerAlign: "left" },
+        { field: "Puesto", headerName: "Puesto", width: 200,  headerAlign: "left" },
+        { field: "RFC", headerName: "RFC", width: 150,  headerAlign: "left" },
+        { field: "CURP", headerName: "CURP", width: 200,  headerAlign: "left" },
+        { field: "CorreoElectronico", headerName: "Correo Electrónico", width: 250,  headerAlign: "left" },
+        { field: "Telefono", headerName: "Teléfono", width: 100,  headerAlign: "left" },
 
         {
             field: "acciones",
@@ -128,7 +128,7 @@ export const Personal = () => {
             description: eliminar || editar ? "Campo de Acciones" : "",
             sortable: false,
             //width: 200,
-            width: eliminar || editar ? 200 : 0,
+            width: eliminar || editar ? 100 : 0,
             renderCell: (v) => {
                 return (
                     <>
