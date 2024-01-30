@@ -17,11 +17,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
-import SelectValues from "../../interfaces/Share";
+import SelectValues, { responseresult } from "../../interfaces/Share";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { AuditoriaService } from "../../services/AuditoriaService";
 import { ShareService } from "../../services/ShareService";
-import { getPermisos, getUser } from "../../services/localStorage";
+import { getPermisos, getToken, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
@@ -189,17 +189,25 @@ export const ControlOficios = () => {
   };
 
   const agregarfolio = (data: any) => {
-    AuditoriaService.Foliosindex(data).then((res) => {
-      if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Registro Agregado!",
-        });
-        //handleClose();
-      } else {
-        Swal.fire(res.STRMESSAGE, "¡Error!", "info");
-      }
-    });
+    // Retornar la promesa directamente
+    return AuditoriaService.Foliosindex(data)
+      .then((res) => {
+        if (res.SUCCESS) {
+          Toast.fire({
+            icon: "success",
+            title: "¡Registro Agregado!",
+          });
+        } else {
+          Swal.fire(res.STRMESSAGE, "¡Error!", "info");
+        }
+        // Retornar el resultado de la promesa
+        return res;
+      })
+      .catch((error) => {
+        // Manejar errores de la promesa, si es necesario
+        console.error("Error al agregar el folio:", error);
+        throw error; // Esto puede ser opcional, dependiendo de cómo manejas los errores
+      });
   };
 
   const registrardatos = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -261,7 +269,17 @@ export const ControlOficios = () => {
               "Oficio",
               item.data.RESPONSE[0].Oficio.replace(" ", "").replace("/", "-")
             );
-            agregarfolio(formData);
+
+            agregarfolio(formData)
+              .then((resultado) => {
+                // Manejar el resultado
+                console.log(resultado);
+                AdjuntaFile(resultado.RESPONSE, currentFile, currentFile.name);
+              })
+              .catch((error) => {
+                // Manejar el error
+                console.error(error);
+              });
           } else {
             failFiles.push({
               Archivo: currentFile.name,
@@ -277,6 +295,39 @@ export const ControlOficios = () => {
       setOpenSlider(false);
       consulta({ NUMOPERACION: 4 });
     }
+  };
+
+  const AdjuntaFile = (data: any, Archivo: any, NOMBRE: any) => {
+    let peticiones: any[] = [];
+    const formData = new FormData();
+    formData.append("NUMOPERACION", "1");
+    formData.append("ID", data.id);
+    formData.append("FOLIO", data.Oficio);
+    formData.append("CHUSER", user.Id);
+    formData.append("TOKEN", JSON.parse(String(getToken())));
+    formData.append("FILE", Archivo, NOMBRE);
+    let p = axios.post(
+      process.env.REACT_APP_APPLICATION_BASE_URL + "FoliosFilesindex",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-Requested-With": "XMLHttpRequest",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    peticiones.push(p);
+
+    axios.all(peticiones).then((resposeArr) => {
+      /* resposeArr.map((item) => {
+          if (item.data.SUCCESS) {
+            count++;
+          } else {
+            count--;
+          }
+        });*/
+    });
   };
 
   const columns: GridColDef[] = [
