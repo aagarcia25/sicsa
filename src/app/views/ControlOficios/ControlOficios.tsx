@@ -54,7 +54,6 @@ export const ControlOficios = () => {
   const [cancelar, setCancelar] = useState<boolean>(false);
   const [bs, setBs] = useState<boolean>(false);
 
-
   const handleAccion = (v: any) => {
     Swal.fire({
       icon: "info",
@@ -229,6 +228,7 @@ export const ControlOficios = () => {
           headers: {
             "Content-Type": "multipart/form-data",
             "X-Requested-With": "XMLHttpRequest",
+            "Access-Control-Allow-Origin": "*",
           },
         }
       );
@@ -340,24 +340,31 @@ export const ControlOficios = () => {
 
             {cancelar ? (
               <ButtonsDetail
-              title={v.row.Cancelado == 'CANCELADO'? "Activar Folio" :'Cancelar Folio'}
-              handleFunction={CancelarFolio}
-              show={true}
-              icon={<ClearIcon />}
-              row={v}
-            ></ButtonsDetail>
-            ):("")
-            }
-            
+                title={
+                  v.row.Cancelado == "CANCELADO"
+                    ? "Activar Folio"
+                    : "Cancelar Folio"
+                }
+                handleFunction={CancelarFolio}
+                show={true}
+                icon={<ClearIcon />}
+                row={v}
+              ></ButtonsDetail>
+            ) : (
+              ""
+            )}
+
             {bs ? (
               <ButtonsDetail
-              title={"Generar BS"}
-              handleFunction={generarBS}
-              show={true}
-              icon={<InsertPageBreakIcon />}
-              row={v}
-            ></ButtonsDetail>
-            ):("")}
+                title={"Generar BS"}
+                handleFunction={generarBS}
+                show={true}
+                icon={<InsertPageBreakIcon />}
+                row={v}
+              ></ButtonsDetail>
+            ) : (
+              ""
+            )}
           </>
         );
       },
