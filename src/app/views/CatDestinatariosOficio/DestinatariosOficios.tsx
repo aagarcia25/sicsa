@@ -110,14 +110,14 @@ export const DestinatariosOficios = () => {
             headerName: "Última Actualización",
             width: 150,
         },
-        { field: "creado", headerName: "Creado Por", width: 200 },
-        { field: "modi", headerName: "Modificado Por", width: 200 },
-        { field: "Titular", headerName: "Titular", width: 300 },
-        { field: "Cargo", headerName: "Cargo", width: 300 },
-        { field: "Area", headerName: "Área", width: 100, align: "center", headerAlign: "center" },
-        { field: "CorreoElectronico", headerName: "Correo Electrónico", width: 100, align: "center", headerAlign: "center" },
-        { field: "Telefono", headerName: "Teléfono", width: 100, align: "center", headerAlign: "center" },
-        { field: "Extension", headerName: "Extensión", width: 100, align: "center", headerAlign: "center" },
+        { field: "creado", headerName: "Creado Por", width: 200,headerAlign: "left" },
+        { field: "modi", headerName: "Modificado Por", width: 180,headerAlign: "left" },
+        { field: "Titular", headerName: "Titular", width: 200,headerAlign: "left" },
+        { field: "Cargo", headerName: "Cargo", width: 200,headerAlign: "left" },
+        { field: "Area", headerName: "Área", width: 200, headerAlign: "left"},
+        { field: "CorreoElectronico", headerName: "Correo Electrónico", width: 250,headerAlign: "left"},
+        { field: "Telefono", headerName: "Teléfono", width: 100, headerAlign: "left" },
+        { field: "Extension", headerName: "Extensión", width: 80,  headerAlign: "left" },
 
         {
             field: "acciones",
@@ -126,7 +126,7 @@ export const DestinatariosOficios = () => {
             description: eliminar || editar ? "Campo de Acciones" : "",
             sortable: false,
             //width: 200,
-            width: eliminar || editar ? 200 : 0,
+            width: eliminar || editar ? 100 : 0,
             renderCell: (v) => {
                 return (
                     <>
