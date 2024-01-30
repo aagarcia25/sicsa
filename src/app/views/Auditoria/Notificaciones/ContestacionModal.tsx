@@ -38,8 +38,41 @@ export const ContestacionModal = ({
   const [idunidad, setidunidad] = useState("");
   const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
   const [ListUnidades, setListUnidades] = useState<SelectValues[]>([]);
+  const handleRequestFOficio = () => {
+    let data = {
+      NUMOPERACION: 5,
+      Oficio: Oficio,
+    };
 
-  const handleSend = () => {
+    if (tipo === 1) {
+      AuditoriaService.Notificacionindex(data).then((res) => {
+        if(res.RESPONSE.length!==0){
+          Swal.fire({
+          icon: "info",
+          title: ' Ya existe una fecha para este Oficio '+ res.RESPONSE[0].Fecha+ ' , ¿deseas guardarla a este registro?',
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: "Confirmar",
+          denyButtonText: `Cancelar`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleSend(res.RESPONSE[0].Fecha)
+          
+          } else if (result.isDenied) {
+            handleSend()
+          }
+        });
+        }else{
+          handleSend()
+        }
+        
+        
+      }).catch((e)=>{console.log("e",e);
+      });
+    }
+
+  };
+  const handleSend = (fOficio?:string) => {
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
@@ -51,7 +84,7 @@ export const ContestacionModal = ({
         Prorroga: Prorroga,
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
-        FOficio: FOficio,
+        FOficio: fOficio||FOficio,
         FRecibido: FRecibido,
         FVencimiento: FVencimiento,
         idsecretaria: idsecretaria,
@@ -299,7 +332,7 @@ export const ContestacionModal = ({
               <Button
                 // disabled={descripcion === "" || nombre === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
-                onClick={() => handleSend()}
+                onClick={() => handleRequestFOficio()}
               >
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
