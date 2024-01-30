@@ -114,10 +114,10 @@ export const DestinatariosOficios = () => {
         { field: "modi", headerName: "Modificado Por", width: 200 },
         { field: "Titular", headerName: "Titular", width: 300 },
         { field: "Cargo", headerName: "Cargo", width: 300 },
-        { field: "Area", headerName: "Area", width: 100, align: "center", headerAlign: "center" },
+        { field: "Area", headerName: "Área", width: 100, align: "center", headerAlign: "center" },
         { field: "CorreoElectronico", headerName: "Correo Electrónico", width: 100, align: "center", headerAlign: "center" },
         { field: "Telefono", headerName: "Teléfono", width: 100, align: "center", headerAlign: "center" },
-        { field: "Extension", headerName: "Extension", width: 100, align: "center", headerAlign: "center" },
+        { field: "Extension", headerName: "Extensión", width: 100, align: "center", headerAlign: "center" },
 
         {
             field: "acciones",
