@@ -32,7 +32,9 @@ import SelectFrag from "../componentes/SelectFrag";
 import TitleComponent from "../componentes/TitleComponent";
 import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
 import { ControlOficiosModal } from "./ControlOficiosModal";
-
+import FileOpenIcon from "@mui/icons-material/FileOpen";
+import FilePresentIcon from "@mui/icons-material/FilePresent";
+import { formatFecha } from "../../helpers/FormatDate";
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [openSlider, setOpenSlider] = useState(true);
@@ -330,6 +332,120 @@ export const ControlOficios = () => {
     });
   };
 
+  const CargaDocumentos = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let encontrados: any[] = [];
+    let noencontrados: any[] = [];
+    let fueradesstatus: any[] = [];
+    let rows = bancos;
+
+    if (rows.length == 0) {
+      Swal.fire(
+        "Favor de realizar la búsqueda de Registros, primero",
+        "",
+        "info"
+      );
+    } else {
+      let counfiles = event?.target?.files?.length;
+      //Recorremos los registros de la busqueda
+
+      rows.map((item: any, index) => {
+        for (let i = 0; i < Number(counfiles); i++) {
+          let file = event?.target?.files?.[i] || "";
+          let namefile = event?.target?.files?.[i].name || "";
+
+          if (namefile.includes(item.Oficio + ".pdf")) {
+            rows = rows.filter((items) => !item);
+            encontrados.push({ Archivo: file, Registro: item });
+          } else {
+            noencontrados.push(item.Oficio);
+          }
+        }
+      });
+
+      let a2 = noencontrados.filter((elemento, index) => {
+        return noencontrados.indexOf(elemento) == index;
+      });
+
+      let a1 = encontrados.filter((elemento, index) => {
+        return encontrados.indexOf(elemento) == index;
+      });
+      let html = "";
+      if (a1.length == 0) {
+        Swal.fire(
+          "¡Error!",
+          "Sin coincidencia con algun número de Oficio",
+          "warning"
+        );
+      } else {
+        html =
+          "Archivos Encontrados <b>" + a1.length + " de  " + counfiles + "</b>";
+        html = html + "<br>";
+        html = html + "¿Desea procesarlos?";
+        let count = 0;
+        Swal.fire({
+          icon: "info",
+          title: "Infomación",
+          footer: "Esta operación puede demorar un poco",
+          html: html,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: "Aceptar",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setOpenSlider(true);
+            let peticiones: any[] = [];
+            encontrados.map((item: any) => {
+              const formData = new FormData();
+              formData.append("NUMOPERACION", "1");
+              formData.append("ID", item.id);
+              formData.append("FOLIO", item.Oficio);
+              formData.append("CHUSER", user.Id);
+              formData.append("TOKEN", JSON.parse(String(getToken())));
+              formData.append("FILE", item.Archivo);
+
+              let p = axios.post(
+                process.env.REACT_APP_APPLICATION_BASE_URL + "FoliosFilesindex",
+                formData,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Access-Control-Allow-Origin": "*",
+                  },
+                }
+              );
+              peticiones.push(p);
+            });
+
+            axios.all(peticiones).then((resposeArr) => {
+              resposeArr.map((item) => {
+                if (item.data.SUCCESS) {
+                  count++;
+                } else {
+                  count--;
+                }
+              });
+
+              Swal.fire({
+                icon: "success",
+                title: "Información",
+                text: "registros procesados " + count,
+                confirmButtonText: "Ok",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  consulta({ NUMOPERACION: 4 });
+                }
+              });
+            });
+          } else {
+            Swal.fire("¡Error!", "Operación Cancelada", "error");
+          }
+        });
+      }
+    }
+  };
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -337,19 +453,28 @@ export const ControlOficios = () => {
       width: 150,
     },
     { field: "Oficio", headerName: "Oficio", width: 150 },
-    { field: "dfTitular", headerName: "Destinatario", width: 150 },
-    { field: "dfCargo", headerName: "Cargo", width: 150 },
-    { field: "Asunto", headerName: "Asunto", width: 200 },
-    { field: "Tema", headerName: "Tema", width: 350 },
+    { field: "Cancelado", headerName: "Cancelado", width: 100 },
     { field: "Nauditoria", headerName: "N° de Auditoría", width: 100 },
-    { field: "cpNombre", headerName: "Solicitante", width: 150 },
+    { field: "dfTitular", headerName: "Destinatario", width: 250 },
+    { field: "dfCargo", headerName: "Puesto", width: 250 },
+    { field: "Asunto", headerName: "Asunto", width: 350 },
+    { field: "Tema", headerName: "Tema", width: 350 },
 
-    { field: "Fecha", headerName: "Fecha", width: 150 },
+    { field: "cpNombre", headerName: "Solicitante", width: 250 },
+
+    {
+      field: "Fecha",
+      headerName: "Fecha",
+      width: 100,
+
+      renderCell: (v) => {
+        return formatFecha(v.row.Fecha);
+      },
+    },
     { field: "FechaEntrega", headerName: "Fecha de Entregado", width: 150 },
     { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200 },
     { field: "tipoau", headerName: "Tipo", width: 350 },
     { field: "Observaciones", headerName: "Observaciones", width: 350 },
-    { field: "Cancelado", headerName: "Cancelado", width: 350 },
 
     {
       field: "acciones",
@@ -398,7 +523,13 @@ export const ControlOficios = () => {
                 }
                 handleFunction={CancelarFolio}
                 show={true}
-                icon={<ClearIcon />}
+                icon={
+                  v.row.Cancelado == "CANCELADO" ? (
+                    <FileOpenIcon />
+                  ) : (
+                    <ClearIcon />
+                  )
+                }
                 row={v}
               ></ButtonsDetail>
             ) : (
@@ -520,7 +651,6 @@ export const ControlOficios = () => {
       ) : (
         ""
       )}
-
       <TitleComponent title={"Control de Oficios"} show={openSlider} />
       {/* <Collapse in={showfilter} timeout="auto" unmountOnExit> */}
       <Grid
@@ -583,7 +713,6 @@ export const ControlOficios = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
       </Grid>
-
       <Grid
         container
         item
@@ -608,8 +737,8 @@ export const ControlOficios = () => {
         <TooltipPersonalizado
           title={
             <React.Fragment>
-              <Typography color="inherit">Cargar Documentos</Typography>
-              {"Permite la carga de Documentos de Forma Masiva "}
+              <Typography color="inherit">Cargar Oficios</Typography>
+              {"Permite la carga de oficios de forma masiva"}
             </React.Fragment>
           }
         >
@@ -635,9 +764,40 @@ export const ControlOficios = () => {
       ) : (
         ""
       )}
+      {agregar ? (
+        <TooltipPersonalizado
+          title={
+            <React.Fragment>
+              <Typography color="inherit">
+                Relacionar Documentos a los Oficios
+              </Typography>
+            </React.Fragment>
+          }
+        >
+          <ToggleButton value="check" className="guardar" size="small">
+            <IconButton
+              color="inherit"
+              aria-label="upload documento"
+              component="label"
+              size="small"
+            >
+              <input
+                multiple
+                hidden
+                accept=".pdf"
+                type="file"
+                value=""
+                onChange={(v) => CargaDocumentos(v)}
+              />
+              <FilePresentIcon />
+            </IconButton>
+          </ToggleButton>
+        </TooltipPersonalizado>
+      ) : (
+        ""
+      )}
 
       <MUIXDataGrid columns={columns} rows={bancos} />
-
       {openAdjuntos ? (
         <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
       ) : (
