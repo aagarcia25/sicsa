@@ -498,7 +498,7 @@ export const ControlOficios = () => {
         if (String(item.ControlInterno) === "EDIT") {
           setEditar(true);
         }
-        if (String(item.ControlInterno) === "CENCEL") {
+        if (String(item.ControlInterno) === "CANCEL") {
           setCancelar(true);
         }
         if (String(item.ControlInterno) === "BS") {
