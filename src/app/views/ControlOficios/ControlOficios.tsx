@@ -396,10 +396,11 @@ export const ControlOficios = () => {
             setOpenSlider(true);
             let peticiones: any[] = [];
             encontrados.map((item: any) => {
+              console.log(item);
               const formData = new FormData();
               formData.append("NUMOPERACION", "1");
-              formData.append("ID", item.id);
-              formData.append("FOLIO", item.Oficio);
+              formData.append("ID", item.Registro.id);
+              formData.append("FOLIO", item.Registro.Oficio);
               formData.append("CHUSER", user.Id);
               formData.append("TOKEN", JSON.parse(String(getToken())));
               formData.append("FILE", item.Archivo);
@@ -409,7 +410,7 @@ export const ControlOficios = () => {
                 formData,
                 {
                   headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                     "X-Requested-With": "XMLHttpRequest",
                     "Access-Control-Allow-Origin": "*",
                   },
