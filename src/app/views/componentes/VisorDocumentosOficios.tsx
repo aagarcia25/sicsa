@@ -24,6 +24,8 @@ import { ButtonsDetail } from "./ButtonsDetail";
 import { TooltipPersonalizado } from "./CustomizedTooltips";
 import ModalForm from "./ModalForm";
 import ButtonsDeleted from "./ButtonsDeleted";
+import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
+import VisorDocumentosSub from "./VisorDocumentosSub";
 const VisorDocumentosOficios = ({
   handleFunction,
   obj,
@@ -34,7 +36,7 @@ const VisorDocumentosOficios = ({
   const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
   const [verarchivo, setverarchivo] = useState(false);
-
+  const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [vrows, setVrows] = useState({});
   const [data, setData] = useState([]);
   const [URLruta, setURLRuta] = useState<string>("");
@@ -163,7 +165,13 @@ const VisorDocumentosOficios = ({
   };
 
   const handleCloseModal = () => {
+    setOpenAdjuntos(false);
     setverarchivo(false);
+  };
+
+  const handleVerSub = (v: any) => {
+    setVrows(v);
+    setOpenAdjuntos(true);
   };
 
   const handleVer = (v: any) => {
@@ -290,6 +298,14 @@ const VisorDocumentosOficios = ({
               row={v}
             ></ButtonsDetail>
 
+            <ButtonsDetail
+              title={"Soporte del Oficio"}
+              handleFunction={handleVerSub}
+              show={true}
+              icon={<ContentPasteSearchIcon />}
+              row={v}
+            ></ButtonsDetail>
+
             <ButtonsDeleted
               handleAccion={handleAccion}
               row={v}
@@ -396,6 +412,16 @@ const VisorDocumentosOficios = ({
             </Grid>
           </DialogContent>
         </ModalForm>
+      ) : (
+        ""
+      )}
+
+      {openAdjuntos ? (
+        <VisorDocumentosSub
+          handleFunction={handleCloseModal}
+          obj={vrows}
+          oficio={obj.row.Oficio}
+        />
       ) : (
         ""
       )}
