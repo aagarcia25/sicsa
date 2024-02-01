@@ -35,6 +35,8 @@ import { ControlOficiosModal } from "./ControlOficiosModal";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import FilePresentIcon from "@mui/icons-material/FilePresent";
 import { formatFecha } from "../../helpers/FormatDate";
+import UsbIcon from "@mui/icons-material/Usb";
+import UsbOffIcon from "@mui/icons-material/UsbOff";
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [openSlider, setOpenSlider] = useState(true);
@@ -476,6 +478,26 @@ export const ControlOficios = () => {
     { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200 },
     { field: "tipoau", headerName: "Tipo", width: 350 },
     { field: "Observaciones", headerName: "Observaciones", width: 350 },
+    {
+      field: "magneticos",
+      headerName: "Medios Magnéticos",
+      width: 100,
+      renderCell: (v) => {
+        return (
+          <>
+            {v.row.magneticos == 1 ? (
+              <Tooltip title={"Contiene medios magnéticos"}>
+                <UsbIcon />
+              </Tooltip>
+            ) : (
+              <Tooltip title={"No contiene medios magnéticos"}>
+                <UsbOffIcon />
+              </Tooltip>
+            )}
+          </>
+        );
+      },
+    },
 
     {
       field: "acciones",
