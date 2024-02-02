@@ -10,6 +10,7 @@ import SelectFrag from "../componentes/SelectFrag";
 import { ShareService } from "../../services/ShareService";
 import Progress from "../Progress";
 import SelectValues from "../../interfaces/Share";
+import { Modalidad } from "../CatModalidad/Modalidad";
 
 export const AuditoriaModal = ({
   handleClose,
@@ -283,6 +284,7 @@ export const AuditoriaModal = ({
     loadFilter(17);
     loadFilter(18);
     loadFilter(21);
+    
 
     if (dt === "") {
     } else {

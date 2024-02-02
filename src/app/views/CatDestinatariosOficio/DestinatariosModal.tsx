@@ -57,17 +57,7 @@ const [errores, setErrores] = useState<IObjectError>({
 
     const handleSend = () => {
         if(!Titular || !Cargo || !Area || !isValidEmail(CorreoElectronico || "") || errores.Telefono.valid){
-          console.log(!Titular);
-          console.log(!Cargo);
-          console.log(!Area);
-          console.log(!isValidEmail(CorreoElectronico|| ""));
-          console.log(!errores.Telefono.valid);
-
-          
-
-
-
-          
+    
           Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
         }else{
           let data = {

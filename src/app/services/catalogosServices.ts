@@ -76,4 +76,8 @@ export class CatalogosServices {
   public static async graficas(data: any) {
     return await post("graficas", data);
   }
+
+  public static async Monitoreo_index(data: any) {
+    return await post("Monitoreo_index", data);
+  }
 }
