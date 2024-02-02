@@ -131,10 +131,6 @@ export const EstatusAcciones = () => {
   const consulta = (data: any) => {
     CatalogosServices.Estatus_Acciones_index(data).then((res) => {
       if (res.SUCCESS) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "¡Consulta Exitosa!",
-        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {
