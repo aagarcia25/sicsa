@@ -348,24 +348,6 @@ const VisorDocumentos = ({
       headerName: "Estatus",
       width: 150,
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    {
-      field: "creado",
-      description: "Creado Por",
-      headerName: "Creado Por",
-      width: 150,
-    },
-    {
-      field: "modi",
-      description: "Modificado Por",
-      headerName: "Modificado Por",
-      width: 150,
-    },
     {
       field: "Nombre",
       description: "Nombre",
@@ -378,7 +360,7 @@ const VisorDocumentos = ({
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
-      width: 210,
+      width: 250,
       renderCell: (v) => {
         console.log("v",v.row);
         
@@ -449,9 +431,6 @@ const VisorDocumentos = ({
 
             }
             
-            
-
-
             <ButtonsDetail
               title={"Ver Trazabilidad"}
               handleFunction={handletrazabilidad}
@@ -463,6 +442,25 @@ const VisorDocumentos = ({
         );
       },
     },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 150,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 150,
+    },
+    
   ];
 
   const handleOpen = (v: any) => {

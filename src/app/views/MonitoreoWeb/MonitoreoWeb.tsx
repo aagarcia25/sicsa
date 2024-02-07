@@ -85,15 +85,6 @@ export const MonitoreoWeb = () => {
           headerName: "Identificador",
           width: 150,
         },
-        
-        { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-        {
-          field: "UltimaActualizacion",
-          headerName: "Última Actualización",
-          width: 150,
-        },
-        { field: "creado", headerName: "Creado Por", width: 200 },
-        { field: "modi", headerName: "Modificado Por", width: 200 },
         { field: "Url", headerName: "URL", width: 350 },
         { field: "Correos", headerName: "Correos", width: 350 },
         { field: "Alias", headerName: "Alias", width: 200 },
@@ -135,6 +126,15 @@ export const MonitoreoWeb = () => {
             );
           },
         },
+        { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+        {
+          field: "UltimaActualizacion",
+          headerName: "Última Actualización",
+          width: 150,
+        },
+        { field: "creado", headerName: "Creado Por", width: 200 },
+        { field: "modi", headerName: "Modificado Por", width: 200 },
+      
     ];
 
     const consulta = (data: any) => {

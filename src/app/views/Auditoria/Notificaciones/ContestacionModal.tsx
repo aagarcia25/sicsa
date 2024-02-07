@@ -69,6 +69,9 @@ export const ContestacionModal = ({
         
       }).catch((e)=>{console.log("e",e);
       });
+    }else if (tipo === 2) {
+      handleSend()
+
     }
 
   };

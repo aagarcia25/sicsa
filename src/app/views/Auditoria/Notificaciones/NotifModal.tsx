@@ -43,6 +43,8 @@ export const NotifModal = ({
   const [ListAPE, setListAPE] = useState<SelectValues[]>([]);
 
   const handleRequestFOficio = () => {
+    console.log("tipo",tipo);
+    
     let data = {
       NUMOPERACION: 5,
       Oficio: Oficio,
@@ -57,7 +59,7 @@ export const NotifModal = ({
           showDenyButton: true,
           showCancelButton: false,
           confirmButtonText: "Confirmar",
-          denyButtonText: `Cancelar`,
+          denyButtonText: `No tomar fecha existente`,
         }).then((result) => {
           if (result.isConfirmed) {
             handleSend(res.RESPONSE[0].Fecha)
@@ -73,6 +75,9 @@ export const NotifModal = ({
         
       }).catch((e)=>{console.log("e",e);
       });
+    }else if (tipo === 2) {
+      handleSend()
+
     }
 
   };

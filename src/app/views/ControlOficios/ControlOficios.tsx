@@ -460,7 +460,7 @@ export const ControlOficios = () => {
     { field: "Nauditoria", headerName: "N° de Auditoría", width: 100 },
     { field: "dfTitular", headerName: "Destinatario", width: 250 },
     { field: "dfCargo", headerName: "Puesto", width: 250 },
-    { field: "Asunto", headerName: "Asunto", width: 450 },
+    { field: "Asunto", headerName: "Asunto", width: 300 },
     { field: "Tema", headerName: "Tema", width: 450 },
 
     { field: "cpNombre", headerName: "Solicitante", width: 250 },
@@ -470,12 +470,32 @@ export const ControlOficios = () => {
       headerName: "Fecha",
       width: 100,
 
+      
+      // renderCell: (v) => {
+      //   return formatFecha(v.row.Fecha);
+        
+      // },
       renderCell: (v) => {
-        return formatFecha(v.row.Fecha);
+        if (v.row.Fecha) {
+          return formatFecha(v.row.Fecha);
+        } 
       },
+      
     },
-    { field: "FechaEntrega", headerName: "Fecha de Entregado", width: 150 },
-    { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200 },
+    { field: "FechaEntrega", headerName: "Fecha de Entregado", width: 150,
+    renderCell: (v) => {
+      if (v.row.FechaEntrega) {
+        return formatFecha(v.row.FechaEntrega);
+      } 
+    },
+  },
+    { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200,
+    renderCell: (v) => {
+      if (v.row.FechaRecibido) {
+        return formatFecha(v.row.FechaRecibido);
+      } 
+    },
+  },
     { field: "Observaciones", headerName: "Observaciones", width: 350 },
     {
       field: "magneticos",
