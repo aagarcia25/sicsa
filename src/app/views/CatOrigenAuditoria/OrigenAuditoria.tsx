@@ -77,15 +77,6 @@ export const OrigenAuditoria = () => {
       headerName: "Identificador",
       width: 150,
     },
-    
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
     { field: "Descripcion", headerName: "Descripción", width: 350 },
     { field: "tipodescripcion", headerName: "Tipo Descripción", width: 350 },
     {
@@ -120,6 +111,15 @@ export const OrigenAuditoria = () => {
         );
       },
     },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
+    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
+    
   ];
 
   const handleClose = () => {

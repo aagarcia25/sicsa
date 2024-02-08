@@ -128,15 +128,6 @@ export const Contestacion = ({
       headerName: "Identificador",
       width: 150,
     },
-    
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
-    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
     { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 150 },
     { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
     { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
@@ -177,6 +168,15 @@ export const Contestacion = ({
         );
       },
     },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
+    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
+  
   ];
 
   useEffect(() => {

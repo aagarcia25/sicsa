@@ -54,7 +54,7 @@ export const OrganoRModal = ({
           showDenyButton: true,
           showCancelButton: false,
           confirmButtonText: "Confirmar",
-          denyButtonText: `Cancelar`,
+          denyButtonText: `No tomar fecha existente`,
         }).then((result) => {
           if (result.isConfirmed) {
             handleSend(res.RESPONSE[0].Fecha)
@@ -70,6 +70,9 @@ export const OrganoRModal = ({
         
       }).catch((e)=>{console.log("e",e);
       });
+    }else if (tipo === 2) {
+      handleSend()
+
     }
 
   };
