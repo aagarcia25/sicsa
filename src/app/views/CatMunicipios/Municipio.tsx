@@ -87,15 +87,6 @@ export const Municipio = () => {
       headerName: "Identificador",
       width: 150,
     },
-    
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "creado", headerName: "Creado Por", width: 200 },
-    { field: "modi", headerName: "Modificado Por", width: 200 },
     { field: "Nombre", headerName: "Nombre", width: 300 },
     { field: "ClaveEstado", headerName: "Clave Estado", width: 100, align: "center", headerAlign: "center" },
     { field: "ClaveINEGI", headerName: "Clave INEGI", width: 100, align: "center", headerAlign: "center" },
@@ -131,6 +122,15 @@ export const Municipio = () => {
         );
       },
     },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "creado", headerName: "Creado Por", width: 200 },
+    { field: "modi", headerName: "Modificado Por", width: 200 },
+
   ];
 
   const handleClose = () => {

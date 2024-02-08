@@ -72,15 +72,6 @@ export const EntidadFiscalizada = () => {
       headerName: "Identificador",
       width: 150,
     },
-    
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
     {
       field: "Descripcion",
       headerName: "Descripción",
@@ -119,6 +110,15 @@ export const EntidadFiscalizada = () => {
         );
       },
     },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
+    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
+   
   ];
 
   const handleClose = () => {

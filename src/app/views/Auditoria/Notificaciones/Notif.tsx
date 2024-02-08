@@ -122,25 +122,6 @@ const Notif = ({
       headerName: "Identificador",
       width: 150,
     },
-    
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    {
-      field: "creado",
-      description: "Creado Por",
-      headerName: "Creado Por",
-      width: 150,
-    },
-    {
-      field: "modi",
-      description: "Modificado Por",
-      headerName: "Modificado Por",
-      width: 150,
-    },
     {
       field: "Oficio",
       description: "Oficio",
@@ -200,6 +181,25 @@ const Notif = ({
         );
       },
     },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 150,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 150,
+    },
+    
   ];
   
 
@@ -210,7 +210,7 @@ const Notif = ({
         if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }
-        if (String(item.menu) === "ELIM") {
+        if (String(item.ControlInterno) === "ELIM") {
           setEliminar(true);
         }
         if (String(item.ControlInterno) === "EDIT") {

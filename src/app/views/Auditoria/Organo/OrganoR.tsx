@@ -109,15 +109,6 @@ export const OrganoR = ({
       headerName: "Identificador",
       width: 150,
     },
-    
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
-    {
-      field: "UltimaActualizacion",
-      headerName: "Última Actualización",
-      width: 150,
-    },
-    { field: "creado", headerName: "Creado Por", width: 150 },
-    { field: "modi", headerName: "Modificado Por", width: 150 },
     { field: "descripcionorigen", headerName: "Organo Origen", width: 300 },
     { field: "descripciodestino", headerName: "Organo Destino", width: 300 },
     { field: "Oficio", headerName: "Oficio", width: 150 },
@@ -157,6 +148,15 @@ export const OrganoR = ({
         );
       },
     },
+    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    {
+      field: "UltimaActualizacion",
+      headerName: "Última Actualización",
+      width: 150,
+    },
+    { field: "creado", headerName: "Creado Por", width: 150 },
+    { field: "modi", headerName: "Modificado Por", width: 150 },
+ 
   ];
 
   useEffect(() => {

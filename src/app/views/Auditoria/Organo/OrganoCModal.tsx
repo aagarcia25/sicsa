@@ -67,6 +67,9 @@ export const OrganoCModal = ({
         
       }).catch((e)=>{console.log("e",e);
       });
+    }else if (tipo === 2) {
+      handleSend()
+
     }
 
   };
