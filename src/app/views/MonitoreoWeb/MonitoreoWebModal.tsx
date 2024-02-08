@@ -27,9 +27,9 @@ export const MonitoreoWebModal = (
 
   const [id, setId] = useState("");
   const [Url, setUrl] = useState("");
-  // const [Correos, setCorreos] = useState<Array<SelectValues>>([]);
-  // const [CorreosList, setCorreosList] = useState<SelectValues[]>([]);
-  const [Correos, setCorreos] = useState("");
+   const [Correos, setCorreos] = useState<Array<SelectValues>>([]);
+   const [CorreosList, setCorreosList] = useState<SelectValues[]>([]);
+  //const [Correos, setCorreos] = useState("");
   const [Alias, setAlias] = useState("");
   const [Tiempo, setTiempo] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
@@ -50,8 +50,8 @@ export const MonitoreoWebModal = (
         CHID: id,
         CHUSER: user.Id,
         Url: Url,
-        //Correos: getArrayCorreo(),
-        Correos: Correos,
+        Correos: getArrayCorreo(),
+        //Correos: Correos,
         Alias: Alias,
         Tiempo: Tiempo,
       };
@@ -94,31 +94,31 @@ export const MonitoreoWebModal = (
     });
   };
 
-  // const loadFilter = (operacion: number, id?: string) => {
-  //   setShow(true);
-  //   let data = { NUMOPERACION: operacion, P_ID: id };
-  //   ShareService.SelectIndex(data).then((res) => {
-  //     if (operacion === 28) {
-  //       setCorreos(res.RESPONSE);
+  const loadFilter = (operacion: number, id?: string) => {
+    setShow(true);
+    let data = { NUMOPERACION: operacion, P_ID: id };
+    ShareService.SelectIndex(data).then((res) => {
+      if (operacion === 28) {
+        setCorreos(res.RESPONSE);
 
 
-  //     }
-  //   });
-  // };
+      }
+    });
+  };
 
-  // function getArrayCorreo() {
+  function getArrayCorreo() {
 
 
-  //   let correosListos = ""
-  //   CorreosList.map((item) => {
-  //     correosListos = correosListos + item.label + ";";
-  //   })
-  //   return (correosListos);
-  // }
+    let correosListos = ""
+    CorreosList.map((item) => {
+      correosListos = correosListos + item.label + ";";
+    })
+    return (correosListos);
+  }
 
 
   useEffect(() => {
-    //loadFilter(28)
+    loadFilter(28)
 
 
 
@@ -169,7 +169,7 @@ export const MonitoreoWebModal = (
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              {/* <Typography sx={{ fontFamily: "sans-serif" }}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
                 Seleccione Correo
               </Typography>
               <Autocomplete
@@ -193,9 +193,9 @@ export const MonitoreoWebModal = (
                 isOptionEqualToValue={(option, value) =>
                   option?.label === value?.label || value?.label === ""
                 }
-              /> */}
+              />
 
-              <TextField
+              {/* <TextField
                 margin="dense"
                 id="Correos"
                 label="Correos"
@@ -206,7 +206,7 @@ export const MonitoreoWebModal = (
                 variant="standard"
                 value={Correos}
                 onChange={(v) => setCorreos(v.target.value)}
-              />
+              /> */}
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
