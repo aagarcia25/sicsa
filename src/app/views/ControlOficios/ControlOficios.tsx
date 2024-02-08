@@ -12,7 +12,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridInputRowSelectionModel } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -37,6 +37,26 @@ import FilePresentIcon from "@mui/icons-material/FilePresent";
 import { formatFecha } from "../../helpers/FormatDate";
 import UsbIcon from "@mui/icons-material/Usb";
 import UsbOffIcon from "@mui/icons-material/UsbOff";
+//import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
+import {
+  Box,
+  Checkbox,
+  createTheme,
+  FormControlLabel,
+  ToggleButtonGroup,
+} from "@mui/material";
+import { esES as coreEsES } from "@mui/material/locale";
+import {
+  DataGrid,
+  GridColumnVisibilityModel,
+  GridToolbar,
+  esES as gridEsES,
+
+} from "@mui/x-data-grid";
+import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
+
+
+
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [openSlider, setOpenSlider] = useState(true);
@@ -470,32 +490,34 @@ export const ControlOficios = () => {
       headerName: "Fecha",
       width: 100,
 
-      
+
       // renderCell: (v) => {
       //   return formatFecha(v.row.Fecha);
-        
+
       // },
       renderCell: (v) => {
         if (v.row.Fecha) {
           return formatFecha(v.row.Fecha);
-        } 
+        }
       },
-      
+
     },
-    { field: "FechaEntrega", headerName: "Fecha de Entregado", width: 150,
-    renderCell: (v) => {
-      if (v.row.FechaEntrega) {
-        return formatFecha(v.row.FechaEntrega);
-      } 
+    {
+      field: "FechaEntrega", headerName: "Fecha de Entregado", width: 150,
+      renderCell: (v) => {
+        if (v.row.FechaEntrega) {
+          return formatFecha(v.row.FechaEntrega);
+        }
+      },
     },
-  },
-    { field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200,
-    renderCell: (v) => {
-      if (v.row.FechaRecibido) {
-        return formatFecha(v.row.FechaRecibido);
-      } 
+    {
+      field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200,
+      renderCell: (v) => {
+        if (v.row.FechaRecibido) {
+          return formatFecha(v.row.FechaRecibido);
+        }
+      },
     },
-  },
     { field: "Observaciones", headerName: "Observaciones", width: 350 },
     {
       field: "magneticos",
@@ -657,8 +679,11 @@ export const ControlOficios = () => {
     });
   };
 
+
+
   useEffect(() => {
     loadFilter(1);
+
 
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "CFOLIOS") {
@@ -681,6 +706,84 @@ export const ControlOficios = () => {
     });
     consulta({ NUMOPERACION: 4 });
   }, []);
+
+  const noSelection = () => {
+    if (selectionModel.length >= 1) {
+      console.log("seleccionaste registros");
+      Swal.fire({
+        icon: "info",
+        title: "Se eliminarán los registros seleccionados",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 8,
+            CHIDs: selectionModel,
+            CHUSER: user.Id,
+          };
+
+          AuditoriaService.Foliosindex(data).then((res) => {
+            console.log("Respuesta:", res);
+
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Registros Eliminados!",
+              });
+              consulta({ NUMOPERACION: 4 });
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+
+          });
+
+
+        }else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+
+    } else {
+      Swal.fire({
+        title: "Favor de Seleccionar Registros",
+        icon: "warning",
+      });
+    }
+  };
+
+
+  const [selectionModel, setSelectionModel] = useState<any[]>([]);
+
+  // ///////////////check
+  // const [selectionModel, setSelectionModel] = React.useState<GridInputRowSelectionModel>([]);
+
+  // useEffect(()=>{console.log("selectionModel",selectionModel);
+  // },[selectionModel])
+  //   const handleBorrar = (v:any) => {
+
+  //     setSelectionModel(v);
+  //     console.log("selectionModel",v);
+
+  //   };
+  // ///////////////check
+  // const handleDeleteSelectedRows = (rowsSelected:any) => {
+  //   console.log("rowsSelectedControlOficios",rowsSelected);
+
+  //   // Filtra las filas que no están seleccionadas
+  //   //const updatedRows = props.rows.filter((row) => !selectedRows.includes(row.id));
+
+  //   // Actualiza el conjunto de filas y las filas en el componente padre
+  //   // setSelectedRows([]);
+  //   // props.setRows(updatedRows);  // Asegúrate de tener una función setRows en tu componente padre
+  // };
+
+  useEffect(() => {
+    console.log("useefectselectionModel", selectionModel);
+
+  }, [selectionModel])
 
   return (
     <div style={{ height: 600, width: "100%", padding: "1%" }}>
@@ -768,7 +871,15 @@ export const ControlOficios = () => {
         alignItems="center"
         sx={{ padding: "1%" }}
       >
-        <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+        <Grid item xs={12} sm={6} md={4} lg={2}>
+          <Button
+            // disabled={descripcion === "" || nombre === ""}
+            className={"actualizar"}
+            onClick={() => noSelection()}
+          >
+            {"Eliminar Selección"}
+          </Button>
+        </Grid>
         <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
         <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
         <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
@@ -839,7 +950,7 @@ export const ControlOficios = () => {
         ""
       )}
 
-      <MUIXDataGrid columns={columns} rows={bancos} />
+      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel} multiselect={true} />
       {openAdjuntos ? (
         <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
       ) : (
