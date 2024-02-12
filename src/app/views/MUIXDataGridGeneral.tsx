@@ -42,17 +42,18 @@ export default function MUIXDataGrid(props: any) {
     <div style={{ height: "70vh", overflow: "auto" }}>
       <ThemeProvider theme={theme}>
         <DataGrid
+          {...props.rows}
           columns={props.columns}
           rows={props.rows}
+          density="compact"
           checkboxSelection
           rowSelectionModel={selectionModel}
           onRowSelectionModelChange={handleSelectionModelChange}
-          density="compact"
           columnVisibilityModel={columnVisibilityModel}
           onColumnVisibilityModelChange={(newModel) =>
             setColumnVisibilityModel(newModel)
           }
-          //rowsPerPageOptions={[10, 25, 50, 100]}
+          rowsPerPageOptions={[10, 25, 50, 100]}
           
           disableRowSelectionOnClick
           // disableColumnFilter
@@ -60,7 +61,7 @@ export default function MUIXDataGrid(props: any) {
           disableDensitySelector
           getRowId={(row) => (row.Id ? row.Id : row.id)}
           rowHeight={255}
-          //pageSize={pageSize}
+          pageSize={pageSize}
           getRowHeight={() => "auto"}
           sx={{
             fontFamily: "Poppins,sans-serif",
@@ -111,7 +112,7 @@ export default function MUIXDataGrid(props: any) {
             toolbarExportPrint: "Imprimir",
             checkboxSelectionSelectRow: "Filas seleccionadas",
             checkboxSelectionSelectAllRows: "Seleccionar todas las filas",
-            ///////errorOverlayDefaultLabel: "Ha ocurrido un error.",
+            errorOverlayDefaultLabel: "Ha ocurrido un error.",
             footerRowSelected: (count) =>
               count > 1
                 ? `${count.toLocaleString()} filas seleccionadas`

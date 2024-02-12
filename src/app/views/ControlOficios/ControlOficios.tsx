@@ -54,6 +54,10 @@ import {
 
 } from "@mui/x-data-grid";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
+import { ButtonsImport } from "../componentes/ButtonsImport";
+import { CatalogosServices } from "../../services/catalogosServices";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 
 
 
@@ -77,6 +81,8 @@ export const ControlOficios = () => {
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [cancelar, setCancelar] = useState<boolean>(false);
   const [bs, setBs] = useState<boolean>(false);
+  const [show, setShow] = useState(false);
+
 
   const handleAccion = (v: any) => {
     Swal.fire({
@@ -640,13 +646,6 @@ export const ControlOficios = () => {
     setVrows(v);
   };
 
-  // const verfiltros = () => {
-  //   if (showfilter) {
-  //     setshowfilter(false);
-  //   } else {
-  //     setshowfilter(true);
-  //   }
-  // };
   const handleFilterChange1 = (v: string) => {
     setanio(v);
   };
@@ -679,7 +678,27 @@ export const ControlOficios = () => {
     });
   };
 
-
+  const handleUpload = (data: any) => {
+    setShow(true);
+    let file = data?.target?.files?.[0] || "";
+    const formData = new FormData();
+    formData.append("inputfile", file, "inputfile.xlxs");
+    formData.append("CHUSER", user.Id);
+    formData.append("tipo", "migraoficios");
+    CatalogosServices.migraData(formData).then((res) => {
+      if (res.SUCCESS) {
+        setShow(false);
+        Toast.fire({
+          icon: "success",
+          title: "¡Consulta Exitosa!",
+        });
+        consulta({ NUMOPERACION: 4 });
+      } else {
+        setShow(false);
+        Swal.fire("¡Error!", res.STRMESSAGE, "error");
+      }
+    });
+  };
 
   useEffect(() => {
     loadFilter(1);
@@ -741,7 +760,7 @@ export const ControlOficios = () => {
           });
 
 
-        }else if (result.isDenied) {
+        } else if (result.isDenied) {
           Swal.fire("No se realizaron cambios", "", "info");
         }
       });
@@ -757,28 +776,6 @@ export const ControlOficios = () => {
 
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
 
-  // ///////////////check
-  // const [selectionModel, setSelectionModel] = React.useState<GridInputRowSelectionModel>([]);
-
-  // useEffect(()=>{console.log("selectionModel",selectionModel);
-  // },[selectionModel])
-  //   const handleBorrar = (v:any) => {
-
-  //     setSelectionModel(v);
-  //     console.log("selectionModel",v);
-
-  //   };
-  // ///////////////check
-  // const handleDeleteSelectedRows = (rowsSelected:any) => {
-  //   console.log("rowsSelectedControlOficios",rowsSelected);
-
-  //   // Filtra las filas que no están seleccionadas
-  //   //const updatedRows = props.rows.filter((row) => !selectedRows.includes(row.id));
-
-  //   // Actualiza el conjunto de filas y las filas en el componente padre
-  //   // setSelectedRows([]);
-  //   // props.setRows(updatedRows);  // Asegúrate de tener una función setRows en tu componente padre
-  // };
 
   useEffect(() => {
     console.log("useefectselectionModel", selectionModel);
@@ -786,7 +783,9 @@ export const ControlOficios = () => {
   }, [selectionModel])
 
   return (
-    <div style={{ height: 600, width: "100%", padding: "1%" }}>
+    <Grid container spacing={1} padding={0}>
+
+      <div style={{ height: 600, width: "100%", padding: "1%" }}>
       {open ? (
         <ControlOficiosModal
           tipo={tipoOperacion}
@@ -797,7 +796,6 @@ export const ControlOficios = () => {
         ""
       )}
       <TitleComponent title={"Control de Oficios"} show={openSlider} />
-      {/* <Collapse in={showfilter} timeout="auto" unmountOnExit> */}
       <Grid
         container
         item
@@ -871,20 +869,11 @@ export const ControlOficios = () => {
         alignItems="center"
         sx={{ padding: "1%" }}
       >
-        <Grid item xs={12} sm={6} md={4} lg={2}>
-          <Button
-            // disabled={descripcion === "" || nombre === ""}
-            className={"actualizar"}
-            onClick={() => noSelection()}
-          >
-            {"Eliminar Selección"}
-          </Button>
-        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
         <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
         <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
         <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
       </Grid>
-      {/* </Collapse> */}
       {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
       {agregar ? (
         <TooltipPersonalizado
@@ -949,6 +938,35 @@ export const ControlOficios = () => {
       ) : (
         ""
       )}
+      {/* <ButtonsDetail
+          handleAccion={noSelection}
+          row={selectionModel}
+          show={eliminar}
+            disabled={descripcion === "" || nombre === ""}
+            className={"actualizar"}
+            onClick={() => noSelection()}
+          >
+            {"Eliminar Selección"}
+          </ButtonsDetail> */}
+      <Tooltip
+        title={
+          "Eliminar Registros Seleccionados"
+        }
+      >
+        <ToggleButton value="check" className="guardar" size="small" onChange={() => noSelection()}>
+          <IconButton
+            color="inherit"
+            component="label"
+            size="small"
+
+          >
+            <DeleteForeverIcon />
+          </IconButton>
+        </ToggleButton>
+      </Tooltip>
+      {agregar ? (<ButtonsImport handleOpen={handleUpload} agregar={agregar} />) : ("")}
+
+
 
       <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel} multiselect={true} />
       {openAdjuntos ? (
@@ -957,5 +975,7 @@ export const ControlOficios = () => {
         ""
       )}
     </div>
+    </Grid>
+    
   );
 };
