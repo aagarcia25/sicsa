@@ -150,7 +150,7 @@ export default function MUIXDataGridGeneral(props: any) {
     //     />
     //   </ThemeProvider>
     // </div>
-    <div style={{ height: "55vh", overflow: "auto" }}>
+    <div style={{ height: "59vh", overflow: "auto" }}>
     <ThemeProvider theme={theme}>
       <DataGrid
         {...props.rows}
@@ -174,7 +174,7 @@ export default function MUIXDataGridGeneral(props: any) {
           fontFamily: "Poppins, sans-serif",
           fontWeight: "600",
           fontSize: "12px",
-          overflow: "auto",
+          //overflow: "auto",
           "& .super-app.positive": {
             color: "#000000",
           },
