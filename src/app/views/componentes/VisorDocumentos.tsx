@@ -27,9 +27,9 @@ import ModalForm from "./ModalForm";
 import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 import InsightsIcon from "@mui/icons-material/Insights";
 import Trazabilidad from "./Trazabilidad";
-import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import VisorDocumentosSub from "./VisorDocumentosSub";
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 
 const VisorDocumentos = ({
   handleFunction,
@@ -40,7 +40,7 @@ const VisorDocumentos = ({
   handleFunction: Function;
   obj: any;
   tipo: number;
-  cat?:string;
+  cat?: string;
 }) => {
   const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
@@ -61,16 +61,15 @@ const VisorDocumentos = ({
   const [adjuntar, setAdjuntar] = useState<boolean>(false);
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
-  const [habilitarVerificacion, setHabilitarVerificacion] = useState<boolean>(false);
-
-  
+  const [habilitarVerificacion, setHabilitarVerificacion] =
+    useState<boolean>(false);
 
   const consulta = () => {
     let data = {
       NUMOPERACION: 4,
       P_IDAUDITORIA: obj.id,
       TOKEN: JSON.parse(String(getToken())),
-      CAT:cat,
+      CAT: cat,
     };
 
     AuditoriaService.Filesindex(data).then((res) => {
@@ -129,7 +128,7 @@ const VisorDocumentos = ({
         if (item.data.SUCCESS) {
           count++;
         } else {
-          count--; 
+          count--;
         }
       });
 
@@ -341,7 +340,7 @@ const VisorDocumentos = ({
       headerName: "Route",
       width: 150,
     },
-   
+
     {
       field: "estatus",
       description: "Estatus",
@@ -362,8 +361,8 @@ const VisorDocumentos = ({
       sortable: false,
       width: 250,
       renderCell: (v) => {
-        console.log("v",v.row);
-        
+        console.log("v", v.row);
+
         return (
           <>
             {eliminarDocumentos ? (
@@ -387,7 +386,7 @@ const VisorDocumentos = ({
               icon={<RemoveRedEyeIcon />}
               row={v}
             ></ButtonsDetail>
-             <ButtonsDetail
+            <ButtonsDetail
               title={"Soporte del Oficio"}
               handleFunction={handleVerSub}
               show={true}
@@ -418,19 +417,21 @@ const VisorDocumentos = ({
             )}
 
             {habilitarVerificacion ? (
-              String(v.row.estatus) === "Verificado"?(
-              <ButtonsDetail
-              title={"Habilitar verificación"}
-              handleFunction={handleHabilitarVerificacion}
-              show={true}
-              icon={<PublishedWithChangesIcon />}
-              row={v}
-            ></ButtonsDetail>
-            ):("")
-            ):("")
+              String(v.row.estatus) === "Verificado" ? (
+                <ButtonsDetail
+                  title={"Habilitar verificación"}
+                  handleFunction={handleHabilitarVerificacion}
+                  show={true}
+                  icon={<PublishedWithChangesIcon />}
+                  row={v}
+                ></ButtonsDetail>
+              ) : (
+                ""
+              )
+            ) : (
+              ""
+            )}
 
-            }
-            
             <ButtonsDetail
               title={"Ver Trazabilidad"}
               handleFunction={handletrazabilidad}
@@ -460,7 +461,6 @@ const VisorDocumentos = ({
       headerName: "Modificado Por",
       width: 150,
     },
-    
   ];
 
   const handleOpen = (v: any) => {
@@ -495,9 +495,7 @@ const VisorDocumentos = ({
       }
     });
     consulta();
-    console.log("data",obj);
-    
-   
+    console.log("data", obj);
   }, []);
 
   return (
@@ -508,76 +506,75 @@ const VisorDocumentos = ({
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h4">{obj.row.Oficio}</Typography>
           <Typography variant="h4">{obj.row.NAUDITORIA}</Typography>
-
-
         </Box>
 
-        {true ? (
-          <>
-            {adjuntar ? (
-              <TooltipPersonalizado
-                title={
-                  <React.Fragment>
-                    <Typography color="inherit">Cargar Documentos</Typography>
-                    {"Permite la carga de Documentos de Forma Masiva "}
-                  </React.Fragment>
-                }
-              >
-                <ToggleButton value="check">
-                  <IconButton
-                    color="primary"
-                    aria-label="upload documento"
-                    component="label"
-                    size="small"
+        <Grid container>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            {true ? (
+              <>
+                {adjuntar ? (
+                  <TooltipPersonalizado
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">
+                          Cargar Documentos
+                        </Typography>
+                        {"Permite la carga de Documentos de Forma Masiva "}
+                      </React.Fragment>
+                    }
                   >
-                    <input
-                      multiple
-                      hidden
-                      accept=".*"
-                      type="file"
-                      value=""
-                      onChange={(v) => ProcesaSPeis(v)}
-                    />
-                    <FileUploadIcon />
-                  </IconButton>
-                </ToggleButton>
-              </TooltipPersonalizado>
+                    <ToggleButton value="check">
+                      <IconButton
+                        color="primary"
+                        aria-label="upload documento"
+                        component="label"
+                        size="small"
+                      >
+                        <input
+                          multiple
+                          hidden
+                          accept=".*"
+                          type="file"
+                          value=""
+                          onChange={(v) => ProcesaSPeis(v)}
+                        />
+                        <FileUploadIcon />
+                      </IconButton>
+                    </ToggleButton>
+                  </TooltipPersonalizado>
+                ) : (
+                  ""
+                )}
+              </>
             ) : (
               ""
             )}
-          </>
-        ) : (
-          ""
-        )}
 
-        <MUIXDataGrid columns={columns} rows={data} />
+            <MUIXDataGrid columns={columns} rows={data} />
+          </Grid>
+          <Grid item xs={12} sm={8} md={8} lg={8}>
+            {verarchivo ? (
+              <div className="ContainerVisualizacionSPEI">
+                <iframe width="100%" height="100%" src={URLruta} />
+              </div>
+            ) : (
+              ""
+            )}
+          </Grid>
+        </Grid>
       </ModalForm>
       {verTrazabilidad ? (
         <Trazabilidad handleFunction={handleCloseModal} obj={vrows} />
       ) : (
         ""
       )}
-      {verarchivo ? (
-        <ModalForm title={"Visualización"} handleClose={handleCloseModal}>
-          <DialogContent dividers={true}>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
-                {/* <h3>Nombre de archivo: {name}</h3> */}
-              </Grid>
-              <Grid item container justifyContent="center" xs={12}>
-                <div className="ContainerVisualizacionSPEI">
-                  <iframe width="100%" height="100%" src={URLruta} />
-                </div>
-              </Grid>
-            </Grid>
-          </DialogContent>
-        </ModalForm>
-      ) : (
-        ""
-      )}
 
-{openAdjuntos ? (
-        <VisorDocumentosSub handleFunction={handleCloseModal} obj={vrows} oficio={obj.row.Oficio}  />
+      {openAdjuntos ? (
+        <VisorDocumentosSub
+          handleFunction={handleCloseModal}
+          obj={vrows}
+          oficio={obj.row.Oficio}
+        />
       ) : (
         ""
       )}
