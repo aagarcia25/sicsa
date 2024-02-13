@@ -247,7 +247,7 @@ const VisorDocumentosOficios = ({
       headerName: "Route",
       width: 150,
     },
- {
+    {
       field: "Nombre",
       description: "Nombre",
       headerName: "Nombre",
@@ -314,7 +314,6 @@ const VisorDocumentosOficios = ({
       headerName: "Modificado Por",
       width: 150,
     },
-   
   ];
 
   const handleOpen = (v: any) => {
@@ -358,63 +357,61 @@ const VisorDocumentosOficios = ({
           <Typography variant="h4">{obj.row.Oficio}</Typography>
         </Box>
 
-        {true ? (
-          <>
-            {adjuntar ? (
-              <TooltipPersonalizado
-                title={
-                  <React.Fragment>
-                    <Typography color="inherit">Cargar Documentos</Typography>
-                    {"Permite la carga de Documentos de Forma Masiva "}
-                  </React.Fragment>
-                }
-              >
-                <ToggleButton value="check">
-                  <IconButton
-                    color="primary"
-                    aria-label="upload documento"
-                    component="label"
-                    size="small"
+        <Grid container>
+          <Grid item xs={12} sm={4} md={4} lg={4}>
+            {true ? (
+              <>
+                {adjuntar ? (
+                  <TooltipPersonalizado
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">
+                          Cargar Documentos
+                        </Typography>
+                        {"Permite la carga de Documentos de Forma Masiva "}
+                      </React.Fragment>
+                    }
                   >
-                    <input
-                      multiple
-                      hidden
-                      accept=".*"
-                      type="file"
-                      value=""
-                      onChange={(v) => ProcesaSPeis(v)}
-                    />
-                    <FileUploadIcon />
-                  </IconButton>
-                </ToggleButton>
-              </TooltipPersonalizado>
+                    <ToggleButton value="check">
+                      <IconButton
+                        color="primary"
+                        aria-label="upload documento"
+                        component="label"
+                        size="small"
+                      >
+                        <input
+                          multiple
+                          hidden
+                          accept=".*"
+                          type="file"
+                          value=""
+                          onChange={(v) => ProcesaSPeis(v)}
+                        />
+                        <FileUploadIcon />
+                      </IconButton>
+                    </ToggleButton>
+                  </TooltipPersonalizado>
+                ) : (
+                  ""
+                )}
+              </>
             ) : (
               ""
             )}
-          </>
-        ) : (
-          ""
-        )}
 
-        <MUIXDataGrid columns={columns} rows={data} />
+            <MUIXDataGrid columns={columns} rows={data} />
+          </Grid>
+          <Grid item xs={12} sm={8} md={8} lg={8}>
+            {verarchivo ? (
+              <div className="ContainerVisualizacionSPEI">
+                <iframe width="100%" height="100%" src={URLruta} />
+              </div>
+            ) : (
+              ""
+            )}
+          </Grid>
+        </Grid>
       </ModalForm>
-
-      {verarchivo ? (
-        <ModalForm title={"Visualización"} handleClose={handleCloseModal}>
-          <DialogContent dividers={true}>
-            <Grid container spacing={1}>
-              <Grid item xs={12}></Grid>
-              <Grid item container justifyContent="center" xs={12}>
-                <div className="ContainerVisualizacionSPEI">
-                  <iframe width="100%" height="100%" src={URLruta} />
-                </div>
-              </Grid>
-            </Grid>
-          </DialogContent>
-        </ModalForm>
-      ) : (
-        ""
-      )}
 
       {openAdjuntos ? (
         <VisorDocumentosSub

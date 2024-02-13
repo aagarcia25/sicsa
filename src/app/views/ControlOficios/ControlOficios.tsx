@@ -37,6 +37,7 @@ import FilePresentIcon from "@mui/icons-material/FilePresent";
 import { formatFecha } from "../../helpers/FormatDate";
 import UsbIcon from "@mui/icons-material/Usb";
 import UsbOffIcon from "@mui/icons-material/UsbOff";
+//import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import {
   Box,
   Checkbox,
@@ -50,15 +51,11 @@ import {
   GridColumnVisibilityModel,
   GridToolbar,
   esES as gridEsES,
-
 } from "@mui/x-data-grid";
+import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import { ButtonsImport } from "../componentes/ButtonsImport";
 import { CatalogosServices } from "../../services/catalogosServices";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
-
-
-
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
@@ -81,7 +78,6 @@ export const ControlOficios = () => {
   const [cancelar, setCancelar] = useState<boolean>(false);
   const [bs, setBs] = useState<boolean>(false);
   const [show, setShow] = useState(false);
-
 
   const handleAccion = (v: any) => {
     Swal.fire({
@@ -494,21 +490,16 @@ export const ControlOficios = () => {
       field: "Fecha",
       headerName: "Fecha",
       width: 100,
-
-
-      // renderCell: (v) => {
-      //   return formatFecha(v.row.Fecha);
-
-      // },
       renderCell: (v) => {
         if (v.row.Fecha) {
           return formatFecha(v.row.Fecha);
         }
       },
-
     },
     {
-      field: "FechaEntrega", headerName: "Fecha de Entregado", width: 150,
+      field: "FechaEntrega",
+      headerName: "Fecha de Entregado",
+      width: 150,
       renderCell: (v) => {
         if (v.row.FechaEntrega) {
           return formatFecha(v.row.FechaEntrega);
@@ -516,7 +507,9 @@ export const ControlOficios = () => {
       },
     },
     {
-      field: "FechaRecibido", headerName: "Fecha de Recibido", width: 200,
+      field: "FechaRecibido",
+      headerName: "Fecha de Recibido",
+      width: 200,
       renderCell: (v) => {
         if (v.row.FechaRecibido) {
           return formatFecha(v.row.FechaRecibido);
@@ -702,7 +695,6 @@ export const ControlOficios = () => {
   useEffect(() => {
     loadFilter(1);
 
-
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "CFOLIOS") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -755,15 +747,11 @@ export const ControlOficios = () => {
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
-
           });
-
-
         } else if (result.isDenied) {
           Swal.fire("No se realizaron cambios", "", "info");
         }
       });
-
     } else {
       Swal.fire({
         title: "Favor de Seleccionar Registros",
@@ -772,203 +760,198 @@ export const ControlOficios = () => {
     }
   };
 
-
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
-
 
   useEffect(() => {
     console.log("useefectselectionModel", selectionModel);
-
-  }, [selectionModel])
-
-  
+  }, [selectionModel]);
 
   return (
-    <div>
     <Grid container spacing={1} padding={0}>
-
       <div style={{ height: 600, width: "100%", padding: "1%" }}>
-      {open ? (
-        <ControlOficiosModal
-          tipo={tipoOperacion}
-          handleClose={handleClose}
-          dt={vrows}
-        />
-      ) : (
-        ""
-      )}
-      <TitleComponent title={"Control de Oficios"} show={openSlider} />
-      <Grid
-        container
-        item
-        spacing={1}
-        xs={12}
-        sm={12}
-        md={12}
-        lg={12}
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ padding: "1%" }}
-      >
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Typography sx={{ fontFamily: "sans-serif" }}>
-            Año Cuenta Pública:
-          </Typography>
-          <SelectFrag
-            value={anio}
-            options={ListAnio}
-            onInputChange={handleFilterChange1}
-            placeholder={"Seleccione.."}
-            disabled={false}
+        {open ? (
+          <ControlOficiosModal
+            tipo={tipoOperacion}
+            handleClose={handleClose}
+            dt={vrows}
           />
+        ) : (
+          ""
+        )}
+        <TitleComponent title={"Control de Oficios"} show={openSlider} />
+        <Grid
+          container
+          item
+          spacing={1}
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ padding: "1%" }}
+        >
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Typography sx={{ fontFamily: "sans-serif" }}>
+              Año Cuenta Pública:
+            </Typography>
+            <SelectFrag
+              value={anio}
+              options={ListAnio}
+              onInputChange={handleFilterChange1}
+              placeholder={"Seleccione.."}
+              disabled={false}
+            />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            sx={{ justifyContent: "center", display: "flex" }}
+          >
+            <Tooltip title="Buscar">
+              <Button
+                onClick={() => {
+                  consulta({ Anio: anio, NUMOPERACION: 4 });
+                }}
+                variant="contained"
+                color="secondary"
+                endIcon={<SendIcon sx={{ color: "white" }} />}
+              >
+                <Typography sx={{ color: "white" }}> Buscar </Typography>
+              </Button>
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Tooltip title="Limpiar Filtros">
+              <Button
+                onClick={clearFilter}
+                variant="contained"
+                color="secondary"
+                endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
+              >
+                <Typography sx={{ color: "white" }}>Limpiar Filtros</Typography>
+              </Button>
+            </Tooltip>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
         </Grid>
         <Grid
+          container
           item
+          spacing={1}
           xs={12}
-          sm={6}
-          md={4}
-          lg={3}
-          sx={{ justifyContent: "center", display: "flex" }}
+          sm={12}
+          md={12}
+          lg={12}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ padding: "1%" }}
         >
-          <Tooltip title="Buscar">
-            <Button
-              onClick={() => {
-                consulta({ Anio: anio, NUMOPERACION: 4 });
-              }}
-              variant="contained"
-              color="secondary"
-              endIcon={<SendIcon sx={{ color: "white" }} />}
-            >
-              <Typography sx={{ color: "white" }}> Buscar </Typography>
-            </Button>
-          </Tooltip>
+          <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+          <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+          <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+          <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Tooltip title="Limpiar Filtros">
-            <Button
-              onClick={clearFilter}
-              variant="contained"
-              color="secondary"
-              endIcon={<CleaningServicesIcon sx={{ color: "white" }} />}
-            >
-              <Typography sx={{ color: "white" }}>Limpiar Filtros</Typography>
-            </Button>
-          </Tooltip>
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-      </Grid>
-      <Grid
-        container
-        item
-        spacing={1}
-        xs={12}
-        sm={12}
-        md={12}
-        lg={12}
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ padding: "1%" }}
-      >
-        <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
-        <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
-        <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
-        <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
-      </Grid>
-      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
-      {agregar ? (
-        <TooltipPersonalizado
-          title={
-            <React.Fragment>
-              <Typography color="inherit">Cargar Oficios</Typography>
-              {"Permite la carga de oficios de forma masiva"}
-            </React.Fragment>
-          }
-        >
-          <ToggleButton value="check" className="guardar" size="small">
-            <IconButton
-              color="inherit"
-              aria-label="upload documento"
-              component="label"
-              size="small"
-            >
-              <input
-                multiple
-                hidden
-                accept=".pdf"
-                type="file"
-                value=""
-                onChange={(v) => registrardatos(v)}
-              />
-              <FileUploadIcon />
-            </IconButton>
-          </ToggleButton>
-        </TooltipPersonalizado>
-      ) : (
-        ""
-      )}
-      {agregar ? (
-        <TooltipPersonalizado
-          title={
-            <React.Fragment>
-              <Typography color="inherit">
-                Relacionar Documentos a los Oficios
-              </Typography>
-            </React.Fragment>
-          }
-        >
-          <ToggleButton value="check" className="guardar" size="small">
-            <IconButton
-              color="inherit"
-              aria-label="upload documento"
-              component="label"
-              size="small"
-            >
-              <input
-                multiple
-                hidden
-                accept=".pdf"
-                type="file"
-                value=""
-                onChange={(v) => CargaDocumentos(v)}
-              />
-              <FilePresentIcon />
-            </IconButton>
-          </ToggleButton>
-        </TooltipPersonalizado>
-      ) : (
-        ""
-      )}
-      
-      <Tooltip
-        title={
-          "Eliminar Registros Seleccionados"
-        }
-      >
-        <ToggleButton value="check" className="guardar" size="small" onChange={() => noSelection()}>
-          <IconButton
-            color="inherit"
-            component="label"
-            size="small"
-
+        {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+        {agregar ? (
+          <TooltipPersonalizado
+            title={
+              <React.Fragment>
+                <Typography color="inherit">Cargar Oficios</Typography>
+                {"Permite la carga de oficios de forma masiva"}
+              </React.Fragment>
+            }
           >
-            <DeleteForeverIcon />
-          </IconButton>
-        </ToggleButton>
-      </Tooltip>
-      {agregar ? (<ButtonsImport handleOpen={handleUpload} agregar={agregar} />) : ("")}
-      <Grid >
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel} multiselect={true} />
+            <ToggleButton value="check" className="guardar" size="small">
+              <IconButton
+                color="inherit"
+                aria-label="upload documento"
+                component="label"
+                size="small"
+              >
+                <input
+                  multiple
+                  hidden
+                  accept=".pdf"
+                  type="file"
+                  value=""
+                  onChange={(v) => registrardatos(v)}
+                />
+                <FileUploadIcon />
+              </IconButton>
+            </ToggleButton>
+          </TooltipPersonalizado>
+        ) : (
+          ""
+        )}
+        {agregar ? (
+          <TooltipPersonalizado
+            title={
+              <React.Fragment>
+                <Typography color="inherit">
+                  Relacionar Documentos a los Oficios
+                </Typography>
+              </React.Fragment>
+            }
+          >
+            <ToggleButton value="check" className="guardar" size="small">
+              <IconButton
+                color="inherit"
+                aria-label="upload documento"
+                component="label"
+                size="small"
+              >
+                <input
+                  multiple
+                  hidden
+                  accept=".pdf"
+                  type="file"
+                  value=""
+                  onChange={(v) => CargaDocumentos(v)}
+                />
+                <FilePresentIcon />
+              </IconButton>
+            </ToggleButton>
+          </TooltipPersonalizado>
+        ) : (
+          ""
+        )}
 
-      </Grid>
-      {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
-      ) : (
-        ""
-      )}
-    </div>
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
+          <ToggleButton
+            value="check"
+            className="guardar"
+            size="small"
+            onChange={() => noSelection()}
+          >
+            <IconButton color="inherit" component="label" size="small">
+              <DeleteForeverIcon />
+            </IconButton>
+          </ToggleButton>
+        </Tooltip>
+        {agregar ? (
+          <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
+        ) : (
+          ""
+        )}
+
+        <MUIXDataGridGeneral
+          columns={columns}
+          rows={bancos}
+          setRowSelected={setSelectionModel}
+          multiselect={true}
+        />
+        {openAdjuntos ? (
+          <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
+        ) : (
+          ""
+        )}
+      </div>
     </Grid>
-    </div>
   );
 };
