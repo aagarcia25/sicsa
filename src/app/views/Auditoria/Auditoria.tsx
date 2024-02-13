@@ -44,7 +44,7 @@ import BusinessIcon from "@mui/icons-material/Business";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import OrganoC from "./Organo/OrganoC";
 import { render } from "@testing-library/react";
-import LinkIcon from '@mui/icons-material/Link';
+import LinkIcon from "@mui/icons-material/Link";
 import axios from "axios";
 import { log } from "console";
 import { ok } from "assert";
@@ -75,7 +75,7 @@ export const Auditoria = () => {
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [entrega, setEntrega] = useState<boolean>(false);
 
-  const [showfilter, setshowfilter] = useState<boolean>(false);
+  const [showfilter, setshowfilter] = useState<boolean>(true);
 
   const [FolioSIGA, setFolioSIGA] = useState("");
   const [NAUDITORIA, setNAUDITORIA] = useState("");
@@ -119,7 +119,6 @@ export const Auditoria = () => {
       setVrows(data);
       setOpenAdjuntos(true);
     }
-
   };
 
   const handleClose = () => {
@@ -138,7 +137,6 @@ export const Auditoria = () => {
       setVrows(data);
       setOpenModalAcciones(true);
     }
-
   };
 
   const handleOficios = (data: any) => {
@@ -158,21 +156,25 @@ export const Auditoria = () => {
   };
 
   const MostrarLink = (data: any) => {
-    window.open("https://informe.asf.gob.mx/Documentos/Auditorias/" + data.row.anio + "_" + data.row.NAUDITORIA + "_a.pdf", "_blank")
-  }
-
+    window.open(
+      "https://informe.asf.gob.mx/Documentos/Auditorias/" +
+        data.row.anio +
+        "_" +
+        data.row.NAUDITORIA +
+        "_a.pdf",
+      "_blank"
+    );
+  };
 
   const handleFilterChangeMunicipio = (v: string) => {
     setMunicipio(v);
   };
 
   const handleDetalle = (data: any) => {
-
     if (data.row.entregado !== "1") {
       setVrows(data);
       setOpenModalDetalle(true);
     }
-
   };
 
   const handleORgano = (data: any) => {
@@ -180,7 +182,6 @@ export const Auditoria = () => {
       setVrows(data);
       setopenModalOrgano(true);
     }
-
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -200,7 +201,6 @@ export const Auditoria = () => {
   };
 
   const handleAccion = (v: any) => {
-
     if (v.tipo == 1) {
       setTipoOperacion(2);
       setModo("Editar Registro");
@@ -255,9 +255,7 @@ export const Auditoria = () => {
         confirmButtonText: "Confirmar",
         denyButtonText: `Cancelar`,
       }).then((result) => {
-
         if (result.isConfirmed) {
-
           let data = {
             NUMOPERACION: 5,
             CHID: v.row.id,
@@ -269,23 +267,19 @@ export const Auditoria = () => {
               Toast.fire({
                 icon: "success",
                 title: "Auditoría Entregada",
-              })
+              });
               consulta();
-
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
-          })
+          });
         } else if (result.isDenied) {
-          Swal.fire("No se realizaron cambios", "", "info")
+          Swal.fire("No se realizaron cambios", "", "info");
         }
-      })
+      });
     }
+  };
 
-
-  }
-
-  
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -365,21 +359,21 @@ export const Auditoria = () => {
       sortable: false,
       width: 400,
       renderCell: (v) => {
-
-        
-
         return (
           <>
-            {eliminar ? (String(v.row.entregado) !== "1" ? (
-              <ButtonsDeleted
-                handleAccion={handleAccion}
-                row={v}
-                show={true}
-              ></ButtonsDeleted>
+            {eliminar ? (
+              String(v.row.entregado) !== "1" ? (
+                <ButtonsDeleted
+                  handleAccion={handleAccion}
+                  row={v}
+                  show={true}
+                ></ButtonsDeleted>
+              ) : (
+                ""
+              )
             ) : (
               ""
-            )
-            ) : ("")}
+            )}
 
             <ButtonsEdit
               handleAccion={handleAccion}
@@ -411,13 +405,17 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
 
-            {entrega ? (<ButtonsDetail
-              title={"Cambiar Entrega"}
-              handleFunction={handleEntregar}
-              show={true}
-              icon={<FactCheckIcon />}
-              row={v}
-            ></ButtonsDetail>) : ("")}
+            {entrega ? (
+              <ButtonsDetail
+                title={"Cambiar Entrega"}
+                handleFunction={handleEntregar}
+                show={true}
+                icon={<FactCheckIcon />}
+                row={v}
+              ></ButtonsDetail>
+            ) : (
+              ""
+            )}
 
             <ButtonsDetail
               title={"Resultado de la Auditoria"}
@@ -440,16 +438,14 @@ export const Auditoria = () => {
               icon={<AlignHorizontalLeftIcon />}
               row={v}
             ></ButtonsDetail>
-            
-              <ButtonsDetail
-                title={"Auditoría individual"}
-                handleFunction={MostrarLink}
-                show={true}
-                icon={<LinkIcon />}
-                row={v}
-              ></ButtonsDetail>
 
-
+            <ButtonsDetail
+              title={"Auditoría individual"}
+              handleFunction={MostrarLink}
+              show={true}
+              icon={<LinkIcon />}
+              row={v}
+            ></ButtonsDetail>
           </>
         );
       },
@@ -512,7 +508,7 @@ export const Auditoria = () => {
       }
     });
   };
-
+  /*
   useEffect(() => {
     if (
       FolioSIGA === "" &&
@@ -524,7 +520,7 @@ export const Auditoria = () => {
     ) {
       consulta();
     }
-  }, [FolioSIGA, NAUDITORIA, idEstatus, municipio, idInicioauditoria, anio]);
+  }, [FolioSIGA, NAUDITORIA, idEstatus, municipio, idInicioauditoria, anio]);*/
 
   const loadFilter = (operacion: number, id?: string) => {
     let data = { NUMOPERACION: operacion, P_ID: id };
@@ -567,10 +563,10 @@ export const Auditoria = () => {
         }
       }
     });
-    consulta();
+    setOpenSlider(false);
+    //consulta();
   }, []);
 
-  
   return (
     <div>
       <Grid container spacing={1} padding={0}>
@@ -747,17 +743,15 @@ export const Auditoria = () => {
               <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
             </Grid>
           </Collapse>
-          
-          {agregar ? (
-            <ButtonsAdd
-              handleOpen={handleOpen}
-              agregar={true}
-            />
-          ) : (""
-          )}
-                  <Progress open={show}></Progress>
 
-          {agregar ? (<ButtonsImport handleOpen={handleUpload} agregar={agregar} />):("")}
+          {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+          <Progress open={show}></Progress>
+
+          {agregar ? (
+            <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
+          ) : (
+            ""
+          )}
 
           <ButtonsShare
             title={showfilter ? "Ocultar Filtros" : "Ver Filtros"}
