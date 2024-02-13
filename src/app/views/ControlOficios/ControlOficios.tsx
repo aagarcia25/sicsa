@@ -37,7 +37,6 @@ import FilePresentIcon from "@mui/icons-material/FilePresent";
 import { formatFecha } from "../../helpers/FormatDate";
 import UsbIcon from "@mui/icons-material/Usb";
 import UsbOffIcon from "@mui/icons-material/UsbOff";
-//import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import {
   Box,
   Checkbox,
@@ -53,10 +52,10 @@ import {
   esES as gridEsES,
 
 } from "@mui/x-data-grid";
-import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import { ButtonsImport } from "../componentes/ButtonsImport";
 import { CatalogosServices } from "../../services/catalogosServices";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 
 
 
@@ -782,7 +781,10 @@ export const ControlOficios = () => {
 
   }, [selectionModel])
 
+  
+
   return (
+    <div>
     <Grid container spacing={1} padding={0}>
 
       <div style={{ height: 600, width: "100%", padding: "1%" }}>
@@ -938,16 +940,7 @@ export const ControlOficios = () => {
       ) : (
         ""
       )}
-      {/* <ButtonsDetail
-          handleAccion={noSelection}
-          row={selectionModel}
-          show={eliminar}
-            disabled={descripcion === "" || nombre === ""}
-            className={"actualizar"}
-            onClick={() => noSelection()}
-          >
-            {"Eliminar Selección"}
-          </ButtonsDetail> */}
+      
       <Tooltip
         title={
           "Eliminar Registros Seleccionados"
@@ -965,10 +958,10 @@ export const ControlOficios = () => {
         </ToggleButton>
       </Tooltip>
       {agregar ? (<ButtonsImport handleOpen={handleUpload} agregar={agregar} />) : ("")}
-
-
-
+      <Grid >
       <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel} multiselect={true} />
+
+      </Grid>
       {openAdjuntos ? (
         <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
       ) : (
@@ -976,6 +969,6 @@ export const ControlOficios = () => {
       )}
     </div>
     </Grid>
-    
+    </div>
   );
 };
