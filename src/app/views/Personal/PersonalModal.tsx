@@ -38,7 +38,7 @@ export const PersonalModal = ({
     const [RFC, setRFC] = useState("");
     const [CURP, setCURP] = useState("");
     const [CorreoElectronico, setCorreoElectronico] = useState("");
-    const [Telefono, setTelefono] = useState(0);
+    const [Telefono, setTelefono] = useState();
     const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
      //------------------------Errores---------------------------------------------
