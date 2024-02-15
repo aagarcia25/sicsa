@@ -42,6 +42,10 @@ export default function MUIXDataGridGeneral(props: any) {
       magneticos: false,
       FechaRecibido: false,
       FechaEntrega: false,
+      FechaCreacion: false,
+      UltimaActualizacion: false,
+      creado: false,
+      modi: false,
     });
 
   const hasData = props.rows.length < 8;
@@ -72,6 +76,7 @@ export default function MUIXDataGridGeneral(props: any) {
           pageSize={pageSize}
           getRowHeight={() => "auto"}
           sx={{
+            
             fontFamily: "Poppins, sans-serif",
             fontWeight: "600",
             fontSize: "12px",

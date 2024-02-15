@@ -15,7 +15,10 @@ import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
 import VisorDocumentos from "../../componentes/VisorDocumentos";
 import { OficiosModal } from "./OficiosModal";
-import { Typography } from "@mui/material";
+import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
+import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 export const Oficios = ({
   handleFunction,
   obj,
@@ -38,6 +41,8 @@ export const Oficios = ({
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
+  const [selectionModel, setSelectionModel] = useState<any[]>([]);
+
 
   const handleVerAdjuntos = (data: any) => {
     setVrows(data);
@@ -48,6 +53,49 @@ export const Oficios = ({
     setOpen(false);
     setOpenAdjuntos(false);
     consulta();
+  };
+
+  const noSelection = () => {
+    if (selectionModel.length >= 1) {
+      console.log("seleccionaste registros");
+      Swal.fire({
+        icon: "info",
+        title: "Se eliminarán los registros seleccionados",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 9,
+            CHIDs: selectionModel,
+            CHUSER: user.Id,
+          };
+
+          AuditoriaService.OficiosA_index(data).then((res) => {
+            console.log("Respuesta:", res);
+
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Registros Eliminados!",
+              });
+              consulta();
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "Favor de Seleccionar Registros",
+        icon: "warning",
+      });
+    }
   };
 
   const handleAccion = (v: any) => {
@@ -212,8 +260,21 @@ export const Oficios = ({
           {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
         </Typography>
         {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={true} />):("")}
+        {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+          <ToggleButton
+            value="check"
+            className="guardar"
+            size="small"
+            onChange={() => noSelection()}
+          >
+            <IconButton color="inherit" component="label" size="small">
+              <DeleteForeverIcon />
+            </IconButton>
+          </ToggleButton>
+        </Tooltip>):("") }
         
-        <MUIXDataGrid columns={columns} rows={data} />
+        <MUIXDataGridGeneral columns={columns} rows={data} setRowSelected={setSelectionModel}
+          multiselect={true}/>
       </ModalForm>
       {openAdjuntos ? (
         <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={4}/>
