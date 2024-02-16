@@ -11,6 +11,9 @@ import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import TitleComponent from "../componentes/TitleComponent";
 import { TipoAuditoriaModal } from "./TipoAuditoriaModal";
+import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
+import { IconButton, ToggleButton, Tooltip } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export const TipoAuditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -25,6 +28,7 @@ export const TipoAuditoria = () => {
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
+  const [selectionModel, setSelectionModel] = useState<any[]>([]);
 
   const handleAccion = (v: any) => {
     if (v.tipo == 1) {
@@ -62,6 +66,49 @@ export const TipoAuditoria = () => {
         } else if (result.isDenied) {
           Swal.fire("No se realizaron cambios", "", "info");
         }
+      });
+    }
+  };
+
+  const noSelection = () => {
+    if (selectionModel.length >= 1) {
+      console.log("seleccionaste registros");
+      Swal.fire({
+        icon: "info",
+        title: "Se eliminarán los registros seleccionados",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 5,
+            CHIDs: selectionModel,
+            CHUSER: user.Id,
+          };
+
+          CatalogosServices.Tipos_Auditoria_index(data).then((res) => {
+            console.log("Respuesta:", res);
+
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Registros Eliminados!",
+              });
+              consulta({ NUMOPERACION: 4 });
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "Favor de Seleccionar Registros",
+        icon: "warning",
       });
     }
   };
@@ -182,8 +229,22 @@ export const TipoAuditoria = () => {
         />
       ) : (""
       )}
+      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+          <ToggleButton
+            value="check"
+            className="guardar"
+            size="small"
+            onChange={() => noSelection()}
+          >
+            <IconButton color="inherit" component="label" size="small">
+              <DeleteForeverIcon />
+            </IconButton>
+          </ToggleButton>
+        </Tooltip>):("") }
 
-      <MUIXDataGrid columns={columns} rows={bancos} />
+      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
+          multiselect={true}
+/>
     </div>
   );
 };
