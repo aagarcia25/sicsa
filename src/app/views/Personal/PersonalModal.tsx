@@ -135,7 +135,9 @@ export const PersonalModal = ({
       };
 
       const validarNumero = (dato: string, state: any) => {
-        if (/^\d+(\.\d*)?$/.test(dato)) {
+        if (/^\d+(\.\d*)?$/.test(dato)) 
+        //if (/^[0-9*]+$/.test(dato))
+        {
           return dato;
         } else if (dato.length === 0) {
           return "";
