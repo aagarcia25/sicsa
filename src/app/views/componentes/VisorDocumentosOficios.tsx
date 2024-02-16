@@ -1,14 +1,8 @@
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import DownloadingIcon from "@mui/icons-material/Downloading";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import {
-  Box,
-  DialogContent,
-  Grid,
-  IconButton,
-  ToggleButton,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, IconButton, ToggleButton, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -20,12 +14,13 @@ import { AuditoriaService } from "../../services/AuditoriaService";
 import { getPermisos, getToken, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import Progress from "../Progress";
+import ButtonsDeleted from "./ButtonsDeleted";
 import { ButtonsDetail } from "./ButtonsDetail";
+import FormDialog from "./CFolder";
 import { TooltipPersonalizado } from "./CustomizedTooltips";
 import ModalForm from "./ModalForm";
-import ButtonsDeleted from "./ButtonsDeleted";
-import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
-import VisorDocumentosSub from "./VisorDocumentosSub";
+import { Breadcrumb } from "antd";
+
 const VisorDocumentosOficios = ({
   handleFunction,
   obj,
@@ -33,27 +28,30 @@ const VisorDocumentosOficios = ({
   handleFunction: Function;
   obj: any;
 }) => {
+  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
+  const [opendialog, setopendialog] = useState(false);
   const [verarchivo, setverarchivo] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [vrows, setVrows] = useState({});
   const [data, setData] = useState([]);
   const [URLruta, setURLRuta] = useState<string>("");
-
-  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
-  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [adjuntar, setAdjuntar] = useState<boolean>(false);
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
+  const [breadcrumbs, setBreadcrumbs] = useState([obj.row.Oficio]);
+  const [explorerRoute, setexplorerRoute] = useState<string>("");
 
   const consulta = () => {
     let data = {
-      NUMOPERACION: 4,
+      NUMOPERACION: 10,
       P_ID: obj.id,
+      FOLIO: explorerRoute,
       TOKEN: JSON.parse(String(getToken())),
     };
 
@@ -90,7 +88,7 @@ const VisorDocumentosOficios = ({
       const formData = new FormData();
       formData.append("NUMOPERACION", "1");
       formData.append("ID", obj.id);
-      formData.append("FOLIO", obj.row.Oficio);
+      formData.append("FOLIO", explorerRoute);
       formData.append("CHUSER", user.Id);
       formData.append("TOKEN", JSON.parse(String(getToken())));
       formData.append("FILE", item.Archivo, item.NOMBRE);
@@ -164,14 +162,50 @@ const VisorDocumentosOficios = ({
     });
   };
 
-  const handleCloseModal = () => {
-    setOpenAdjuntos(false);
-    setverarchivo(false);
-  };
+  const createFolder = (v: any) => {
+    console.log(v);
 
-  const handleVerSub = (v: any) => {
-    setVrows(v);
-    setOpenAdjuntos(true);
+    if (v !== undefined && v != "") {
+      let peticiones: any[] = [];
+      const formData = new FormData();
+      formData.append("NUMOPERACION", "9");
+      formData.append("ID", obj.id);
+      formData.append("CHUSER", user.Id);
+      formData.append("FOLIO", explorerRoute);
+      formData.append("TOKEN", JSON.parse(String(getToken())));
+      formData.append("ROUTE", v);
+
+      axios
+        .post(
+          process.env.REACT_APP_APPLICATION_BASE_URL + "FoliosFilesindex",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "X-Requested-With": "XMLHttpRequest",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.SUCCESS) {
+            console.log(response.data);
+            consulta();
+            setopendialog(false);
+          } else {
+            setopendialog(false);
+            // Manejar caso de error si es necesario
+            console.error("Error en la petición:", response.data);
+          }
+        })
+        .catch((error) => {
+          // Manejar errores de red u otros
+          console.error("Error en la petición:", error);
+          setopendialog(false);
+        });
+    } else {
+      setopendialog(false);
+    }
   };
 
   const handleVer = (v: any) => {
@@ -243,13 +277,13 @@ const VisorDocumentosOficios = ({
     },
 
     {
-      field: "Route",
-      headerName: "Route",
+      field: "RUTA",
+      headerName: "RUTA",
       width: 150,
     },
     {
-      field: "Nombre",
-      description: "Nombre",
+      field: "NOMBRE",
+      description: "NOMBRE",
       headerName: "Nombre",
       width: 250,
     },
@@ -263,35 +297,38 @@ const VisorDocumentosOficios = ({
       renderCell: (v) => {
         return (
           <>
-            <ButtonsDetail
-              title={"Ver"}
-              handleFunction={handleVer}
-              show={true}
-              icon={<RemoveRedEyeIcon />}
-              row={v}
-            ></ButtonsDetail>
+            {!v.row.ESCARPETA ? (
+              <>
+                <ButtonsDetail
+                  title={"Ver"}
+                  handleFunction={handleVer}
+                  show={true}
+                  icon={<RemoveRedEyeIcon />}
+                  row={v}
+                ></ButtonsDetail>
+                <ButtonsDetail
+                  title={"Descargar"}
+                  handleFunction={handleDescargarFile}
+                  show={true}
+                  icon={<DownloadingIcon />}
+                  row={v}
+                ></ButtonsDetail>
 
-            <ButtonsDetail
-              title={"Descargar"}
-              handleFunction={handleDescargarFile}
-              show={true}
-              icon={<DownloadingIcon />}
-              row={v}
-            ></ButtonsDetail>
-
-            <ButtonsDetail
-              title={"Soporte del Oficio"}
-              handleFunction={handleVerSub}
-              show={true}
-              icon={<ContentPasteSearchIcon />}
-              row={v}
-            ></ButtonsDetail>
-
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsDeleted>
+                <ButtonsDeleted
+                  handleAccion={handleAccion}
+                  row={v}
+                  show={true}
+                ></ButtonsDeleted>
+              </>
+            ) : (
+              <ButtonsDetail
+                title={"Ver Carpeta"}
+                handleFunction={handleVerSub}
+                show={true}
+                icon={<RemoveRedEyeIcon />}
+                row={v}
+              ></ButtonsDetail>
+            )}
           </>
         );
       },
@@ -316,13 +353,31 @@ const VisorDocumentosOficios = ({
     },
   ];
 
-  const handleOpen = (v: any) => {
-    setOpen(true);
-    setVrows("");
+  const handleVerSub = (v: any) => {
+    let data = {
+      NUMOPERACION: 5,
+      P_ROUTE: v.row.Route,
+      TOKEN: JSON.parse(String(getToken())),
+    };
+
+    const existeOficio = breadcrumbs.some((breadcrumb) => {
+      // Verificar si el nombre del breadcrumb es "Oficio"
+      return breadcrumb === "/" + v.row.NOMBRE;
+    });
+
+    if (existeOficio) {
+      console.log("YA Existe el Elemento");
+    } else {
+      const nuevoElemento = "/" + v.row.NOMBRE;
+      setBreadcrumbs((prevBreadcrumbs) => [...prevBreadcrumbs, nuevoElemento]);
+    }
   };
 
   useEffect(() => {
-    console.log(obj);
+    setexplorerRoute(breadcrumbs.join(""));
+  }, [breadcrumbs]);
+
+  useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -346,15 +401,17 @@ const VisorDocumentosOficios = ({
       }
     });
     consulta();
-  }, []);
+  }, [explorerRoute]);
 
   return (
     <div>
       <ModalForm title={"Documentos del Oficio"} handleClose={handleFunction}>
         <Progress open={openSlider}></Progress>
-
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h4">{obj.row.Oficio}</Typography>
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          {breadcrumbs}
         </Box>
 
         <Grid container>
@@ -394,6 +451,35 @@ const VisorDocumentosOficios = ({
                 ) : (
                   ""
                 )}
+
+                {adjuntar ? (
+                  <TooltipPersonalizado
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">
+                          Crear Directorio
+                        </Typography>
+                        {"Permite la creación de un Directorio"}
+                      </React.Fragment>
+                    }
+                  >
+                    <ToggleButton value="check">
+                      <IconButton
+                        color="primary"
+                        aria-label="upload documento"
+                        component="label"
+                        size="small"
+                        onClick={() => {
+                          setopendialog(true);
+                        }}
+                      >
+                        <CreateNewFolderIcon />
+                      </IconButton>
+                    </ToggleButton>
+                  </TooltipPersonalizado>
+                ) : (
+                  ""
+                )}
               </>
             ) : (
               ""
@@ -413,15 +499,7 @@ const VisorDocumentosOficios = ({
         </Grid>
       </ModalForm>
 
-      {openAdjuntos ? (
-        <VisorDocumentosSub
-          handleFunction={handleCloseModal}
-          obj={vrows}
-          oficio={obj.row.Oficio}
-        />
-      ) : (
-        ""
-      )}
+      {opendialog ? <FormDialog handleClose={createFolder}></FormDialog> : ""}
     </div>
   );
 };

@@ -730,7 +730,7 @@ export const ControlOficios = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           let data = {
-            NUMOPERACION: 8,
+            NUMOPERACION: 9,
             CHIDs: selectionModel,
             CHUSER: user.Id,
           };
@@ -922,7 +922,7 @@ export const ControlOficios = () => {
           ""
         )}
 
-        <Tooltip title={"Eliminar Registros Seleccionados"}>
+          {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -933,7 +933,9 @@ export const ControlOficios = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>
+        </Tooltip>):("") }
+        
+
         {agregar ? (
           <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
         ) : (

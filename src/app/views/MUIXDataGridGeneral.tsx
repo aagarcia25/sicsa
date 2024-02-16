@@ -42,6 +42,10 @@ export default function MUIXDataGridGeneral(props: any) {
       magneticos: false,
       FechaRecibido: false,
       FechaEntrega: false,
+      FechaCreacion: false,
+      UltimaActualizacion: false,
+      creado: false,
+      modi: false,
     });
 
   const hasData = props.rows.length < 8;
@@ -72,6 +76,7 @@ export default function MUIXDataGridGeneral(props: any) {
           pageSize={pageSize}
           getRowHeight={() => "auto"}
           sx={{
+            
             fontFamily: "Poppins, sans-serif",
             fontWeight: "600",
             fontSize: "12px",
@@ -122,11 +127,11 @@ export default function MUIXDataGridGeneral(props: any) {
             footerTotalRows: "Filas Totales:",
             columnMenuLabel: "Menú",
             columnMenuShowColumns: "Mostrar columnas",
-            columnMenuFilter: "Filtro",
-            columnMenuHideColumn: "Ocultar",
+            //columnMenuFilter: "Filtro",
+            //columnMenuHideColumn: "Ocultar",
             columnMenuUnsort: "Desordenar",
-            columnMenuSortAsc: "Ordenar ASC",
-            columnMenuSortDesc: "Ordenar DESC",
+            //columnMenuSortAsc: "Ordenar ASC",
+            //columnMenuSortDesc: "Ordenar DESC",
             columnHeaderFiltersTooltipActive: (count) =>
               count > 1 ? `${count} filtros activos` : `${count} filtro activo`,
             columnHeaderFiltersLabel: "Mostrar filtros",
