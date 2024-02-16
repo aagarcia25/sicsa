@@ -30,13 +30,13 @@ export default function MUIXDataGrid(props: any) {
       caaid: false,
       crid: false,
       idtipo: false,
-
       FechaCreacion: false,
       UltimaActualizacion: false,
       creado: false,
       modi: false,
       CreadoPor: false,
       ModificadoPor: false,
+      RUTA: false,
     });
 
   const hasData = props.rows.length < 8;

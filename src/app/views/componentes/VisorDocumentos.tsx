@@ -8,6 +8,7 @@ import {
   Grid,
   IconButton,
   ToggleButton,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
@@ -30,6 +31,9 @@ import Trazabilidad from "./Trazabilidad";
 import ContentPasteSearchIcon from "@mui/icons-material/ContentPasteSearch";
 import VisorDocumentosSub from "./VisorDocumentosSub";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 
 const VisorDocumentos = ({
   handleFunction,
@@ -63,6 +67,7 @@ const VisorDocumentos = ({
   const [verificar, setVerificar] = useState<boolean>(false);
   const [habilitarVerificacion, setHabilitarVerificacion] =
     useState<boolean>(false);
+  const [selectionModel, setSelectionModel] = useState<any[]>([]);
 
   const consulta = () => {
     let data = {
@@ -328,6 +333,49 @@ const VisorDocumentos = ({
     });
   };
 
+  const noSelection = () => {
+    if (selectionModel.length >= 1) {
+      console.log("seleccionaste registros");
+      Swal.fire({
+        icon: "info",
+        title: "Se eliminarán los registros seleccionados",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 9,
+            CHIDs: selectionModel,
+            CHUSER: user.Id,
+          };
+
+          AuditoriaService.Filesindex(data).then((res) => {
+            console.log("Respuesta:", res);
+
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Registros Eliminados!",
+              });
+              consulta();
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "Favor de Seleccionar Registros",
+        icon: "warning",
+      });
+    }
+  };
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -550,7 +598,22 @@ const VisorDocumentos = ({
               ""
             )}
 
-            <MUIXDataGrid columns={columns} rows={data} />
+            {eliminarDocumentos ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+              <ToggleButton
+                value="check"
+                className="guardar"
+                size="small"
+                onChange={() => noSelection()}
+              >
+                <IconButton color="inherit" component="label" size="small">
+                  <DeleteForeverIcon />
+                </IconButton>
+              </ToggleButton>
+            </Tooltip>) : ("")}
+
+            <MUIXDataGridGeneral columns={columns} rows={data} 
+            setRowSelected={setSelectionModel}
+              multiselect={true} />
           </Grid>
           <Grid item xs={12} sm={8} md={8} lg={8}>
             {verarchivo ? (

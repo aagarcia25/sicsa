@@ -12,6 +12,9 @@ import Swal from "sweetalert2";
 import { CatalogosServices } from "../../services/catalogosServices";
 import { Toast } from "../../helpers/Toast";
 import { TroubleshootRounded } from "@mui/icons-material";
+import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
+import { IconButton, ToggleButton, Tooltip } from "@mui/material";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export const Personal = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -27,6 +30,9 @@ export const Personal = () => {
   const [agregar, setAgregar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
+  const [selectionModel, setSelectionModel] = useState<any[]>([]);
+
+  
 
   const handleAccion = (v: any) => {
     Swal.fire({
@@ -59,6 +65,49 @@ export const Personal = () => {
         Swal.fire("No se realizaron cambios", "", "info");
       }
     });
+  };
+
+  const noSelection = () => {
+    if (selectionModel.length >= 1) {
+      console.log("seleccionaste registros");
+      Swal.fire({
+        icon: "info",
+        title: "Se eliminarán los registros seleccionados",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 5,
+            CHIDs: selectionModel,
+            CHUSER: user.Id,
+          };
+
+          CatalogosServices.Personal_index(data).then((res) => {
+            console.log("Respuesta:", res);
+
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Registros Eliminados!",
+              });
+              consulta({ NUMOPERACION: 4 });
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "Favor de Seleccionar Registros",
+        icon: "warning",
+      });
+    }
   };
 
   const handleClose = () => {
@@ -223,8 +272,21 @@ export const Personal = () => {
         ""
       )}
       {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
-
-      <MUIXDataGrid columns={columns} rows={bancos} />
+      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+          <ToggleButton
+            value="check"
+            className="guardar"
+            size="small"
+            onChange={() => noSelection()}
+          >
+            <IconButton color="inherit" component="label" size="small">
+              <DeleteForeverIcon />
+            </IconButton>
+          </ToggleButton>
+        </Tooltip>):("") }
+      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
+          multiselect={true}
+/>
     </div>
   );
 };
