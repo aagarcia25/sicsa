@@ -56,7 +56,7 @@ import { ButtonsImport } from "../componentes/ButtonsImport";
 import Progress from "../Progress";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
-
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -79,6 +79,8 @@ export const Auditoria = () => {
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [entrega, setEntrega] = useState<boolean>(false);
+  const [hablitarEntrega, sethablitarEntrega] = useState<boolean>(false);
+
   const [showfilter, setshowfilter] = useState<boolean>(true);
   const [FolioSIGA, setFolioSIGA] = useState("");
   const [NAUDITORIA, setNAUDITORIA] = useState("");
@@ -345,6 +347,47 @@ export const Auditoria = () => {
     }
   };
 
+  const handleHabilitarAuditoriaEntregada = (v: any) => {
+    if (v.row.entregado == 0) {
+      Toast.fire({
+        icon: "success",
+        title: "¡La auditoría no se ha entregado!",
+      });
+    } else{
+      Swal.fire({
+        icon: "info",
+        title: "¿Desea habilitar la auditoría entregada?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 5,
+            CHID: v.row.id,
+            CHUSER: user.Id,
+          };
+          AuditoriaService.Auditoriaindex(data).then((res) => {
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "Auditoría Habilitada",
+              });
+              consulta();
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+    }
+      
+    
+  };
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -481,6 +524,18 @@ export const Auditoria = () => {
             ) : (
               ""
             )}
+
+            {hablitarEntrega ? (
+              <ButtonsDetail
+                title={"Habilitar Auditoría Entregada"}
+                handleFunction={handleHabilitarAuditoriaEntregada}
+                show={true}
+                icon={<AssignmentReturnIcon />}
+                row={v}
+              ></ButtonsDetail>
+            ) : (
+              ""
+            )}  
 
             <ButtonsDetail
               title={"Resultado de la Auditoria"}
@@ -642,6 +697,8 @@ export const Auditoria = () => {
         }
         if (String(item.ControlInterno) === "ENTREGA") {
           setEntrega(true);
+        }if (String(item.ControlInterno) === "HABILENTREGA") {
+          sethablitarEntrega(true);
         }
       }
     });
