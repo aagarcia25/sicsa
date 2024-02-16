@@ -79,17 +79,20 @@ export const Auditoria = () => {
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [entrega, setEntrega] = useState<boolean>(false);
-
   const [showfilter, setshowfilter] = useState<boolean>(true);
-
   const [FolioSIGA, setFolioSIGA] = useState("");
   const [NAUDITORIA, setNAUDITORIA] = useState("");
   const [idEstatus, setidEstatus] = useState("");
+  const [idTipo, setidTipo] = useState("");
+  const [idOrigenAuditoria, setidOrigenAuditoria] = useState("");
+  const [idEntidadFiscalizada, setidEntidadFiscalizada] = useState("");
   const [municipio, setMunicipio] = useState("");
   const [idInicioauditoria, setidInicioauditoria] = useState("");
   const [anio, setanio] = useState("");
-
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
+  const [ListIdOrigenAuditoria, setListIdOrigenAuditoria] = useState<SelectValues[]>([]);
+  const [ListIOdEntidadFiscalizada, setListIOdEntidadFiscalizada] = useState<SelectValues[]>([]);
+  const [ListIdTipo, setListIdTipo] = useState<SelectValues[]>([]);
   const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
   const [modalidad, setmodalidad] = useState("");
@@ -97,7 +100,6 @@ export const Auditoria = () => {
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
   const [show, setShow] = useState(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
-
 
   const handleUpload = (data: any) => {
     setShow(true);
@@ -177,6 +179,10 @@ export const Auditoria = () => {
     setMunicipio(v);
   };
 
+  const handleFilterChangeEntidadFiscalizada = (v: string) => {
+    setidEntidadFiscalizada(v);
+  };
+
   const handleDetalle = (data: any) => {
     if (data.row.entregado !== "1") {
       setVrows(data);
@@ -203,8 +209,17 @@ export const Auditoria = () => {
     setidInicioauditoria(v);
   };
 
+  const handleFilterChangeOrigen = (v: string) => {
+    setidOrigenAuditoria(v);
+  };
+
   const handleFilterChangeestatus = (v: string) => {
     setidEstatus(v);
+  };
+
+  const handleFilterChangeClasificacionAuditoria = (v: string) => {
+    setidTipo(v);
+      loadFilter(21, v);
   };
 
   const noSelection = () => {
@@ -528,10 +543,14 @@ export const Auditoria = () => {
     setFolioSIGA("");
     setNAUDITORIA("");
     setidEstatus("");
+    setidTipo("");
     setMunicipio("");
     setidInicioauditoria("");
     setanio("");
     setmodalidad("");
+    setidOrigenAuditoria("");
+    setidEntidadFiscalizada("");
+
   };
   const consulta = () => {
     let data = {
@@ -539,10 +558,14 @@ export const Auditoria = () => {
       FolioSIGA: FolioSIGA === "false" ? "" : FolioSIGA,
       NAUDITORIA: NAUDITORIA === "false" ? "" : NAUDITORIA,
       idEstatus: idEstatus === "false" ? "" : idEstatus,
-      idmunicipio: municipio === "false" ? "" : municipio,
-      idInicioauditoria: idInicioauditoria === "false" ? "" : idInicioauditoria,
+      //idmunicipio: municipio === "false" ? "" : municipio,
+      //idInicioauditoria: idInicioauditoria === "false" ? "" : idInicioauditoria,
       anio: anio === "false" ? "" : anio,
       idModalidad: modalidad === "false" ? "" : modalidad,
+      tipo: idTipo === "false" ? "" : idTipo,
+      ente: idOrigenAuditoria === "false" ? "" : idOrigenAuditoria,
+      idCatEntidadFiscalizada: idEntidadFiscalizada === "false" ? "" : idEntidadFiscalizada,
+
     };
     AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
@@ -564,13 +587,16 @@ export const Auditoria = () => {
       FolioSIGA === "" &&
       NAUDITORIA === "" &&
       idEstatus === "" &&
+      idTipo === "" &&
       municipio === "" &&
       idInicioauditoria === "" &&
+      idOrigenAuditoria === "" &&
       anio === ""
+      idEntidadFiscalizada === "" &&
     ) {
       consulta();
     }
-  }, [FolioSIGA, NAUDITORIA, idEstatus, municipio, idInicioauditoria, anio]);*/
+  }, [FolioSIGA, NAUDITORIA, idEstatus, idTipo,idOrigenAuditoria, idEntidadFiscalizada, municipio, idInicioauditoria, anio]);*/
 
   const loadFilter = (operacion: number, id?: string) => {
     let data = { NUMOPERACION: operacion, P_ID: id };
@@ -585,8 +611,12 @@ export const Auditoria = () => {
         setListInicio(res.RESPONSE);
       } else if (operacion === 18) {
         setListIdEstatus(res.RESPONSE);
-      } else if (operacion === 17) {
-        setListMunicipio(res.RESPONSE);
+      } else if (operacion === 2) {
+        setListIOdEntidadFiscalizada(res.RESPONSE);
+      } else if (operacion === 14) {
+        setListIdTipo(res.RESPONSE);
+      } else if (operacion === 21) {
+        setListIdOrigenAuditoria(res.RESPONSE);
       }
     });
   };
@@ -596,7 +626,9 @@ export const Auditoria = () => {
     loadFilter(12);
     loadFilter(16);
     loadFilter(18);
-    loadFilter(17);
+    loadFilter(2);
+    loadFilter(14);
+    loadFilter(21);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -637,7 +669,7 @@ export const Auditoria = () => {
           />
 
           <Collapse in={showfilter} timeout="auto" unmountOnExit>
-            <Grid
+          <Grid
               container
               item
               spacing={1}
@@ -652,12 +684,12 @@ export const Auditoria = () => {
             >
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Typography sx={{ fontFamily: "sans-serif" }}>
-                  Estatus:
+                  Clasificación Auditoría:
                 </Typography>
                 <SelectFrag
-                  value={idEstatus}
-                  options={ListIdEstatus}
-                  onInputChange={handleFilterChangeestatus}
+                  value={idTipo}
+                  options={ListIdTipo}
+                  onInputChange={handleFilterChangeClasificacionAuditoria}
                   placeholder={"Seleccione.."}
                   disabled={false}
                 />
@@ -667,9 +699,9 @@ export const Auditoria = () => {
                   Origen Auditoría:
                 </Typography>
                 <SelectFrag
-                  value={idInicioauditoria}
-                  options={Listinicio}
-                  onInputChange={handleFilterChangeinicio}
+                  value={idOrigenAuditoria}
+                  options={ListIdOrigenAuditoria}
+                  onInputChange={handleFilterChangeOrigen}
                   placeholder={"Seleccione.."}
                   disabled={false}
                 />
@@ -688,15 +720,16 @@ export const Auditoria = () => {
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Typography sx={{ fontFamily: "sans-serif" }}>
-                  Modalidad:
+                  Estatus:
                 </Typography>
                 <SelectFrag
-                  value={modalidad}
-                  options={ListModalidad}
-                  onInputChange={handleFilterChangemodalidad}
-                  placeholder={"Seleccione ..."}
+                  value={idEstatus}
+                  options={ListIdEstatus}
+                  onInputChange={handleFilterChangeestatus}
+                  placeholder={"Seleccione.."}
                   disabled={false}
                 />
+                
               </Grid>
             </Grid>
             <Grid
@@ -713,19 +746,19 @@ export const Auditoria = () => {
               sx={{ padding: "1%" }}
             >
               <Grid item xs={12} sm={6} md={4} lg={3}>
-                <TextField
-                  margin="dense"
-                  id="NAUDITORIA"
-                  label="N° de Auditoría"
-                  value={NAUDITORIA}
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  onChange={(v) => setNAUDITORIA(v.target.value)}
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Entidad Fiscalizada:
+                </Typography>
+                <SelectFrag
+                  value={idEntidadFiscalizada}
+                  options={ListIOdEntidadFiscalizada}
+                  onInputChange={handleFilterChangeEntidadFiscalizada}
+                  placeholder={"Seleccione.."}
+                  disabled={false}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
-                <TextField
+              <TextField
                   margin="dense"
                   id="FolioSIGA"
                   label="Folio SIGA"
@@ -737,18 +770,29 @@ export const Auditoria = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField
+                  margin="dense"
+                  id="NAUDITORIA"
+                  label="N° de Auditoría"
+                  value={NAUDITORIA}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(v) => setNAUDITORIA(v.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Typography sx={{ fontFamily: "sans-serif" }}>
-                  Municipio:
+                  Modalidad:
                 </Typography>
                 <SelectFrag
-                  value={municipio}
-                  options={ListMunicipio}
-                  onInputChange={handleFilterChangeMunicipio}
-                  placeholder={"Seleccione.."}
+                  value={modalidad}
+                  options={ListModalidad}
+                  onInputChange={handleFilterChangemodalidad}
+                  placeholder={"Seleccione ..."}
                   disabled={false}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             </Grid>
             <Grid
               container
