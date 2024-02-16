@@ -839,24 +839,7 @@ export const ControlOficios = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
         </Grid>
-        <Grid
-          container
-          item
-          spacing={1}
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          sx={{ padding: "1%" }}
-        >
-          <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
-          <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
-          <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
-          <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
-        </Grid>
+        
         {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
         {agregar ? (
           <TooltipPersonalizado
@@ -941,7 +924,6 @@ export const ControlOficios = () => {
         ) : (
           ""
         )}
-
         <MUIXDataGridGeneral
           columns={columns}
           rows={bancos}
