@@ -19,8 +19,8 @@ import { ButtonsDetail } from "./ButtonsDetail";
 import FormDialog from "./CFolder";
 import { TooltipPersonalizado } from "./CustomizedTooltips";
 import ModalForm from "./ModalForm";
-import { Breadcrumb } from "antd";
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 const VisorDocumentosOficios = ({
   handleFunction,
   obj,
@@ -48,6 +48,7 @@ const VisorDocumentosOficios = ({
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
   const consulta = () => {
+    setOpenSlider(true);
     let data = {
       NUMOPERACION: 10,
       P_ID: obj.id,
@@ -325,7 +326,7 @@ const VisorDocumentosOficios = ({
                 title={"Ver Carpeta"}
                 handleFunction={handleVerSub}
                 show={true}
-                icon={<RemoveRedEyeIcon />}
+                icon={<DriveFolderUploadIcon />}
                 row={v}
               ></ButtonsDetail>
             )}
@@ -378,6 +379,7 @@ const VisorDocumentosOficios = ({
   }, [breadcrumbs]);
 
   useEffect(() => {
+    setOpenSlider(true);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -418,6 +420,34 @@ const VisorDocumentosOficios = ({
           <Grid item xs={12} sm={4} md={4} lg={4}>
             {true ? (
               <>
+                {explorerRoute.includes("/") ? (
+                  <TooltipPersonalizado
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">
+                          Regresar al Directorio Anterior
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  >
+                    <ToggleButton value="check">
+                      <IconButton
+                        color="primary"
+                        aria-label="upload documento"
+                        component="label"
+                        size="small"
+                        onClick={() => {
+                          setBreadcrumbs(breadcrumbs.slice(0, -1));
+                        }}
+                      >
+                        <ArrowBackIcon />
+                      </IconButton>
+                    </ToggleButton>
+                  </TooltipPersonalizado>
+                ) : (
+                  ""
+                )}
+
                 {adjuntar ? (
                   <TooltipPersonalizado
                     title={
