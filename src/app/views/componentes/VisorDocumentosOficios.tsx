@@ -19,8 +19,9 @@ import { ButtonsDetail } from "./ButtonsDetail";
 import FormDialog from "./CFolder";
 import { TooltipPersonalizado } from "./CustomizedTooltips";
 import ModalForm from "./ModalForm";
-import { Breadcrumb } from "antd";
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
+import ButtonsDeletedFolder from "./ButtonsDeletedFolder";
 const VisorDocumentosOficios = ({
   handleFunction,
   obj,
@@ -48,26 +49,28 @@ const VisorDocumentosOficios = ({
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
   const consulta = () => {
-    let data = {
-      NUMOPERACION: 10,
-      P_ID: obj.id,
-      FOLIO: explorerRoute,
-      TOKEN: JSON.parse(String(getToken())),
-    };
+    if (explorerRoute !== "") {
+      setOpenSlider(true);
+      let data = {
+        NUMOPERACION: 10,
+        FOLIO: explorerRoute,
+        TOKEN: JSON.parse(String(getToken())),
+      };
 
-    AuditoriaService.FoliosFilesindex(data).then((res) => {
-      if (res.SUCCESS) {
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
-        });
-        setData(res.RESPONSE);
-        setOpenSlider(false);
-      } else {
-        setOpenSlider(false);
-        Swal.fire("¡Error!", res.STRMESSAGE, "error");
-      }
-    });
+      AuditoriaService.FoliosFilesindex(data).then((res) => {
+        if (res.SUCCESS) {
+          Toast.fire({
+            icon: "success",
+            title: "¡Consulta Exitosa!",
+          });
+          setData(res.RESPONSE);
+          setOpenSlider(false);
+        } else {
+          setOpenSlider(false);
+          Swal.fire("¡Error!", res.STRMESSAGE, "error");
+        }
+      });
+    }
   };
 
   const ProcesaSPeis = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,7 +141,7 @@ const VisorDocumentosOficios = ({
     setOpenSlider(true);
     let data = {
       NUMOPERACION: 5,
-      P_ROUTE: v.row.Route,
+      P_ROUTE: v.row.RUTA,
       TOKEN: JSON.parse(String(getToken())),
     };
 
@@ -209,10 +212,11 @@ const VisorDocumentosOficios = ({
   };
 
   const handleVer = (v: any) => {
+    console.log(v);
     setOpenSlider(true);
     let data = {
       NUMOPERACION: 5,
-      P_ROUTE: v.row.Route,
+      P_ROUTE: v.row.RUTA,
       TOKEN: JSON.parse(String(getToken())),
     };
 
@@ -235,38 +239,74 @@ const VisorDocumentosOficios = ({
   };
 
   const handleAccion = (v: any) => {
-    Swal.fire({
-      icon: "info",
-      title: "¿Estás seguro de eliminar este registro?",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: "Confirmar",
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = {
-          NUMOPERACION: 3,
-          CHID: v.data.row.id,
-          CHUSER: user.Id,
-          P_ROUTE: v.data.row.Route,
-          TOKEN: JSON.parse(String(getToken())),
-        };
+    console.log(v);
+    if (v.tipo == 2) {
+      Swal.fire({
+        icon: "info",
+        title: "¿Estás seguro de eliminar este registro?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 12,
+            CHID: v.data.row.id,
+            CHUSER: user.Id,
+            FOLIO: v.data.row.RUTA,
+            TOKEN: JSON.parse(String(getToken())),
+          };
 
-        AuditoriaService.FoliosFilesindex(data).then((res) => {
-          if (res.SUCCESS) {
-            Toast.fire({
-              icon: "success",
-              title: "¡Registro Eliminado!",
-            });
-            consulta();
-          } else {
-            Swal.fire("¡Error!", res.STRMESSAGE, "error");
-          }
-        });
-      } else if (result.isDenied) {
-        Swal.fire("No se realizaron cambios", "", "info");
-      }
-    });
+          AuditoriaService.FoliosFilesindex(data).then((res) => {
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Registro Eliminado!",
+              });
+              consulta();
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+    } else {
+      Swal.fire({
+        icon: "info",
+        title: "¿Estás seguro de eliminar este Directorio?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Confirmar",
+        denyButtonText: `Cancelar`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let data = {
+            NUMOPERACION: 13,
+            CHID: v.data.row.id,
+            CHUSER: user.Id,
+            FOLIO: v.data.row.RUTA,
+            TOKEN: JSON.parse(String(getToken())),
+          };
+
+          AuditoriaService.FoliosFilesindex(data).then((res) => {
+            if (res.SUCCESS) {
+              Toast.fire({
+                icon: "success",
+                title: "¡Registro Eliminado!",
+              });
+              consulta();
+            } else {
+              Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            }
+          });
+        } else if (result.isDenied) {
+          Swal.fire("No se realizaron cambios", "", "info");
+        }
+      });
+    }
   };
 
   const columns: GridColDef[] = [
@@ -321,13 +361,20 @@ const VisorDocumentosOficios = ({
                 ></ButtonsDeleted>
               </>
             ) : (
-              <ButtonsDetail
-                title={"Ver Carpeta"}
-                handleFunction={handleVerSub}
-                show={true}
-                icon={<RemoveRedEyeIcon />}
-                row={v}
-              ></ButtonsDetail>
+              <>
+                <ButtonsDetail
+                  title={"Ver Carpeta"}
+                  handleFunction={handleVerSub}
+                  show={true}
+                  icon={<DriveFolderUploadIcon />}
+                  row={v}
+                ></ButtonsDetail>
+                <ButtonsDeletedFolder
+                  handleAccion={handleAccion}
+                  row={v}
+                  show={true}
+                ></ButtonsDeletedFolder>
+              </>
             )}
           </>
         );
@@ -378,6 +425,7 @@ const VisorDocumentosOficios = ({
   }, [breadcrumbs]);
 
   useEffect(() => {
+    setOpenSlider(true);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -418,6 +466,34 @@ const VisorDocumentosOficios = ({
           <Grid item xs={12} sm={4} md={4} lg={4}>
             {true ? (
               <>
+                {explorerRoute.includes("/") ? (
+                  <TooltipPersonalizado
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">
+                          Regresar al Directorio Anterior
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  >
+                    <ToggleButton value="check">
+                      <IconButton
+                        color="primary"
+                        aria-label="upload documento"
+                        component="label"
+                        size="small"
+                        onClick={() => {
+                          setBreadcrumbs(breadcrumbs.slice(0, -1));
+                        }}
+                      >
+                        <ArrowBackIcon />
+                      </IconButton>
+                    </ToggleButton>
+                  </TooltipPersonalizado>
+                ) : (
+                  ""
+                )}
+
                 {adjuntar ? (
                   <TooltipPersonalizado
                     title={
