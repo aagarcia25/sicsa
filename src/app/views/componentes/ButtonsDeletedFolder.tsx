@@ -1,7 +1,7 @@
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { IconButton, Tooltip } from "@mui/material";
 
-const ButtonsDeleted = ({
+const ButtonsDeletedFolder = ({
   handleAccion,
   row,
   show,
@@ -14,10 +14,10 @@ const ButtonsDeleted = ({
     <div>
       {/* ELIMINAR */}
       {show ? (
-        <Tooltip title={"Eliminar Registro"}>
+        <Tooltip title={"Eliminar Folder"}>
           <IconButton
             color="inherit"
-            onClick={() => handleAccion({ data: row, tipo: 2 })}
+            onClick={() => handleAccion({ data: row, tipo: 3 })}
           >
             <DeleteForeverIcon />
           </IconButton>
@@ -29,4 +29,4 @@ const ButtonsDeleted = ({
   );
 };
 
-export default ButtonsDeleted;
+export default ButtonsDeletedFolder;
