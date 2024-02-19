@@ -141,7 +141,7 @@ const VisorDocumentosOficios = ({
     setOpenSlider(true);
     let data = {
       NUMOPERACION: 5,
-      P_ROUTE: v.row.Route,
+      P_ROUTE: v.row.RUTA,
       TOKEN: JSON.parse(String(getToken())),
     };
 
@@ -212,10 +212,11 @@ const VisorDocumentosOficios = ({
   };
 
   const handleVer = (v: any) => {
+    console.log(v);
     setOpenSlider(true);
     let data = {
       NUMOPERACION: 5,
-      P_ROUTE: v.row.Route,
+      P_ROUTE: v.row.RUTA,
       TOKEN: JSON.parse(String(getToken())),
     };
 
