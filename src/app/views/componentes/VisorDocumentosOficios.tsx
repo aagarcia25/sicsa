@@ -153,7 +153,7 @@ const VisorDocumentosOficios = ({
         var link = document.createElement("a");
         document.body.appendChild(link);
         link.href = data;
-        link.download = v.row.Nombre;
+        link.download = v.row.NOMBRE;
         link.click();
         window.URL.revokeObjectURL(data);
         link.remove();
