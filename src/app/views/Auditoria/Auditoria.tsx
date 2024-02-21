@@ -57,6 +57,7 @@ import Progress from "../Progress";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
+import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -941,7 +942,7 @@ export const Auditoria = () => {
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={1} />
+        <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
       )}

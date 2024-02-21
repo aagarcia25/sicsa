@@ -39,24 +39,38 @@ const VisorDocumentosOficios = ({
   const [vrows, setVrows] = useState({});
   const [data, setData] = useState([]);
   const [URLruta, setURLRuta] = useState<string>("");
-  const [agregar, setAgregar] = useState<boolean>(false);
-  const [editar, setEditar] = useState<boolean>(false);
-  const [eliminar, setEliminar] = useState<boolean>(false);
   const [adjuntar, setAdjuntar] = useState<boolean>(false);
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
   const [breadcrumbs, setBreadcrumbs] = useState([obj.row.Oficio]);
+  const [breadcrumbsAuditoria, setBreadcrumbsAuditoria] = useState([obj.row.NAUDITORIA]);
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
   const consulta = () => {
-    if (explorerRoute !== "") {
+    if (explorerRoute !== "" ) {
       setOpenSlider(true);
-      let data = {
-        NUMOPERACION: 10,
-        FOLIO: explorerRoute,
-        TOKEN: JSON.parse(String(getToken())),
-      };
+      // let data
+      // if(obj.row.NAUDITORIA){
+      //    data = {
+      //     NUMOPERACION: 10,
+      //     FOLIO: obj.row.NAUDITORIA,
+      //     TOKEN: JSON.parse(String(getToken())),
+      //   };
+      // }else{
+      //   data = {
+      //   NUMOPERACION: 10,
+      //   FOLIO: explorerRoute,
+      //   TOKEN: JSON.parse(String(getToken())),
+      // };
 
+      // }
+
+     let data = {
+           NUMOPERACION: 10,
+           FOLIO: explorerRoute,
+           TOKEN: JSON.parse(String(getToken())),
+         };
+      
       AuditoriaService.FoliosFilesindex(data).then((res) => {
         if (res.SUCCESS) {
           Toast.fire({
@@ -74,6 +88,8 @@ const VisorDocumentosOficios = ({
   };
 
   const ProcesaSPeis = (event: React.ChangeEvent<HTMLInputElement>) => {
+    
+    
     setOpenSlider(true);
     let count = 0;
     let encontrados: any[] = [];
@@ -85,16 +101,18 @@ const VisorDocumentosOficios = ({
       let file = event?.target?.files?.[i] || "";
       let namefile = event?.target?.files?.[i].name || "";
       encontrados.push({ Archivo: file, NOMBRE: namefile });
+      
     }
 
     encontrados.map((item: any) => {
       const formData = new FormData();
       formData.append("NUMOPERACION", "1");
       formData.append("ID", obj.id);
-      formData.append("FOLIO", explorerRoute);
+      formData.append("FOLIO", explorerRoute || obj.row.NAUDITORIA);
       formData.append("CHUSER", user.Id);
       formData.append("TOKEN", JSON.parse(String(getToken())));
       formData.append("FILE", item.Archivo, item.NOMBRE);
+      
       let p = axios.post(
         process.env.REACT_APP_APPLICATION_BASE_URL + "FoliosFilesindex",
         formData,
@@ -112,6 +130,8 @@ const VisorDocumentosOficios = ({
     axios.all(peticiones).then((resposeArr) => {
       resposeArr.map((item) => {
         if (item.data.SUCCESS) {
+          console.log("item.data.SUCCESS",item.data.SUCCESS);
+          
           count++;
         } else {
           count--;
@@ -119,6 +139,8 @@ const VisorDocumentosOficios = ({
       });
 
       if (count == 0 || count == -1) {
+        console.log("count",count);
+        
         Swal.fire("¡Error!", "No se Realizo la Operación", "error");
         setOpenSlider(false);
       } else {
@@ -174,7 +196,7 @@ const VisorDocumentosOficios = ({
       formData.append("NUMOPERACION", "9");
       formData.append("ID", obj.id);
       formData.append("CHUSER", user.Id);
-      formData.append("FOLIO", explorerRoute);
+      formData.append("FOLIO", explorerRoute || obj.row.NAUDITORIA);
       formData.append("TOKEN", JSON.parse(String(getToken())));
       formData.append("ROUTE", v);
 
@@ -353,12 +375,14 @@ const VisorDocumentosOficios = ({
                   icon={<DownloadingIcon />}
                   row={v}
                 ></ButtonsDetail>
-
-                <ButtonsDeleted
+                
+                {eliminarDocumentos ? (<ButtonsDeleted
                   handleAccion={handleAccion}
                   row={v}
                   show={true}
                 ></ButtonsDeleted>
+                ):("")}
+                
               </>
             ) : (
               <>
@@ -401,16 +425,25 @@ const VisorDocumentosOficios = ({
   ];
 
   const handleVerSub = (v: any) => {
+    let auxbreadcrumbs = breadcrumbs 
     let data = {
       NUMOPERACION: 5,
       P_ROUTE: v.row.Route,
       TOKEN: JSON.parse(String(getToken())),
     };
 
-    const existeOficio = breadcrumbs.some((breadcrumb) => {
+    if(breadcrumbs[0] === undefined){
+      auxbreadcrumbs = breadcrumbsAuditoria
+      setBreadcrumbs(breadcrumbsAuditoria)
+      console.log("entre al if",breadcrumbs);
+    }
+    const existeOficio = auxbreadcrumbs.some((breadcrumb) => {
+      console.log("breadcrumb",breadcrumb);
+      
       // Verificar si el nombre del breadcrumb es "Oficio"
       return breadcrumb === "/" + v.row.NOMBRE;
     });
+    
 
     if (existeOficio) {
       console.log("YA Existe el Elemento");
@@ -421,22 +454,15 @@ const VisorDocumentosOficios = ({
   };
 
   useEffect(() => {
-    setexplorerRoute(breadcrumbs.join(""));
+    setexplorerRoute(breadcrumbs.join("") || breadcrumbsAuditoria.join(""));
+    
+    
   }, [breadcrumbs]);
 
   useEffect(() => {
     setOpenSlider(true);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
-        if (String(item.ControlInterno) === "AGREG") {
-          setAgregar(true);
-        }
-        if (String(item.ControlInterno) === "ELIM") {
-          setEliminar(true);
-        }
-        if (String(item.ControlInterno) === "EDIT") {
-          setEditar(true);
-        }
         if (String(item.ControlInterno) === "ADJUNTAR") {
           setAdjuntar(true);
         }
