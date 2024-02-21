@@ -18,6 +18,7 @@ import { OficiosModal } from "./OficiosModal";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 
 export const Oficios = ({
   handleFunction,
@@ -277,7 +278,7 @@ export const Oficios = ({
           multiselect={true}/>
       </ModalForm>
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={4}/>
+        <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
       )}
