@@ -42,20 +42,21 @@ const VisorDocumentosOficios = ({
   const [adjuntar, setAdjuntar] = useState<boolean>(false);
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
-  const [breadcrumbs, setBreadcrumbs] = useState([obj.row.Oficio]);
-  const [breadcrumbsAuditoria, setBreadcrumbsAuditoria] = useState([obj.NAUDITORIA || obj.row.NAUDITORIA]);
+  const [breadcrumbs, setBreadcrumbs] = useState([
+    obj.row.Anio + "/" + obj.row.Oficio,
+  ]);
+  const [breadcrumbsAuditoria, setBreadcrumbsAuditoria] = useState([
+    obj.NAUDITORIA || obj.row.NAUDITORIA,
+  ]);
   const [breadcrumbsNoti, setBreadcrumbsNoti] = useState([obj.row.Oficio]);
 
   const { NuevoOficio, ...restRow } = obj;
-  const [breadcrumbsContes, setBreadcrumbsContes] = useState( [NuevoOficio] );
-
-  
+  const [breadcrumbsContes, setBreadcrumbsContes] = useState([NuevoOficio]);
 
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
-  const consulta = () => {    
-    
-    if(explorerRoute !== "" ) {
+  const consulta = () => {
+    if (explorerRoute !== "") {
       setOpenSlider(true);
       // let data
       // if(obj.row.NAUDITORIA){
@@ -72,16 +73,13 @@ const VisorDocumentosOficios = ({
       // };
 
       // }
-      
 
-        let data = {
-           NUMOPERACION: 10,
-           FOLIO: explorerRoute,
-           TOKEN: JSON.parse(String(getToken())),
-         };
-      
-         
-      
+      let data = {
+        NUMOPERACION: 10,
+        FOLIO: explorerRoute,
+        TOKEN: JSON.parse(String(getToken())),
+      };
+
       AuditoriaService.FoliosFilesindex(data).then((res) => {
         if (res.SUCCESS) {
           Toast.fire({
@@ -99,8 +97,6 @@ const VisorDocumentosOficios = ({
   };
 
   const ProcesaSPeis = (event: React.ChangeEvent<HTMLInputElement>) => {
-    
-    
     setOpenSlider(true);
     let count = 0;
     let encontrados: any[] = [];
@@ -112,7 +108,6 @@ const VisorDocumentosOficios = ({
       let file = event?.target?.files?.[i] || "";
       let namefile = event?.target?.files?.[i].name || "";
       encontrados.push({ Archivo: file, NOMBRE: namefile });
-      
     }
 
     encontrados.map((item: any) => {
@@ -123,7 +118,7 @@ const VisorDocumentosOficios = ({
       formData.append("CHUSER", user.Id);
       formData.append("TOKEN", JSON.parse(String(getToken())));
       formData.append("FILE", item.Archivo, item.NOMBRE);
-      
+
       let p = axios.post(
         process.env.REACT_APP_APPLICATION_BASE_URL + "FoliosFilesindex",
         formData,
@@ -141,8 +136,8 @@ const VisorDocumentosOficios = ({
     axios.all(peticiones).then((resposeArr) => {
       resposeArr.map((item) => {
         if (item.data.SUCCESS) {
-          console.log("item.data.SUCCESS",item.data.SUCCESS);
-          
+          console.log("item.data.SUCCESS", item.data.SUCCESS);
+
           count++;
         } else {
           count--;
@@ -150,8 +145,8 @@ const VisorDocumentosOficios = ({
       });
 
       if (count == 0 || count == -1) {
-        console.log("count",count);
-        
+        console.log("count", count);
+
         Swal.fire("¡Error!", "No se Realizo la Operación", "error");
         setOpenSlider(false);
       } else {
@@ -386,14 +381,16 @@ const VisorDocumentosOficios = ({
                   icon={<DownloadingIcon />}
                   row={v}
                 ></ButtonsDetail>
-                
-                {eliminarDocumentos ? (<ButtonsDeleted
-                  handleAccion={handleAccion}
-                  row={v}
-                  show={true}
-                ></ButtonsDeleted>
-                ):("")}
-                
+
+                {eliminarDocumentos ? (
+                  <ButtonsDeleted
+                    handleAccion={handleAccion}
+                    row={v}
+                    show={true}
+                  ></ButtonsDeleted>
+                ) : (
+                  ""
+                )}
               </>
             ) : (
               <>
@@ -436,33 +433,20 @@ const VisorDocumentosOficios = ({
   ];
 
   const handleVerSub = (v: any) => {
+    console.log("entre a ver carpeta explorerRoute", explorerRoute);
 
-    console.log('entre a ver carpeta explorerRoute',explorerRoute);
-    
+    let auxbreadcrumbs = breadcrumbs;
+    console.log("breadcrumbs", breadcrumbs);
 
-    let auxbreadcrumbs = breadcrumbs 
-    let data = {
-      NUMOPERACION: 5,
-      P_ROUTE: v.row.Route,
-      TOKEN: JSON.parse(String(getToken())),
-    };
-    console.log("breadcrumbs",breadcrumbs);
-
-    if(breadcrumbs[0] === undefined){
-      auxbreadcrumbs = breadcrumbsAuditoria
-      setBreadcrumbs(breadcrumbsAuditoria)
-      console.log("entre al if",breadcrumbs);
+    if (breadcrumbs[0] === undefined) {
+      auxbreadcrumbs = breadcrumbsAuditoria;
+      setBreadcrumbs(breadcrumbsAuditoria);
+      console.log("entre al if", breadcrumbs);
     }
-    // else if(breadcrumbsAuditoria[0] === undefined){
-    //   setBreadcrumbs([explorerRoute])
-    //   console.log("entre al else if ",breadcrumbs);
-    // }
     const existeOficio = auxbreadcrumbs.some((breadcrumb) => {
-      
       // Verificar si el nombre del breadcrumb es "Oficio"
       return breadcrumb === "/" + v.row.NOMBRE;
     });
-    
 
     if (existeOficio) {
       console.log("YA Existe el Elemento");
@@ -473,49 +457,68 @@ const VisorDocumentosOficios = ({
   };
 
   useEffect(() => {
-    console.log("obj",obj);
-    
-    
-console.log('breadcrumbs usefect',breadcrumbs);
-console.log('breadcrumbsauditoria',breadcrumbsAuditoria);
+    console.log("obj", obj);
 
-console.log('breadcrumbsNoti',breadcrumbsNoti);
-console.log('breadcrumbsContes',breadcrumbsContes);
-console.log("explorerRoute",explorerRoute);
+    console.log("breadcrumbs usefect", breadcrumbs);
+    console.log("breadcrumbsauditoria", breadcrumbsAuditoria);
 
+    console.log("breadcrumbsNoti", breadcrumbsNoti);
+    console.log("breadcrumbsContes", breadcrumbsContes);
+    console.log("explorerRoute", explorerRoute);
 
-//if((breadcrumbs[0] !== undefined || breadcrumbsAuditoria[0] !== undefined)&&  breadcrumbsContes[0] === undefined){
-if((breadcrumbs[0] !== undefined && breadcrumbsNoti[0] !== undefined && breadcrumbsAuditoria[0] === undefined &&  breadcrumbsContes[0] === undefined) || (breadcrumbsAuditoria[0] !== undefined && breadcrumbsNoti[0] === undefined && breadcrumbs[0] === undefined &&  breadcrumbsContes[0] === undefined)){
-      console.log('breadcrumbs.join("")',breadcrumbs.join(""));
-      console.log('breadcrumbsAuditoria.join("")',breadcrumbsAuditoria.join(""));
+    //if((breadcrumbs[0] !== undefined || breadcrumbsAuditoria[0] !== undefined)&&  breadcrumbsContes[0] === undefined){
+    if (
+      (breadcrumbs[0] !== undefined &&
+        breadcrumbsNoti[0] !== undefined &&
+        breadcrumbsAuditoria[0] === undefined &&
+        breadcrumbsContes[0] === undefined) ||
+      (breadcrumbsAuditoria[0] !== undefined &&
+        breadcrumbsNoti[0] === undefined &&
+        breadcrumbs[0] === undefined &&
+        breadcrumbsContes[0] === undefined)
+    ) {
+      console.log('breadcrumbs.join("")', breadcrumbs.join(""));
+      console.log(
+        'breadcrumbsAuditoria.join("")',
+        breadcrumbsAuditoria.join("")
+      );
       console.log("entre al if 1");
-      
-  setexplorerRoute(breadcrumbs.join("") || breadcrumbsAuditoria.join(""));
-} 
-//else if((breadcrumbs[0] !== undefined  && breadcrumbsNoti[0] !== undefined) && breadcrumbsAuditoria[0] === undefined && breadcrumbsContes[0] === undefined){
-else if((breadcrumbs[0] !== undefined  && breadcrumbsNoti[0] !== undefined && breadcrumbsAuditoria[0] !== undefined && breadcrumbsContes[0] === undefined)  ){
-  
-  let newRute = (breadcrumbsAuditoria+'/'+breadcrumbs.join(""))
-  console.log('newRute',newRute);
-  console.log('breadcrumbsNoti',breadcrumbsNoti);
-  console.log('breadcrumbs',breadcrumbs);
-  console.log("entre al if 2");
 
-      setexplorerRoute(newRute)
-} else if(breadcrumbs[0] !== undefined  && breadcrumbsContes[0] !== undefined && breadcrumbsAuditoria[0] !== undefined){
-  let newRute = (breadcrumbsAuditoria+"/"+breadcrumbsContes+'/'+breadcrumbs.join(""))
-  console.log('newRute',newRute);
-  console.log('breadcrumbsNoti',breadcrumbsContes);
-  console.log('breadcrumbs',breadcrumbs);
-  console.log('breadcrumbsAuditoria',breadcrumbsAuditoria);
-  console.log("entre al if 3");
+      setexplorerRoute(breadcrumbs.join("") || breadcrumbsAuditoria.join(""));
+    }
+    //else if((breadcrumbs[0] !== undefined  && breadcrumbsNoti[0] !== undefined) && breadcrumbsAuditoria[0] === undefined && breadcrumbsContes[0] === undefined){
+    else if (
+      breadcrumbs[0] !== undefined &&
+      breadcrumbsNoti[0] !== undefined &&
+      breadcrumbsAuditoria[0] !== undefined &&
+      breadcrumbsContes[0] === undefined
+    ) {
+      let newRute = breadcrumbsAuditoria + "/" + breadcrumbs.join("");
+      console.log("newRute", newRute);
+      console.log("breadcrumbsNoti", breadcrumbsNoti);
+      console.log("breadcrumbs", breadcrumbs);
+      console.log("entre al if 2");
 
-      setexplorerRoute(newRute)
-}
+      setexplorerRoute(newRute);
+    } else if (
+      breadcrumbs[0] !== undefined &&
+      breadcrumbsContes[0] !== undefined &&
+      breadcrumbsAuditoria[0] !== undefined
+    ) {
+      let newRute =
+        breadcrumbsAuditoria +
+        "/" +
+        breadcrumbsContes +
+        "/" +
+        breadcrumbs.join("");
+      console.log("newRute", newRute);
+      console.log("breadcrumbsNoti", breadcrumbsContes);
+      console.log("breadcrumbs", breadcrumbs);
+      console.log("breadcrumbsAuditoria", breadcrumbsAuditoria);
+      console.log("entre al if 3");
 
-    
-    
-
+      setexplorerRoute(newRute);
+    }
   }, [breadcrumbs]);
 
   useEffect(() => {
@@ -551,7 +554,7 @@ else if((breadcrumbs[0] !== undefined  && breadcrumbsNoti[0] !== undefined && br
           <Grid item xs={12} sm={4} md={4} lg={4}>
             {true ? (
               <>
-                {explorerRoute.includes("/") ? (
+                {(explorerRoute.match(/\//g) || []).length > 1 ? (
                   <TooltipPersonalizado
                     title={
                       <React.Fragment>

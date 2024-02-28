@@ -476,6 +476,12 @@ export const ControlOficios = () => {
       headerName: "Identificador",
       width: 150,
     },
+    {
+      field: "Anio",
+      headerName: "Anio",
+      width: 150,
+    },
+
     { field: "Oficio", headerName: "Oficio", width: 150 },
     { field: "Cancelado", headerName: "Cancelado", width: 100 },
     { field: "Nauditoria", headerName: "N° de Auditoría", width: 150 },
@@ -839,7 +845,7 @@ export const ControlOficios = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
         </Grid>
-        
+
         {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
         {agregar ? (
           <TooltipPersonalizado
@@ -905,19 +911,22 @@ export const ControlOficios = () => {
           ""
         )}
 
-          {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
-          <ToggleButton
-            value="check"
-            className="guardar"
-            size="small"
-            onChange={() => noSelection()}
-          >
-            <IconButton color="inherit" component="label" size="small">
-              <DeleteForeverIcon />
-            </IconButton>
-          </ToggleButton>
-        </Tooltip>):("") }
-        
+        {eliminar ? (
+          <Tooltip title={"Eliminar Registros Seleccionados"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => noSelection()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <DeleteForeverIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+        ) : (
+          ""
+        )}
 
         {agregar ? (
           <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
