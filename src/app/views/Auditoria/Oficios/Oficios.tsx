@@ -13,7 +13,7 @@ import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
-import VisorDocumentos from "../../componentes/VisorDocumentos";
+
 import { OficiosModal } from "./OficiosModal";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
@@ -43,10 +43,12 @@ export const Oficios = ({
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
-
+  const [updatedVrows, setupdatedVrows] = useState("");
 
   const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
+    );
     setOpenAdjuntos(true);
   };
 
@@ -144,8 +146,18 @@ export const Oficios = ({
       headerName: "Oficio",
       width: 150,
     },
-    { field: "FechaRecibido", description: "Fecha Recibido", headerName: "Fecha Recibido ", width: 150 },
-    { field: "FechaVencimiento", description: "Fecha Vencimiento", headerName: "Fecha Vencimiento", width: 150 },
+    {
+      field: "FechaRecibido",
+      description: "Fecha Recibido",
+      headerName: "Fecha Recibido ",
+      width: 150,
+    },
+    {
+      field: "FechaVencimiento",
+      description: "Fecha Vencimiento",
+      headerName: "Fecha Vencimiento",
+      width: 150,
+    },
     {
       field: "acciones",
       disableExport: true,
@@ -156,17 +168,25 @@ export const Oficios = ({
       renderCell: (v) => {
         return (
           <>
-          {eliminar ? (<ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={true}
-            ></ButtonsDeleted>):("")}
-            {editar ? (<ButtonsEdit
-              handleAccion={handleEdit}
-              row={v}
-              show={true}
-            ></ButtonsEdit>):("")}
-            
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={true}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )}
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleEdit}
+                row={v}
+                show={true}
+              ></ButtonsEdit>
+            ) : (
+              ""
+            )}
+
             <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -184,9 +204,18 @@ export const Oficios = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
-    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
-    
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 150,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 150,
+    },
   ];
 
   const handleOpen = (v: any) => {
@@ -222,12 +251,10 @@ export const Oficios = ({
       }
     });
   };
-  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
   useEffect(() => {
-console.log("obj",obj);
-console.log("vrows",vrows);
-
+    console.log("obj", obj);
+    console.log("vrows", vrows);
 
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -265,25 +292,37 @@ console.log("vrows",vrows);
         <Typography variant="h6">
           {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
         </Typography>
-        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={true} />):("")}
-        {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
-          <ToggleButton
-            value="check"
-            className="guardar"
-            size="small"
-            onChange={() => noSelection()}
-          >
-            <IconButton color="inherit" component="label" size="small">
-              <DeleteForeverIcon />
-            </IconButton>
-          </ToggleButton>
-        </Tooltip>):("") }
-        
-        <MUIXDataGridGeneral columns={columns} rows={data} setRowSelected={setSelectionModel}
-          multiselect={true}/>
+        {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+        {eliminar ? (
+          <Tooltip title={"Eliminar Registros Seleccionados"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => noSelection()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <DeleteForeverIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+        ) : (
+          ""
+        )}
+
+        <MUIXDataGridGeneral
+          columns={columns}
+          rows={data}
+          setRowSelected={setSelectionModel}
+          multiselect={true}
+        />
       </ModalForm>
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} />
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+          tipo={3}
+        />
       ) : (
         ""
       )}

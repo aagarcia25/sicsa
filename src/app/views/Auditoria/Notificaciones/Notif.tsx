@@ -14,7 +14,7 @@ import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
-import VisorDocumentos from "../../componentes/VisorDocumentos";
+
 import { Contestacion } from "./Contestacion";
 import { NotifModal } from "./NotifModal";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
@@ -174,20 +174,50 @@ const Notif = ({
       headerName: "Oficio",
       width: 150,
     },
-    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
+    {
+      field: "unidad",
+      description: "Unidad Responsable",
+      headerName: "Unidad Responsable",
+      width: 300,
+    },
 
-    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
-    
+    {
+      field: "secretaria",
+      description: "Secretaría",
+      headerName: "Secretaría",
+      width: 300,
+    },
+
     {
       field: "SIGAOficio",
       description: "Folio SIGA",
       headerName: "Folio SIGA",
       width: 150,
     },
-    { field: "FOficio", description: "Fecha de Oficio", headerName: "Fecha de Oficio", width: 150 },
-    { field: "FRecibido", description: "Fecha de Recibido", headerName: "Fecha de Recibido", width: 150 },
-    { field: "FVencimiento", description: "Fecha de Vencimiento", headerName: "Fecha de Vencimiento", width: 150 },
-    { field: "Prorroga", description: "Fecha de Prorroga", headerName: "Fecha de Prorroga", width: 150 },
+    {
+      field: "FOficio",
+      description: "Fecha de Oficio",
+      headerName: "Fecha de Oficio",
+      width: 150,
+    },
+    {
+      field: "FRecibido",
+      description: "Fecha de Recibido",
+      headerName: "Fecha de Recibido",
+      width: 150,
+    },
+    {
+      field: "FVencimiento",
+      description: "Fecha de Vencimiento",
+      headerName: "Fecha de Vencimiento",
+      width: 150,
+    },
+    {
+      field: "Prorroga",
+      description: "Fecha de Prorroga",
+      headerName: "Fecha de Prorroga",
+      width: 150,
+    },
     {
       field: "acciones",
       disableExport: true,
@@ -198,17 +228,25 @@ const Notif = ({
       renderCell: (v) => {
         return (
           <>
-          {editar ? (<ButtonsEdit
-              handleAccion={handleEdit}
-              row={v}
-              show={editar}
-            ></ButtonsEdit>):("")}
-            {eliminar ? (<ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={eliminar}
-            ></ButtonsDeleted>):("")}
-            
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleEdit}
+                row={v}
+                show={editar}
+              ></ButtonsEdit>
+            ) : (
+              ""
+            )}
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={eliminar}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )}
+
             <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -245,12 +283,9 @@ const Notif = ({
       headerName: "Modificado Por",
       width: 150,
     },
-    
   ];
-  
 
   useEffect(() => {
-    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -265,11 +300,10 @@ const Notif = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
-    console.log("NAUDITORIA: obj.row.NAUDITORIA",obj.row.NAUDITORIA);
-    console.log("updatedVrows",updatedVrows);
-    
+    console.log("NAUDITORIA: obj.row.NAUDITORIA", obj.row.NAUDITORIA);
+    console.log("updatedVrows", updatedVrows);
   }, []);
-  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA};
+  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
   return (
     <div>
@@ -278,22 +312,33 @@ const Notif = ({
         <Typography variant="h6">
           {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
         </Typography>
-        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
-        {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
-          <ToggleButton
-            value="check"
-            className="guardar"
-            size="small"
-            onChange={() => noSelection()}
-          >
-            <IconButton color="inherit" component="label" size="small">
-              <DeleteForeverIcon />
-            </IconButton>
-          </ToggleButton>
-        </Tooltip>):("") }
-        <MUIXDataGridGeneral columns={columns} rows={data} setRowSelected={setSelectionModel}
+        {agregar ? (
+          <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        ) : (
+          ""
+        )}
+        {eliminar ? (
+          <Tooltip title={"Eliminar Registros Seleccionados"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => noSelection()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <DeleteForeverIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+        ) : (
+          ""
+        )}
+        <MUIXDataGridGeneral
+          columns={columns}
+          rows={data}
+          setRowSelected={setSelectionModel}
           multiselect={true}
-/>
+        />
       </ModalForm>
       {openContestacion ? (
         <Contestacion handleFunction={handleClose} obj={updatedVrows} />
@@ -312,7 +357,7 @@ const Notif = ({
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={obj.row}/>
+        <VisorDocumentosOficios handleFunction={handleClose} obj={obj.row} />
       ) : (
         ""
       )}

@@ -18,7 +18,7 @@ import { ButtonsImport } from "../../componentes/ButtonsImport";
 import { CatalogosServices } from "../../../services/catalogosServices";
 import { MigraData, resultmigracion } from "../../../interfaces/Share";
 import { AccionesModal } from "./AccionesModal";
-import VisorDocumentos from "../../componentes/VisorDocumentos";
+
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -257,17 +257,25 @@ const Acciones = ({
       renderCell: (v) => {
         return (
           <>
-          {editar ? (<ButtonsEdit
-              handleAccion={handleAccion}
-              row={v}
-              show={editar}
-            ></ButtonsEdit>):("")}
-            {eliminar ? (<ButtonsDeleted
-              handleAccion={handleDeleted}
-              row={v}
-              show={eliminar}
-            ></ButtonsDeleted>):("")}
-            
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleAccion}
+                row={v}
+                show={editar}
+              ></ButtonsEdit>
+            ) : (
+              ""
+            )}
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleDeleted}
+                row={v}
+                show={eliminar}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )}
+
             <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -297,7 +305,6 @@ const Acciones = ({
       headerName: "Modificado Por",
       width: 150,
     },
-   
   ];
 
   useEffect(() => {
@@ -336,29 +343,44 @@ const Acciones = ({
         )}
 
         {openAdjuntos ? (
-          <VisorDocumentosOficios handleFunction={handleClose} obj={vrows}  />
+          <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
         ) : (
           ""
         )}
 
         <Progress open={show}></Progress>
-        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
-        {agregar ? (<ButtonsImport handleOpen={handleUpload} agregar={agregar} />):("")}
-        {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
-          <ToggleButton
-            value="check"
-            className="guardar"
-            size="small"
-            onChange={() => noSelection()}
-          >
-            <IconButton color="inherit" component="label" size="small">
-              <DeleteForeverIcon />
-            </IconButton>
-          </ToggleButton>
-        </Tooltip>):("") }
-        <MUIXDataGridGeneral columns={columns} rows={data} setRowSelected={setSelectionModel}
+        {agregar ? (
+          <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        ) : (
+          ""
+        )}
+        {agregar ? (
+          <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
+        ) : (
+          ""
+        )}
+        {eliminar ? (
+          <Tooltip title={"Eliminar Registros Seleccionados"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => noSelection()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <DeleteForeverIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+        ) : (
+          ""
+        )}
+        <MUIXDataGridGeneral
+          columns={columns}
+          rows={data}
+          setRowSelected={setSelectionModel}
           multiselect={true}
-/>
+        />
       </ModalForm>
     </div>
   );

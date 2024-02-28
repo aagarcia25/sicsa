@@ -1,9 +1,13 @@
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import ClearIcon from "@mui/icons-material/Clear";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
+import FilePresentIcon from "@mui/icons-material/FilePresent";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import InsertPageBreakIcon from "@mui/icons-material/InsertPageBreak";
 import SendIcon from "@mui/icons-material/Send";
+import UsbIcon from "@mui/icons-material/Usb";
+import UsbOffIcon from "@mui/icons-material/UsbOff";
 import {
   Button,
   Grid,
@@ -12,17 +16,17 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { GridColDef, GridInputRowSelectionModel } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { formatFecha } from "../../helpers/FormatDate";
 import { Toast } from "../../helpers/Toast";
-import SelectValues, { responseresult } from "../../interfaces/Share";
+import SelectValues from "../../interfaces/Share";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { AuditoriaService } from "../../services/AuditoriaService";
-import { ShareService } from "../../services/ShareService";
 import { getPermisos, getToken, getUser } from "../../services/localStorage";
-import MUIXDataGrid from "../MUIXDataGrid";
+import { ShareService } from "../../services/ShareService";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
@@ -30,32 +34,12 @@ import ButtonsEdit from "../componentes/ButtonsEdit";
 import { TooltipPersonalizado } from "../componentes/CustomizedTooltips";
 import SelectFrag from "../componentes/SelectFrag";
 import TitleComponent from "../componentes/TitleComponent";
-import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
 import { ControlOficiosModal } from "./ControlOficiosModal";
-import FileOpenIcon from "@mui/icons-material/FileOpen";
-import FilePresentIcon from "@mui/icons-material/FilePresent";
-import { formatFecha } from "../../helpers/FormatDate";
-import UsbIcon from "@mui/icons-material/Usb";
-import UsbOffIcon from "@mui/icons-material/UsbOff";
-//import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
-import {
-  Box,
-  Checkbox,
-  createTheme,
-  FormControlLabel,
-  ToggleButtonGroup,
-} from "@mui/material";
-import { esES as coreEsES } from "@mui/material/locale";
-import {
-  DataGrid,
-  GridColumnVisibilityModel,
-  GridToolbar,
-  esES as gridEsES,
-} from "@mui/x-data-grid";
-import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
-import { ButtonsImport } from "../componentes/ButtonsImport";
-import { CatalogosServices } from "../../services/catalogosServices";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { CatalogosServices } from "../../services/catalogosServices";
+import { ButtonsImport } from "../componentes/ButtonsImport";
+import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
+import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
 
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
@@ -940,7 +924,11 @@ export const ControlOficios = () => {
           multiselect={true}
         />
         {openAdjuntos ? (
-          <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
+          <VisorDocumentosOficios
+            handleFunction={handleClose}
+            obj={vrows}
+            tipo={1}
+          />
         ) : (
           ""
         )}
