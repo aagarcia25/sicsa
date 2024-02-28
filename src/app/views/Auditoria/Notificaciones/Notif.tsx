@@ -20,6 +20,7 @@ import { NotifModal } from "./NotifModal";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 const Notif = ({
   handleFunction,
   obj,
@@ -264,7 +265,11 @@ const Notif = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    console.log("NAUDITORIA: obj.row.NAUDITORIA",obj.row.NAUDITORIA);
+    console.log("updatedVrows",updatedVrows);
+    
   }, []);
+  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA};
 
   return (
     <div>
@@ -291,7 +296,7 @@ const Notif = ({
 />
       </ModalForm>
       {openContestacion ? (
-        <Contestacion handleFunction={handleClose} obj={vrows} />
+        <Contestacion handleFunction={handleClose} obj={updatedVrows} />
       ) : (
         ""
       )}
@@ -307,7 +312,7 @@ const Notif = ({
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={2} />
+        <VisorDocumentosOficios handleFunction={handleClose} obj={obj.row}/>
       ) : (
         ""
       )}
