@@ -6,18 +6,18 @@ import { Toast } from "../../../helpers/Toast";
 import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { getPermisos, getUser } from "../../../services/localStorage";
-import MUIXDataGrid from "../../MUIXDataGrid";
 import Progress from "../../Progress";
 import ButtonsAdd from "../../componentes/ButtonsAdd";
 import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
-import VisorDocumentos from "../../componentes/VisorDocumentos";
-import { OrganoRModal } from "./OrganoRModal";
-import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
-import { IconButton, ToggleButton, Tooltip } from "@mui/material";
+
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { IconButton, ToggleButton, Tooltip } from "@mui/material";
+import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
+
+import { OrganoRModal } from "./OrganoRModal";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 
 export const OrganoR = ({
@@ -173,17 +173,25 @@ export const OrganoR = ({
       renderCell: (v) => {
         return (
           <>
-          {editar ? (<ButtonsEdit
-              handleAccion={handleEdit}
-              row={v}
-              show={editar}
-            ></ButtonsEdit>):("")}
-            {eliminar ? (<ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={eliminar}
-            ></ButtonsDeleted>):("")}
-            
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleEdit}
+                row={v}
+                show={editar}
+              ></ButtonsEdit>
+            ) : (
+              ""
+            )}
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={eliminar}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )}
+
             <ButtonsDetail
               title={"Ver adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -203,9 +211,8 @@ export const OrganoR = ({
     },
     { field: "creado", headerName: "Creado Por", width: 150 },
     { field: "modi", headerName: "Modificado Por", width: 150 },
- 
   ];
-  const updatedVrows = { ...vrows, ...obj.row, NuevoOficio: obj.row.Oficio};
+  const updatedVrows = { ...vrows, ...obj.row, NuevoOficio: obj.row.Oficio };
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
@@ -222,8 +229,8 @@ export const OrganoR = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
-    console.log("obj",obj.NAUDITORIA);
-    console.log("obj",obj);
+    console.log("obj", obj.NAUDITORIA);
+    console.log("obj", obj);
   }, []);
 
   return (
@@ -233,22 +240,33 @@ export const OrganoR = ({
         handleClose={handleFunction}
       >
         <Progress open={openSlider}></Progress>
-        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
-        {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
-          <ToggleButton
-            value="check"
-            className="guardar"
-            size="small"
-            onChange={() => noSelection()}
-          >
-            <IconButton color="inherit" component="label" size="small">
-              <DeleteForeverIcon />
-            </IconButton>
-          </ToggleButton>
-        </Tooltip>):("") }
-        <MUIXDataGridGeneral columns={columns} rows={data} setRowSelected={setSelectionModel}
+        {agregar ? (
+          <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        ) : (
+          ""
+        )}
+        {eliminar ? (
+          <Tooltip title={"Eliminar Registros Seleccionados"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => noSelection()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <DeleteForeverIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+        ) : (
+          ""
+        )}
+        <MUIXDataGridGeneral
+          columns={columns}
+          rows={data}
+          setRowSelected={setSelectionModel}
           multiselect={true}
-/>
+        />
       </ModalForm>
       {openModal ? (
         <OrganoRModal
@@ -263,7 +281,11 @@ export const OrganoR = ({
       )}
 
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} />
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+          tipo={0}
+        />
       ) : (
         ""
       )}
