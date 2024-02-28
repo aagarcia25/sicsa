@@ -20,6 +20,7 @@ import { ContestacionModal } from "./ContestacionModal";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 
 export const Contestacion = ({
   handleFunction,
@@ -224,8 +225,10 @@ export const Contestacion = ({
     { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
   
   ];
+  const updatedVrows = { ...vrows, ...obj.row, NuevoOficio: obj.row.Oficio};
 
   useEffect(() => {
+    console.log(obj.row.Oficio);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -240,7 +243,9 @@ export const Contestacion = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
-    console.log("obj",obj.row);
+    console.log("obj",obj.NAUDITORIA);
+    console.log("obj",obj);
+
     
   }, []);
 
@@ -284,7 +289,7 @@ export const Contestacion = ({
       )}
 
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={3} />
+        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} />
       ) : (
         ""
       )}
