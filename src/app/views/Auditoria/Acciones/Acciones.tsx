@@ -22,6 +22,7 @@ import VisorDocumentos from "../../componentes/VisorDocumentos";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 
 const Acciones = ({
   handleFunction,
@@ -335,7 +336,7 @@ const Acciones = ({
         )}
 
         {openAdjuntos ? (
-          <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={5} />
+          <VisorDocumentosOficios handleFunction={handleClose} obj={vrows}  />
         ) : (
           ""
         )}

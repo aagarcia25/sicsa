@@ -18,6 +18,7 @@ import { OficiosModal } from "./OficiosModal";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 
 export const Oficios = ({
   handleFunction,
@@ -221,8 +222,13 @@ export const Oficios = ({
       }
     });
   };
+  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
   useEffect(() => {
+console.log("obj",obj);
+console.log("vrows",vrows);
+
+
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -277,7 +283,7 @@ export const Oficios = ({
           multiselect={true}/>
       </ModalForm>
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={4}/>
+        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} />
       ) : (
         ""
       )}

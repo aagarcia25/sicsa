@@ -20,6 +20,7 @@ import { OrganoR } from "./OrganoR";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 const OrganoC = ({
   handleFunction,
   obj,
@@ -255,7 +256,9 @@ const OrganoC = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    
   }, []);
+  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
   return (
     <div>
@@ -297,7 +300,7 @@ const OrganoC = ({
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={6}  />
+        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows}  />
       ) : (
         ""
       )}
