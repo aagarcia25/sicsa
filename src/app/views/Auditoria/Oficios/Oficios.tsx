@@ -222,8 +222,13 @@ export const Oficios = ({
       }
     });
   };
+  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
   useEffect(() => {
+console.log("obj",obj);
+console.log("vrows",vrows);
+
+
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -278,7 +283,7 @@ export const Oficios = ({
           multiselect={true}/>
       </ModalForm>
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
+        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} />
       ) : (
         ""
       )}

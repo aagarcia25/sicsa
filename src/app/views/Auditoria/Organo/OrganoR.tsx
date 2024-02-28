@@ -18,6 +18,7 @@ import { OrganoRModal } from "./OrganoRModal";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 
 export const OrganoR = ({
   handleFunction,
@@ -204,6 +205,7 @@ export const OrganoR = ({
     { field: "modi", headerName: "Modificado Por", width: 150 },
  
   ];
+  const updatedVrows = { ...vrows, ...obj.row, NuevoOficio: obj.row.Oficio};
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
@@ -220,6 +222,8 @@ export const OrganoR = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
+    console.log("obj",obj.NAUDITORIA);
+    console.log("obj",obj);
   }, []);
 
   return (
@@ -259,7 +263,7 @@ export const OrganoR = ({
       )}
 
       {openAdjuntos ? (
-        <VisorDocumentos handleFunction={handleClose} obj={vrows} tipo={7} />
+        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} />
       ) : (
         ""
       )}

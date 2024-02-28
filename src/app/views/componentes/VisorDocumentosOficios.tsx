@@ -43,11 +43,19 @@ const VisorDocumentosOficios = ({
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
   const [breadcrumbs, setBreadcrumbs] = useState([obj.row.Oficio]);
-  const [breadcrumbsAuditoria, setBreadcrumbsAuditoria] = useState([obj.row.NAUDITORIA]);
+  const [breadcrumbsAuditoria, setBreadcrumbsAuditoria] = useState([obj.NAUDITORIA || obj.row.NAUDITORIA]);
+  const [breadcrumbsNoti, setBreadcrumbsNoti] = useState([obj.row.Oficio]);
+
+  const { NuevoOficio, ...restRow } = obj;
+  const [breadcrumbsContes, setBreadcrumbsContes] = useState( [NuevoOficio] );
+
+  
+
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
-  const consulta = () => {
-    if (explorerRoute !== "" ) {
+  const consulta = () => {    
+    
+    if(explorerRoute !== "" ) {
       setOpenSlider(true);
       // let data
       // if(obj.row.NAUDITORIA){
@@ -64,12 +72,15 @@ const VisorDocumentosOficios = ({
       // };
 
       // }
+      
 
-     let data = {
+        let data = {
            NUMOPERACION: 10,
            FOLIO: explorerRoute,
            TOKEN: JSON.parse(String(getToken())),
          };
+      
+         
       
       AuditoriaService.FoliosFilesindex(data).then((res) => {
         if (res.SUCCESS) {
@@ -425,20 +436,28 @@ const VisorDocumentosOficios = ({
   ];
 
   const handleVerSub = (v: any) => {
+
+    console.log('entre a ver carpeta explorerRoute',explorerRoute);
+    
+
     let auxbreadcrumbs = breadcrumbs 
     let data = {
       NUMOPERACION: 5,
       P_ROUTE: v.row.Route,
       TOKEN: JSON.parse(String(getToken())),
     };
+    console.log("breadcrumbs",breadcrumbs);
 
     if(breadcrumbs[0] === undefined){
       auxbreadcrumbs = breadcrumbsAuditoria
       setBreadcrumbs(breadcrumbsAuditoria)
       console.log("entre al if",breadcrumbs);
     }
+    // else if(breadcrumbsAuditoria[0] === undefined){
+    //   setBreadcrumbs([explorerRoute])
+    //   console.log("entre al else if ",breadcrumbs);
+    // }
     const existeOficio = auxbreadcrumbs.some((breadcrumb) => {
-      console.log("breadcrumb",breadcrumb);
       
       // Verificar si el nombre del breadcrumb es "Oficio"
       return breadcrumb === "/" + v.row.NOMBRE;
@@ -454,9 +473,49 @@ const VisorDocumentosOficios = ({
   };
 
   useEffect(() => {
-    setexplorerRoute(breadcrumbs.join("") || breadcrumbsAuditoria.join(""));
+    console.log("obj",obj);
     
     
+console.log('breadcrumbs usefect',breadcrumbs);
+console.log('breadcrumbsauditoria',breadcrumbsAuditoria);
+
+console.log('breadcrumbsNoti',breadcrumbsNoti);
+console.log('breadcrumbsContes',breadcrumbsContes);
+console.log("explorerRoute",explorerRoute);
+
+
+//if((breadcrumbs[0] !== undefined || breadcrumbsAuditoria[0] !== undefined)&&  breadcrumbsContes[0] === undefined){
+if((breadcrumbs[0] !== undefined && breadcrumbsNoti[0] !== undefined && breadcrumbsAuditoria[0] === undefined &&  breadcrumbsContes[0] === undefined) || (breadcrumbsAuditoria[0] !== undefined && breadcrumbsNoti[0] === undefined && breadcrumbs[0] === undefined &&  breadcrumbsContes[0] === undefined)){
+      console.log('breadcrumbs.join("")',breadcrumbs.join(""));
+      console.log('breadcrumbsAuditoria.join("")',breadcrumbsAuditoria.join(""));
+      console.log("entre al if 1");
+      
+  setexplorerRoute(breadcrumbs.join("") || breadcrumbsAuditoria.join(""));
+} 
+//else if((breadcrumbs[0] !== undefined  && breadcrumbsNoti[0] !== undefined) && breadcrumbsAuditoria[0] === undefined && breadcrumbsContes[0] === undefined){
+else if((breadcrumbs[0] !== undefined  && breadcrumbsNoti[0] !== undefined && breadcrumbsAuditoria[0] !== undefined && breadcrumbsContes[0] === undefined)  ){
+  
+  let newRute = (breadcrumbsAuditoria+'/'+breadcrumbs.join(""))
+  console.log('newRute',newRute);
+  console.log('breadcrumbsNoti',breadcrumbsNoti);
+  console.log('breadcrumbs',breadcrumbs);
+  console.log("entre al if 2");
+
+      setexplorerRoute(newRute)
+} else if(breadcrumbs[0] !== undefined  && breadcrumbsContes[0] !== undefined && breadcrumbsAuditoria[0] !== undefined){
+  let newRute = (breadcrumbsAuditoria+"/"+breadcrumbsContes+'/'+breadcrumbs.join(""))
+  console.log('newRute',newRute);
+  console.log('breadcrumbsNoti',breadcrumbsContes);
+  console.log('breadcrumbs',breadcrumbs);
+  console.log('breadcrumbsAuditoria',breadcrumbsAuditoria);
+  console.log("entre al if 3");
+
+      setexplorerRoute(newRute)
+}
+
+    
+    
+
   }, [breadcrumbs]);
 
   useEffect(() => {
