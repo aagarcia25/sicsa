@@ -360,7 +360,7 @@ export const ControlOficios = () => {
           let file = event?.target?.files?.[i] || "";
           let namefile = event?.target?.files?.[i].name || "";
 
-          if (namefile.includes(item.Oficio + ".pdf")) {
+          if (namefile.includes(item.Oficio)) {
             rows = rows.filter((items) => !item);
             encontrados.push({ Archivo: file, Registro: item });
           } else {
