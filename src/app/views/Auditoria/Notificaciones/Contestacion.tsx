@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { getPermisos, getUser } from "../../../services/localStorage";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import VisorDocumentos from "../../componentes/VisorDocumentos";
+
 import { ContestacionModal } from "./ContestacionModal";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
@@ -149,7 +149,7 @@ export const Contestacion = ({
     setOpenModalDetalle(true);
   };
 
-  const handleClose = () => {                                                                                                                                        
+  const handleClose = () => {
     setOpen(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
@@ -166,7 +166,6 @@ export const Contestacion = ({
     setOpenModal(true);
     setTipoOperacion(1);
     setVrows({});
-    
   };
 
   const columns: GridColDef[] = [
@@ -175,14 +174,54 @@ export const Contestacion = ({
       headerName: "Identificador",
       width: 150,
     },
-    { field: "Oficio", description: "Oficio", headerName: "Oficio", width: 150 },
-    { field: "unidad", description: "Unidad Responsable", headerName: "Unidad Responsable", width: 300 },
-    { field: "secretaria", description: "Secretaría", headerName: "Secretaría", width: 300 },
-    { field: "SIGAOficio", description: "Folio SIGA", headerName: "Folio SIGA", width: 150 },
-    { field: "FOficio", description: "Fecha de Oficio", headerName: "Fecha de Oficio", width: 150 },
-    { field: "FRecibido", description: "Fecha de Recibido", headerName: "Fecha de Recibido", width: 150 },
-    { field: "FVencimiento", description: "Fecha de Vencimiento",  headerName: "Fecha de Vencimiento", width: 150 },
-    { field: "Prorroga", description: "Fecha de Prorroga", headerName: "Fecha de Prorroga", width: 150 },
+    {
+      field: "Oficio",
+      description: "Oficio",
+      headerName: "Oficio",
+      width: 150,
+    },
+    {
+      field: "unidad",
+      description: "Unidad Responsable",
+      headerName: "Unidad Responsable",
+      width: 300,
+    },
+    {
+      field: "secretaria",
+      description: "Secretaría",
+      headerName: "Secretaría",
+      width: 300,
+    },
+    {
+      field: "SIGAOficio",
+      description: "Folio SIGA",
+      headerName: "Folio SIGA",
+      width: 150,
+    },
+    {
+      field: "FOficio",
+      description: "Fecha de Oficio",
+      headerName: "Fecha de Oficio",
+      width: 150,
+    },
+    {
+      field: "FRecibido",
+      description: "Fecha de Recibido",
+      headerName: "Fecha de Recibido",
+      width: 150,
+    },
+    {
+      field: "FVencimiento",
+      description: "Fecha de Vencimiento",
+      headerName: "Fecha de Vencimiento",
+      width: 150,
+    },
+    {
+      field: "Prorroga",
+      description: "Fecha de Prorroga",
+      headerName: "Fecha de Prorroga",
+      width: 150,
+    },
     {
       field: "acciones",
       disableExport: true,
@@ -193,17 +232,25 @@ export const Contestacion = ({
       renderCell: (v) => {
         return (
           <>
-          {editar ? (<ButtonsEdit
-              handleAccion={handleEdit}
-              row={v}
-              show={editar}
-            ></ButtonsEdit>):("")}
-            {eliminar ? (<ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={eliminar}
-            ></ButtonsDeleted>):("")}
-            
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleEdit}
+                row={v}
+                show={editar}
+              ></ButtonsEdit>
+            ) : (
+              ""
+            )}
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={eliminar}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )}
+
             <ButtonsDetail
               title={"Ver adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -221,11 +268,20 @@ export const Contestacion = ({
       headerName: "Última Actualización",
       width: 150,
     },
-    { field: "creado", description: "Creado Por", headerName: "Creado Por", width: 150 },
-    { field: "modi", description: "Modificado Por", headerName: "Modificado Por", width: 150 },
-  
+    {
+      field: "creado",
+      description: "Creado Por",
+      headerName: "Creado Por",
+      width: 150,
+    },
+    {
+      field: "modi",
+      description: "Modificado Por",
+      headerName: "Modificado Por",
+      width: 150,
+    },
   ];
-  const updatedVrows = { ...vrows, ...obj.row, NuevoOficio: obj.row.Oficio};
+  const updatedVrows = { ...vrows, ...obj.row, NuevoOficio: obj.row.Oficio };
 
   useEffect(() => {
     console.log(obj.row.Oficio);
@@ -243,10 +299,8 @@ export const Contestacion = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
-    console.log("obj",obj.NAUDITORIA);
-    console.log("obj",obj);
-
-    
+    console.log("obj", obj.NAUDITORIA);
+    console.log("obj", obj);
   }, []);
 
   return (
@@ -257,24 +311,35 @@ export const Contestacion = ({
       >
         <Progress open={openSlider}></Progress>
         <Typography variant="h6">
-          {obj.row.Oficio +" "+obj.row.unidad}
+          {obj.row.Oficio + " " + obj.row.unidad}
         </Typography>
-        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
-        {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
-          <ToggleButton
-            value="check"
-            className="guardar"
-            size="small"
-            onChange={() => noSelection()}
-          >
-            <IconButton color="inherit" component="label" size="small">
-              <DeleteForeverIcon />
-            </IconButton>
-          </ToggleButton>
-        </Tooltip>):("") }
-        <MUIXDataGridGeneral columns={columns} rows={data} setRowSelected={setSelectionModel}
+        {agregar ? (
+          <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        ) : (
+          ""
+        )}
+        {eliminar ? (
+          <Tooltip title={"Eliminar Registros Seleccionados"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => noSelection()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <DeleteForeverIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+        ) : (
+          ""
+        )}
+        <MUIXDataGridGeneral
+          columns={columns}
+          rows={data}
+          setRowSelected={setSelectionModel}
           multiselect={true}
-/>
+        />
       </ModalForm>
       {openModal ? (
         <ContestacionModal
@@ -289,7 +354,10 @@ export const Contestacion = ({
       )}
 
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} />
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+        />
       ) : (
         ""
       )}

@@ -1,19 +1,13 @@
-import { GridColDef } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { Toast } from "../../helpers/Toast";
-import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
-import { AuditoriaService } from "../../services/AuditoriaService";
-import { getPermisos, getUser } from "../../services/localStorage";
-import MUIXDataGrid from "../MUIXDataGrid";
-import ButtonsAdd from "../componentes/ButtonsAdd";
-import ButtonsDeleted from "../componentes/ButtonsDeleted";
-import ButtonsEdit from "../componentes/ButtonsEdit";
-import TitleComponent from "../componentes/TitleComponent";
-import { AuditoriaModal } from "./AuditoriaModal";
+import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import BusinessIcon from "@mui/icons-material/Business";
 import ChatIcon from "@mui/icons-material/Chat";
-import { ButtonsDetail } from "../componentes/ButtonsDetail";
-import Notif from "./Notificaciones/Notif";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import SendIcon from "@mui/icons-material/Send";
 import {
   Button,
   Collapse,
@@ -24,40 +18,38 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import VisorDocumentos from "../componentes/VisorDocumentos";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import Acciones from "./Acciones/Acciones";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import { Oficios } from "./Oficios/Oficios";
-import { Gantt } from "gantt-task-react";
-import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
+import { GridColDef } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { Toast } from "../../helpers/Toast";
+import SelectValues from "../../interfaces/Share";
+import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { AuditoriaService } from "../../services/AuditoriaService";
+import { ShareService } from "../../services/ShareService";
+import { getPermisos, getUser } from "../../services/localStorage";
+import ButtonsAdd from "../componentes/ButtonsAdd";
+import ButtonsDeleted from "../componentes/ButtonsDeleted";
+import { ButtonsDetail } from "../componentes/ButtonsDetail";
+import ButtonsEdit from "../componentes/ButtonsEdit";
+import ButtonsShare from "../componentes/ButtonsShare";
 import GanttModal from "../componentes/GanttModal";
 import SelectFrag from "../componentes/SelectFrag";
-import SelectValues from "../../interfaces/Share";
-import { ShareService } from "../../services/ShareService";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-import ButtonsShare from "../componentes/ButtonsShare";
-import SendIcon from "@mui/icons-material/Send";
-import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
-import BusinessIcon from "@mui/icons-material/Business";
+import TitleComponent from "../componentes/TitleComponent";
+import Acciones from "./Acciones/Acciones";
+import { AuditoriaModal } from "./AuditoriaModal";
+import Notif from "./Notificaciones/Notif";
+import { Oficios } from "./Oficios/Oficios";
 
-import FactCheckIcon from "@mui/icons-material/FactCheck";
-import OrganoC from "./Organo/OrganoC";
-import { render } from "@testing-library/react";
-import LinkIcon from "@mui/icons-material/Link";
-import axios from "axios";
-import { log } from "console";
-import { ok } from "assert";
-import row from "antd/es/row";
-import { CatalogosServices } from "../../services/catalogosServices";
-import { ButtonsImport } from "../componentes/ButtonsImport";
-import Progress from "../Progress";
+import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
+import LinkIcon from "@mui/icons-material/Link";
+import { CatalogosServices } from "../../services/catalogosServices";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
-import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
+import Progress from "../Progress";
+import { ButtonsImport } from "../componentes/ButtonsImport";
 import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
+import OrganoC from "./Organo/OrganoC";
 
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -93,8 +85,12 @@ export const Auditoria = () => {
   const [idInicioauditoria, setidInicioauditoria] = useState("");
   const [anio, setanio] = useState("");
   const [ListIdEstatus, setListIdEstatus] = useState<SelectValues[]>([]);
-  const [ListIdOrigenAuditoria, setListIdOrigenAuditoria] = useState<SelectValues[]>([]);
-  const [ListIOdEntidadFiscalizada, setListIOdEntidadFiscalizada] = useState<SelectValues[]>([]);
+  const [ListIdOrigenAuditoria, setListIdOrigenAuditoria] = useState<
+    SelectValues[]
+  >([]);
+  const [ListIOdEntidadFiscalizada, setListIOdEntidadFiscalizada] = useState<
+    SelectValues[]
+  >([]);
   const [ListIdTipo, setListIdTipo] = useState<SelectValues[]>([]);
   const [Listinicio, setListInicio] = useState<SelectValues[]>([]);
   const [ListAnio, setListAnio] = useState<SelectValues[]>([]);
@@ -222,7 +218,7 @@ export const Auditoria = () => {
 
   const handleFilterChangeClasificacionAuditoria = (v: string) => {
     setidTipo(v);
-      loadFilter(21, v);
+    loadFilter(21, v);
   };
 
   const noSelection = () => {
@@ -354,7 +350,7 @@ export const Auditoria = () => {
         icon: "success",
         title: "¡La auditoría no se ha entregado!",
       });
-    } else{
+    } else {
       Swal.fire({
         icon: "info",
         title: "¿Desea habilitar la auditoría entregada?",
@@ -385,8 +381,6 @@ export const Auditoria = () => {
         }
       });
     }
-      
-    
   };
 
   const columns: GridColDef[] = [
@@ -536,7 +530,7 @@ export const Auditoria = () => {
               ></ButtonsDetail>
             ) : (
               ""
-            )}  
+            )}
 
             <ButtonsDetail
               title={"Resultado de la Auditoria"}
@@ -606,7 +600,6 @@ export const Auditoria = () => {
     setmodalidad("");
     setidOrigenAuditoria("");
     setidEntidadFiscalizada("");
-
   };
   const consulta = () => {
     let data = {
@@ -620,8 +613,8 @@ export const Auditoria = () => {
       idModalidad: modalidad === "false" ? "" : modalidad,
       tipo: idTipo === "false" ? "" : idTipo,
       ente: idOrigenAuditoria === "false" ? "" : idOrigenAuditoria,
-      idCatEntidadFiscalizada: idEntidadFiscalizada === "false" ? "" : idEntidadFiscalizada,
-
+      idCatEntidadFiscalizada:
+        idEntidadFiscalizada === "false" ? "" : idEntidadFiscalizada,
     };
     AuditoriaService.Auditoriaindex(data).then((res) => {
       if (res.SUCCESS) {
@@ -698,7 +691,8 @@ export const Auditoria = () => {
         }
         if (String(item.ControlInterno) === "ENTREGA") {
           setEntrega(true);
-        }if (String(item.ControlInterno) === "HABILENTREGA") {
+        }
+        if (String(item.ControlInterno) === "HABILENTREGA") {
           sethablitarEntrega(true);
         }
       }
@@ -727,7 +721,7 @@ export const Auditoria = () => {
           />
 
           <Collapse in={showfilter} timeout="auto" unmountOnExit>
-          <Grid
+            <Grid
               container
               item
               spacing={1}
@@ -787,7 +781,6 @@ export const Auditoria = () => {
                   placeholder={"Seleccione.."}
                   disabled={false}
                 />
-                
               </Grid>
             </Grid>
             <Grid
@@ -804,7 +797,7 @@ export const Auditoria = () => {
               sx={{ padding: "1%" }}
             >
               <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
+                <Typography sx={{ fontFamily: "sans-serif" }}>
                   Entidad Fiscalizada:
                 </Typography>
                 <SelectFrag
@@ -816,7 +809,7 @@ export const Auditoria = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
+                <TextField
                   margin="dense"
                   id="FolioSIGA"
                   label="Folio SIGA"
@@ -828,7 +821,7 @@ export const Auditoria = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
+                <TextField
                   margin="dense"
                   id="NAUDITORIA"
                   label="N° de Auditoría"
@@ -913,20 +906,28 @@ export const Auditoria = () => {
             row={undefined}
           />
 
-{eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
-          <ToggleButton
-            value="check"
-            className="guardar"
-            size="small"
-            onChange={() => noSelection()}
-          >
-            <IconButton color="inherit" component="label" size="small">
-              <DeleteForeverIcon />
-            </IconButton>
-          </ToggleButton>
-        </Tooltip>):("") }
-          <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}/>
+          {eliminar ? (
+            <Tooltip title={"Eliminar Registros Seleccionados"}>
+              <ToggleButton
+                value="check"
+                className="guardar"
+                size="small"
+                onChange={() => noSelection()}
+              >
+                <IconButton color="inherit" component="label" size="small">
+                  <DeleteForeverIcon />
+                </IconButton>
+              </ToggleButton>
+            </Tooltip>
+          ) : (
+            ""
+          )}
+          <MUIXDataGridGeneral
+            columns={columns}
+            rows={bancos}
+            setRowSelected={setSelectionModel}
+            multiselect={true}
+          />
         </div>
       </Grid>
 
@@ -942,7 +943,11 @@ export const Auditoria = () => {
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={vrows}
+          tipo={2}
+        />
       ) : (
         ""
       )}

@@ -25,9 +25,11 @@ import ButtonsDeletedFolder from "./ButtonsDeletedFolder";
 const VisorDocumentosOficios = ({
   handleFunction,
   obj,
+  tipo,
 }: {
   handleFunction: Function;
   obj: any;
+  tipo?: number;
 }) => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
@@ -42,37 +44,14 @@ const VisorDocumentosOficios = ({
   const [adjuntar, setAdjuntar] = useState<boolean>(false);
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
-  const [breadcrumbs, setBreadcrumbs] = useState([
-    obj.row.Anio + "/" + obj.row.Oficio,
-  ]);
-  const [breadcrumbsAuditoria, setBreadcrumbsAuditoria] = useState([
-    obj.NAUDITORIA || obj.row.NAUDITORIA,
-  ]);
-  const [breadcrumbsNoti, setBreadcrumbsNoti] = useState([obj.row.Oficio]);
 
-  const { NuevoOficio, ...restRow } = obj;
-  const [breadcrumbsContes, setBreadcrumbsContes] = useState([NuevoOficio]);
+  const [breadcrumbs, setBreadcrumbs] = useState([""]);
 
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
   const consulta = () => {
     if (explorerRoute !== "") {
       setOpenSlider(true);
-      // let data
-      // if(obj.row.NAUDITORIA){
-      //    data = {
-      //     NUMOPERACION: 10,
-      //     FOLIO: obj.row.NAUDITORIA,
-      //     TOKEN: JSON.parse(String(getToken())),
-      //   };
-      // }else{
-      //   data = {
-      //   NUMOPERACION: 10,
-      //   FOLIO: explorerRoute,
-      //   TOKEN: JSON.parse(String(getToken())),
-      // };
-
-      // }
 
       let data = {
         NUMOPERACION: 10,
@@ -439,8 +418,8 @@ const VisorDocumentosOficios = ({
     console.log("breadcrumbs", breadcrumbs);
 
     if (breadcrumbs[0] === undefined) {
-      auxbreadcrumbs = breadcrumbsAuditoria;
-      setBreadcrumbs(breadcrumbsAuditoria);
+      // auxbreadcrumbs = breadcrumbsAuditoria;
+      //setBreadcrumbs(breadcrumbsAuditoria);
       console.log("entre al if", breadcrumbs);
     }
     const existeOficio = auxbreadcrumbs.some((breadcrumb) => {
@@ -459,67 +438,22 @@ const VisorDocumentosOficios = ({
   useEffect(() => {
     console.log("obj", obj);
 
-    console.log("breadcrumbs usefect", breadcrumbs);
-    console.log("breadcrumbsauditoria", breadcrumbsAuditoria);
-
-    console.log("breadcrumbsNoti", breadcrumbsNoti);
-    console.log("breadcrumbsContes", breadcrumbsContes);
-    console.log("explorerRoute", explorerRoute);
-
-    //if((breadcrumbs[0] !== undefined || breadcrumbsAuditoria[0] !== undefined)&&  breadcrumbsContes[0] === undefined){
-    if (
-      (breadcrumbs[0] !== undefined &&
-        breadcrumbsNoti[0] !== undefined &&
-        breadcrumbsAuditoria[0] === undefined &&
-        breadcrumbsContes[0] === undefined) ||
-      (breadcrumbsAuditoria[0] !== undefined &&
-        breadcrumbsNoti[0] === undefined &&
-        breadcrumbs[0] === undefined &&
-        breadcrumbsContes[0] === undefined)
-    ) {
-      console.log('breadcrumbs.join("")', breadcrumbs.join(""));
-      console.log(
-        'breadcrumbsAuditoria.join("")',
-        breadcrumbsAuditoria.join("")
-      );
-      console.log("entre al if 1");
-
-      setexplorerRoute(breadcrumbs.join("") || breadcrumbsAuditoria.join(""));
+    if (tipo === 1) {
+      console.log("Tipo es Oficio", obj);
+      setBreadcrumbs([obj.row.Anio + "/" + obj.row.Oficio]);
+      setexplorerRoute([obj.row.Anio + "/" + obj.row.Oficio].join(""));
+    } else if (tipo === 2) {
+      console.log("Tipo es auditoria", obj);
+      setBreadcrumbs([obj.row.anio + "/" + obj.row.NAUDITORIA]);
+      console.log(breadcrumbs);
+      setexplorerRoute([obj.row.anio + "/" + obj.row.NAUDITORIA].join(""));
+    } else if (tipo === 3) {
+      console.log("Tipo es auditoria", obj);
+      setBreadcrumbs([obj]);
+      console.log(breadcrumbs);
+      setexplorerRoute([obj].join(""));
     }
-    //else if((breadcrumbs[0] !== undefined  && breadcrumbsNoti[0] !== undefined) && breadcrumbsAuditoria[0] === undefined && breadcrumbsContes[0] === undefined){
-    else if (
-      breadcrumbs[0] !== undefined &&
-      breadcrumbsNoti[0] !== undefined &&
-      breadcrumbsAuditoria[0] !== undefined &&
-      breadcrumbsContes[0] === undefined
-    ) {
-      let newRute = breadcrumbsAuditoria + "/" + breadcrumbs.join("");
-      console.log("newRute", newRute);
-      console.log("breadcrumbsNoti", breadcrumbsNoti);
-      console.log("breadcrumbs", breadcrumbs);
-      console.log("entre al if 2");
-
-      setexplorerRoute(newRute);
-    } else if (
-      breadcrumbs[0] !== undefined &&
-      breadcrumbsContes[0] !== undefined &&
-      breadcrumbsAuditoria[0] !== undefined
-    ) {
-      let newRute =
-        breadcrumbsAuditoria +
-        "/" +
-        breadcrumbsContes +
-        "/" +
-        breadcrumbs.join("");
-      console.log("newRute", newRute);
-      console.log("breadcrumbsNoti", breadcrumbsContes);
-      console.log("breadcrumbs", breadcrumbs);
-      console.log("breadcrumbsAuditoria", breadcrumbsAuditoria);
-      console.log("entre al if 3");
-
-      setexplorerRoute(newRute);
-    }
-  }, [breadcrumbs]);
+  }, []);
 
   useEffect(() => {
     setOpenSlider(true);
@@ -544,7 +478,7 @@ const VisorDocumentosOficios = ({
       <ModalForm title={"Documentos del Oficio"} handleClose={handleFunction}>
         <Progress open={openSlider}></Progress>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Typography variant="h4">{obj.row.Oficio}</Typography>
+          {/* <Typography variant="h4">{obj.row.Oficio}</Typography> */}
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           {breadcrumbs}
