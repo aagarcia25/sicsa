@@ -14,7 +14,7 @@ import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
-import VisorDocumentos from "../../componentes/VisorDocumentos";
+
 import { OrganoCModal } from "./OrganoCModal";
 import { OrganoR } from "./OrganoR";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
@@ -191,17 +191,25 @@ const OrganoC = ({
       renderCell: (v) => {
         return (
           <>
-          {editar ? (<ButtonsEdit
-              handleAccion={handleEdit}
-              row={v}
-              show={editar}
-            ></ButtonsEdit>):("")}
-            {eliminar ? (<ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={eliminar}
-            ></ButtonsDeleted>):("")}
-            
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleEdit}
+                row={v}
+                show={editar}
+              ></ButtonsEdit>
+            ) : (
+              ""
+            )}
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={eliminar}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )}
+
             <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -238,7 +246,6 @@ const OrganoC = ({
       headerName: "Modificado Por",
       width: 150,
     },
-   
   ];
 
   useEffect(() => {
@@ -256,7 +263,6 @@ const OrganoC = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
-    
   }, []);
   const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
@@ -267,21 +273,33 @@ const OrganoC = ({
         handleClose={handleFunction}
       >
         <Progress open={show}></Progress>
-        {agregar ? (<ButtonsAdd handleOpen={handleOpen} agregar={agregar} />):("")}
-        {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
-          <ToggleButton
-            value="check"
-            className="guardar"
-            size="small"
-            onChange={() => noSelection()}
-          >
-            <IconButton color="inherit" component="label" size="small">
-              <DeleteForeverIcon />
-            </IconButton>
-          </ToggleButton>
-        </Tooltip>):("") }
-        <MUIXDataGridGeneral columns={columns} rows={data} setRowSelected={setSelectionModel}
-          multiselect={true}/>
+        {agregar ? (
+          <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
+        ) : (
+          ""
+        )}
+        {eliminar ? (
+          <Tooltip title={"Eliminar Registros Seleccionados"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => noSelection()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <DeleteForeverIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+        ) : (
+          ""
+        )}
+        <MUIXDataGridGeneral
+          columns={columns}
+          rows={data}
+          setRowSelected={setSelectionModel}
+          multiselect={true}
+        />
       </ModalForm>
       {openContestacion ? (
         <OrganoR handleFunction={handleClose} obj={vrows} />
@@ -300,7 +318,10 @@ const OrganoC = ({
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows}  />
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+        />
       ) : (
         ""
       )}
