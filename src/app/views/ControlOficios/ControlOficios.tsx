@@ -407,7 +407,10 @@ export const ControlOficios = () => {
               const formData = new FormData();
               formData.append("NUMOPERACION", "1");
               formData.append("ID", item.Registro.id);
-              formData.append("FOLIO", item.Registro.Oficio);
+              formData.append(
+                "FOLIO",
+                item.Registro.Anio + "/" + item.Registro.Oficio
+              );
               formData.append("CHUSER", user.Id);
               formData.append("TOKEN", JSON.parse(String(getToken())));
               formData.append("FILE", item.Archivo);
