@@ -41,6 +41,7 @@ const OrganoC = ({
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [updatedVrows, setupdatedVrows] = useState("");
 
   const consulta = (data: any) => {
     AuditoriaService.OrganoCindex(data).then((res) => {
@@ -88,13 +89,17 @@ const OrganoC = ({
   };
 
   const handleDetalle = (data: any) => {
-    setVrows(data);
+    setVrows({...data,row:{...data.row,NAUDITORIA: obj.row.NAUDITORIA, anio: obj.row.anio, OficioC: obj.row.Oficio}});
     setOpenContestacion(true);
+    console.log("setVrows",{...data,row:{...data.row,NAUDITORIA: obj.row.NAUDITORIA, anio: obj.row.anio, OficioC: obj.row.Oficio}});
+    
   };
 
   const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
+    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio);
     setOpenAdjuntos(true);
+    console.log("data",data);
+    
   };
 
   const handleClose = () => {
@@ -264,7 +269,6 @@ const OrganoC = ({
     });
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
   }, []);
-  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
   return (
     <div>
@@ -321,6 +325,7 @@ const OrganoC = ({
         <VisorDocumentosOficios
           handleFunction={handleClose}
           obj={updatedVrows}
+          tipo={6}
         />
       ) : (
         ""
