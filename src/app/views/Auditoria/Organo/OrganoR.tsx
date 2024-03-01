@@ -41,9 +41,16 @@ export const OrganoR = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
 
-
   const handleVerAdjuntos = (data: any) => {
-    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + obj.row.Oficio + "/" + data.row.Oficio);
+    setupdatedVrows(
+      obj.row.anio +
+        "/" +
+        obj.row.NAUDITORIA +
+        "/" +
+        obj.row.Oficio +
+        "/" +
+        data.row.Oficio
+    );
     setOpenAdjuntos(true);
   };
 
@@ -276,6 +283,7 @@ export const OrganoR = ({
           dt={vrows}
           user={user}
           idNotificacion={obj.id}
+          destino={updatedVrows}
         />
       ) : (
         ""
