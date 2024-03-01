@@ -48,6 +48,8 @@ const Acciones = ({
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [updatedVrows, setupdatedVrows] = useState("");
+
 
   const handleDeleted = (v: any) => {
     Swal.fire({
@@ -154,7 +156,7 @@ const Acciones = ({
   };
 
   const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
+    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.ClaveAccion);
     setOpenAdjuntos(true);
   };
 
@@ -343,7 +345,7 @@ const Acciones = ({
         )}
 
         {openAdjuntos ? (
-          <VisorDocumentosOficios handleFunction={handleClose} obj={vrows} />
+          <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} tipo={8}/>
         ) : (
           ""
         )}

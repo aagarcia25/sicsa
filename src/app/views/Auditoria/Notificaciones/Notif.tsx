@@ -7,7 +7,6 @@ import { Toast } from "../../../helpers/Toast";
 import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { getPermisos, getUser } from "../../../services/localStorage";
-import MUIXDataGrid from "../../MUIXDataGrid";
 import Progress from "../../Progress";
 import ButtonsAdd from "../../componentes/ButtonsAdd";
 import ButtonsDeleted from "../../componentes/ButtonsDeleted";
@@ -15,12 +14,12 @@ import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
 
-import { Contestacion } from "./Contestacion";
-import { NotifModal } from "./NotifModal";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
+import { Contestacion } from "./Contestacion";
+import { NotifModal } from "./NotifModal";
 const Notif = ({
   handleFunction,
   obj,
@@ -41,6 +40,7 @@ const Notif = ({
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [updatedVrows, setupdatedVrows] = useState("");
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
@@ -92,13 +92,24 @@ const Notif = ({
   };
 
   const handleDetalle = (data: any) => {
-    setVrows(data);
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+        OficioC: obj.row.Oficio,
+      },
+    });
     setOpenContestacion(true);
   };
 
   const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
+    );
     setOpenAdjuntos(true);
+    console.log("data", data);
   };
 
   const handleClose = () => {
@@ -303,7 +314,6 @@ const Notif = ({
     console.log("NAUDITORIA: obj.row.NAUDITORIA", obj.row.NAUDITORIA);
     console.log("updatedVrows", updatedVrows);
   }, []);
-  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
   return (
     <div>
@@ -341,7 +351,7 @@ const Notif = ({
         />
       </ModalForm>
       {openContestacion ? (
-        <Contestacion handleFunction={handleClose} obj={updatedVrows} />
+        <Contestacion handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
       )}
@@ -352,12 +362,17 @@ const Notif = ({
           dt={vrows}
           user={user}
           idAuditoria={obj.id}
+          destino={updatedVrows}
         />
       ) : (
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={obj.row} />
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+          tipo={4}
+        />
       ) : (
         ""
       )}

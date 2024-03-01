@@ -44,9 +44,18 @@ export const Contestacion = ({
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [updatedVrows, setupdatedVrows] = useState("");
 
   const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
+    setupdatedVrows(
+      obj.row.anio +
+        "/" +
+        obj.row.NAUDITORIA +
+        "/" +
+        obj.row.Oficio +
+        "/" +
+        data.row.Oficio
+    );
     setOpenAdjuntos(true);
   };
 
@@ -281,7 +290,6 @@ export const Contestacion = ({
       width: 150,
     },
   ];
-  const updatedVrows = { ...vrows, ...obj.row, NuevoOficio: obj.row.Oficio };
 
   useEffect(() => {
     console.log(obj.row.Oficio);
@@ -348,6 +356,7 @@ export const Contestacion = ({
           dt={vrows}
           user={user}
           idNotificacion={obj.id}
+          destino={updatedVrows}
         />
       ) : (
         ""
@@ -357,6 +366,7 @@ export const Contestacion = ({
         <VisorDocumentosOficios
           handleFunction={handleClose}
           obj={updatedVrows}
+          tipo={5}
         />
       ) : (
         ""
