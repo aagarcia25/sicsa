@@ -89,17 +89,33 @@ const OrganoC = ({
   };
 
   const handleDetalle = (data: any) => {
-    setVrows({...data,row:{...data.row,NAUDITORIA: obj.row.NAUDITORIA, anio: obj.row.anio, OficioC: obj.row.Oficio}});
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+        OficioC: obj.row.Oficio,
+      },
+    });
     setOpenContestacion(true);
-    console.log("setVrows",{...data,row:{...data.row,NAUDITORIA: obj.row.NAUDITORIA, anio: obj.row.anio, OficioC: obj.row.Oficio}});
-    
+    console.log("setVrows", {
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+        OficioC: obj.row.Oficio,
+      },
+    });
   };
 
   const handleVerAdjuntos = (data: any) => {
-    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio);
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
+    );
     setOpenAdjuntos(true);
-    console.log("data",data);
-    
+    console.log("data", data);
   };
 
   const handleClose = () => {
@@ -317,6 +333,7 @@ const OrganoC = ({
           dt={vrows}
           user={user}
           idAuditoria={obj.id}
+          destino={updatedVrows}
         />
       ) : (
         ""

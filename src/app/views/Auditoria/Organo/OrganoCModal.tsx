@@ -19,12 +19,14 @@ export const OrganoCModal = ({
   dt,
   user,
   idAuditoria,
+  destino,
 }: {
   tipo: number;
   handleClose: Function;
   dt: any;
   user: USUARIORESPONSE;
   idAuditoria: string;
+  destino: string;
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -40,8 +42,6 @@ export const OrganoCModal = ({
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
     var origen = cadena[2] + "/" + Oficio;
-    var destino = "";
-    //datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
     findOficios(origen, destino);
     handleClose();
     // Realiza cualquier otra acción que desees aquí
@@ -115,7 +115,7 @@ export const OrganoCModal = ({
             icon: "success",
             title: "¡Registro Agregado!",
           });
-          handleClose();
+          handleOficioBlur();
         } else {
           Swal.fire(res.STRMESSAGE, "¡Error!", "info");
         }

@@ -46,9 +46,16 @@ export const Contestacion = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
 
-
   const handleVerAdjuntos = (data: any) => {
-    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + obj.row.Oficio + "/" + data.row.Oficio);
+    setupdatedVrows(
+      obj.row.anio +
+        "/" +
+        obj.row.NAUDITORIA +
+        "/" +
+        obj.row.Oficio +
+        "/" +
+        data.row.Oficio
+    );
     setOpenAdjuntos(true);
   };
 
@@ -349,6 +356,7 @@ export const Contestacion = ({
           dt={vrows}
           user={user}
           idNotificacion={obj.id}
+          destino={updatedVrows}
         />
       ) : (
         ""

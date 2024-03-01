@@ -42,7 +42,6 @@ const Notif = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
 
-
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
       if (res.SUCCESS) {
@@ -93,16 +92,24 @@ const Notif = ({
   };
 
   const handleDetalle = (data: any) => {
-    
-    setVrows({...data,row:{...data.row,NAUDITORIA: obj.row.NAUDITORIA, anio: obj.row.anio, OficioC: obj.row.Oficio}});
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+        OficioC: obj.row.Oficio,
+      },
+    });
     setOpenContestacion(true);
   };
 
   const handleVerAdjuntos = (data: any) => {
-
-    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio);
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
+    );
     setOpenAdjuntos(true);
-    console.log("data",data);
+    console.log("data", data);
   };
 
   const handleClose = () => {
@@ -355,15 +362,17 @@ const Notif = ({
           dt={vrows}
           user={user}
           idAuditoria={obj.id}
+          destino={updatedVrows}
         />
       ) : (
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentosOficios 
-        handleFunction={handleClose} 
-        obj={updatedVrows} 
-        tipo={4}/>
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+          tipo={4}
+        />
       ) : (
         ""
       )}

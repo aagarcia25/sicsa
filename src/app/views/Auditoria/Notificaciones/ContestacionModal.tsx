@@ -19,12 +19,14 @@ export const ContestacionModal = ({
   dt,
   user,
   idNotificacion,
+  destino,
 }: {
   tipo: number;
   handleClose: Function;
   dt: any;
   user: USUARIORESPONSE;
   idNotificacion: string;
+  destino: string;
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -43,8 +45,6 @@ export const ContestacionModal = ({
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
     var origen = cadena[2] + "/" + Oficio;
-    var destino = "";
-    //datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
     findOficios(origen, destino);
     handleClose();
     // Realiza cualquier otra acción que desees aquí
@@ -119,7 +119,7 @@ export const ContestacionModal = ({
             icon: "success",
             title: "¡Registro Agregado!",
           });
-
+          handleOficioBlur();
           handleClose();
         } else {
           Swal.fire(res.STRMESSAGE, "¡Error!", "info");
