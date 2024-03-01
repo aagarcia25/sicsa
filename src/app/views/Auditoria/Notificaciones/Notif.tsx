@@ -21,6 +21,7 @@ import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
+import { findOficios } from "../../../helpers/Files";
 const Notif = ({
   handleFunction,
   obj,
@@ -41,6 +42,16 @@ const Notif = ({
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
+
+  const handleOficioBlur = () => {
+    var cadena = ""; //oficio.split("-");
+    var origen = ""; //cadena[2] + "/" + oficio;
+    var destino = "";
+    //datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
+    findOficios(origen, destino);
+    handleClose();
+    // Realiza cualquier otra acción que desees aquí
+  };
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {

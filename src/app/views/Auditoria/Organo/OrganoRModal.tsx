@@ -11,6 +11,7 @@ import ModalForm from "../../componentes/ModalForm";
 import SelectFrag from "../../componentes/SelectFrag";
 import dayjs, { Dayjs } from "dayjs";
 import CustomizedDate from "../../componentes/CustomizedDate";
+import { findOficios } from "../../../helpers/Files";
 
 export const OrganoRModal = ({
   handleClose,
@@ -38,6 +39,16 @@ export const OrganoRModal = ({
   const [idDestino, setidDestino] = useState("");
   const [LisDestino, setLisDestino] = useState<SelectValues[]>([]);
 
+  const handleOficioBlur = () => {
+    var cadena = ""; //oficio.split("-");
+    var origen = "";
+    // cadena[2] + "/" + oficio;
+    var destino = "";
+    //datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
+    findOficios(origen, destino);
+    handleClose();
+    // Realiza cualquier otra acción que desees aquí
+  };
 
   const handleRequestFOficio = () => {
     let data = {
@@ -46,38 +57,39 @@ export const OrganoRModal = ({
     };
 
     if (tipo === 1) {
-      AuditoriaService.Notificacionindex(data).then((res) => {
-        if(res.RESPONSE.length!==0){
-          Swal.fire({
-          icon: "info",
-          title: ' Ya existe una fecha para este Oficio '+ res.RESPONSE[0].Fecha+ ' , ¿deseas guardarla a este registro?',
-          showDenyButton: true,
-          showCancelButton: false,
-          confirmButtonText: "Confirmar",
-          denyButtonText: `No tomar fecha existente`,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleSend(res.RESPONSE[0].Fecha)
-          
-          } else if (result.isDenied) {
-            handleSend()
+      AuditoriaService.Notificacionindex(data)
+        .then((res) => {
+          if (res.RESPONSE.length !== 0) {
+            Swal.fire({
+              icon: "info",
+              title:
+                " Ya existe una fecha para este Oficio " +
+                res.RESPONSE[0].Fecha +
+                " , ¿deseas guardarla a este registro?",
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: "Confirmar",
+              denyButtonText: `No tomar fecha existente`,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                handleSend(res.RESPONSE[0].Fecha);
+              } else if (result.isDenied) {
+                handleSend();
+              }
+            });
+          } else {
+            handleSend();
           }
+        })
+        .catch((e) => {
+          console.log("e", e);
         });
-        }else{
-          handleSend()
-        }
-        
-        
-      }).catch((e)=>{console.log("e",e);
-      });
-    }else if (tipo === 2) {
-      handleSend()
-
+    } else if (tipo === 2) {
+      handleSend();
     }
-
   };
 
-  const handleSend = (fOficio?:string) => {
+  const handleSend = (fOficio?: string) => {
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
@@ -88,7 +100,7 @@ export const OrganoRModal = ({
         idOrganoC: idNotificacion,
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
-        FOficio:  fOficio||FOficio,
+        FOficio: fOficio || FOficio,
         FRecibido: FRecibido,
         FVencimiento: FVencimiento,
         idOrganoAuditorOrigen: idorigen,
@@ -165,8 +177,8 @@ export const OrganoRModal = ({
 
     if (Object.keys(dt).length === 0) {
     } else {
-      console.log("dt",dt);
-      
+      console.log("dt", dt);
+
       setId(dt?.row?.id);
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
@@ -278,7 +290,6 @@ export const OrganoRModal = ({
                 label={"Fecha Oficio"}
                 onchange={handleFilterChangefo}
                 disabled={false}
-
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -287,7 +298,6 @@ export const OrganoRModal = ({
                 label={"Fecha Recibido"}
                 onchange={handleFilterChangefr}
                 disabled={false}
-
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -296,7 +306,6 @@ export const OrganoRModal = ({
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChangefv}
                 disabled={false}
-
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
@@ -312,7 +321,14 @@ export const OrganoRModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
-            <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{ display: "flex" }}>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="flex-end"
+              xs={6}
+              paddingRight={1}
+              sx={{ display: "flex" }}
+            >
               <Button
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleRequestFOficio()}
@@ -320,7 +336,14 @@ export const OrganoRModal = ({
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
             </Grid>
-            <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{ display: "flex" }}>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="flex-start"
+              xs={6}
+              paddingLeft={1}
+              sx={{ display: "flex" }}
+            >
               <Button className={"actualizar"} onClick={() => handleClose()}>
                 {"Salir"}
               </Button>
