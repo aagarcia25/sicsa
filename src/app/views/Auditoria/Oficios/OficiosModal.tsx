@@ -33,7 +33,7 @@ export const OficiosModal = ({
   const [oficio, setOficio] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
@@ -49,8 +49,8 @@ export const OficiosModal = ({
 
       if (tipo === 1) {
         //AGREGAR
-        handleOficioBlur();
         agregar(data);
+        handleOficioBlur();
       } else if (tipo === 2) {
         //EDITAR
         editar(data);
@@ -79,7 +79,7 @@ export const OficiosModal = ({
     console.log(origen);
     console.log(destino);
     findOficios(origen, destino);
-
+    handleClose();
     // Realiza cualquier otra acción que desees aquí
   };
 
@@ -90,7 +90,6 @@ export const OficiosModal = ({
           icon: "success",
           title: "¡Registro Agregado!",
         });
-        handleClose();
       } else {
         Swal.fire(res.STRMESSAGE, "¡Error!", "info");
       }
