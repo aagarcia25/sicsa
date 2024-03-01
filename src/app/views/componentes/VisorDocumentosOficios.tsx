@@ -2,7 +2,7 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import DownloadingIcon from "@mui/icons-material/Downloading";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { Box, Grid, IconButton, ToggleButton, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Grid, IconButton, ToggleButton, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -44,14 +44,20 @@ const VisorDocumentosOficios = ({
   const [adjuntar, setAdjuntar] = useState<boolean>(false);
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
-
   const [breadcrumbs, setBreadcrumbs] = useState([""]);
 
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
   const consulta = () => {
+console.log("explorerRoute Consulta",explorerRoute);
+
+console.log("breadcrumbs",breadcrumbs);
+
+
+    
     if (explorerRoute !== "") {
       setOpenSlider(true);
+      
 
       let data = {
         NUMOPERACION: 10,
@@ -72,7 +78,8 @@ const VisorDocumentosOficios = ({
           Swal.fire("¡Error!", res.STRMESSAGE, "error");
         }
       });
-    }
+    } 
+     
   };
 
   const ProcesaSPeis = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -413,16 +420,9 @@ const VisorDocumentosOficios = ({
 
   const handleVerSub = (v: any) => {
     console.log("entre a ver carpeta explorerRoute", explorerRoute);
+    
+    const existeOficio = breadcrumbs.some((breadcrumb) => {
 
-    let auxbreadcrumbs = breadcrumbs;
-    console.log("breadcrumbs", breadcrumbs);
-
-    if (breadcrumbs[0] === undefined) {
-      // auxbreadcrumbs = breadcrumbsAuditoria;
-      //setBreadcrumbs(breadcrumbsAuditoria);
-      console.log("entre al if", breadcrumbs);
-    }
-    const existeOficio = auxbreadcrumbs.some((breadcrumb) => {
       // Verificar si el nombre del breadcrumb es "Oficio"
       return breadcrumb === "/" + v.row.NOMBRE;
     });
@@ -435,28 +435,56 @@ const VisorDocumentosOficios = ({
     }
   };
 
-  useEffect(() => {
-    console.log("obj", obj);
+  
 
-    if (tipo === 1) {
-      console.log("Tipo es Oficio", obj);
+  useEffect(() => {
+    console.log("breadcrumbs", breadcrumbs);
+    console.log("tipo",tipo);
+    console.log("obj",obj);
+    console.log("",);
+    console.log("",);
+    
+   
+if (tipo === 1) {
       setBreadcrumbs([obj.row.Anio + "/" + obj.row.Oficio]);
       setexplorerRoute([obj.row.Anio + "/" + obj.row.Oficio].join(""));
     } else if (tipo === 2) {
-      console.log("Tipo es auditoria", obj);
       setBreadcrumbs([obj.row.anio + "/" + obj.row.NAUDITORIA]);
-      console.log(breadcrumbs);
+      //console.log(breadcrumbs);
       setexplorerRoute([obj.row.anio + "/" + obj.row.NAUDITORIA].join(""));
     } else if (tipo === 3) {
-      console.log("Tipo es auditoria", obj);
       setBreadcrumbs([obj]);
-      console.log(breadcrumbs);
+      //console.log(breadcrumbs);
+      setexplorerRoute([obj].join(""));
+    } else if (tipo === 4) {
+      setBreadcrumbs([obj]);
+      //console.log(breadcrumbs);
+      setexplorerRoute([obj].join(""));
+    } else if (tipo === 5) {
+      setBreadcrumbs([obj]);
+      //console.log("breadcrumbs",breadcrumbs);
+      setexplorerRoute([obj].join(""));
+    } else if (tipo === 6) {
+      setBreadcrumbs([obj]);
+      //console.log("breadcrumbs",breadcrumbs);
+      setexplorerRoute([obj].join(""));
+    } else if (tipo === 7) {
+      setBreadcrumbs([obj]);
+      //console.log("breadcrumbs",breadcrumbs);
+      setexplorerRoute([obj].join(""));
+    } else if (tipo === 8) {
+      setBreadcrumbs([obj]);
+      //console.log("breadcrumbs",breadcrumbs);
       setexplorerRoute([obj].join(""));
     }
-  }, []);
+    }
+    
+  , []);
 
   useEffect(() => {
-    setOpenSlider(true);
+    
+    if(explorerRoute !==""){
+      setOpenSlider(true);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "ADJUNTAR") {
@@ -471,8 +499,21 @@ const VisorDocumentosOficios = ({
       }
     });
     consulta();
+    }
+       
+    
+   
   }, [explorerRoute]);
 
+useEffect(() => {
+  if(breadcrumbs.length===0){
+handleFunction()
+  }
+    setexplorerRoute(breadcrumbs.join(""));
+      console.log("breadcrumbs1000",breadcrumbs.join(""));
+      console.log("breadcrumbs2000",breadcrumbs);
+    
+  },[breadcrumbs])
   return (
     <div>
       <ModalForm title={"Documentos del Oficio"} handleClose={handleFunction}>
@@ -506,6 +547,8 @@ const VisorDocumentosOficios = ({
                         size="small"
                         onClick={() => {
                           setBreadcrumbs(breadcrumbs.slice(0, -1));
+                          console.log("breadcrumbs.slice",breadcrumbs.slice(0, -1));
+                          
                         }}
                       >
                         <ArrowBackIcon />

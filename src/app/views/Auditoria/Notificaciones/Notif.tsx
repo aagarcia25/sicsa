@@ -42,6 +42,8 @@ const Notif = ({
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [updatedVrows, setupdatedVrows] = useState("");
+
 
   const handleOficioBlur = () => {
     var cadena = ""; //oficio.split("-");
@@ -103,13 +105,16 @@ const Notif = ({
   };
 
   const handleDetalle = (data: any) => {
-    setVrows(data);
+    
+    setVrows({...data,row:{...data.row,NAUDITORIA: obj.row.NAUDITORIA, anio: obj.row.anio, OficioC: obj.row.Oficio}});
     setOpenContestacion(true);
   };
 
   const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
+
+    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio);
     setOpenAdjuntos(true);
+    console.log("data",data);
   };
 
   const handleClose = () => {
@@ -314,7 +319,6 @@ const Notif = ({
     console.log("NAUDITORIA: obj.row.NAUDITORIA", obj.row.NAUDITORIA);
     console.log("updatedVrows", updatedVrows);
   }, []);
-  const updatedVrows = { ...vrows, NAUDITORIA: obj.row.NAUDITORIA };
 
   return (
     <div>
@@ -352,7 +356,7 @@ const Notif = ({
         />
       </ModalForm>
       {openContestacion ? (
-        <Contestacion handleFunction={handleClose} obj={updatedVrows} />
+        <Contestacion handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
       )}
@@ -368,7 +372,10 @@ const Notif = ({
         ""
       )}
       {openAdjuntos ? (
-        <VisorDocumentosOficios handleFunction={handleClose} obj={obj.row} />
+        <VisorDocumentosOficios 
+        handleFunction={handleClose} 
+        obj={updatedVrows} 
+        tipo={4}/>
       ) : (
         ""
       )}
