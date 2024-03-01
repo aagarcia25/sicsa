@@ -7,7 +7,6 @@ import { Toast } from "../../../helpers/Toast";
 import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { getPermisos, getUser } from "../../../services/localStorage";
-import MUIXDataGrid from "../../MUIXDataGrid";
 import Progress from "../../Progress";
 import ButtonsAdd from "../../componentes/ButtonsAdd";
 import ButtonsDeleted from "../../componentes/ButtonsDeleted";
@@ -15,13 +14,12 @@ import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
 
-import { Contestacion } from "./Contestacion";
-import { NotifModal } from "./NotifModal";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
-import { findOficios } from "../../../helpers/Files";
+import { Contestacion } from "./Contestacion";
+import { NotifModal } from "./NotifModal";
 const Notif = ({
   handleFunction,
   obj,
@@ -44,16 +42,6 @@ const Notif = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
 
-
-  const handleOficioBlur = () => {
-    var cadena = ""; //oficio.split("-");
-    var origen = ""; //cadena[2] + "/" + oficio;
-    var destino = "";
-    //datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
-    findOficios(origen, destino);
-    handleClose();
-    // Realiza cualquier otra acción que desees aquí
-  };
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {

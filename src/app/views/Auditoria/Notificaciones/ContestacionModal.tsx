@@ -41,9 +41,8 @@ export const ContestacionModal = ({
   const [ListUnidades, setListUnidades] = useState<SelectValues[]>([]);
 
   const handleOficioBlur = () => {
-    var cadena = ""; //oficio.split("-");
-    var origen = "";
-    // cadena[2] + "/" + oficio;
+    var cadena = Oficio.split("-");
+    var origen = cadena[2] + "/" + Oficio;
     var destino = "";
     //datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
     findOficios(origen, destino);
