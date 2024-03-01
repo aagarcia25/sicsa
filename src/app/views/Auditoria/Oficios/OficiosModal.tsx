@@ -9,17 +9,20 @@ import { getUser } from "../../../services/localStorage";
 import Progress from "../../Progress";
 import CustomizedDate from "../../componentes/CustomizedDate";
 import ModalForm from "../../componentes/ModalForm";
+import { findOficios } from "../../../helpers/Files";
 
 export const OficiosModal = ({
   handleClose,
   tipo,
   dt,
   idauditoria,
+  datosOficio,
 }: {
   tipo: number;
   handleClose: Function;
   dt: any;
   idauditoria: string;
+  datosOficio?: any;
 }) => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const [show, setShow] = useState(false);
@@ -28,9 +31,10 @@ export const OficiosModal = ({
   const [finicio, setFinicio] = useState<Dayjs | null>();
   const [ffin, setFfin] = useState<Dayjs | null>();
   const [oficio, setOficio] = useState("");
+  const [mensaje, setMensaje] = useState("");
 
   const handleSend = () => {
-    if (!oficio ) {
+    if (!oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {
@@ -59,6 +63,31 @@ export const OficiosModal = ({
 
   const handleFilterChange2 = (v: any) => {
     setFfin(v);
+  };
+
+  const handleOficioBlur = () => {
+    console.log("Terminó de escribir en el campo de oficio");
+    console.log(oficio);
+    //setMensaje("Buscando Oficios...");
+    //setShow(true);
+    console.log(datosOficio);
+    var cadena = oficio.split("-");
+    var origen = cadena[2] + "/" + oficio;
+    var destino =
+      datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
+    console.log(origen);
+    console.log(destino);
+
+    //var result = findOficios("", "");
+
+    /*if (result) {
+      setMensaje("");
+      setShow(false);
+    } else {
+      setMensaje("");
+      setShow(false);
+    }*/
+    // Realiza cualquier otra acción que desees aquí
   };
 
   const agregar = (data: any) => {
@@ -96,7 +125,6 @@ export const OficiosModal = ({
       setOficio(dt?.data?.row?.Oficio);
       setFinicio(dayjs(dt?.data?.row?.FechaRecibido));
       setFfin(dayjs(dt?.data?.row?.FechaVencimiento));
-      
     }
   }, [dt]);
 
@@ -106,7 +134,7 @@ export const OficiosModal = ({
         title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}
         handleClose={handleClose}
       >
-        <Progress open={show}></Progress>
+        <Progress open={show} mensaje={mensaje}></Progress>
         <Box boxShadow={3}>
           <Grid
             container
@@ -133,6 +161,7 @@ export const OficiosModal = ({
                 fullWidth
                 focused
                 onChange={(v) => setOficio(v.target.value)}
+                onBlur={() => handleOficioBlur()} // Agregamos el evento onBlur
                 error={oficio === "" ? true : false}
                 // InputProps={{
                 //   readOnly: tipo === 1 ? false : true,
@@ -145,7 +174,6 @@ export const OficiosModal = ({
                 label={"Fecha Recibido"}
                 onchange={handleFilterChange1}
                 disabled={false}
-
               />
             </Grid>
 
@@ -155,7 +183,6 @@ export const OficiosModal = ({
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChange2}
                 disabled={false}
-
               />
             </Grid>
 
@@ -192,16 +219,30 @@ export const OficiosModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
-            <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{display:"flex"}}>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="flex-end"
+              xs={6}
+              paddingRight={1}
+              sx={{ display: "flex" }}
+            >
               <Button
-                disabled={oficio === "" }
+                disabled={oficio === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
             </Grid>
-            <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{display:"flex"}}>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="flex-start"
+              xs={6}
+              paddingLeft={1}
+              sx={{ display: "flex" }}
+            >
               <Button
                 // disabled={descripcion === "" || nombre === ""}
                 className={"actualizar"}

@@ -284,6 +284,7 @@ export const Oficios = ({
             handleClose={handleClose}
             dt={vrows}
             idauditoria={idauditoria}
+            datosOficio={obj}
           />
         ) : (
           ""
