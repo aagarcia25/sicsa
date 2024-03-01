@@ -49,6 +49,7 @@ export const OficiosModal = ({
 
       if (tipo === 1) {
         //AGREGAR
+        handleOficioBlur();
         agregar(data);
       } else if (tipo === 2) {
         //EDITAR
@@ -77,16 +78,8 @@ export const OficiosModal = ({
       datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
     console.log(origen);
     console.log(destino);
+    findOficios(origen, destino);
 
-    //var result = findOficios("", "");
-
-    /*if (result) {
-      setMensaje("");
-      setShow(false);
-    } else {
-      setMensaje("");
-      setShow(false);
-    }*/
     // Realiza cualquier otra acción que desees aquí
   };
 
@@ -161,7 +154,6 @@ export const OficiosModal = ({
                 fullWidth
                 focused
                 onChange={(v) => setOficio(v.target.value)}
-                onBlur={() => handleOficioBlur()} // Agregamos el evento onBlur
                 error={oficio === "" ? true : false}
                 // InputProps={{
                 //   readOnly: tipo === 1 ? false : true,
