@@ -787,7 +787,7 @@ export const ControlOficios = () => {
         >
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography sx={{ fontFamily: "sans-serif" }}>
-              Año Cuenta Pública:
+              Año:
             </Typography>
             <SelectFrag
               value={anio}
