@@ -39,9 +39,18 @@ export const OrganoR = ({
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [updatedVrows, setupdatedVrows] = useState("");
 
   const handleVerAdjuntos = (data: any) => {
-    setVrows(data);
+    setupdatedVrows(
+      obj.row.anio +
+        "/" +
+        obj.row.NAUDITORIA +
+        "/" +
+        obj.row.Oficio +
+        "/" +
+        data.row.Oficio
+    );
     setOpenAdjuntos(true);
   };
 
@@ -212,7 +221,6 @@ export const OrganoR = ({
     { field: "creado", headerName: "Creado Por", width: 150 },
     { field: "modi", headerName: "Modificado Por", width: 150 },
   ];
-  const updatedVrows = { ...vrows, ...obj.row, NuevoOficio: obj.row.Oficio };
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
@@ -275,6 +283,7 @@ export const OrganoR = ({
           dt={vrows}
           user={user}
           idNotificacion={obj.id}
+          destino={updatedVrows}
         />
       ) : (
         ""
@@ -284,7 +293,7 @@ export const OrganoR = ({
         <VisorDocumentosOficios
           handleFunction={handleClose}
           obj={updatedVrows}
-          tipo={0}
+          tipo={7}
         />
       ) : (
         ""

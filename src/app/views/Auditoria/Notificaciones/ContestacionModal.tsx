@@ -11,6 +11,7 @@ import ModalForm from "../../componentes/ModalForm";
 import SelectFrag from "../../componentes/SelectFrag";
 import dayjs, { Dayjs } from "dayjs";
 import CustomizedDate from "../../componentes/CustomizedDate";
+import { findOficios } from "../../../helpers/Files";
 
 export const ContestacionModal = ({
   handleClose,
@@ -18,12 +19,14 @@ export const ContestacionModal = ({
   dt,
   user,
   idNotificacion,
+  destino,
 }: {
   tipo: number;
   handleClose: Function;
   dt: any;
   user: USUARIORESPONSE;
   idNotificacion: string;
+  destino: string;
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -38,6 +41,15 @@ export const ContestacionModal = ({
   const [idunidad, setidunidad] = useState("");
   const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
   const [ListUnidades, setListUnidades] = useState<SelectValues[]>([]);
+
+  const handleOficioBlur = () => {
+    var cadena = Oficio.split("-");
+    var origen = cadena[2] + "/" + Oficio;
+    findOficios(origen, destino);
+    handleClose();
+    // Realiza cualquier otra acción que desees aquí
+  };
+
   const handleRequestFOficio = () => {
     let data = {
       NUMOPERACION: 5,
@@ -45,37 +57,38 @@ export const ContestacionModal = ({
     };
 
     if (tipo === 1) {
-      AuditoriaService.Notificacionindex(data).then((res) => {
-        if(res.RESPONSE.length!==0){
-          Swal.fire({
-          icon: "info",
-          title: ' Ya existe una fecha para este Oficio '+ res.RESPONSE[0].Fecha+ ' , ¿deseas guardarla a este registro?',
-          showDenyButton: true,
-          showCancelButton: false,
-          confirmButtonText: "Confirmar",
-          denyButtonText: `Cancelar`,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleSend(res.RESPONSE[0].Fecha)
-          
-          } else if (result.isDenied) {
-            handleSend()
+      AuditoriaService.Notificacionindex(data)
+        .then((res) => {
+          if (res.RESPONSE.length !== 0) {
+            Swal.fire({
+              icon: "info",
+              title:
+                " Ya existe una fecha para este Oficio " +
+                res.RESPONSE[0].Fecha +
+                " , ¿deseas guardarla a este registro?",
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: "Confirmar",
+              denyButtonText: `Cancelar`,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                handleSend(res.RESPONSE[0].Fecha);
+              } else if (result.isDenied) {
+                handleSend();
+              }
+            });
+          } else {
+            handleSend();
           }
+        })
+        .catch((e) => {
+          console.log("e", e);
         });
-        }else{
-          handleSend()
-        }
-        
-        
-      }).catch((e)=>{console.log("e",e);
-      });
-    }else if (tipo === 2) {
-      handleSend()
-
+    } else if (tipo === 2) {
+      handleSend();
     }
-
   };
-  const handleSend = (fOficio?:string) => {
+  const handleSend = (fOficio?: string) => {
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
@@ -87,7 +100,7 @@ export const ContestacionModal = ({
         Prorroga: Prorroga,
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
-        FOficio: fOficio||FOficio,
+        FOficio: fOficio || FOficio,
         FRecibido: FRecibido,
         FVencimiento: FVencimiento,
         idsecretaria: idsecretaria,
@@ -106,7 +119,7 @@ export const ContestacionModal = ({
             icon: "success",
             title: "¡Registro Agregado!",
           });
-
+          handleOficioBlur();
           handleClose();
         } else {
           Swal.fire(res.STRMESSAGE, "¡Error!", "info");
@@ -189,15 +202,13 @@ export const ContestacionModal = ({
         setFVencimiento(dayjs(dt?.row?.FVencimiento));
       }
       if (FOficio !== null) {
-              setFechaOficio(dayjs(dt?.row?.FOficio));
+        setFechaOficio(dayjs(dt?.row?.FOficio));
       }
       if (Prorroga !== null) {
         setProrroga(dayjs(dt?.row?.Prorroga));
       }
-
     }
   }, [dt]);
- 
 
   return (
     <>
@@ -298,7 +309,6 @@ export const ContestacionModal = ({
                 label={"Fecha Recibido"}
                 onchange={handleFilterChangefr}
                 disabled={false}
-
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -307,7 +317,6 @@ export const ContestacionModal = ({
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChangefv}
                 disabled={false}
-
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -316,7 +325,6 @@ export const ContestacionModal = ({
                 label={"Prorroga"}
                 onchange={handleFilterChangep}
                 disabled={false}
-
               />
             </Grid>
           </Grid>
@@ -331,7 +339,14 @@ export const ContestacionModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
-            <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{ display: "flex" }}>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="flex-end"
+              xs={6}
+              paddingRight={1}
+              sx={{ display: "flex" }}
+            >
               <Button
                 // disabled={descripcion === "" || nombre === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
@@ -340,7 +355,14 @@ export const ContestacionModal = ({
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
             </Grid>
-            <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{ display: "flex" }}>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="flex-start"
+              xs={6}
+              paddingLeft={1}
+              sx={{ display: "flex" }}
+            >
               <Button
                 // disabled={descripcion === "" || nombre === ""}
                 className={"actualizar"}
