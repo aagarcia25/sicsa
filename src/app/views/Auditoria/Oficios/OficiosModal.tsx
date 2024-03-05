@@ -67,15 +67,10 @@ export const OficiosModal = ({
   };
 
   const handleOficioBlur = () => {
-    console.log("Terminó de escribir en el campo de oficio");
-    console.log(oficio);
-    console.log(datosOficio);
     var cadena = oficio.split("-");
     var origen = cadena[2] + "/" + oficio;
     var destino =
       datosOficio.row.anio + "/" + datosOficio.row.NAUDITORIA + "/" + oficio;
-    console.log(origen);
-    console.log(destino);
     findOficios(origen, destino);
     handleClose();
   };

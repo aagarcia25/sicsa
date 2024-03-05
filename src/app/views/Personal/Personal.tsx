@@ -32,8 +32,6 @@ export const Personal = () => {
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
 
-  
-
   const handleAccion = (v: any) => {
     Swal.fire({
       icon: "info",
@@ -69,7 +67,6 @@ export const Personal = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -86,8 +83,6 @@ export const Personal = () => {
           };
 
           CatalogosServices.Personal_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -123,8 +118,6 @@ export const Personal = () => {
   };
 
   const handleEdit = (v: any) => {
-    console.log(v);
-
     setTipoOperacion(2);
     setModo("Módificar Registro");
     setOpen(true);
@@ -134,10 +127,6 @@ export const Personal = () => {
   const consulta = (data: any) => {
     CatalogosServices.Personal_index(data).then((res) => {
       if (res.SUCCESS) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "¡Consulta Exitosa!",
-        // });
         setBancos(res.RESPONSE);
         setOpenSlider(false);
       } else {
@@ -272,7 +261,8 @@ export const Personal = () => {
         ""
       )}
       {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -283,10 +273,16 @@ export const Personal = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-/>
+        </Tooltip>
+      ) : (
+        ""
+      )}
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };

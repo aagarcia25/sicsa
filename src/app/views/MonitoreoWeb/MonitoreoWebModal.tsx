@@ -1,4 +1,14 @@
-import { Autocomplete, Box, Button, FormControl, Grid, Stack, TextField, Typography, fabClasses } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+  fabClasses,
+} from "@mui/material";
 import ModalForm from "../componentes/ModalForm";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -11,24 +21,21 @@ import { ShareService } from "../../services/ShareService";
 import SelectValues from "../../interfaces/Share";
 import { log } from "console";
 
-export const MonitoreoWebModal = (
-  {
-    open,
-    tipo,
-    handleClose,
-    dt,
-  }: {
-    open: boolean;
-    tipo: number;
-    handleClose: Function;
-    dt: any;
-  }
-) => {
-
+export const MonitoreoWebModal = ({
+  open,
+  tipo,
+  handleClose,
+  dt,
+}: {
+  open: boolean;
+  tipo: number;
+  handleClose: Function;
+  dt: any;
+}) => {
   const [id, setId] = useState("");
   const [Url, setUrl] = useState("");
-   const [Correos, setCorreos] = useState<Array<SelectValues>>([]);
-   const [CorreosList, setCorreosList] = useState<SelectValues[]>([]);
+  const [Correos, setCorreos] = useState<Array<SelectValues>>([]);
+  const [CorreosList, setCorreosList] = useState<SelectValues[]>([]);
   //const [Correos, setCorreos] = useState("");
   const [Alias, setAlias] = useState("");
   const [Tiempo, setTiempo] = useState("");
@@ -36,13 +43,8 @@ export const MonitoreoWebModal = (
 
   const [show, setShow] = useState(false);
 
-
-
-
   const handleSend = () => {
     if (!Url || !Correos || !Alias || !Tiempo) {
-
-
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {
@@ -81,7 +83,7 @@ export const MonitoreoWebModal = (
   };
 
   const editar = (data: any) => {
-    CatalogosServices.Monitoreo_index(data).then((res) => {      
+    CatalogosServices.Monitoreo_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -100,46 +102,37 @@ export const MonitoreoWebModal = (
     ShareService.SelectIndex(data).then((res) => {
       if (operacion === 28) {
         setCorreos(res.RESPONSE);
-
-
       }
     });
   };
 
   function getArrayCorreo() {
-
-
-    let correosListos = ""
+    let correosListos = "";
     CorreosList.map((item) => {
       correosListos = correosListos + item.label + ";";
-    })
-    return (correosListos);
+    });
+    return correosListos;
   }
 
-
   useEffect(() => {
-    loadFilter(28)
-
-
+    loadFilter(28);
 
     if (dt === "") {
     } else {
-      setId(dt?.row?.id)
-      setUrl(dt?.row?.Url)
-      setCorreos(dt?.row?.Correos)
-      setAlias(dt?.row?.Alias)
-      setTiempo(dt?.row?.Tiempo)
+      setId(dt?.row?.id);
+      setUrl(dt?.row?.Url);
+      setCorreos(dt?.row?.Correos);
+      setAlias(dt?.row?.Alias);
+      setTiempo(dt?.row?.Tiempo);
     }
-
   }, []);
-
-
-
-
 
   return (
     <div style={{ height: 600, width: "100%", padding: "1%" }}>
-      <ModalForm handleClose={handleClose} title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}>
+      <ModalForm
+        handleClose={handleClose}
+        title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}
+      >
         <Box boxShadow={3}>
           <Grid
             container
@@ -184,7 +177,7 @@ export const MonitoreoWebModal = (
                 value={CorreosList}
                 onChange={(event, newValue) => {
                   if (newValue != null) {
-                    setCorreosList( [...newValue]);
+                    setCorreosList([...newValue]);
                   }
                 }}
                 renderInput={(params) => (
@@ -243,37 +236,37 @@ export const MonitoreoWebModal = (
               lg={12}
               sx={{ padding: "2%" }}
             >
-            <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{display:"flex"}}>
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="flex-end"
+                xs={6}
+                paddingRight={1}
+                sx={{ display: "flex" }}
+              >
                 <Button
-                  //disabled={Nombre === "" || ClaveEstado === "" || ClaveINEGI === ""}
                   className={tipo === 1 ? "guardar" : "actualizar"}
-                  onClick={() =>
-                    //console.log("getarraycorrero",getArrayCorreo())
-
-
-                    handleSend()
-                  }
-
+                  onClick={() => handleSend()}
                 >
                   {tipo === 1 ? "Agregar" : "Editar"}
                 </Button>
               </Grid>
-              <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{display:"flex"}}>
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
-                className={"actualizar"}
-                onClick={() => handleClose()}
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="flex-start"
+                xs={6}
+                paddingLeft={1}
+                sx={{ display: "flex" }}
               >
-                {"Salir"}
-              </Button>
+                <Button className={"actualizar"} onClick={() => handleClose()}>
+                  {"Salir"}
+                </Button>
+              </Grid>
             </Grid>
-            </Grid>
-          </Grid >
+          </Grid>
         </Box>
       </ModalForm>
-
-
-
     </div>
-  )
-}
+  );
+};

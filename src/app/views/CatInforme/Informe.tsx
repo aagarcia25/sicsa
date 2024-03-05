@@ -30,7 +30,6 @@ export const Informe = () => {
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
 
-
   const handleAccion = (v: any) => {
     if (v.tipo == 1) {
       setTipoOperacion(2);
@@ -73,7 +72,6 @@ export const Informe = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -90,8 +88,6 @@ export const Informe = () => {
           };
 
           CatalogosServices.Informes_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -114,7 +110,6 @@ export const Informe = () => {
     }
   };
 
-
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -125,8 +120,8 @@ export const Informe = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: eliminar || editar ? "Acciones": "",
-      description: eliminar || editar ? "Campo de Acciones": "",
+      headerName: eliminar || editar ? "Acciones" : "",
+      description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
@@ -139,7 +134,8 @@ export const Informe = () => {
                 row={v}
                 show={editar}
               ></ButtonsEdit>
-            ) : (""
+            ) : (
+              ""
             )}
             {eliminar ? (
               <ButtonsDeleted
@@ -147,9 +143,9 @@ export const Informe = () => {
                 row={v}
                 show={eliminar}
               ></ButtonsDeleted>
-            ) : (""
+            ) : (
+              ""
             )}
-
           </>
         );
       },
@@ -162,7 +158,6 @@ export const Informe = () => {
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 200 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
-    
   ];
 
   const handleClose = () => {
@@ -224,14 +219,9 @@ export const Informe = () => {
       )}
 
       <TitleComponent title={"Tipos de Informe"} show={openSlider} />
-      {agregar ? (
-      <ButtonsAdd 
-      handleOpen={handleOpen} 
-      agregar={agregar} 
-      />
-      ):(""
-      )}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -242,11 +232,17 @@ export const Informe = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
-      
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-/>
+        </Tooltip>
+      ) : (
+        ""
+      )}
+
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };

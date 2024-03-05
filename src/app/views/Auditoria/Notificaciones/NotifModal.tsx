@@ -53,8 +53,6 @@ export const NotifModal = ({
   };
 
   const handleRequestFOficio = () => {
-    console.log("tipo", tipo);
-
     let data = {
       NUMOPERACION: 5,
       Oficio: Oficio,
@@ -85,9 +83,7 @@ export const NotifModal = ({
             handleSend();
           }
         })
-        .catch((e) => {
-          console.log("e", e);
-        });
+        .catch((e) => {});
     } else if (tipo === 2) {
       handleSend();
     }
@@ -162,8 +158,6 @@ export const NotifModal = ({
   };
 
   const handleFilterChangefv = (v: any) => {
-    console.log("entre ls fincion");
-
     setFVencimiento(v);
   };
 
@@ -193,10 +187,6 @@ export const NotifModal = ({
   };
 
   useEffect(() => {
-    console.log("FOficio", FOficio);
-    console.log("FOficio");
-    console.log("dt", dt);
-
     loadFilter(11);
     loadFilter(19);
     loadFilter(6);

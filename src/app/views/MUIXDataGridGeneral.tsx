@@ -17,7 +17,6 @@ export default function MUIXDataGridGeneral(props: any) {
   const handleSelectionModelChange = (newSelectionModel: any) => {
     setSelectionModel(newSelectionModel);
     props.setRowSelected(newSelectionModel);
-    console.log("Filas seleccionadas:", newSelectionModel);
   };
 
   const [columnVisibilityModel, setColumnVisibilityModel] =

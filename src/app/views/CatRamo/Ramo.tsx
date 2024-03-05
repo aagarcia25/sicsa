@@ -15,7 +15,6 @@ import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-
 export const Ramo = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -65,7 +64,6 @@ export const Ramo = () => {
   };
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -82,8 +80,6 @@ export const Ramo = () => {
           };
 
           CatalogosServices.Ramo_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -116,8 +112,8 @@ export const Ramo = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: eliminar || editar ? "Acciones": "",
-      description: eliminar || editar ? "Campo de Acciones": "",
+      headerName: eliminar || editar ? "Acciones" : "",
+      description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
@@ -131,7 +127,8 @@ export const Ramo = () => {
                 row={v}
                 show={true}
               ></ButtonsEdit>
-            ) : (""
+            ) : (
+              ""
             )}
             {eliminar ? (
               <ButtonsDeleted
@@ -139,9 +136,9 @@ export const Ramo = () => {
                 row={v}
                 show={true}
               ></ButtonsDeleted>
-            ) : (""
+            ) : (
+              ""
             )}
-
           </>
         );
       },
@@ -154,7 +151,6 @@ export const Ramo = () => {
     },
     { field: "modi", headerName: "Creado Por", width: 200 },
     { field: "creado", headerName: "Modificado Por", width: 200 },
-    
   ];
 
   const handleClose = () => {
@@ -170,9 +166,6 @@ export const Ramo = () => {
   };
 
   const handleEdit = (v: any) => {
-    console.log(v);
-    
-    
     setTipoOperacion(2);
     setModo("Módificar Registro");
     setOpen(true);
@@ -226,14 +219,9 @@ export const Ramo = () => {
       )}
 
       <TitleComponent title={"Ramos"} show={openSlider} />
-      {agregar ? (
-        <ButtonsAdd
-          handleOpen={handleOpen}
-          agregar={true}
-        />
-      ) : (""
-      )}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -244,10 +232,16 @@ export const Ramo = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-/>
+        </Tooltip>
+      ) : (
+        ""
+      )}
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };

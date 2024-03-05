@@ -81,9 +81,7 @@ export const ContestacionModal = ({
             handleSend();
           }
         })
-        .catch((e) => {
-          console.log("e", e);
-        });
+        .catch((e) => {});
     } else if (tipo === 2) {
       handleSend();
     }
@@ -158,8 +156,6 @@ export const ContestacionModal = ({
   };
 
   const handleFilterChangefv = (v: any) => {
-    console.log("entre ls fincion");
-
     setFVencimiento(v);
   };
 

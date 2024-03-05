@@ -128,7 +128,6 @@ const Notif = ({
   };
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -145,8 +144,6 @@ const Notif = ({
           };
 
           AuditoriaService.Notificacionindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",

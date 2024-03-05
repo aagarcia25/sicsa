@@ -72,7 +72,6 @@ export const TipoAccion = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -89,8 +88,6 @@ export const TipoAccion = () => {
           };
 
           CatalogosServices.TiposAccion_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -124,8 +121,8 @@ export const TipoAccion = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: eliminar || editar ? "Acciones": "",
-      description: eliminar || editar ? "Campo de Acciones": "",
+      headerName: eliminar || editar ? "Acciones" : "",
+      description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
@@ -138,7 +135,8 @@ export const TipoAccion = () => {
                 row={v}
                 show={editar}
               ></ButtonsEdit>
-            ) : (""
+            ) : (
+              ""
             )}
             {eliminar ? (
               <ButtonsDeleted
@@ -146,9 +144,9 @@ export const TipoAccion = () => {
                 row={v}
                 show={eliminar}
               ></ButtonsDeleted>
-            ) : (""
+            ) : (
+              ""
             )}
-
           </>
         );
       },
@@ -161,7 +159,6 @@ export const TipoAccion = () => {
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 200 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
-  
   ];
 
   const handleClose = () => {
@@ -223,12 +220,9 @@ export const TipoAccion = () => {
       )}
 
       <TitleComponent title={"Tipos de Resultados"} show={openSlider} />
-      {agregar ? (
-        <ButtonsAdd handleOpen={handleOpen}
-          agregar={agregar} />
-      ) : (""
-      )}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -239,11 +233,17 @@ export const TipoAccion = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
+        </Tooltip>
+      ) : (
+        ""
+      )}
 
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-/>
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };

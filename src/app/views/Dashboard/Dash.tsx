@@ -80,16 +80,12 @@ export const Dash = () => {
   );
 
   const StyledTreeItem = styled(CustomTreeItem)(({ theme }) => ({
-
     [`& .${treeItemClasses.iconContainer}`]: {
-
       "& .close": {
-
         opacity: 0.3,
       },
     },
     [`& .${treeItemClasses.group}`]: {
-
       marginLeft: 15,
       paddingLeft: 18,
     },
@@ -102,18 +98,6 @@ export const Dash = () => {
     ShareService.SelectIndex(data).then((res) => {
       if (operacion === 1) {
         setListAnio(res.RESPONSE);
-        console.log("res", res.RESPONSE);
-        console.log("map", ListAnio.map);
-        console.log("item", Item);
-        console.log("daata", data);
-        // if(data ==="tdata")
-        // { 
-        //   console.log("Hay algo");
-
-        // }
-        // else{ console.log("No hay nada");
-        // }
-
       }
     });
   };
@@ -128,13 +112,10 @@ export const Dash = () => {
   React.useEffect(() => {
     loadGrafica(0, "");
     loadFilter(1);
-    console.log("item.label", Item);
-
   }, []);
 
   return (
     <div>
-
       <Grid container spacing={1} padding={0}>
         <div style={{ height: 600, width: "100%", padding: "1%" }}>
           <TitleComponent
@@ -166,10 +147,6 @@ export const Dash = () => {
               justifyContent="center"
               alignItems="flex-start"
             >
-
-
-
-
               <Grid item xs={12} sm={6} md={7} lg={7}>
                 <TreeView
                   aria-label="customized"
@@ -192,28 +169,27 @@ export const Dash = () => {
                         label="Auditoría Superior de la Federación (ASF)"
                       >
                         Cuenta Pública
-
                         {ListAnio.map((item, index) => {
-                          console.log("Item", item);
-                          return (<StyledTreeItem
-                            key={index}
-                            nodeId={`7-${index}`} // Unique nodeId for each item
-                            label={item.label}
-                          >
-                            <Grid
-                              container
-                              item
-                              spacing={1}
-                              xs={12}
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              direction="row"
-                              justifyContent="center"
-                              alignItems="center"
-                              sx={{ padding: "10%" }}
+                          return (
+                            <StyledTreeItem
+                              key={index}
+                              nodeId={`7-${index}`} // Unique nodeId for each item
+                              label={item.label}
                             >
-                              {/* <Grid
+                              <Grid
+                                container
+                                item
+                                spacing={1}
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                                sx={{ padding: "10%" }}
+                              >
+                                {/* <Grid
                               container
                               item
                               spacing={1}
@@ -223,22 +199,25 @@ export const Dash = () => {
                               lg={12}
                               
                             > */}
-                            {item.label ? (<AuditoriaFlex
-                                anio={item.value}
-                                tipo={"df988d71-3d7b-11ee-aedd-3cd92b4d9bf4"}
-                                ente={"437435f5-2c35-11ee-aea6-3cd92b4d9bf4"}
-                              ></AuditoriaFlex>):("")}
-                              
-                              {/* </Grid> */}
-                            </Grid>
-                          </StyledTreeItem>)
+                                {item.label ? (
+                                  <AuditoriaFlex
+                                    anio={item.value}
+                                    tipo={
+                                      "df988d71-3d7b-11ee-aedd-3cd92b4d9bf4"
+                                    }
+                                    ente={
+                                      "437435f5-2c35-11ee-aea6-3cd92b4d9bf4"
+                                    }
+                                  ></AuditoriaFlex>
+                                ) : (
+                                  ""
+                                )}
 
-                        }
-
-
-
-
-                        )}
+                                {/* </Grid> */}
+                              </Grid>
+                            </StyledTreeItem>
+                          );
+                        })}
                       </StyledTreeItem>
 
                       <StyledTreeItem
@@ -375,17 +354,23 @@ export const Dash = () => {
                 </TreeView>
               </Grid>
 
-
-              <Grid item xs={12} sm={6} md={5} lg={5} sx={{ display: "flex", alignItems: "flex-center" }}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={5}
+                lg={5}
+                sx={{ display: "flex", alignItems: "flex-center" }}
+              >
                 {dataset ? (
-                  <Card sx={{ position: "fixed", zIndex: 999, }}>
+                  <Card sx={{ position: "fixed", zIndex: 999 }}>
                     <BarChart
                       width={450}
                       height={300}
                       dataset={dataset}
                       xAxis={[{ scaleType: "band", dataKey: "Clasificacion" }]}
                       series={[
-                        { dataKey: "En Proceso", label: "En Proceso", },
+                        { dataKey: "En Proceso", label: "En Proceso" },
                         { dataKey: "Concluida", label: "Concluida" },
                       ]}
                     />
@@ -394,18 +379,7 @@ export const Dash = () => {
                   ""
                 )}
               </Grid>
-
-
-
-
-
             </Grid>
-
-
-
-
-
-
           </Grid>
         </div>
       </Grid>

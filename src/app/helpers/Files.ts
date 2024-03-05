@@ -22,12 +22,11 @@ export function findOficios(explorerRoute: string, explorerRoute2: string) {
 
   AuditoriaService.FoliosFilesindex(body).then((res) => {
     if (res.RESPONSE.length > 0) {
-      console.log(res.RESPONSE.length);
-
       Swal.fire({
         icon: "info",
         title:
-          "¿Se han Encontrado Archivos relacionados a este oficio, Deseas Copiarlos?",
+          "¿Se han Encontrado Archivos relacionados a este oficio, Deseas Copiarlos? ",
+        text: "Este proceso puede Tardar un poco , se le mostrara un mensaje cuando este terminado, Favor de No Recargar la Página",
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: "Confirmar",
@@ -43,7 +42,6 @@ export function findOficios(explorerRoute: string, explorerRoute2: string) {
 
           AuditoriaService.FoliosFilesindex(data).then((res) => {
             if (res.SUCCESS) {
-              console.log(res.RESPONSE);
               Swal.fire("Archivos copiados con Exito", "", "info");
             } else {
               Swal.fire("No se Copiaron los Archivos", "", "info");

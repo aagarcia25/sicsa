@@ -72,7 +72,6 @@ export const UnidadAdminAuditora = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -89,8 +88,6 @@ export const UnidadAdminAuditora = () => {
           };
 
           CatalogosServices.Unidad_Admin_Auditora_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -123,31 +120,32 @@ export const UnidadAdminAuditora = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: eliminar || editar ? "Acciones": "",
-      description: eliminar || editar ? "Campo de Acciones": "",
+      headerName: eliminar || editar ? "Acciones" : "",
+      description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
       renderCell: (v) => {
         return (
           <>
-          {editar ? (
-          <ButtonsEdit
-              handleAccion={handleAccion}
-              row={v}
-              show={editar}
-            ></ButtonsEdit>
-            ):(""
-            )} 
-            {eliminar ? (
-            <ButtonsDeleted
-              handleAccion={handleAccion}
-              row={v}
-              show={eliminar}
-            ></ButtonsDeleted>
-            ):(""
+            {editar ? (
+              <ButtonsEdit
+                handleAccion={handleAccion}
+                row={v}
+                show={editar}
+              ></ButtonsEdit>
+            ) : (
+              ""
             )}
-            
+            {eliminar ? (
+              <ButtonsDeleted
+                handleAccion={handleAccion}
+                row={v}
+                show={eliminar}
+              ></ButtonsDeleted>
+            ) : (
+              ""
+            )}
           </>
         );
       },
@@ -160,7 +158,6 @@ export const UnidadAdminAuditora = () => {
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 200 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
-    
   ];
 
   const handleClose = () => {
@@ -225,14 +222,9 @@ export const UnidadAdminAuditora = () => {
         title={"Unidades Administrativas Auditoras"}
         show={openSlider}
       />
-      {agregar ? (
-      <ButtonsAdd 
-      handleOpen={handleOpen} 
-      agregar={agregar} 
-      />
-      ):(""
-      )}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -243,11 +235,17 @@ export const UnidadAdminAuditora = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
-      
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-/>
+        </Tooltip>
+      ) : (
+        ""
+      )}
+
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };
