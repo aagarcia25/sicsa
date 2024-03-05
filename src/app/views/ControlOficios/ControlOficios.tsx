@@ -43,7 +43,7 @@ import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
 
 export const ControlOficios = () => {
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
-  const [openSlider, setOpenSlider] = useState(true);
+  const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
   const [tipoOperacion, setTipoOperacion] = useState(0);
   const [vrows, setVrows] = useState({});
@@ -706,7 +706,6 @@ export const ControlOficios = () => {
         }
       }
     });
-    consulta({ NUMOPERACION: 4 });
   }, []);
 
   const noSelection = () => {
