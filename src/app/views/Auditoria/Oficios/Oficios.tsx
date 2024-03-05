@@ -60,7 +60,6 @@ export const Oficios = ({
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -77,8 +76,6 @@ export const Oficios = ({
           };
 
           AuditoriaService.OficiosA_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -239,10 +236,6 @@ export const Oficios = ({
     };
     AuditoriaService.OficiosA_index(data).then((res) => {
       if (res.SUCCESS) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "¡Consulta Exitosa!",
-        // });
         setData(res.RESPONSE);
         setShow(false);
       } else {
@@ -253,9 +246,6 @@ export const Oficios = ({
   };
 
   useEffect(() => {
-    console.log("obj", obj);
-    console.log("vrows", vrows);
-
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {

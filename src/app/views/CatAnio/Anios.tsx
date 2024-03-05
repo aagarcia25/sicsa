@@ -72,7 +72,6 @@ export const Anios = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -89,8 +88,6 @@ export const Anios = () => {
           };
 
           CatalogosServices.aniosindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -156,7 +153,7 @@ export const Anios = () => {
         );
       },
     },
-    
+
     { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
     {
       field: "UltimaActualizacion",
@@ -165,7 +162,6 @@ export const Anios = () => {
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 200 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
-    
   ];
 
   const handleClose = () => {
@@ -236,7 +232,8 @@ export const Anios = () => {
       <TitleComponent title={"Años Fiscales"} show={openSlider} />
 
       {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -247,10 +244,16 @@ export const Anios = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-          />
+        </Tooltip>
+      ) : (
+        ""
+      )}
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };

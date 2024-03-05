@@ -45,10 +45,6 @@ const Notif = ({
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
       if (res.SUCCESS) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "¡Consulta Exitosa!",
-        // });
         setData(res.RESPONSE);
         setShow(false);
       } else {
@@ -109,7 +105,6 @@ const Notif = ({
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
-    console.log("data", data);
   };
 
   const handleClose = () => {
@@ -126,13 +121,13 @@ const Notif = ({
   };
 
   const handleOpen = () => {
+    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/");
     setOpenModal(true);
     setTipoOperacion(1);
     setVrows({});
   };
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -149,8 +144,6 @@ const Notif = ({
           };
 
           AuditoriaService.Notificacionindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -311,8 +304,6 @@ const Notif = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
-    console.log("NAUDITORIA: obj.row.NAUDITORIA", obj.row.NAUDITORIA);
-    console.log("updatedVrows", updatedVrows);
   }, []);
 
   return (

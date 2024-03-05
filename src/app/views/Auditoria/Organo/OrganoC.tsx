@@ -99,15 +99,6 @@ const OrganoC = ({
       },
     });
     setOpenContestacion(true);
-    console.log("setVrows", {
-      ...data,
-      row: {
-        ...data.row,
-        NAUDITORIA: obj.row.NAUDITORIA,
-        anio: obj.row.anio,
-        OficioC: obj.row.Oficio,
-      },
-    });
   };
 
   const handleVerAdjuntos = (data: any) => {
@@ -115,7 +106,6 @@ const OrganoC = ({
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
-    console.log("data", data);
   };
 
   const handleClose = () => {
@@ -132,6 +122,7 @@ const OrganoC = ({
   };
 
   const handleOpen = () => {
+    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/");
     setOpenModal(true);
     setTipoOperacion(1);
     setVrows({});
@@ -139,7 +130,6 @@ const OrganoC = ({
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -156,8 +146,6 @@ const OrganoC = ({
           };
 
           AuditoriaService.OrganoCindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",

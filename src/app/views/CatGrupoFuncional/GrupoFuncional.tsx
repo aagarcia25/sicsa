@@ -16,7 +16,6 @@ import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-
 export const GrupoFuncional = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -31,7 +30,6 @@ export const GrupoFuncional = () => {
   const [editar, setEditar] = useState<boolean>(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
-
 
   const handleAccion = (v: any) => {
     if (v.tipo == 1) {
@@ -75,7 +73,6 @@ export const GrupoFuncional = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -92,8 +89,6 @@ export const GrupoFuncional = () => {
           };
 
           CatalogosServices.Grupo_Funcional_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -126,8 +121,8 @@ export const GrupoFuncional = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: eliminar || editar ? "Acciones": "",
-      description: eliminar || editar ? "Campo de Acciones": "",
+      headerName: eliminar || editar ? "Acciones" : "",
+      description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
@@ -140,7 +135,8 @@ export const GrupoFuncional = () => {
                 row={v}
                 show={editar}
               ></ButtonsEdit>
-            ) : (""
+            ) : (
+              ""
             )}
             {eliminar ? (
               <ButtonsDeleted
@@ -148,9 +144,9 @@ export const GrupoFuncional = () => {
                 row={v}
                 show={eliminar}
               ></ButtonsDeleted>
-            ) : (""
+            ) : (
+              ""
             )}
-
           </>
         );
       },
@@ -163,7 +159,6 @@ export const GrupoFuncional = () => {
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 200 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
-    
   ];
 
   const handleClose = () => {
@@ -225,14 +220,9 @@ export const GrupoFuncional = () => {
       )}
 
       <TitleComponent title={"Grupo Funcional"} show={openSlider} />
-      {agregar ? (
-        <ButtonsAdd
-          handleOpen={handleOpen}
-          agregar={agregar}
-        />
-      ) : (""
-      )}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -243,11 +233,17 @@ export const GrupoFuncional = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
+        </Tooltip>
+      ) : (
+        ""
+      )}
 
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-/>
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };

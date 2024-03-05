@@ -66,7 +66,6 @@ export const DestinatariosOficios = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -83,8 +82,6 @@ export const DestinatariosOficios = () => {
           };
 
           CatalogosServices.Destinatarios_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -120,8 +117,6 @@ export const DestinatariosOficios = () => {
   };
 
   const handleEdit = (v: any) => {
-    console.log(v);
-
     setTipoOperacion(2);
     setModo("Módificar Registro");
     setOpen(true);
@@ -262,7 +257,8 @@ export const DestinatariosOficios = () => {
         ""
       )}
       {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -273,10 +269,16 @@ export const DestinatariosOficios = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-/>
+        </Tooltip>
+      ) : (
+        ""
+      )}
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };

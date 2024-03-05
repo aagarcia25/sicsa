@@ -62,10 +62,6 @@ export const Contestacion = ({
   const consulta = (data: any) => {
     AuditoriaService.Contestacionindex(data).then((res) => {
       if (res.SUCCESS) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "¡Consulta Exitosa!",
-        // });
         setData(res.RESPONSE);
         setOpenSlider(false);
       } else {
@@ -112,7 +108,6 @@ export const Contestacion = ({
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -129,8 +124,6 @@ export const Contestacion = ({
           };
 
           AuditoriaService.Contestacionindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -153,11 +146,6 @@ export const Contestacion = ({
     }
   };
 
-  const handleDetalle = (data: any) => {
-    setVrows(data);
-    setOpenModalDetalle(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
     setOpenAdjuntos(false);
@@ -172,6 +160,9 @@ export const Contestacion = ({
   };
 
   const handleOpen = () => {
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + obj.row.Oficio + "/"
+    );
     setOpenModal(true);
     setTipoOperacion(1);
     setVrows({});
@@ -292,7 +283,6 @@ export const Contestacion = ({
   ];
 
   useEffect(() => {
-    console.log(obj.row.Oficio);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -307,8 +297,6 @@ export const Contestacion = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
-    console.log("obj", obj.NAUDITORIA);
-    console.log("obj", obj);
   }, []);
 
   return (
