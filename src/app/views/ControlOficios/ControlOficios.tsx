@@ -735,7 +735,7 @@ export const ControlOficios = () => {
                 icon: "success",
                 title: "¡Registros Eliminados!",
               });
-              consulta({ NUMOPERACION: 4 });
+              consulta({ Anio: anio, NUMOPERACION: 4 });
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -785,9 +785,7 @@ export const ControlOficios = () => {
           sx={{ padding: "1%" }}
         >
           <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>
-              Año:
-            </Typography>
+            <Typography sx={{ fontFamily: "sans-serif" }}>Año:</Typography>
             <SelectFrag
               value={anio}
               options={ListAnio}
