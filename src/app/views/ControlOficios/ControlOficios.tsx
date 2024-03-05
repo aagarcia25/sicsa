@@ -471,7 +471,7 @@ export const ControlOficios = () => {
 
     { field: "Oficio", headerName: "Oficio", width: 150 },
     { field: "Cancelado", headerName: "Cancelado", width: 100 },
-    { field: "Nauditoria", headerName: "N° de Auditoría", width: 150 },
+    { field: "Nauditoria", headerName: "N° de Auditoría", width: 200 },
     { field: "dfTitular", headerName: "Destinatario", width: 250 },
     { field: "dfCargo", headerName: "Puesto", width: 250 },
     { field: "Asunto", headerName: "Asunto", width: 300 },
@@ -723,7 +723,7 @@ export const ControlOficios = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           let data = {
-            NUMOPERACION: 9,
+            NUMOPERACION: 8,
             CHIDs: selectionModel,
             CHUSER: user.Id,
           };
