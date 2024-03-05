@@ -97,7 +97,6 @@ export const ControlOficios = () => {
   };
 
   const CancelarFolio = (v: any) => {
-    console.log("v", v);
     if (v.row.Cancelado == "CANCELADO") {
       Swal.fire({
         icon: "info",
@@ -163,8 +162,6 @@ export const ControlOficios = () => {
     }
   };
   const generarBS = (v: any) => {
-    console.log("v", v);
-
     Swal.fire({
       icon: "info",
       title: "¿Desear generar un BS de este Oficio?",
@@ -282,7 +279,6 @@ export const ControlOficios = () => {
             agregarfolio(formData)
               .then((resultado) => {
                 // Manejar el resultado
-                console.log(resultado);
                 AdjuntaFile(resultado.RESPONSE, currentFile, currentFile.name);
               })
               .catch((error) => {
@@ -296,7 +292,6 @@ export const ControlOficios = () => {
           }
         });
       });
-      console.log(succesFiles);
     } catch (error) {
       setOpenSlider(false);
       console.error("Error al realizar las peticiones:", error);
@@ -403,7 +398,6 @@ export const ControlOficios = () => {
             setOpenSlider(true);
             let peticiones: any[] = [];
             encontrados.map((item: any) => {
-              console.log(item);
               const formData = new FormData();
               formData.append("NUMOPERACION", "1");
               formData.append("ID", item.Registro.id);
@@ -710,7 +704,6 @@ export const ControlOficios = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -727,8 +720,6 @@ export const ControlOficios = () => {
           };
 
           AuditoriaService.Foliosindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -753,9 +744,7 @@ export const ControlOficios = () => {
 
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
 
-  useEffect(() => {
-    console.log("useefectselectionModel", selectionModel);
-  }, [selectionModel]);
+  useEffect(() => {}, [selectionModel]);
 
   return (
     <Grid container spacing={1} padding={0}>

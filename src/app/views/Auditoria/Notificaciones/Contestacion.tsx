@@ -108,7 +108,6 @@ export const Contestacion = ({
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -125,8 +124,6 @@ export const Contestacion = ({
           };
 
           AuditoriaService.Contestacionindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -286,7 +283,6 @@ export const Contestacion = ({
   ];
 
   useEffect(() => {
-    console.log(obj.row.Oficio);
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -301,8 +297,6 @@ export const Contestacion = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
-    console.log("obj", obj.NAUDITORIA);
-    console.log("obj", obj);
   }, []);
 
   return (

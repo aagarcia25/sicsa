@@ -78,9 +78,7 @@ export const OrganoCModal = ({
             handleSend();
           }
         })
-        .catch((e) => {
-          console.log("e", e);
-        });
+        .catch((e) => {});
     } else if (tipo === 2) {
       handleSend();
     }
@@ -116,6 +114,7 @@ export const OrganoCModal = ({
             title: "¡Registro Agregado!",
           });
           handleOficioBlur();
+          handleClose();
         } else {
           Swal.fire(res.STRMESSAGE, "¡Error!", "info");
         }

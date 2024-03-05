@@ -15,8 +15,6 @@ import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-
-
 export const Municipio = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -33,14 +31,9 @@ export const Municipio = () => {
   const [ClaveINEGI, setClaveINEGI] = useState("");
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
 
-
-
   const handleAccion = (v: any) => {
-
-
-
     if (Number(ClaveINEGI) >= 19001 && Number(ClaveINEGI) <= 19051) {
-      alert('No puedes editar este registro.');
+      alert("No puedes editar este registro.");
     } else {
       // Permitir la edición
       if (v.tipo == 1) {
@@ -85,7 +78,6 @@ export const Municipio = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -102,8 +94,6 @@ export const Municipio = () => {
           };
 
           CatalogosServices.Municipios_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -133,13 +123,25 @@ export const Municipio = () => {
       width: 150,
     },
     { field: "Nombre", headerName: "Nombre", width: 300 },
-    { field: "ClaveEstado", headerName: "Clave Estado", width: 100, align: "center", headerAlign: "center" },
-    { field: "ClaveINEGI", headerName: "Clave INEGI", width: 100, align: "center", headerAlign: "center" },
+    {
+      field: "ClaveEstado",
+      headerName: "Clave Estado",
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "ClaveINEGI",
+      headerName: "Clave INEGI",
+      width: 100,
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "acciones",
       disableExport: true,
-      headerName: eliminar || editar ? "Acciones": "",
-      description: eliminar || editar ? "Campo de Acciones": "",
+      headerName: eliminar || editar ? "Acciones" : "",
+      description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
@@ -152,7 +154,8 @@ export const Municipio = () => {
                 row={v}
                 show={editar}
               ></ButtonsEdit>
-            ) : (""
+            ) : (
+              ""
             )}
             {eliminar ? (
               <ButtonsDeleted
@@ -160,9 +163,9 @@ export const Municipio = () => {
                 row={v}
                 show={eliminar}
               ></ButtonsDeleted>
-            ) : (""
+            ) : (
+              ""
             )}
-
           </>
         );
       },
@@ -175,7 +178,6 @@ export const Municipio = () => {
     },
     { field: "creado", headerName: "Creado Por", width: 200 },
     { field: "modi", headerName: "Modificado Por", width: 200 },
-
   ];
 
   const handleClose = () => {
@@ -237,14 +239,9 @@ export const Municipio = () => {
       )}
 
       <TitleComponent title={"Municipios"} show={openSlider} />
-        {agregar ? (
-        <ButtonsAdd 
-        handleOpen={handleOpen} 
-        agregar={agregar} 
-        />
-        ):(""
-        )}
-        {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -255,15 +252,17 @@ export const Municipio = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
-      
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}/>
+        </Tooltip>
+      ) : (
+        ""
+      )}
+
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };
-
-
-
-
-

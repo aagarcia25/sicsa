@@ -80,9 +80,7 @@ export const OrganoRModal = ({
             handleSend();
           }
         })
-        .catch((e) => {
-          console.log("e", e);
-        });
+        .catch((e) => {});
     } else if (tipo === 2) {
       handleSend();
     }
@@ -119,6 +117,7 @@ export const OrganoRModal = ({
             title: "¡Registro Agregado!",
           });
           handleOficioBlur();
+          handleClose();
         } else {
           Swal.fire(res.STRMESSAGE, "¡Error!", "info");
         }
@@ -175,14 +174,9 @@ export const OrganoRModal = ({
 
     if (Object.keys(dt).length === 0) {
     } else {
-      console.log("dt", dt);
-
       setId(dt?.row?.id);
       setOficio(dt?.row?.Oficio);
       setSIGAOficio(dt?.row?.SIGAOficio);
-      //setFechaOficio(dayjs(dt?.row?.FOficio));
-      //setFRecibido(dayjs(dt?.row?.FRecibido));
-      //setFVencimiento(dayjs(dt?.row?.FVencimiento));
       setidorigen(dt?.row?.origenid);
       setidDestino(dt?.row?.destinoid);
       if (FRecibido !== null) {
