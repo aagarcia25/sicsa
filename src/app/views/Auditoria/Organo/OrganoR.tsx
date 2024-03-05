@@ -100,7 +100,6 @@ export const OrganoR = ({
   };
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -117,8 +116,6 @@ export const OrganoR = ({
           };
 
           AuditoriaService.OrganoRindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -154,6 +151,9 @@ export const OrganoR = ({
   };
 
   const handleOpen = () => {
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + obj.row.Oficio + "/"
+    );
     setOpenModal(true);
     setTipoOperacion(1);
     setVrows({});
@@ -237,8 +237,6 @@ export const OrganoR = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
-    console.log("obj", obj.NAUDITORIA);
-    console.log("obj", obj);
   }, []);
 
   return (

@@ -50,7 +50,6 @@ const Acciones = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
 
-
   const handleDeleted = (v: any) => {
     Swal.fire({
       icon: "info",
@@ -87,7 +86,6 @@ const Acciones = ({
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -104,8 +102,6 @@ const Acciones = ({
           };
 
           AuditoriaService.Acciones_index(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -156,7 +152,9 @@ const Acciones = ({
   };
 
   const handleVerAdjuntos = (data: any) => {
-    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.ClaveAccion);
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.ClaveAccion
+    );
     setOpenAdjuntos(true);
   };
 
@@ -345,7 +343,11 @@ const Acciones = ({
         )}
 
         {openAdjuntos ? (
-          <VisorDocumentosOficios handleFunction={handleClose} obj={updatedVrows} tipo={8}/>
+          <VisorDocumentosOficios
+            handleFunction={handleClose}
+            obj={updatedVrows}
+            tipo={8}
+          />
         ) : (
           ""
         )}

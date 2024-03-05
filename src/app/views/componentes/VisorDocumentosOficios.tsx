@@ -2,7 +2,14 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import DownloadingIcon from "@mui/icons-material/Downloading";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { Box, Breadcrumbs, Grid, IconButton, ToggleButton, Typography } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  Grid,
+  IconButton,
+  ToggleButton,
+  Typography,
+} from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -49,15 +56,8 @@ const VisorDocumentosOficios = ({
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
   const consulta = () => {
-console.log("explorerRoute Consulta",explorerRoute);
-
-console.log("breadcrumbs",breadcrumbs);
-
-
-    
     if (explorerRoute !== "") {
       setOpenSlider(true);
-      
 
       let data = {
         NUMOPERACION: 10,
@@ -78,8 +78,7 @@ console.log("breadcrumbs",breadcrumbs);
           Swal.fire("¡Error!", res.STRMESSAGE, "error");
         }
       });
-    } 
-     
+    }
   };
 
   const ProcesaSPeis = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,8 +121,6 @@ console.log("breadcrumbs",breadcrumbs);
     axios.all(peticiones).then((resposeArr) => {
       resposeArr.map((item) => {
         if (item.data.SUCCESS) {
-          console.log("item.data.SUCCESS", item.data.SUCCESS);
-
           count++;
         } else {
           count--;
@@ -131,8 +128,6 @@ console.log("breadcrumbs",breadcrumbs);
       });
 
       if (count == 0 || count == -1) {
-        console.log("count", count);
-
         Swal.fire("¡Error!", "No se Realizo la Operación", "error");
         setOpenSlider(false);
       } else {
@@ -180,8 +175,6 @@ console.log("breadcrumbs",breadcrumbs);
   };
 
   const createFolder = (v: any) => {
-    console.log(v);
-
     if (v !== undefined && v != "") {
       let peticiones: any[] = [];
       const formData = new FormData();
@@ -206,7 +199,6 @@ console.log("breadcrumbs",breadcrumbs);
         )
         .then((response) => {
           if (response.data.SUCCESS) {
-            console.log(response.data);
             consulta();
             setopendialog(false);
           } else {
@@ -226,7 +218,6 @@ console.log("breadcrumbs",breadcrumbs);
   };
 
   const handleVer = (v: any) => {
-    console.log(v);
     setOpenSlider(true);
     let data = {
       NUMOPERACION: 5,
@@ -253,7 +244,6 @@ console.log("breadcrumbs",breadcrumbs);
   };
 
   const handleAccion = (v: any) => {
-    console.log(v);
     if (v.tipo == 2) {
       Swal.fire({
         icon: "info",
@@ -419,101 +409,72 @@ console.log("breadcrumbs",breadcrumbs);
   ];
 
   const handleVerSub = (v: any) => {
-    console.log("entre a ver carpeta explorerRoute", explorerRoute);
-    
     const existeOficio = breadcrumbs.some((breadcrumb) => {
-
       // Verificar si el nombre del breadcrumb es "Oficio"
       return breadcrumb === "/" + v.row.NOMBRE;
     });
 
     if (existeOficio) {
-      console.log("YA Existe el Elemento");
     } else {
       const nuevoElemento = "/" + v.row.NOMBRE;
       setBreadcrumbs((prevBreadcrumbs) => [...prevBreadcrumbs, nuevoElemento]);
     }
   };
 
-  
-
   useEffect(() => {
-    console.log("breadcrumbs", breadcrumbs);
-    console.log("tipo",tipo);
-    console.log("obj",obj);
-    console.log("",);
-    console.log("",);
-    
-   
-if (tipo === 1) {
+    if (tipo === 1) {
       setBreadcrumbs([obj.row.Anio + "/" + obj.row.Oficio]);
       setexplorerRoute([obj.row.Anio + "/" + obj.row.Oficio].join(""));
     } else if (tipo === 2) {
       setBreadcrumbs([obj.row.anio + "/" + obj.row.NAUDITORIA]);
-      //console.log(breadcrumbs);
       setexplorerRoute([obj.row.anio + "/" + obj.row.NAUDITORIA].join(""));
     } else if (tipo === 3) {
       setBreadcrumbs([obj]);
-      //console.log(breadcrumbs);
       setexplorerRoute([obj].join(""));
     } else if (tipo === 4) {
       setBreadcrumbs([obj]);
-      //console.log(breadcrumbs);
       setexplorerRoute([obj].join(""));
     } else if (tipo === 5) {
       setBreadcrumbs([obj]);
-      //console.log("breadcrumbs",breadcrumbs);
       setexplorerRoute([obj].join(""));
     } else if (tipo === 6) {
       setBreadcrumbs([obj]);
-      //console.log("breadcrumbs",breadcrumbs);
       setexplorerRoute([obj].join(""));
     } else if (tipo === 7) {
       setBreadcrumbs([obj]);
-      //console.log("breadcrumbs",breadcrumbs);
       setexplorerRoute([obj].join(""));
     } else if (tipo === 8) {
       setBreadcrumbs([obj]);
-      //console.log("breadcrumbs",breadcrumbs);
       setexplorerRoute([obj].join(""));
     }
-    }
-    
-  , []);
+  }, []);
 
   useEffect(() => {
-    
-    if(explorerRoute !==""){
+    if (explorerRoute !== "") {
       setOpenSlider(true);
-    permisos.map((item: PERMISO) => {
-      if (String(item.menu) === "AUDITOR") {
-        if (String(item.ControlInterno) === "ADJUNTAR") {
-          setAdjuntar(true);
+      permisos.map((item: PERMISO) => {
+        if (String(item.menu) === "AUDITOR") {
+          if (String(item.ControlInterno) === "ADJUNTAR") {
+            setAdjuntar(true);
+          }
+          if (String(item.ControlInterno) === "ELIMADJUN") {
+            setEliminarDocumentos(true);
+          }
+          if (String(item.ControlInterno) === "VERIFICARDOC") {
+            setVerificar(true);
+          }
         }
-        if (String(item.ControlInterno) === "ELIMADJUN") {
-          setEliminarDocumentos(true);
-        }
-        if (String(item.ControlInterno) === "VERIFICARDOC") {
-          setVerificar(true);
-        }
-      }
-    });
-    consulta();
+      });
+      consulta();
     }
-       
-    
-   
   }, [explorerRoute]);
 
-useEffect(() => {
-  if(breadcrumbs.length===0){
-handleFunction()
-  }
+  useEffect(() => {
+    if (breadcrumbs.length === 0) {
+      handleFunction();
+    }
     setexplorerRoute(breadcrumbs.join(""));
-      console.log("breadcrumbs1000",breadcrumbs.join(""));
-      console.log("breadcrumbs2000",breadcrumbs);
-    
-  },[breadcrumbs])
+  }, [breadcrumbs]);
   return (
     <div>
       <ModalForm title={"Documentos del Oficio"} handleClose={handleFunction}>
@@ -547,8 +508,6 @@ handleFunction()
                         size="small"
                         onClick={() => {
                           setBreadcrumbs(breadcrumbs.slice(0, -1));
-                          console.log("breadcrumbs.slice",breadcrumbs.slice(0, -1));
-                          
                         }}
                       >
                         <ArrowBackIcon />

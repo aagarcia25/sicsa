@@ -10,7 +10,7 @@ import MUIXDataGrid from "../MUIXDataGrid";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
 import { AuditoriaModal } from "./AuditoriaModal";
 import { Toast } from "../../helpers/Toast";
-import LinkIcon from '@mui/icons-material/Link';
+import LinkIcon from "@mui/icons-material/Link";
 
 export const AuditoriaFlex = ({
   anio,
@@ -48,17 +48,21 @@ export const AuditoriaFlex = ({
     consulta();
   };
   const handleAccion = (v: any) => {
-      setTipoOperacion(2);
-      setModo("Editar Registro");
-      setOpen(true);
-      setVrows(v);
-      console.log("v.row",v.row);
-      
+    setTipoOperacion(2);
+    setModo("Editar Registro");
+    setOpen(true);
+    setVrows(v);
   };
   const MostrarLink = (data: any) => {
-    window.open("https://informe.asf.gob.mx/Documentos/Auditorias/" + data.row.anio + "_" + data.row.NAUDITORIA + "_a.pdf", "_blank")
-  }
-
+    window.open(
+      "https://informe.asf.gob.mx/Documentos/Auditorias/" +
+        data.row.anio +
+        "_" +
+        data.row.NAUDITORIA +
+        "_a.pdf",
+      "_blank"
+    );
+  };
 
   const columns: GridColDef[] = [
     {
@@ -109,12 +113,12 @@ export const AuditoriaFlex = ({
               row={v}
             ></ButtonsDetail>
             <ButtonsDetail
-                title={"Auditoría individual"}
-                handleFunction={MostrarLink}
-                show={true}
-                icon={<LinkIcon />}
-                row={v}
-              ></ButtonsDetail>
+              title={"Auditoría individual"}
+              handleFunction={MostrarLink}
+              show={true}
+              icon={<LinkIcon />}
+              row={v}
+            ></ButtonsDetail>
           </>
         );
       },
@@ -185,17 +189,24 @@ export const AuditoriaFlex = ({
 
   return (
     <>
-    {bancos.length!==0?
-    <div>
-      <div style={{ height: 600, width: "100%", padding: "5%" }}>
-        {open ? (<AuditoriaModal
-              tipo={tipoOperacion} 
-              handleClose={handleClose}
-              dt={vrows}
-            />):("")}
-        <MUIXDataGrid columns={columns} rows={bancos} />
-      </div>
-    </div>:"Sin registros"}
+      {bancos.length !== 0 ? (
+        <div>
+          <div style={{ height: 600, width: "100%", padding: "5%" }}>
+            {open ? (
+              <AuditoriaModal
+                tipo={tipoOperacion}
+                handleClose={handleClose}
+                dt={vrows}
+              />
+            ) : (
+              ""
+            )}
+            <MUIXDataGrid columns={columns} rows={bancos} />
+          </div>
+        </div>
+      ) : (
+        "Sin registros"
+      )}
     </>
-    
-)};
+  );
+};

@@ -1,4 +1,11 @@
-import { Box, Button, Grid, InputAdornment, TextField, Typography,  } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
@@ -17,8 +24,7 @@ export const AccionesModal = ({
   dt,
   nAuditoria,
   idAuditoria,
-}: // user,
-{
+}: {
   tipo: number;
   handleClose: Function;
   dt: any;
@@ -221,9 +227,7 @@ export const AccionesModal = ({
                 variant="standard"
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">
-                       $
-                    </InputAdornment>
+                    <InputAdornment position="start">$</InputAdornment>
                   ),
                 }}
                 value={monto || ""}
@@ -322,7 +326,14 @@ export const AccionesModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
-            <Grid item alignItems="center" justifyContent="flex-end" xs={6} paddingRight={1} sx={{display:"flex"}}>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="flex-end"
+              xs={6}
+              paddingRight={1}
+              sx={{ display: "flex" }}
+            >
               <Button
                 // disabled={descripcion === "" || nombre === ""}
 
@@ -332,15 +343,22 @@ export const AccionesModal = ({
                 {tipo === 1 ? "Agregar" : "Editar"}
               </Button>
             </Grid>
-            <Grid item alignItems="center" justifyContent="flex-start" xs={6} paddingLeft={1} sx={{ display: "flex" }}>
-                <Button
-                  // disabled={descripcion === "" || nombre === ""}
-                  className={"actualizar"}
-                  onClick={() => handleClose()}
-                >
-                  {"Salir"}
-                </Button>
-              </Grid>
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="flex-start"
+              xs={6}
+              paddingLeft={1}
+              sx={{ display: "flex" }}
+            >
+              <Button
+                // disabled={descripcion === "" || nombre === ""}
+                className={"actualizar"}
+                onClick={() => handleClose()}
+              >
+                {"Salir"}
+              </Button>
+            </Grid>
           </Grid>
         </Box>
       </ModalForm>

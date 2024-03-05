@@ -15,7 +15,6 @@ import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 
-
 export const CatAreaAuditora = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -72,7 +71,6 @@ export const CatAreaAuditora = () => {
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
-      console.log("seleccionaste registros");
       Swal.fire({
         icon: "info",
         title: "Se eliminarán los registros seleccionados",
@@ -89,8 +87,6 @@ export const CatAreaAuditora = () => {
           };
 
           CatalogosServices.areaindex(data).then((res) => {
-            console.log("Respuesta:", res);
-
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -140,8 +136,8 @@ export const CatAreaAuditora = () => {
     {
       field: "acciones",
       disableExport: true,
-      headerName: eliminar || editar ? "Acciones": "",
-      description: eliminar || editar ? "Campo de Acciones": "",
+      headerName: eliminar || editar ? "Acciones" : "",
+      description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 100 : 0,
@@ -154,7 +150,8 @@ export const CatAreaAuditora = () => {
                 row={v}
                 show={true}
               ></ButtonsEdit>
-            ) : (""
+            ) : (
+              ""
             )}
             {eliminar ? (
               <ButtonsDeleted
@@ -162,9 +159,9 @@ export const CatAreaAuditora = () => {
                 row={v}
                 show={true}
               ></ButtonsDeleted>
-            ) : (""
+            ) : (
+              ""
             )}
-
           </>
         );
       },
@@ -177,7 +174,6 @@ export const CatAreaAuditora = () => {
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 200 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
-    
   ];
 
   const handleClose = () => {
@@ -246,13 +242,9 @@ export const CatAreaAuditora = () => {
       )}
 
       <TitleComponent title={"Área Auditora"} show={openSlider} />
-      {agregar ? (
-      <ButtonsAdd 
-      handleOpen={handleOpen} 
-      agregar={true} />
-      ):(""
-      )}
-      {eliminar ? (<Tooltip title={"Eliminar Registros Seleccionados"}>
+      {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+      {eliminar ? (
+        <Tooltip title={"Eliminar Registros Seleccionados"}>
           <ToggleButton
             value="check"
             className="guardar"
@@ -263,11 +255,17 @@ export const CatAreaAuditora = () => {
               <DeleteForeverIcon />
             </IconButton>
           </ToggleButton>
-        </Tooltip>):("") }
-      
-      <MUIXDataGridGeneral columns={columns} rows={bancos} setRowSelected={setSelectionModel}
-          multiselect={true}
-/>
+        </Tooltip>
+      ) : (
+        ""
+      )}
+
+      <MUIXDataGridGeneral
+        columns={columns}
+        rows={bancos}
+        setRowSelected={setSelectionModel}
+        multiselect={true}
+      />
     </div>
   );
 };
