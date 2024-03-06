@@ -70,7 +70,8 @@ function App() {
   };
 
   const verificatoken = (primerInicio: boolean) => {
-    UserServices.verify({}).then((res) => {
+
+    UserServices.verify({}).then((res) => {      
       if (res?.status === 200) {
         buscaUsuario(res.data.data.IdUsuario);
         setBloqueoStatus(false);
@@ -142,8 +143,7 @@ function App() {
     if (jwt && refjwt && getToken() && getRfToken()) {
       localStorage.clear();
     }
-
-    if (
+      if (
       !getToken() &&
       !getRfToken() &&
       jwt !== null &&
@@ -152,6 +152,7 @@ function App() {
       bloqueoStatus === undefined
     ) {
       const decoded: UserLogin = jwt_decode(String(jwt));
+
       if ((decoded.exp - Date.now() / 1000) / 60 > 1) {
         setToken(jwt);
         setRfToken(refjwt);
@@ -175,8 +176,11 @@ function App() {
         });
       }
     }
+//setTimeout(() =>{
+  
 
-    if (
+  
+  if (
       !jwt &&
       !refjwt &&
       bloqueoStatus === undefined &&
@@ -186,14 +190,18 @@ function App() {
       getRfToken()
     ) {
       const decoded: UserLogin = jwt_decode(String(getToken()));
-      if ((decoded.exp - Date.now() / 1000) / 60 > 44.5) {
+      //44.5
+      if ((decoded.exp - Date.now() / 1000) / 60 > 5) {        
         verificatoken(true);
       } else {
         handleOnIdle();
+
       }
     } else {
       setOpenSlider(false);
     }
+  //},3000)
+    
   }, [bloqueoStatus]);
 
   return (
