@@ -605,7 +605,7 @@ export const ControlOficios = () => {
   const handleClose = () => {
     setOpenAdjuntos(false);
     setOpen(false);
-    consulta({ NUMOPERACION: 4 });
+    consulta({ Anio: anio, NUMOPERACION: 4 });
   };
 
   const handleVer = (v: any) => {
