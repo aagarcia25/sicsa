@@ -41,6 +41,8 @@ const Notif = ({
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
+  const [entregado, setEntregado] = useState({});
+
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
@@ -98,6 +100,8 @@ const Notif = ({
       },
     });
     setOpenContestacion(true);
+    setEntregado(obj.row.entregado)
+    
   };
 
   const handleVerAdjuntos = (data: any) => {
@@ -105,6 +109,8 @@ const Notif = ({
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
+    setEntregado(obj.row.entregado)
+
   };
 
   const handleClose = () => {
@@ -117,7 +123,7 @@ const Notif = ({
   const handleEdit = (data: any) => {
     setOpenModal(true);
     setTipoOperacion(2);
-    setVrows(data.data);
+    setVrows([data.data,obj]);
   };
 
   const handleOpen = () => {
@@ -232,16 +238,8 @@ const Notif = ({
       renderCell: (v) => {
         return (
           <>
-            {editar ? (
-              <ButtonsEdit
-                handleAccion={handleEdit}
-                row={v}
-                show={editar}
-              ></ButtonsEdit>
-            ) : (
-              ""
-            )}
-            {eliminar ? (
+          
+            {eliminar && obj.row.entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -250,6 +248,11 @@ const Notif = ({
             ) : (
               ""
             )}
+            <ButtonsEdit
+                handleAccion={handleEdit}
+                row={v}
+                show={true}
+              ></ButtonsEdit>
 
             <ButtonsDetail
               title={"Ver Adjuntos"}
@@ -313,12 +316,12 @@ const Notif = ({
         <Typography variant="h6">
           {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
         </Typography>
-        {agregar ? (
+        {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
           ""
         )}
-        {eliminar ? (
+        {eliminar && obj.row.entregado !== "1" ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
               value="check"
@@ -342,7 +345,7 @@ const Notif = ({
         />
       </ModalForm>
       {openContestacion ? (
-        <Contestacion handleFunction={handleClose} obj={vrows} />
+        <Contestacion handleFunction={handleClose} obj={vrows} Entregado={entregado}/>
       ) : (
         ""
       )}
@@ -363,6 +366,7 @@ const Notif = ({
           handleFunction={handleClose}
           obj={updatedVrows}
           tipo={4}
+          Entregado={entregado}
         />
       ) : (
         ""

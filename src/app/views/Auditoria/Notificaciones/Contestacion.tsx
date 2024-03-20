@@ -25,9 +25,11 @@ import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 export const Contestacion = ({
   handleFunction,
   obj,
+  Entregado,
 }: {
   handleFunction: Function;
   obj: any;
+  Entregado: any;
 }) => {
   const [openSlider, setOpenSlider] = useState(true);
   const [open, setOpen] = useState(false);
@@ -45,6 +47,8 @@ export const Contestacion = ({
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
+  const [entregado, setEntregado] = useState({});
+
 
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
@@ -57,6 +61,8 @@ export const Contestacion = ({
         data.row.Oficio
     );
     setOpenAdjuntos(true);
+    setEntregado(Entregado)
+    
   };
 
   const consulta = (data: any) => {
@@ -157,6 +163,7 @@ export const Contestacion = ({
     setOpenModal(true);
     setTipoOperacion(2);
     setVrows(data.data);
+    setEntregado(Entregado)
   };
 
   const handleOpen = () => {
@@ -232,16 +239,13 @@ export const Contestacion = ({
       renderCell: (v) => {
         return (
           <>
-            {editar ? (
               <ButtonsEdit
                 handleAccion={handleEdit}
                 row={v}
-                show={editar}
+                show={true}
               ></ButtonsEdit>
-            ) : (
-              ""
-            )}
-            {eliminar ? (
+            
+            {eliminar && Entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -283,6 +287,10 @@ export const Contestacion = ({
   ];
 
   useEffect(() => {
+    console.log("obj0",obj);
+    console.log("Entregado",Entregado);
+
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -309,12 +317,12 @@ export const Contestacion = ({
         <Typography variant="h6">
           {obj.row.Oficio + " " + obj.row.unidad}
         </Typography>
-        {agregar ? (
+        {agregar && Entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
           ""
         )}
-        {eliminar ? (
+        {eliminar && Entregado !== "1"? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
               value="check"
@@ -345,6 +353,7 @@ export const Contestacion = ({
           user={user}
           idNotificacion={obj.id}
           destino={updatedVrows}
+          Entregado={entregado}
         />
       ) : (
         ""
@@ -355,6 +364,7 @@ export const Contestacion = ({
           handleFunction={handleClose}
           obj={updatedVrows}
           tipo={5}
+          Entregado={entregado}
         />
       ) : (
         ""
