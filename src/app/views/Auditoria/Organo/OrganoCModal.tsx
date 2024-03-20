@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
 import SelectValues from "../../../interfaces/Share";
-import { USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { ShareService } from "../../../services/ShareService";
 import Progress from "../../Progress";
@@ -12,6 +12,7 @@ import CustomizedDate from "../../componentes/CustomizedDate";
 import ModalForm from "../../componentes/ModalForm";
 import SelectFrag from "../../componentes/SelectFrag";
 import { findOficios } from "../../../helpers/Files";
+import { getPermisos } from "../../../services/localStorage";
 
 export const OrganoCModal = ({
   handleClose,
@@ -38,6 +39,11 @@ export const OrganoCModal = ({
   const [FVencimiento, setFVencimiento] = useState<Dayjs | null>();
   const [idorigen, setidorigen] = useState("");
   const [ListOrigen, setListOrigen] = useState<SelectValues[]>([]);
+  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado)
+  const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
+  const [visualizar, setVisualizar] = useState<boolean>(false);
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()))
+
 
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
@@ -47,7 +53,7 @@ export const OrganoCModal = ({
     // Realiza cualquier otra acción que desees aquí
   };
 
-  const handleRequestFOficio = () => {
+  const handleRequestFOficio = () =>   {
     let data = {
       NUMOPERACION: 5,
       Oficio: Oficio,
@@ -163,28 +169,44 @@ export const OrganoCModal = ({
 
   useEffect(() => {
     loadFilter(6);
+    console.log("obj dt",dt);
+
 
     if (Object.keys(dt).length === 0) {
       //setAPE(dt.coaid);
     } else {
-      setId(dt?.row?.id);
-      setidorigen(dt?.row?.secid);
-      setOficio(dt?.row?.Oficio);
-      setSIGAOficio(dt?.row?.SIGAOficio);
+      setId(dt[0]?.row?.id);
+      setidorigen(dt[0]?.row?.secid);
+      setOficio(dt[0]?.row?.Oficio);
+      setSIGAOficio(dt[0]?.row?.SIGAOficio);
       //setFechaOficio(dayjs(dt?.row?.FOficio));
       //setFRecibido(dayjs(dt?.row?.FRecibido));
       //setFVencimiento(dayjs(dt?.row?.FVencimiento));
       if (FRecibido !== null) {
-        setFRecibido(dayjs(dt?.row?.FRecibido));
+        setFRecibido(dayjs(dt[0]?.row?.FRecibido));
       }
       if (FVencimiento !== null) {
-        setFVencimiento(dayjs(dt?.row?.FVencimiento));
+        setFVencimiento(dayjs(dt[0]?.row?.FVencimiento));
       }
       if (FOficio !== null) {
-        setFechaOficio(dayjs(dt?.row?.FOficio));
+        setFechaOficio(dayjs(dt[0]?.row?.FOficio));
       }
     }
   }, [dt]);
+
+  useEffect( () => {
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "VISUALDATOS") {
+          setVisualizar(true);
+        }
+        if (String(item.ControlInterno) === "EDIT") {
+          setEditarPermiso(true);
+        }
+      }
+    });
+  }
+  )
 
   return (
     <>
@@ -216,7 +238,7 @@ export const OrganoCModal = ({
                 options={ListOrigen}
                 onInputChange={handleFilterChange1}
                 placeholder={"Seleccione..."}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
@@ -232,6 +254,7 @@ export const OrganoCModal = ({
                 required
                 error={!Oficio}
                 onChange={(v) => setOficio(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
 
@@ -245,6 +268,7 @@ export const OrganoCModal = ({
                 variant="standard"
                 value={SIGAOficio}
                 onChange={(v) => setSIGAOficio(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
@@ -267,7 +291,7 @@ export const OrganoCModal = ({
                 value={FOficio}
                 label={"Fecha Oficio"}
                 onchange={handleFilterChangefo}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -275,7 +299,7 @@ export const OrganoCModal = ({
                 value={FRecibido}
                 label={"Fecha Recibido"}
                 onchange={handleFilterChangefr}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -283,12 +307,53 @@ export const OrganoCModal = ({
                 value={FVencimiento}
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChangefv}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
 
+        {(String(Entregado) !== "1" && editarPermiso === true) ? (
+          <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          sx={{ padding: "2%" }}
+        >
+          <Grid
+            item
+            alignItems="center"
+            justifyContent="flex-end"
+            xs={6}
+            paddingRight={1}
+            sx={{ display: "flex" }}
+          >
+            <Button
+              className={tipo === 1 ? "guardar" : "actualizar"}
+              onClick={() => handleRequestFOficio()}
+            >
+              {tipo === 1 ? "Agregar" : "Editar"}
+            </Button>
+          </Grid>
+          <Grid
+            item
+            alignItems="center"
+            justifyContent="flex-start"
+            xs={6}
+            paddingLeft={1}
+            sx={{ display: "flex" }}
+          >
+            <Button className={"actualizar"} onClick={() => handleClose()}>
+              {"Salir"}
+            </Button>
+          </Grid>
+        </Grid>
+        ):(
           <Grid
             container
             direction="row"
@@ -300,34 +365,17 @@ export const OrganoCModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
+            
             <Grid
-              item
-              alignItems="center"
-              justifyContent="flex-end"
-              xs={6}
-              paddingRight={1}
-              sx={{ display: "flex" }}
-            >
-              <Button
-                className={tipo === 1 ? "guardar" : "actualizar"}
-                onClick={() => handleRequestFOficio()}
-              >
-                {tipo === 1 ? "Agregar" : "Editar"}
-              </Button>
-            </Grid>
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="flex-start"
-              xs={6}
-              paddingLeft={1}
-              sx={{ display: "flex" }}
+             item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}
             >
               <Button className={"actualizar"} onClick={() => handleClose()}>
                 {"Salir"}
               </Button>
             </Grid>
           </Grid>
+        )}
+          
         </Box>
       </ModalForm>
     </>

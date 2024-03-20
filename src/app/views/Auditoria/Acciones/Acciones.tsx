@@ -49,6 +49,8 @@ const Acciones = ({
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
+  const [entregado, setEntregado] = useState({});
+
 
   const handleDeleted = (v: any) => {
     Swal.fire({
@@ -143,7 +145,7 @@ const Acciones = ({
   const handleAccion = (v: any) => {
     setTipoOperacion(2);
     setOpenAccionesModal(true);
-    setVrows(v.data.row);
+    setVrows([v.data.row,obj]);
   };
 
   const handleDetalle = (data: any) => {
@@ -156,6 +158,8 @@ const Acciones = ({
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.ClaveAccion
     );
     setOpenAdjuntos(true);
+    setEntregado(obj.row.entregado)
+
   };
 
   const handleClose = () => {
@@ -257,16 +261,14 @@ const Acciones = ({
       renderCell: (v) => {
         return (
           <>
-            {editar ? (
+         
               <ButtonsEdit
                 handleAccion={handleAccion}
                 row={v}
-                show={editar}
+                show={true}
               ></ButtonsEdit>
-            ) : (
-              ""
-            )}
-            {eliminar ? (
+           
+            {eliminar && obj.row.entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleDeleted}
                 row={v}
@@ -347,23 +349,24 @@ const Acciones = ({
             handleFunction={handleClose}
             obj={updatedVrows}
             tipo={8}
+            Entregado={entregado}
           />
         ) : (
           ""
         )}
 
         <Progress open={show}></Progress>
-        {agregar ? (
+        {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
           ""
         )}
-        {agregar ? (
+        {agregar && obj.row.entregado !== "1" ? (
           <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
         ) : (
           ""
         )}
-        {eliminar ? (
+        {eliminar && obj.row.entregado !== "1" ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
               value="check"

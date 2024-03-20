@@ -10,13 +10,13 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
 import SelectValues from "../../../interfaces/Share";
-import { USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { ShareService } from "../../../services/ShareService";
 import Progress from "../../Progress";
 import ModalForm from "../../componentes/ModalForm";
 import SelectFrag from "../../componentes/SelectFrag";
-import { getUser } from "../../../services/localStorage";
+import { getPermisos, getUser } from "../../../services/localStorage";
 
 export const AccionesModal = ({
   handleClose,
@@ -49,6 +49,11 @@ export const AccionesModal = ({
   const [ListTipoAccion, setListTipoAccion] = useState<SelectValues[]>([]);
   const [numeroResultado, setnumeroResultado] = useState(0);
   const [monto, setmonto] = useState(0);
+  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado)
+  const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
+  const [visualizar, setVisualizar] = useState<boolean>(false);
+
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()))
 
   const handleSend = () => {
     if (!TipoAccion || !EstatusAcciones || !ClaveAccion || !TextoAccion) {
@@ -115,15 +120,15 @@ export const AccionesModal = ({
     if (dt === "") {
       setNoAuditoria(nAuditoria);
     } else {
-      setNoAuditoria(dt?.NAUDITORIA);
-      setTipoAccion(dt?.idTipoAccion);
-      setEstatusAcciones(dt?.idEstatusAccion);
-      setClaveAccion(dt?.ClaveAccion);
-      setTextoAccion(dt?.TextoAccion);
-      setId(dt?.id);
-      setaccionSuperviviente(dt?.accionSuperviviente);
-      setmonto(dt?.monto);
-      setnumeroResultado(dt?.numeroResultado);
+      setNoAuditoria(dt[0]?.NAUDITORIA);
+      setTipoAccion(dt[0]?.idTipoAccion);
+      setEstatusAcciones(dt[0]?.idEstatusAccion);
+      setClaveAccion(dt[0]?.ClaveAccion);
+      setTextoAccion(dt[0]?.TextoAccion);
+      setId(dt[0]?.id);
+      setaccionSuperviviente(dt[0]?.accionSuperviviente);
+      setmonto(dt[0]?.monto);
+      setnumeroResultado(dt[0]?.numeroResultado);
     }
   }, [dt]);
 
@@ -139,6 +144,23 @@ export const AccionesModal = ({
       }
     });
   };
+
+  useEffect( () => {
+    console.log("obj dt",dt);
+
+
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "VISUALDATOS") {
+          setVisualizar(true);
+        }
+        if (String(item.ControlInterno) === "EDIT") {
+          setEditarPermiso(true);
+        }
+      }
+    });
+  }
+  )
 
   useEffect(() => {
     consultaListas(8);
@@ -181,7 +203,7 @@ export const AccionesModal = ({
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
-                disabled
+                disabled={Entregado === "1" || visualizar === true}
                 margin="dense"
                 id="NoAuditoria"
                 label="No. de Auditoria"
@@ -202,7 +224,7 @@ export const AccionesModal = ({
                 options={ListTipoAccion}
                 onInputChange={handleFilterChange2}
                 placeholder={"Seleccione el Tipo de Resultado"}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -214,7 +236,7 @@ export const AccionesModal = ({
                 options={ListEstatusAcciones}
                 onInputChange={handleFilterChange4}
                 placeholder={"Seleccione el Estatus de los Resultados"}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -236,6 +258,7 @@ export const AccionesModal = ({
                 onChange={(v) => {
                   setmonto(validarNumero(v.target.value, monto));
                 }}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
@@ -265,6 +288,7 @@ export const AccionesModal = ({
                 required
                 error={!ClaveAccion}
                 onChange={(v) => setClaveAccion(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -279,6 +303,7 @@ export const AccionesModal = ({
                 //required
                 //error={!TextoAccion}
                 onChange={(v) => setTextoAccion(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -293,6 +318,7 @@ export const AccionesModal = ({
                 //required
                 //error={!accionSuperviviente}
                 onChange={(v) => setaccionSuperviviente(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -311,10 +337,13 @@ export const AccionesModal = ({
                     validarNumero(v.target.value, numeroResultado)
                   );
                 }}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
 
+
+        {(String(Entregado) !== "1" && editarPermiso === true) ? (
           <Grid
             container
             direction="row"
@@ -360,6 +389,33 @@ export const AccionesModal = ({
               </Button>
             </Grid>
           </Grid>
+        ):(
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            sx={{ padding: "2%" }}
+          >
+            
+            <Grid
+              item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}
+            >
+              <Button
+                // disabled={descripcion === "" || nombre === ""}
+                className={"actualizar"}
+                onClick={() => handleClose()}
+              >
+                {"Salir"}
+              </Button>
+            </Grid>
+          </Grid>
+        )}
+          
         </Box>
       </ModalForm>
     </>

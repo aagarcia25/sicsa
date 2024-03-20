@@ -42,6 +42,8 @@ const OrganoC = ({
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
+  const [entregado, setEntregado] = useState({});
+
 
   const consulta = (data: any) => {
     AuditoriaService.OrganoCindex(data).then((res) => {
@@ -99,6 +101,8 @@ const OrganoC = ({
       },
     });
     setOpenContestacion(true);
+    setEntregado(obj.row.entregado)
+
   };
 
   const handleVerAdjuntos = (data: any) => {
@@ -106,6 +110,8 @@ const OrganoC = ({
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
+    setEntregado(obj.row.entregado)
+    
   };
 
   const handleClose = () => {
@@ -118,7 +124,7 @@ const OrganoC = ({
   const handleEdit = (data: any) => {
     setOpenModal(true);
     setTipoOperacion(2);
-    setVrows(data.data);
+    setVrows([data.data,obj]);
   };
 
   const handleOpen = () => {
@@ -200,16 +206,14 @@ const OrganoC = ({
       renderCell: (v) => {
         return (
           <>
-            {editar ? (
+            
               <ButtonsEdit
                 handleAccion={handleEdit}
                 row={v}
-                show={editar}
+                show={true} 
               ></ButtonsEdit>
-            ) : (
-              ""
-            )}
-            {eliminar ? (
+           
+            {eliminar && obj.row.entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -258,6 +262,8 @@ const OrganoC = ({
   ];
 
   useEffect(() => {
+    console.log("Editar",editar);
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -281,12 +287,12 @@ const OrganoC = ({
         handleClose={handleFunction}
       >
         <Progress open={show}></Progress>
-        {agregar ? (
+        {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
           ""
         )}
-        {eliminar ? (
+        {eliminar && obj.row.entregado !== "1" ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
               value="check"
@@ -310,7 +316,7 @@ const OrganoC = ({
         />
       </ModalForm>
       {openContestacion ? (
-        <OrganoR handleFunction={handleClose} obj={vrows} />
+        <OrganoR handleFunction={handleClose} obj={vrows} Entregado={entregado}/>
       ) : (
         ""
       )}
@@ -331,6 +337,7 @@ const OrganoC = ({
           handleFunction={handleClose}
           obj={updatedVrows}
           tipo={6}
+          Entregado={entregado}
         />
       ) : (
         ""

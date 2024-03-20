@@ -104,7 +104,7 @@ export const GanttModal = ({
   return (
     <div>
       <ModalForm title={"PLAN DE TRABAJO"} handleClose={handleFunction}>
-        {open ? (
+        {open && obj.row.entregado !== "1" ? (
           <PlanTrabajoModal
             tipo={tipoOperacion}
             handleClose={handleClose}
@@ -115,7 +115,7 @@ export const GanttModal = ({
         ) : (
           ""
         )}
-        {agregar ? (
+        {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
           ""

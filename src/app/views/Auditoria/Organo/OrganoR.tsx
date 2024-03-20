@@ -23,9 +23,11 @@ import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 export const OrganoR = ({
   handleFunction,
   obj,
+  Entregado,
 }: {
   handleFunction: Function;
   obj: any;
+  Entregado: any;
 }) => {
   const [openSlider, setOpenSlider] = useState(true);
   const [vrows, setVrows] = useState({});
@@ -40,6 +42,8 @@ export const OrganoR = ({
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
+  const [entregado, setEntregado] = useState({});
+
 
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
@@ -52,6 +56,7 @@ export const OrganoR = ({
         data.row.Oficio
     );
     setOpenAdjuntos(true);
+    setEntregado(Entregado)
   };
 
   const consulta = (data: any) => {
@@ -148,6 +153,7 @@ export const OrganoR = ({
     setOpenModal(true);
     setTipoOperacion(2);
     setVrows(data.data);
+    setEntregado(Entregado)
   };
 
   const handleOpen = () => {
@@ -182,16 +188,13 @@ export const OrganoR = ({
       renderCell: (v) => {
         return (
           <>
-            {editar ? (
               <ButtonsEdit
                 handleAccion={handleEdit}
                 row={v}
-                show={editar}
+                show={true}
               ></ButtonsEdit>
-            ) : (
-              ""
-            )}
-            {eliminar ? (
+         
+            {eliminar && Entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -223,6 +226,8 @@ export const OrganoR = ({
   ];
 
   useEffect(() => {
+    console.log("Entregado",Entregado);
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -246,12 +251,12 @@ export const OrganoR = ({
         handleClose={handleFunction}
       >
         <Progress open={openSlider}></Progress>
-        {agregar ? (
+        {agregar && Entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
           ""
         )}
-        {eliminar ? (
+        {eliminar && Entregado !== "1" ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
               value="check"
@@ -282,6 +287,7 @@ export const OrganoR = ({
           user={user}
           idNotificacion={obj.id}
           destino={updatedVrows}
+          Entregado={entregado}
         />
       ) : (
         ""
@@ -292,6 +298,7 @@ export const OrganoR = ({
           handleFunction={handleClose}
           obj={updatedVrows}
           tipo={7}
+          Entregado={entregado}
         />
       ) : (
         ""

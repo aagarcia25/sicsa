@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { base64ToArrayBuffer } from "../../helpers/Files";
 import { Toast } from "../../helpers/Toast";
@@ -29,14 +29,19 @@ import ModalForm from "./ModalForm";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import ButtonsDeletedFolder from "./ButtonsDeletedFolder";
+import ReactDocViewer from 'react-doc-viewer';
+import mammoth from 'mammoth';
+
 const VisorDocumentosOficios = ({
   handleFunction,
   obj,
   tipo,
+  Entregado,
 }: {
   handleFunction: Function;
   obj: any;
   tipo?: number;
+  Entregado?: any;
 }) => {
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
@@ -52,8 +57,12 @@ const VisorDocumentosOficios = ({
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
   const [verificar, setVerificar] = useState<boolean>(false);
   const [breadcrumbs, setBreadcrumbs] = useState([""]);
-
   const [explorerRoute, setexplorerRoute] = useState<string>("");
+  const iframeRef = useRef(null);
+  //const [Entregado, setEntregado] = useState(obj?.row?.entregado)
+
+
+
 
   const consulta = () => {
     if (explorerRoute !== "") {
@@ -217,31 +226,119 @@ const VisorDocumentosOficios = ({
     }
   };
 
-  const handleVer = (v: any) => {
-    setOpenSlider(true);
-    let data = {
-      NUMOPERACION: 5,
-      P_ROUTE: v.row.RUTA,
-      TOKEN: JSON.parse(String(getToken())),
-    };
+  const [docxFile, setDocxFile] = useState({ uri: '' });
 
-    AuditoriaService.FoliosFilesindex(data).then((res) => {
-      if (res.SUCCESS) {
-        var bufferArray = base64ToArrayBuffer(String(res.RESPONSE.FILE));
-        var blobStore = new Blob([bufferArray], { type: res.RESPONSE.TIPO });
-        var data = window.URL.createObjectURL(blobStore);
-        var link = document.createElement("a");
-        document.body.appendChild(link);
-        link.href = data;
-        setURLRuta(link.href);
-        setOpenSlider(false);
-        setverarchivo(true);
-      } else {
-        setOpenSlider(false);
-        Swal.fire("¡Error!", res.STRMESSAGE, "error");
-      }
-    });
-  };
+
+  // Configuración del visor   
+
+  const docViewerConfig = { docx: { viewer: 'https://view.officeapps.live.com/op/embed.aspx?src=' }, };
+
+
+  //const DocumentViewer = () => {
+
+
+    const handleVer = (v: any) => {
+      setOpenSlider(true);
+      let data = {
+        NUMOPERACION: 5,
+        P_ROUTE: v.row.RUTA,
+        TOKEN: JSON.parse(String(getToken())),
+      };
+
+      // AuditoriaService.FoliosFilesindex(data).then((res) => {
+      //   if (res.SUCCESS) {
+      //     var bufferArray = base64ToArrayBuffer(String(res.RESPONSE.FILE));
+      //     var blobStore = new Blob([bufferArray], { type: res.RESPONSE.TIPO });//type: res.RESPONSE.TIPO
+      //     var data = window.URL.createObjectURL(blobStore);
+      //     var link = document.createElement("a");
+      //     document.body.appendChild(link);
+      //     link.href = data;
+      //     setURLRuta(link.href);
+      //     setOpenSlider(false);
+      //     setverarchivo(true);
+      //   } else {
+      //     setOpenSlider(false);
+      //     Swal.fire("¡Error!", res.STRMESSAGE, "error");
+      //   } console.log("TIPO 1", res);
+      // });
+
+      AuditoriaService.FoliosFilesindex(data).then((res) => {
+
+        if (res.SUCCESS) {
+          var bufferArray = base64ToArrayBuffer(String(res.RESPONSE.FILE));
+          var blobStore = new Blob([bufferArray], { type: res.RESPONSE.TIPO });//type:"application/pdf"
+          var data = window.URL.createObjectURL(blobStore);
+          var link = document.createElement("a");
+          document.body.appendChild(link);
+          link.download = "Documento.pdf"
+          link.href = data;
+          setURLRuta(link.href);
+          setOpenSlider(false);
+          setverarchivo(true);
+          console.log("TIPO", data);
+
+          //////////////////////////////////
+          // mammoth.extractRawText({ arrayBuffer: bufferArray }).then((result) => {
+          //   const htmlContent = result.value;
+          //   // Crear un objeto Blob con el contenido HTML     
+          //   const blob = new Blob([htmlContent], { type: 'text/html' });
+          //   // Crear una URL para el Blob     
+          //   const htmlUrl = URL.createObjectURL(blob);
+          //   // Crear un iframe y establecer su contenido HTML     
+          //   const iframe = document.createElement('iframe');
+          //   iframe.src = htmlUrl;
+          //   iframe.width = '100%';
+          //   iframe.height = '100%';
+          //   // iframeRef.current.contentWindow.document.open();
+          //   // iframeRef.current.contentWindow.document.write(htmlContent);
+          //   // iframeRef.current.contentWindow.document.close();
+          //   // Agregar el iframe al documento     
+          //   document.body.appendChild(iframe);
+          // }).catch((error) => {
+          //   console.error('Error converting DOCX to HTML:', error);
+          // });
+
+
+        } else {
+          setOpenSlider(false);
+          Swal.fire("¡Error!", res.STRMESSAGE, "error");
+        }
+        console.log("TIPO 1", res);
+
+      });
+
+      //     AuditoriaService.FoliosFilesindex(data).then((res) => {
+      //       if (res.SUCCESS) {
+      //         var bufferArray = base64ToArrayBuffer(String(res.RESPONSE.FILE));
+      //         var blobStore = new Blob([bufferArray], { type: res.RESPONSE.TIPO });
+
+      //         if(res.RESPONSE.TIPO === 'application/pdf'){
+      //           //var data = window.URL.createObjectURL(blobStore);
+      //           var pdfUrl = window.URL.createObjectURL(blobStore);
+      //         //var link = document.createElement("a");
+      //         //document.body.appendChild(link);
+      //         //link.href = data;
+      //         setURLRuta(pdfUrl);
+      //         setOpenSlider(false);
+      //         setverarchivo(true);
+      //         }else if(res.RESPONSE.TIPO === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+
+      //           console.log('Visualizar DOCX');
+      //         setOpenSlider(false);
+      //         } else{
+      //         setOpenSlider(false);
+      //         Swal.fire("¡Error!", "Tipo de archivo no soportado", "error");
+      //         }
+
+
+      //       } else {
+      //         setOpenSlider(false);
+      //         Swal.fire("¡Error!", res.STRMESSAGE, "error");
+      //       } 
+      //       console.log("TIPO 1", res);
+      //     });
+    };
+  //}
 
   const handleAccion = (v: any) => {
     if (v.tipo == 2) {
@@ -345,7 +442,7 @@ const VisorDocumentosOficios = ({
               <>
                 <ButtonsDetail
                   title={"Ver"}
-                  handleFunction={handleVer}
+                  handleFunction={handleVer}//este tenia solo handleVer
                   show={true}
                   icon={<RemoveRedEyeIcon />}
                   row={v}
@@ -358,7 +455,10 @@ const VisorDocumentosOficios = ({
                   row={v}
                 ></ButtonsDetail>
 
-                {eliminarDocumentos ? (
+              {
+                (
+                  Entregado !== "1" && 
+                  eliminarDocumentos) ? (
                   <ButtonsDeleted
                     handleAccion={handleAccion}
                     row={v}
@@ -366,7 +466,9 @@ const VisorDocumentosOficios = ({
                   ></ButtonsDeleted>
                 ) : (
                   ""
-                )}
+                )
+              }
+                
               </>
             ) : (
               <>
@@ -377,11 +479,15 @@ const VisorDocumentosOficios = ({
                   icon={<DriveFolderUploadIcon />}
                   row={v}
                 ></ButtonsDetail>
+                {
+                Entregado !== "1" && 
+                eliminarDocumentos ? (
                 <ButtonsDeletedFolder
                   handleAccion={handleAccion}
                   row={v}
                   show={true}
-                ></ButtonsDeletedFolder>
+                ></ButtonsDeletedFolder>):("")}
+                
               </>
             )}
           </>
@@ -450,6 +556,12 @@ const VisorDocumentosOficios = ({
   }, []);
 
   useEffect(() => {
+    //console.log("obj.row.entregado",obj.row.entregado);
+    console.log("obj",obj);
+    //console.log("Entregado",Entregado);
+    
+    console.log("entregado",Entregado);
+
     if (explorerRoute !== "") {
       setOpenSlider(true);
       permisos.map((item: PERMISO) => {
@@ -518,7 +630,7 @@ const VisorDocumentosOficios = ({
                   ""
                 )}
 
-                {adjuntar ? (
+                {Entregado !== "1" && adjuntar  ? (
                   <TooltipPersonalizado
                     title={
                       <React.Fragment>
@@ -552,7 +664,7 @@ const VisorDocumentosOficios = ({
                   ""
                 )}
 
-                {adjuntar ? (
+                {Entregado !== "1" && adjuntar  ? (
                   <TooltipPersonalizado
                     title={
                       <React.Fragment>
@@ -590,6 +702,7 @@ const VisorDocumentosOficios = ({
           <Grid item xs={12} sm={8} md={8} lg={8}>
             {verarchivo ? (
               <div className="ContainerVisualizacionSPEI">
+                {/* <ReactDocViewer documents={[docxFile]}  /> */}
                 <iframe width="100%" height="100%" src={URLruta} />
               </div>
             ) : (
