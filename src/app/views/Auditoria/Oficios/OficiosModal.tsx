@@ -3,13 +3,14 @@ import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
-import { USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
-import { getUser } from "../../../services/localStorage";
+import { getPermisos, getUser } from "../../../services/localStorage";
 import Progress from "../../Progress";
 import CustomizedDate from "../../componentes/CustomizedDate";
 import ModalForm from "../../componentes/ModalForm";
 import { findOficios } from "../../../helpers/Files";
+import { DnsTwoTone } from "@mui/icons-material";
 
 export const OficiosModal = ({
   handleClose,
@@ -32,6 +33,15 @@ export const OficiosModal = ({
   const [ffin, setFfin] = useState<Dayjs | null>();
   const [oficio, setOficio] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado)
+  const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
+  const [visualizar, setVisualizar] = useState<boolean>(false);
+
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+
+
+
+
 
   const handleSend = async () => {
     if (!oficio) {
@@ -102,13 +112,35 @@ export const OficiosModal = ({
     });
   };
 
+  useEffect( () => {
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "VISUALDATOS") {
+          setVisualizar(true);
+        }
+        if (String(item.ControlInterno) === "EDIT") {
+          setEditarPermiso(true);
+        }
+      }
+    });
+  }
+  )
+
   useEffect(() => {
+    //setEntregado(dt[1]?.row?.entregado)
+      console.log("obj dt",dt);
+      console.log("Entregado",Entregado);
     if (dt === "") {
     } else {
-      setId(dt?.data?.row?.id);
-      setOficio(dt?.data?.row?.Oficio);
-      setFinicio(dayjs(dt?.data?.row?.FechaRecibido));
-      setFfin(dayjs(dt?.data?.row?.FechaVencimiento));
+      setId(dt[0]?.data?.row?.id);
+      //setOficio(dt?.data?.row?.Oficio);
+      setOficio(dt[0]?.data?.row?.Oficio);
+
+      setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido));
+      setFfin(dayjs(dt[0]?.data?.row?.FechaVencimiento));
+      
+      
+      
     }
   }, [dt]);
 
@@ -146,6 +178,8 @@ export const OficiosModal = ({
                 focused
                 onChange={(v) => setOficio(v.target.value)}
                 error={oficio === "" ? true : false}
+                disabled={Entregado === "1" || visualizar === true}
+
                 // InputProps={{
                 //   readOnly: tipo === 1 ? false : true,
                 // }}
@@ -156,7 +190,7 @@ export const OficiosModal = ({
                 value={finicio}
                 label={"Fecha Recibido"}
                 onchange={handleFilterChange1}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
 
@@ -165,7 +199,7 @@ export const OficiosModal = ({
                 value={ffin}
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChange2}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
 
@@ -191,7 +225,8 @@ export const OficiosModal = ({
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
 
-          <Grid
+          {(String(Entregado) !== "1" && editarPermiso === true ) ? (
+           <Grid
             container
             direction="row"
             justifyContent="center"
@@ -234,7 +269,37 @@ export const OficiosModal = ({
                 {"Salir"}
               </Button>
             </Grid>
-          </Grid>
+          </Grid> 
+          ):(
+            <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            sx={{ padding: "2%" }}
+          >
+            
+            <Grid
+              item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}
+            >
+              <Button
+                // disabled={descripcion === "" || nombre === ""}
+                className={"actualizar"}
+                onClick={() => handleClose()}
+              >
+                {"Salir"}
+              </Button>
+            </Grid>
+          </Grid> 
+          )
+          
+          }
+
+          
         </Box>
       </ModalForm>
     </>
