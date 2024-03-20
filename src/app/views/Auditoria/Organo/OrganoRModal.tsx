@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
 import SelectValues from "../../../interfaces/Share";
-import { USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { ShareService } from "../../../services/ShareService";
 import Progress from "../../Progress";
@@ -12,6 +12,7 @@ import SelectFrag from "../../componentes/SelectFrag";
 import dayjs, { Dayjs } from "dayjs";
 import CustomizedDate from "../../componentes/CustomizedDate";
 import { findOficios } from "../../../helpers/Files";
+import { getPermisos } from "../../../services/localStorage";
 
 export const OrganoRModal = ({
   handleClose,
@@ -20,6 +21,7 @@ export const OrganoRModal = ({
   user,
   idNotificacion,
   destino,
+  Entregado,
 }: {
   tipo: number;
   handleClose: Function;
@@ -27,6 +29,7 @@ export const OrganoRModal = ({
   user: USUARIORESPONSE;
   idNotificacion: string;
   destino: string;
+  Entregado: any;
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -40,6 +43,10 @@ export const OrganoRModal = ({
   const [LisOrigen, setLisOrigen] = useState<SelectValues[]>([]);
   const [idDestino, setidDestino] = useState("");
   const [LisDestino, setLisDestino] = useState<SelectValues[]>([]);
+  const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()))
+  const [visualizar, setVisualizar] = useState<boolean>(false);
+
 
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
@@ -172,6 +179,9 @@ export const OrganoRModal = ({
   useEffect(() => {
     loadFilter(6);
 
+    console.log("Entregado",Entregado);
+
+
     if (Object.keys(dt).length === 0) {
     } else {
       setId(dt?.row?.id);
@@ -190,6 +200,20 @@ export const OrganoRModal = ({
       }
     }
   }, [dt]);
+
+  useEffect( () => {
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "VISUALDATOS") {
+          setVisualizar(true);
+        }
+        if (String(item.ControlInterno) === "EDIT") {
+          setEditarPermiso(true);
+        }
+      }
+    });
+  }
+  )
 
   return (
     <>
@@ -221,7 +245,7 @@ export const OrganoRModal = ({
                 options={LisOrigen}
                 onInputChange={handleFilterChange1}
                 placeholder={"Seleccione..."}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -233,7 +257,7 @@ export const OrganoRModal = ({
                 options={LisDestino}
                 onInputChange={handleFilterChange2}
                 placeholder={"Seleccione..."}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -248,6 +272,7 @@ export const OrganoRModal = ({
                 required
                 error={!Oficio}
                 onChange={(v) => setOficio(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -260,6 +285,7 @@ export const OrganoRModal = ({
                 variant="standard"
                 value={SIGAOficio}
                 onChange={(v) => setSIGAOficio(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
@@ -281,7 +307,7 @@ export const OrganoRModal = ({
                 value={FOficio}
                 label={"Fecha Oficio"}
                 onchange={handleFilterChangefo}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -289,7 +315,7 @@ export const OrganoRModal = ({
                 value={FRecibido}
                 label={"Fecha Recibido"}
                 onchange={handleFilterChangefr}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -297,11 +323,13 @@ export const OrganoRModal = ({
                 value={FVencimiento}
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChangefv}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
+          
+          {(String(Entregado) !== "1" && editarPermiso === true) ? (
           <Grid
             container
             direction="row"
@@ -341,6 +369,29 @@ export const OrganoRModal = ({
               </Button>
             </Grid>
           </Grid>
+          ):(
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            sx={{ padding: "2%" }}
+          >
+            
+            <Grid
+             item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}
+            >
+              <Button className={"actualizar"} onClick={() => handleClose()}>
+                {"Salir"}
+              </Button>
+            </Grid>
+          </Grid>
+          )}
+          
         </Box>
       </ModalForm>
     </>

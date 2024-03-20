@@ -99,6 +99,8 @@ export const Auditoria = () => {
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
   const [show, setShow] = useState(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [entregado, setEntregado] = useState({});
+
 
   const handleUpload = (data: any) => {
     setShow(true);
@@ -123,10 +125,13 @@ export const Auditoria = () => {
   };
 
   const handleVerAdjuntos = (data: any) => {
-    if (data.row.entregado !== "1") {
+    //if (data.row.entregado !== "1") {
       setVrows(data);
       setOpenAdjuntos(true);
-    }
+      setEntregado(data.row.entregado)
+      console.log("data",data);
+      
+    //}
   };
 
   const handleClose = () => {
@@ -141,26 +146,28 @@ export const Auditoria = () => {
   };
 
   const handleAcciones = (data: any) => {
-    if (data.row.entregado !== "1") {
+    //if (data.row.entregado !== "1") {
       setVrows(data);
       setOpenModalAcciones(true);
-    }
+    //}
   };
 
   const handleOficios = (data: any) => {
-    if (data.row.entregado !== "1") {
+    //if (data.row.entregado !== "1") {
       setId(data.id);
       setVrows(data);
+      console.log("data",data);
+      
       setOpenModalOficios(true);
-    }
+    //}
   };
 
   const handlePlan = (data: any) => {
-    if (data.row.entregado !== "1") {
+    //if (data.row.entregado !== "1") {
       setId(data.id);
       setVrows(data);
       setOpenModalgant(true);
-    }
+    //}
   };
 
   const MostrarLink = (data: any) => {
@@ -183,17 +190,17 @@ export const Auditoria = () => {
   };
 
   const handleDetalle = (data: any) => {
-    if (data.row.entregado !== "1") {
+    //if (data.row.entregado !== "1") {
       setVrows(data);
       setOpenModalDetalle(true);
-    }
+    //}
   };
 
   const handleORgano = (data: any) => {
-    if (data.row.entregado !== "1") {
+    //if (data.row.entregado !== "1") {
       setVrows(data);
       setopenModalOrgano(true);
-    }
+    //}
   };
 
   const handleFilterChangemodalidad = (v: string) => {
@@ -944,6 +951,7 @@ export const Auditoria = () => {
           handleFunction={handleClose}
           obj={vrows}
           tipo={2}
+          Entregado={entregado}
         />
       ) : (
         ""

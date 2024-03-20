@@ -1,17 +1,18 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControlLabel, FormGroup, Grid, Switch, TextField, Typography } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { findOficios } from "../../../helpers/Files";
 import { Toast } from "../../../helpers/Toast";
 import SelectValues from "../../../interfaces/Share";
-import { USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { ShareService } from "../../../services/ShareService";
 import Progress from "../../Progress";
 import CustomizedDate from "../../componentes/CustomizedDate";
 import ModalForm from "../../componentes/ModalForm";
 import SelectFrag from "../../componentes/SelectFrag";
+import { getPermisos } from "../../../services/localStorage";
 
 export const NotifModal = ({
   handleClose,
@@ -43,6 +44,13 @@ export const NotifModal = ({
   const [ListUnidades, setListUnidades] = useState<SelectValues[]>([]);
   const [APE, setAPE] = useState("");
   const [ListAPE, setListAPE] = useState<SelectValues[]>([]);
+  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado)
+  const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
+  const [visualizar, setVisualizar] = useState<boolean>(false);
+  const [agregarFecha, setAgregarFecha] = useState("");
+
+
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()))
 
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
@@ -83,7 +91,7 @@ export const NotifModal = ({
             handleSend();
           }
         })
-        .catch((e) => {});
+        .catch((e) => { });
     } else if (tipo === 2) {
       handleSend();
     }
@@ -187,28 +195,43 @@ export const NotifModal = ({
   };
 
   useEffect(() => {
+    permisos.map((item: PERMISO) => {
+      if (String(item.menu) === "AUDITOR") {
+        if (String(item.ControlInterno) === "VISUALDATOS") {
+          setVisualizar(true);
+        }
+        if (String(item.ControlInterno) === "EDIT") {
+          setEditarPermiso(true);
+        }
+      }
+    });
+  }
+  )
+
+  useEffect(() => {
     loadFilter(11);
     loadFilter(19);
     loadFilter(6);
+    console.log("agregarFecha", agregarFecha);
 
     if (Object.keys(dt).length === 0) {
     } else {
-      setId(dt?.row?.id);
-      setOficio(dt?.row?.Oficio);
-      setSIGAOficio(dt?.row?.SIGAOficio);
-      handleFilterChange1(dt?.row?.secid);
-      setidunidad(dt?.row?.uniid);
+      setId(dt[0]?.row?.id);
+      setOficio(dt[0]?.row?.Oficio);
+      setSIGAOficio(dt[0]?.row?.SIGAOficio);
+      handleFilterChange1(dt[0]?.row?.secid);
+      setidunidad(dt[0]?.row?.uniid);
       if (FRecibido !== null) {
-        setFRecibido(dayjs(dt?.row?.FRecibido));
+        setFRecibido(dayjs(dt[0]?.row?.FRecibido));
       }
       if (FVencimiento !== null) {
-        setFVencimiento(dayjs(dt?.row?.FVencimiento));
+        setFVencimiento(dayjs(dt[0]?.row?.FVencimiento));
       }
       if (FOficio !== null) {
-        setFechaOficio(dayjs(dt?.row?.FOficio));
+        setFechaOficio(dayjs(dt[0]?.row?.FOficio));
       }
       if (Prorroga !== null) {
-        setProrroga(dayjs(dt?.row?.Prorroga));
+        setProrroga(dayjs(dt[0]?.row?.Prorroga));
       }
     }
   }, [dt]);
@@ -282,7 +305,7 @@ export const NotifModal = ({
                 options={ListSecretarias}
                 onInputChange={handleFilterChange1}
                 placeholder={"Seleccione..."}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
 
@@ -295,7 +318,7 @@ export const NotifModal = ({
                 options={ListUnidades}
                 onInputChange={handleFilterChange2}
                 placeholder={"Seleccione..."}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
 
@@ -311,11 +334,13 @@ export const NotifModal = ({
                 required
                 error={!Oficio}
                 onChange={(v) => setOficio(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
+
               />
             </Grid>
 
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
+              {/* <TextField
                 margin="dense"
                 id="FolioSIGA"
                 label="Folio SIGA"
@@ -324,7 +349,11 @@ export const NotifModal = ({
                 variant="standard"
                 value={SIGAOficio}
                 onChange={(v) => setSIGAOficio(v.target.value)}
-              />
+                disabled={Entregado === "1" || visualizar === true}
+
+              /> */}
+
+              
             </Grid>
           </Grid>
 
@@ -346,7 +375,7 @@ export const NotifModal = ({
                 value={FOficio}
                 label={"Fecha Oficio"}
                 onchange={handleFilterChangefo}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -354,28 +383,29 @@ export const NotifModal = ({
                 value={FRecibido}
                 label={"Fecha Recibido"}
                 onchange={handleFilterChangefr}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
               <CustomizedDate
                 value={FVencimiento}
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChangefv}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
+            
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <CustomizedDate
                 value={Prorroga}
                 label={"Prorroga"}
                 onchange={handleFilterChangep}
-                disabled={false}
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
 
-          <Grid
+          {(String(Entregado) !== "1" && editarPermiso === true) ? (<Grid
             container
             direction="row"
             justifyContent="center"
@@ -418,7 +448,35 @@ export const NotifModal = ({
                 {"Salir"}
               </Button>
             </Grid>
-          </Grid>
+          </Grid>) : (
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              sx={{ padding: "2%" }}
+            >
+
+              <Grid
+                item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}
+              >
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
+                  className={"actualizar"}
+                  onClick={() => handleClose()}
+                >
+                  {"Salir"}
+                </Button>
+              </Grid>
+            </Grid>
+          )
+
+          }
+
         </Box>
       </ModalForm>
     </>
