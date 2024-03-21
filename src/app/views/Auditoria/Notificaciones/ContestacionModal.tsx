@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControlLabel, FormGroup, Grid, Switch, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
@@ -34,12 +34,12 @@ export const ContestacionModal = ({
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
   const [id, setId] = useState("");
-  const [Prorroga, setProrroga] = useState<Dayjs | null>();
+  const [Prorroga, setProrroga] = useState<Dayjs | null>(dt?.row?.Prorroga !== undefined && dt?.row?.Prorroga !== null ? dayjs(dt?.row?.Prorroga): null);
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
   const [FOficio, setFechaOficio] = useState<Dayjs | null>();
   const [FRecibido, setFRecibido] = useState<Dayjs | null>();
-  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>();
+  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>(dt?.row?.FVencimiento !== undefined && dt?.row?.FVencimiento !== null ? dayjs(dt?.row?.FVencimiento): null);
   const [idsecretaria, setidsecretaria] = useState("");
   const [idunidad, setidunidad] = useState("");
   const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
@@ -47,6 +47,10 @@ export const ContestacionModal = ({
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()))
   const [visualizar, setVisualizar] = useState<boolean>(false);
+  const [switchValue, setSwitchValue] = useState(false);
+  const handleChange = (event: any) => {
+    setSwitchValue(event.target.checked);
+  };
 
 
 
@@ -99,20 +103,22 @@ export const ContestacionModal = ({
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
-      let data = {
+      let data = {}
+      data = {
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
         idNotificacion: idNotificacion,
-        Prorroga: Prorroga,
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
         FOficio: fOficio || FOficio,
         FRecibido: FRecibido,
-        FVencimiento: FVencimiento,
         idsecretaria: idsecretaria,
         idunidad: idunidad,
       };
+      if (switchValue === true) {
+        data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga, }
+      }
 
       handleRequest(data);
     }
@@ -194,6 +200,12 @@ export const ContestacionModal = ({
     loadFilter(19);
 
     console.log("Entregado",Entregado);
+    console.log("switchValue", switchValue);
+    
+    console.log("FVencimiento",JSON.stringify(FVencimiento));
+    console.log("Prorroga",Prorroga);
+    console.log("dt",dt);
+    
     
 
     if (Object.keys(dt).length === 0) {
@@ -206,14 +218,18 @@ export const ContestacionModal = ({
       if (FRecibido !== null) {
         setFRecibido(dayjs(dt?.row?.FRecibido));
       }
-      if (FVencimiento !== null) {
+      if (FVencimiento !== null && FVencimiento !== undefined) {
         setFVencimiento(dayjs(dt?.row?.FVencimiento));
+        setSwitchValue(true)
+
       }
       if (FOficio !== null) {
         setFechaOficio(dayjs(dt?.row?.FOficio));
       }
-      if (Prorroga !== null) {
+      if (Prorroga !== null && Prorroga !== undefined) {
         setProrroga(dayjs(dt?.row?.Prorroga));
+        setSwitchValue(true)
+
       }
     }
   }, [dt]);
@@ -229,7 +245,7 @@ export const ContestacionModal = ({
         }
       }
     });
-  }
+  },[switchValue]
   )
 
   return (
@@ -240,6 +256,7 @@ export const ContestacionModal = ({
       >
         <Progress open={show}></Progress>
         <Box boxShadow={3}>
+
           <Grid
             container
             item
@@ -306,6 +323,10 @@ export const ContestacionModal = ({
               />
             </Grid>
           </Grid>
+
+          
+
+        {switchValue ? (
           <Grid
             container
             item
@@ -353,6 +374,47 @@ export const ContestacionModal = ({
             </Grid>
           </Grid>
 
+        ):(
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <CustomizedDate
+                value={FOficio}
+                label={"Fecha Oficio"}
+                onchange={handleFilterChangefo}
+                disabled={Entregado === "1" || visualizar === true}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <CustomizedDate
+                value={FRecibido}
+                label={"Fecha Recibido"}
+                onchange={handleFilterChangefr}
+                disabled={Entregado === "1" || visualizar === true}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              
+            </Grid>
+          </Grid>
+
+        )}
+
+          
           {(String(Entregado) !== "1" && editarPermiso === true) ? (
           <Grid
             container
@@ -367,9 +429,17 @@ export const ContestacionModal = ({
           >
             <Grid
               item
+              alignItems="end"
+              justifyContent="flex-start"
+              xs={3}
+              paddingLeft={1}
+              sx={{ display: "flex" }}
+            ></Grid>
+            <Grid
+              item
               alignItems="center"
               justifyContent="flex-end"
-              xs={6}
+              xs={3}
               paddingRight={1}
               sx={{ display: "flex" }}
             >
@@ -385,7 +455,7 @@ export const ContestacionModal = ({
               item
               alignItems="center"
               justifyContent="flex-start"
-              xs={6}
+              xs={3}
               paddingLeft={1}
               sx={{ display: "flex" }}
             >
@@ -396,6 +466,27 @@ export const ContestacionModal = ({
               >
                 {"Salir"}
               </Button>
+              
+            </Grid>
+            
+            <Grid
+              item
+              alignItems="end"
+              justifyContent="flex-start"
+              xs={3}
+              paddingLeft={1}
+              sx={{ display: "flex" }}
+            >
+              <FormGroup aria-label="position" row>
+                <FormControlLabel
+                  value="agregarFecha"
+                  control={<Switch color="primary" checked={switchValue} onChange={handleChange} />}
+                  label="Agregar fecha de vencimiento y prórroga"
+                  labelPlacement="end"
+                  disabled={Entregado === "1" || visualizar === true}
+
+                />
+              </FormGroup>
             </Grid>
           </Grid>
           ):(
@@ -410,9 +501,11 @@ export const ContestacionModal = ({
             lg={12}
             sx={{ padding: "2%" }}
           >
-            
             <Grid
-              item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}
+                item alignItems="center" justifyContent="center" xs={4} sx={{ display: "flex" }}
+              ></Grid>
+            <Grid
+              item alignItems="center" justifyContent="center" xs={4} sx={{ display: "flex" }}
             >
               <Button
                 // disabled={descripcion === "" || nombre === ""}
@@ -422,6 +515,20 @@ export const ContestacionModal = ({
                 {"Salir"}
               </Button>
             </Grid>
+            <Grid
+                item alignItems="center" justifyContent="center" xs={4} sx={{ display: "flex" }}
+              >
+                <FormGroup aria-label="position" row>
+                <FormControlLabel
+                  value="agregarFecha"
+                  control={<Switch color="primary" checked={switchValue} onChange={handleChange} />}
+                  label="Agregar fecha de vencimiento y prórroga"
+                  labelPlacement="end"
+                  disabled={Entregado === "1" || visualizar === true}
+
+                />
+              </FormGroup>
+              </Grid>
           </Grid>
           )}
         
