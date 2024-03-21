@@ -198,12 +198,7 @@ const Notif = ({
       width: 300,
     },
 
-    {
-      field: "SIGAOficio",
-      description: "Folio SIGA",
-      headerName: "Folio SIGA",
-      width: 150,
-    },
+    
     {
       field: "FOficio",
       description: "Fecha de Oficio",
