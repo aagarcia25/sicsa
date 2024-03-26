@@ -40,8 +40,10 @@ import { CatalogosServices } from "../../services/catalogosServices";
 import { ButtonsImport } from "../componentes/ButtonsImport";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
-
+import DescriptionIcon from "@mui/icons-material/Description";
+import Goficio from "./Goficio";
 export const ControlOficios = () => {
+  const [openOficio, setopenOficio] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [openSlider, setOpenSlider] = useState(false);
   const [open, setOpen] = useState(false);
@@ -531,12 +533,18 @@ export const ControlOficios = () => {
       headerName: eliminar || editar ? "Acciones" : "",
       description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
-      //width: 200,
       width: eliminar || editar ? 200 : 0,
 
       renderCell: (v) => {
         return (
           <>
+            <ButtonsDetail
+              title={"Generar Oficio enn WORD"}
+              handleFunction={handleOficio}
+              show={true}
+              icon={<DescriptionIcon />}
+              row={v}
+            ></ButtonsDetail>
             <ButtonsDetail
               title={"Documentos del Oficio"}
               handleFunction={handleVer}
@@ -562,7 +570,6 @@ export const ControlOficios = () => {
             ) : (
               ""
             )}
-
             {cancelar ? (
               <ButtonsDetail
                 title={
@@ -584,7 +591,6 @@ export const ControlOficios = () => {
             ) : (
               ""
             )}
-
             {bs ? (
               <ButtonsDetail
                 title={"Generar BS"}
@@ -605,12 +611,18 @@ export const ControlOficios = () => {
   const handleClose = () => {
     setOpenAdjuntos(false);
     setOpen(false);
+    setopenOficio(false);
     consulta({ Anio: anio, NUMOPERACION: 4 });
   };
 
   const handleVer = (v: any) => {
     setVrows(v);
     setOpenAdjuntos(true);
+  };
+
+  const handleOficio = (v: any) => {
+    setVrows(v);
+    setopenOficio(true);
   };
 
   const handleOpen = (v: any) => {
@@ -818,7 +830,6 @@ export const ControlOficios = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
         </Grid>
-
         {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
         {agregar ? (
           <TooltipPersonalizado
@@ -883,7 +894,6 @@ export const ControlOficios = () => {
         ) : (
           ""
         )}
-
         {eliminar ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
@@ -900,7 +910,6 @@ export const ControlOficios = () => {
         ) : (
           ""
         )}
-
         {agregar ? (
           <ButtonsImport handleOpen={handleUpload} agregar={agregar} />
         ) : (
@@ -918,6 +927,15 @@ export const ControlOficios = () => {
             obj={vrows}
             tipo={1}
           />
+        ) : (
+          ""
+        )}
+        {openOficio ? (
+          <Goficio
+            open={openOficio}
+            handleFunction={handleClose}
+            obj={vrows}
+          ></Goficio>
         ) : (
           ""
         )}

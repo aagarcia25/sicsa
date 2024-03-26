@@ -46,13 +46,12 @@ export const Oficios = ({
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
 
-
   const handleVerAdjuntos = (data: any) => {
-    setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio);
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
+    );
     setOpenAdjuntos(true);
-    console.log("obj",obj);
-    setEntregado(obj.row.entregado)
-    
+    setEntregado(obj.row.entregado);
   };
 
   const handleClose = () => {
@@ -178,12 +177,12 @@ export const Oficios = ({
               ""
             )}
             {/* {editar ? ( */}
-              <ButtonsEdit
-                handleAccion={handleEdit}
-                row={v}
-                show={true}
-              ></ButtonsEdit>
-             {/* ) : (
+            <ButtonsEdit
+              handleAccion={handleEdit}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+            {/* ) : (
                ""
              )} */}
 
@@ -227,10 +226,9 @@ export const Oficios = ({
 
   const handleEdit = (v: any) => {
     setTipoOperacion(2);
-    setModo("Módificar Registro"); 
+    setModo("Módificar Registro");
     setOpen(true);
-    setVrows( [v,obj]);
-
+    setVrows([v, obj]);
   };
 
   const consulta = () => {
@@ -250,10 +248,7 @@ export const Oficios = ({
   };
 
   useEffect(() => {
-    console.log("obj",obj.row.entregado);
-    
-
-      permisos.map((item: PERMISO) => {
+    permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
@@ -266,13 +261,7 @@ export const Oficios = ({
         }
       }
     });
-    
 
-        
-
-   
-    
-   
     consulta();
   }, [obj]);
 
@@ -298,7 +287,11 @@ export const Oficios = ({
           {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
         </Typography>
 
-        {agregar && obj.row.entregado !== "1"? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+        {agregar && obj.row.entregado !== "1" ? (
+          <ButtonsAdd handleOpen={handleOpen} agregar={true} />
+        ) : (
+          ""
+        )}
 
         {eliminar && obj.row.entregado !== "1" ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>

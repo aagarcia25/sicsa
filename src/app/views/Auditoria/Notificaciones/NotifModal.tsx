@@ -1,4 +1,13 @@
-import { Box, Button, FormControlLabel, FormGroup, Grid, Switch, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -33,19 +42,27 @@ export const NotifModal = ({
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
   const [id, setId] = useState("");
-  const [Prorroga, setProrroga] = useState<Dayjs | null>(dt[0]?.row?.Prorroga !== undefined && dt[0]?.row?.Prorroga !== null ? dayjs(dt[0]?.row?.Prorroga) : null);
+  const [Prorroga, setProrroga] = useState<Dayjs | null>(
+    dt[0]?.row?.Prorroga !== undefined && dt[0]?.row?.Prorroga !== null
+      ? dayjs(dt[0]?.row?.Prorroga)
+      : null
+  );
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
   const [FOficio, setFechaOficio] = useState<Dayjs | null>();
   const [FRecibido, setFRecibido] = useState<Dayjs | null>();
-  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>(dt[0]?.row?.FVencimiento !== undefined && dt[0]?.row?.FVencimiento !== null ? dayjs(dt[0]?.row?.FVencimiento) : null);
+  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>(
+    dt[0]?.row?.FVencimiento !== undefined && dt[0]?.row?.FVencimiento !== null
+      ? dayjs(dt[0]?.row?.FVencimiento)
+      : null
+  );
   const [idsecretaria, setidsecretaria] = useState("");
   const [idunidad, setidunidad] = useState("");
   const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
   const [ListUnidades, setListUnidades] = useState<SelectValues[]>([]);
   const [APE, setAPE] = useState("");
   const [ListAPE, setListAPE] = useState<SelectValues[]>([]);
-  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado)
+  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const [visualizar, setVisualizar] = useState<boolean>(false);
   const [switchValue, setSwitchValue] = useState(false);
@@ -53,7 +70,7 @@ export const NotifModal = ({
     setSwitchValue(event.target.checked);
   };
 
-  const permisos: PERMISO[] = JSON.parse(String(getPermisos()))
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
@@ -94,7 +111,7 @@ export const NotifModal = ({
             handleSend();
           }
         })
-        .catch((e) => { });
+        .catch((e) => {});
     } else if (tipo === 2) {
       handleSend();
     }
@@ -104,7 +121,7 @@ export const NotifModal = ({
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
-      let data = {}
+      let data = {};
       data = {
         NUMOPERACION: tipo,
         CHID: id,
@@ -119,7 +136,7 @@ export const NotifModal = ({
         idunidad: idunidad,
       };
       if (switchValue === true) {
-        data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga, }
+        data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
       }
 
       handleRequest(data);
@@ -212,23 +229,12 @@ export const NotifModal = ({
         }
       }
     });
-  }, [switchValue]
-  )
-
-
+  }, [switchValue]);
 
   useEffect(() => {
     loadFilter(11);
     loadFilter(19);
     loadFilter(6);
-    console.log("switchValue", switchValue);
-    console.log("FVencimiento", JSON.stringify(FVencimiento));
-    console.log("Prorroga", Prorroga);
-    console.log("switchValue2", switchValue);
-    console.log("dt[0]?.row?.FVencimiento", dt[0]?.row?.FVencimiento);
-    console.log("dt", dt);
-
-
 
     if (Object.keys(dt).length === 0) {
     } else {
@@ -244,21 +250,15 @@ export const NotifModal = ({
 
       if (FVencimiento !== null && FVencimiento !== undefined) {
         setFVencimiento(dayjs(dt[0]?.row?.FVencimiento));
-        setSwitchValue(true)
-        console.log("entre al if");
-
+        setSwitchValue(true);
       }
       if (FOficio !== null) {
         setFechaOficio(dayjs(dt[0]?.row?.FOficio));
       }
       if (Prorroga !== null && Prorroga !== undefined) {
         setProrroga(dayjs(dt[0]?.row?.Prorroga));
-        setSwitchValue(true)
-
+        setSwitchValue(true);
       }
-      console.log("switchValue3", switchValue);
-
-
     }
   }, [dt]);
 
@@ -361,7 +361,6 @@ export const NotifModal = ({
                 error={!Oficio}
                 onChange={(v) => setOficio(v.target.value)}
                 disabled={Entregado === "1" || visualizar === true}
-
               />
             </Grid>
 
@@ -378,8 +377,6 @@ export const NotifModal = ({
                 disabled={Entregado === "1" || visualizar === true}
 
               /> */}
-
-
             </Grid>
           </Grid>
           {switchValue ? (
@@ -462,89 +459,13 @@ export const NotifModal = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
 
-              </Grid>
-
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-
-              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             </Grid>
           )}
 
-
-
-          {(String(Entregado) !== "1" && editarPermiso === true) ? (<Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            sx={{ padding: "2%" }}
-          >
-            <Grid
-              item
-              alignItems="end"
-              justifyContent="flex-start"
-              xs={3}
-              paddingLeft={1}
-              sx={{ display: "flex" }}
-            ></Grid>
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="flex-end"
-              xs={3}
-              paddingRight={1}
-              sx={{ display: "flex" }}
-            >
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
-                className={tipo === 1 ? "guardar" : "actualizar"}
-                onClick={() => handleRequestFOficio()}
-              >
-                {tipo === 1 ? "Agregar" : "Editar"}
-              </Button>
-            </Grid>
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="flex-start"
-              xs={3}
-              paddingLeft={1}
-              sx={{ display: "flex" }}
-            >
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
-                className={"actualizar"}
-                onClick={() => handleClose()}
-              >
-                {"Salir"}
-              </Button>
-            </Grid>
-            <Grid
-              item
-              alignItems="end"
-              justifyContent="flex-start"
-              xs={3}
-              paddingLeft={1}
-              sx={{ display: "flex" }}
-            >
-              <FormGroup aria-label="position" row>
-                <FormControlLabel
-                  value="agregarFecha"
-                  control={<Switch color="primary" checked={switchValue} onChange={handleChange} />}
-                  label="Agregar fecha de vencimiento y prórroga"
-                  labelPlacement="end"
-                  disabled={Entregado === "1" || visualizar === true}
-
-                />
-              </FormGroup>
-            </Grid>
-          </Grid>) : (
+          {String(Entregado) !== "1" && editarPermiso === true ? (
             <Grid
               container
               direction="row"
@@ -557,10 +478,36 @@ export const NotifModal = ({
               sx={{ padding: "2%" }}
             >
               <Grid
-                item alignItems="center" justifyContent="center" xs={4} sx={{ display: "flex" }}
+                item
+                alignItems="end"
+                justifyContent="flex-start"
+                xs={3}
+                paddingLeft={1}
+                sx={{ display: "flex" }}
               ></Grid>
               <Grid
-                item alignItems="center" justifyContent="center" xs={4} sx={{ display: "flex" }}
+                item
+                alignItems="center"
+                justifyContent="flex-end"
+                xs={3}
+                paddingRight={1}
+                sx={{ display: "flex" }}
+              >
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
+                  className={tipo === 1 ? "guardar" : "actualizar"}
+                  onClick={() => handleRequestFOficio()}
+                >
+                  {tipo === 1 ? "Agregar" : "Editar"}
+                </Button>
+              </Grid>
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="flex-start"
+                xs={3}
+                paddingLeft={1}
+                sx={{ display: "flex" }}
               >
                 <Button
                   // disabled={descripcion === "" || nombre === ""}
@@ -571,24 +518,89 @@ export const NotifModal = ({
                 </Button>
               </Grid>
               <Grid
-                item alignItems="center" justifyContent="center" xs={4} sx={{ display: "flex" }}
+                item
+                alignItems="end"
+                justifyContent="flex-start"
+                xs={3}
+                paddingLeft={1}
+                sx={{ display: "flex" }}
               >
                 <FormGroup aria-label="position" row>
-                <FormControlLabel
-                  value="agregarFecha"
-                  control={<Switch color="primary" checked={switchValue} onChange={handleChange} />}
-                  label="Agregar fecha de vencimiento y prórroga"
-                  labelPlacement="end"
-                  disabled={Entregado === "1" || visualizar === true}
-
-                />
-              </FormGroup>
+                  <FormControlLabel
+                    value="agregarFecha"
+                    control={
+                      <Switch
+                        color="primary"
+                        checked={switchValue}
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Agregar fecha de vencimiento y prórroga"
+                    labelPlacement="end"
+                    disabled={Entregado === "1" || visualizar === true}
+                  />
+                </FormGroup>
               </Grid>
             </Grid>
-          )
-
-          }
-
+          ) : (
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              sx={{ padding: "2%" }}
+            >
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="center"
+                xs={4}
+                sx={{ display: "flex" }}
+              ></Grid>
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="center"
+                xs={4}
+                sx={{ display: "flex" }}
+              >
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
+                  className={"actualizar"}
+                  onClick={() => handleClose()}
+                >
+                  {"Salir"}
+                </Button>
+              </Grid>
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="center"
+                xs={4}
+                sx={{ display: "flex" }}
+              >
+                <FormGroup aria-label="position" row>
+                  <FormControlLabel
+                    value="agregarFecha"
+                    control={
+                      <Switch
+                        color="primary"
+                        checked={switchValue}
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Agregar fecha de vencimiento y prórroga"
+                    labelPlacement="end"
+                    disabled={Entregado === "1" || visualizar === true}
+                  />
+                </FormGroup>
+              </Grid>
+            </Grid>
+          )}
         </Box>
       </ModalForm>
     </>
