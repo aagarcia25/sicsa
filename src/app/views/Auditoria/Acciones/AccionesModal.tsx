@@ -49,11 +49,11 @@ export const AccionesModal = ({
   const [ListTipoAccion, setListTipoAccion] = useState<SelectValues[]>([]);
   const [numeroResultado, setnumeroResultado] = useState(0);
   const [monto, setmonto] = useState(0);
-  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado)
+  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const [visualizar, setVisualizar] = useState<boolean>(false);
 
-  const permisos: PERMISO[] = JSON.parse(String(getPermisos()))
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 
   const handleSend = () => {
     if (!TipoAccion || !EstatusAcciones || !ClaveAccion || !TextoAccion) {
@@ -145,10 +145,7 @@ export const AccionesModal = ({
     });
   };
 
-  useEffect( () => {
-    console.log("obj dt",dt);
-
-
+  useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "VISUALDATOS") {
@@ -159,8 +156,7 @@ export const AccionesModal = ({
         }
       }
     });
-  }
-  )
+  });
 
   useEffect(() => {
     consultaListas(8);
@@ -342,80 +338,81 @@ export const AccionesModal = ({
             </Grid>
           </Grid>
 
-
-        {(String(Entregado) !== "1" && editarPermiso === true) ? (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            sx={{ padding: "2%" }}
-          >
+          {String(Entregado) !== "1" && editarPermiso === true ? (
             <Grid
-              item
+              container
+              direction="row"
+              justifyContent="center"
               alignItems="center"
-              justifyContent="flex-end"
-              xs={6}
-              paddingRight={1}
-              sx={{ display: "flex" }}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              sx={{ padding: "2%" }}
             >
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="flex-end"
+                xs={6}
+                paddingRight={1}
+                sx={{ display: "flex" }}
+              >
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
 
-                className={tipo === 1 ? "guardar" : "actualizar"}
-                onClick={() => handleSend()}
+                  className={tipo === 1 ? "guardar" : "actualizar"}
+                  onClick={() => handleSend()}
+                >
+                  {tipo === 1 ? "Agregar" : "Editar"}
+                </Button>
+              </Grid>
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="flex-start"
+                xs={6}
+                paddingLeft={1}
+                sx={{ display: "flex" }}
               >
-                {tipo === 1 ? "Agregar" : "Editar"}
-              </Button>
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
+                  className={"actualizar"}
+                  onClick={() => handleClose()}
+                >
+                  {"Salir"}
+                </Button>
+              </Grid>
             </Grid>
+          ) : (
             <Grid
-              item
+              container
+              direction="row"
+              justifyContent="center"
               alignItems="center"
-              justifyContent="flex-start"
-              xs={6}
-              paddingLeft={1}
-              sx={{ display: "flex" }}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              sx={{ padding: "2%" }}
             >
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
-                className={"actualizar"}
-                onClick={() => handleClose()}
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="center"
+                xs={12}
+                sx={{ display: "flex" }}
               >
-                {"Salir"}
-              </Button>
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
+                  className={"actualizar"}
+                  onClick={() => handleClose()}
+                >
+                  {"Salir"}
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        ):(
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            sx={{ padding: "2%" }}
-          >
-            
-            <Grid
-              item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}
-            >
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
-                className={"actualizar"}
-                onClick={() => handleClose()}
-              >
-                {"Salir"}
-              </Button>
-            </Grid>
-          </Grid>
-        )}
-          
+          )}
         </Box>
       </ModalForm>
     </>

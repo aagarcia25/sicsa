@@ -241,12 +241,10 @@ const VisorDocumentosOficios = ({
         setURLRuta(link.href);
         setOpenSlider(false);
         setverarchivo(true);
-        console.log("TIPO", data);
       } else {
         setOpenSlider(false);
         Swal.fire("¡Error!", res.STRMESSAGE, "error");
       }
-      console.log("TIPO 1", res);
     });
   };
 

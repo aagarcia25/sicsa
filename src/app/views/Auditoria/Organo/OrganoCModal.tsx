@@ -39,11 +39,10 @@ export const OrganoCModal = ({
   const [FVencimiento, setFVencimiento] = useState<Dayjs | null>();
   const [idorigen, setidorigen] = useState("");
   const [ListOrigen, setListOrigen] = useState<SelectValues[]>([]);
-  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado)
+  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const [visualizar, setVisualizar] = useState<boolean>(false);
-  const permisos: PERMISO[] = JSON.parse(String(getPermisos()))
-
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
@@ -53,7 +52,7 @@ export const OrganoCModal = ({
     // Realiza cualquier otra acción que desees aquí
   };
 
-  const handleRequestFOficio = () =>   {
+  const handleRequestFOficio = () => {
     let data = {
       NUMOPERACION: 5,
       Oficio: Oficio,
@@ -169,8 +168,6 @@ export const OrganoCModal = ({
 
   useEffect(() => {
     loadFilter(6);
-    console.log("obj dt",dt);
-
 
     if (Object.keys(dt).length === 0) {
       //setAPE(dt.coaid);
@@ -179,9 +176,6 @@ export const OrganoCModal = ({
       setidorigen(dt[0]?.row?.secid);
       setOficio(dt[0]?.row?.Oficio);
       setSIGAOficio(dt[0]?.row?.SIGAOficio);
-      //setFechaOficio(dayjs(dt?.row?.FOficio));
-      //setFRecibido(dayjs(dt?.row?.FRecibido));
-      //setFVencimiento(dayjs(dt?.row?.FVencimiento));
       if (FRecibido !== null) {
         setFRecibido(dayjs(dt[0]?.row?.FRecibido));
       }
@@ -194,7 +188,7 @@ export const OrganoCModal = ({
     }
   }, [dt]);
 
-  useEffect( () => {
+  useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "VISUALDATOS") {
@@ -205,8 +199,7 @@ export const OrganoCModal = ({
         }
       }
     });
-  }
-  )
+  });
 
   return (
     <>
@@ -313,69 +306,71 @@ export const OrganoCModal = ({
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
 
-        {(String(Entregado) !== "1" && editarPermiso === true) ? (
-          <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          sx={{ padding: "2%" }}
-        >
-          <Grid
-            item
-            alignItems="center"
-            justifyContent="flex-end"
-            xs={6}
-            paddingRight={1}
-            sx={{ display: "flex" }}
-          >
-            <Button
-              className={tipo === 1 ? "guardar" : "actualizar"}
-              onClick={() => handleRequestFOficio()}
-            >
-              {tipo === 1 ? "Agregar" : "Editar"}
-            </Button>
-          </Grid>
-          <Grid
-            item
-            alignItems="center"
-            justifyContent="flex-start"
-            xs={6}
-            paddingLeft={1}
-            sx={{ display: "flex" }}
-          >
-            <Button className={"actualizar"} onClick={() => handleClose()}>
-              {"Salir"}
-            </Button>
-          </Grid>
-        </Grid>
-        ):(
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            sx={{ padding: "2%" }}
-          >
-            
+          {String(Entregado) !== "1" && editarPermiso === true ? (
             <Grid
-             item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              sx={{ padding: "2%" }}
             >
-              <Button className={"actualizar"} onClick={() => handleClose()}>
-                {"Salir"}
-              </Button>
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="flex-end"
+                xs={6}
+                paddingRight={1}
+                sx={{ display: "flex" }}
+              >
+                <Button
+                  className={tipo === 1 ? "guardar" : "actualizar"}
+                  onClick={() => handleRequestFOficio()}
+                >
+                  {tipo === 1 ? "Agregar" : "Editar"}
+                </Button>
+              </Grid>
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="flex-start"
+                xs={6}
+                paddingLeft={1}
+                sx={{ display: "flex" }}
+              >
+                <Button className={"actualizar"} onClick={() => handleClose()}>
+                  {"Salir"}
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        )}
-          
+          ) : (
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              sx={{ padding: "2%" }}
+            >
+              <Grid
+                item
+                alignItems="center"
+                justifyContent="center"
+                xs={12}
+                sx={{ display: "flex" }}
+              >
+                <Button className={"actualizar"} onClick={() => handleClose()}>
+                  {"Salir"}
+                </Button>
+              </Grid>
+            </Grid>
+          )}
         </Box>
       </ModalForm>
     </>
