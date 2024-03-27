@@ -32,8 +32,6 @@ export default function Goficio({
 
   const handleSubmit = () => {
     const plantilla = tipo;
-    console.log(plantilla);
-
     let data = {
       NUMOPERACION: 5,
       TIPO: plantilla,
@@ -42,15 +40,13 @@ export default function Goficio({
 
     AuditoriaService.informes(data).then((res) => {
       if (res.SUCCESS) {
-        var bufferArray = base64ToArrayBuffer(String(res.RESPONSE.FILE));
-        var blobStore = new Blob([bufferArray], {
-          type: res.RESPONSE.TIPO,
-        });
+        var bufferArray = base64ToArrayBuffer(String(res.RESPONSE));
+        var blobStore = new Blob([bufferArray]);
         var data = window.URL.createObjectURL(blobStore);
         var link = document.createElement("a");
         document.body.appendChild(link);
         link.href = data;
-        link.download = plantilla;
+        link.download = obj.row.Oficio + ".docx";
         link.click();
         window.URL.revokeObjectURL(data);
         link.remove();
@@ -65,7 +61,6 @@ export default function Goficio({
       open={open}
       PaperProps={{
         component: "form",
-        onSubmit: handleSubmit,
       }}
     >
       <DialogTitle>
@@ -91,7 +86,7 @@ export default function Goficio({
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleFunction()}>Cancelar</Button>
-        <Button type="submit">Generar</Button>
+        <Button onClick={() => handleSubmit()}>Generar</Button>
       </DialogActions>
     </Dialog>
   );
