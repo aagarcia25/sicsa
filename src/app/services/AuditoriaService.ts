@@ -1,4 +1,4 @@
-import { post } from "./apiService";
+import { post, postReporte } from "./apiService";
 
 export class AuditoriaService {
   public static async Auditoriaindex(data: any) {
@@ -47,5 +47,13 @@ export class AuditoriaService {
 
   public static async FoliosFilesindex(data: any) {
     return await post("FoliosFilesindex", data);
+  }
+
+  public static async ReportesIndex2(data: any) {
+    return await postReporte("ReportesIndex", data);
+  }
+
+  public static async informes(data: any) {
+    return await post("informes", data);
   }
 }
