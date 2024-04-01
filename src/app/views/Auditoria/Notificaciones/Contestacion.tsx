@@ -49,7 +49,6 @@ export const Contestacion = ({
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
 
-
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
       obj.row.anio +
@@ -61,8 +60,7 @@ export const Contestacion = ({
         data.row.Oficio
     );
     setOpenAdjuntos(true);
-    setEntregado(Entregado)
-    
+    setEntregado(Entregado);
   };
 
   const consulta = (data: any) => {
@@ -163,7 +161,7 @@ export const Contestacion = ({
     setOpenModal(true);
     setTipoOperacion(2);
     setVrows(data.data);
-    setEntregado(Entregado)
+    setEntregado(Entregado);
   };
 
   const handleOpen = () => {
@@ -239,12 +237,12 @@ export const Contestacion = ({
       renderCell: (v) => {
         return (
           <>
-              <ButtonsEdit
-                handleAccion={handleEdit}
-                row={v}
-                show={true}
-              ></ButtonsEdit>
-            
+            <ButtonsEdit
+              handleAccion={handleEdit}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+
             {eliminar && Entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
@@ -287,10 +285,6 @@ export const Contestacion = ({
   ];
 
   useEffect(() => {
-    console.log("obj0",obj);
-    console.log("Entregado",Entregado);
-
-    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -322,7 +316,7 @@ export const Contestacion = ({
         ) : (
           ""
         )}
-        {eliminar && Entregado !== "1"? (
+        {eliminar && Entregado !== "1" ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
               value="check"

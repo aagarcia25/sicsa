@@ -44,7 +44,6 @@ export const OrganoR = ({
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
 
-
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
       obj.row.anio +
@@ -56,7 +55,7 @@ export const OrganoR = ({
         data.row.Oficio
     );
     setOpenAdjuntos(true);
-    setEntregado(Entregado)
+    setEntregado(Entregado);
   };
 
   const consulta = (data: any) => {
@@ -153,7 +152,7 @@ export const OrganoR = ({
     setOpenModal(true);
     setTipoOperacion(2);
     setVrows(data.data);
-    setEntregado(Entregado)
+    setEntregado(Entregado);
   };
 
   const handleOpen = () => {
@@ -188,12 +187,12 @@ export const OrganoR = ({
       renderCell: (v) => {
         return (
           <>
-              <ButtonsEdit
-                handleAccion={handleEdit}
-                row={v}
-                show={true}
-              ></ButtonsEdit>
-         
+            <ButtonsEdit
+              handleAccion={handleEdit}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+
             {eliminar && Entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
@@ -226,8 +225,6 @@ export const OrganoR = ({
   ];
 
   useEffect(() => {
-    console.log("Entregado",Entregado);
-    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {

@@ -44,7 +44,6 @@ const OrganoC = ({
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
 
-
   const consulta = (data: any) => {
     AuditoriaService.OrganoCindex(data).then((res) => {
       if (res.SUCCESS) {
@@ -101,8 +100,7 @@ const OrganoC = ({
       },
     });
     setOpenContestacion(true);
-    setEntregado(obj.row.entregado)
-
+    setEntregado(obj.row.entregado);
   };
 
   const handleVerAdjuntos = (data: any) => {
@@ -110,8 +108,7 @@ const OrganoC = ({
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
-    setEntregado(obj.row.entregado)
-    
+    setEntregado(obj.row.entregado);
   };
 
   const handleClose = () => {
@@ -124,7 +121,7 @@ const OrganoC = ({
   const handleEdit = (data: any) => {
     setOpenModal(true);
     setTipoOperacion(2);
-    setVrows([data.data,obj]);
+    setVrows([data.data, obj]);
   };
 
   const handleOpen = () => {
@@ -206,13 +203,12 @@ const OrganoC = ({
       renderCell: (v) => {
         return (
           <>
-            
-              <ButtonsEdit
-                handleAccion={handleEdit}
-                row={v}
-                show={true} 
-              ></ButtonsEdit>
-           
+            <ButtonsEdit
+              handleAccion={handleEdit}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
+
             {eliminar && obj.row.entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
@@ -262,8 +258,6 @@ const OrganoC = ({
   ];
 
   useEffect(() => {
-    console.log("Editar",editar);
-    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -316,7 +310,11 @@ const OrganoC = ({
         />
       </ModalForm>
       {openContestacion ? (
-        <OrganoR handleFunction={handleClose} obj={vrows} Entregado={entregado}/>
+        <OrganoR
+          handleFunction={handleClose}
+          obj={vrows}
+          Entregado={entregado}
+        />
       ) : (
         ""
       )}

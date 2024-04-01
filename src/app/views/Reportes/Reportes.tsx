@@ -18,7 +18,6 @@ import { ShareService } from "../../services/ShareService";
 import { getUser } from "../../services/localStorage";
 import { getHeaderInfoReporte } from "../../services/tokenCreator";
 import SelectFrag from "../componentes/SelectFrag";
-import Item from "antd/es/list/Item";
 
 const resumenResultados = [
   { value: "Gobierno Central", label: "Gobierno Central" },
@@ -187,9 +186,7 @@ export const Reportes = () => {
   const loadFilter = (operacion: number, id?: string) => {
     let data = { NUMOPERACION: operacion, P_ID: id };
     ShareService.SelectIndex(data).then((res) => {
-      if (operacion === 5) {
-        //  setCatInforme(res.RESPONSE);
-      } else if (operacion === 1) {
+      if (operacion === 1) {
         setListAnio(res.RESPONSE);
       } else if (operacion === 23) {
         setListTipoReporte(res.RESPONSE);
@@ -198,11 +195,6 @@ export const Reportes = () => {
       } else if (operacion === 17) {
         setListMunicipios(res.RESPONSE);
       }
-      //else if (operacion === 16) {
-      //     setListInicio(res.RESPONSE);
-      //   } else if (operacion === 18) {
-      //     setListIdEstatus(res.RESPONSE);
-      //   }
     });
   };
 
@@ -211,21 +203,16 @@ export const Reportes = () => {
     loadFilter(23);
     loadFilter(2);
     loadFilter(17);
-
-    //consulta();
   }, []);
 
   useEffect(() => {
     if (idTipoReporte != "") {
       let data = { NUMOPERACION: 24, id: idTipoReporte };
       ShareService.SelectIndex(data).then((res) => {
-        //setNombreReporte(res.RESPONSE.id)
-
         let auxResponse =
           res.RESPONSE.find((item: IReportes) => item.id === idTipoReporte) ||
           "";
         setNombreReporte(auxResponse.Reporte);
-
         setAuxiliarReporte(auxResponse.Nombre);
       });
     }
@@ -260,8 +247,6 @@ export const Reportes = () => {
       setVisibleEntidadFiscalizada(false);
       setVisibleMunicipios(false);
     }
-
-    //setResumenR("")
   }, [idTipoReporte, ResumenR]);
 
   const disableGenerator = () => {
@@ -322,7 +307,6 @@ export const Reportes = () => {
             Tipo de Reporte
           </FormLabel>
 
-          {/* <Grid paddingTop={1} container item xs={12} md={6} justifyContent="center"> */}
           <RadioGroup
             aria-label="options"
             name="options"
@@ -341,16 +325,8 @@ export const Reportes = () => {
               <Grid item xs={12} sm={6} md={4} lg={4}>
                 <FormControlLabel value="pdf" control={<Radio />} label="PDF" />
               </Grid>
-              {/* <Grid item xs={12} sm={6} md={4} lg={4}>
-                <FormControlLabel value="XLSX" control={<Radio />} label="XLSX" />
-              </Grid>
-
-              <Grid item xs={12} sm={6} md={4} lg={4}>
-                <FormControlLabel value="xls" control={<Radio />} label="XLS" />
-              </Grid> */}
             </Grid>
           </RadioGroup>
-          {/* </Grid> */}
         </FormControl>
       </Grid>
 
@@ -367,8 +343,6 @@ export const Reportes = () => {
         alignItems="center"
         sx={{ padding: "1%" }}
       >
-        {/* <Grid container item xs={12} md={8} lg={8} sx={{ textAlign: "center" }}> */}
-
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Typography sx={{ fontFamily: "sans-serif" }}>
             Tipo de Reporte:
@@ -445,19 +419,6 @@ export const Reportes = () => {
             disabled={false}
           />
         </Grid>
-        {/* <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Typography sx={{ fontFamily: "sans-serif" }}>
-            Entidad Fiscalizada:
-          </Typography>
-          <SelectFrag
-            value={idEntidadFis}
-            options={ListEntidadFis}
-            onInputChange={handleFilterEntidadFis}
-            placeholder={"Seleccione.."}
-            disabled={false}
-          />
-        </Grid> */}
-        {/* </Grid> */}
       </Grid>
       <Grid
         container
@@ -479,23 +440,6 @@ export const Reportes = () => {
         >
           {"Generar Reporte"}
         </Button>
-        {/* <Button
-              className={"actualizar"}
-              onClick={() => handleReporte()}
-            >
-              {"Generar noose"}
-            </Button> */}
-
-        {/* {listaReportes.map((item, index) => (
-              <Tooltip title={item.Descripcion}>
-                <MenuItem
-                  className="menu-Typography-report"
-                  onClick={() => handleReporte(item)}
-                >
-                  {item.Nombre}
-                </MenuItem>
-              </Tooltip>
-            ))} */}
       </Grid>
     </Grid>
   );
