@@ -270,45 +270,6 @@ export const NotifModal = ({
       >
         <Progress open={show}></Progress>
         <Box boxShadow={3}>
-          {/* <Grid
-            container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
-          >
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Typography sx={{ fontFamily: "sans-serif" }}>
-            Administración Pública del Estado APE:
-              </Typography>
-              <SelectFrag
-                value={APE}
-                options={ListAPE}
-                onInputChange={handleFilterAPE}
-                placeholder={"Seleccione...."}
-                disabled={true}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              
-            </Grid>
-
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              
-            </Grid>
-          </Grid> */}
-
           <Grid
             container
             item
@@ -606,6 +567,3 @@ export const NotifModal = ({
     </>
   );
 };
-function handleClose() {
-  throw new Error("Function not implemented.");
-}
