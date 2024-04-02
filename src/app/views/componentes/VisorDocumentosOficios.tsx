@@ -1,20 +1,16 @@
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CachedIcon from "@mui/icons-material/Cached";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import DownloadingIcon from "@mui/icons-material/Downloading";
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import {
-  Box,
-  Breadcrumbs,
-  Grid,
-  IconButton,
-  ToggleButton,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, IconButton, ToggleButton, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { base64ToArrayBuffer } from "../../helpers/Files";
+import { base64ToArrayBuffer, verifidOficios } from "../../helpers/Files";
 import { Toast } from "../../helpers/Toast";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { AuditoriaService } from "../../services/AuditoriaService";
@@ -22,13 +18,11 @@ import { getPermisos, getToken, getUser } from "../../services/localStorage";
 import MUIXDataGrid from "../MUIXDataGrid";
 import Progress from "../Progress";
 import ButtonsDeleted from "./ButtonsDeleted";
+import ButtonsDeletedFolder from "./ButtonsDeletedFolder";
 import { ButtonsDetail } from "./ButtonsDetail";
 import FormDialog from "./CFolder";
 import { TooltipPersonalizado } from "./CustomizedTooltips";
 import ModalForm from "./ModalForm";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
-import ButtonsDeletedFolder from "./ButtonsDeletedFolder";
 
 const VisorDocumentosOficios = ({
   handleFunction,
@@ -44,20 +38,15 @@ const VisorDocumentosOficios = ({
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [openSlider, setOpenSlider] = useState(false);
-  const [open, setOpen] = useState(false);
   const [opendialog, setopendialog] = useState(false);
   const [verarchivo, setverarchivo] = useState(false);
-  const [openAdjuntos, setOpenAdjuntos] = useState(false);
-  const [vrows, setVrows] = useState({});
   const [data, setData] = useState([]);
+  const [origen, setorigen] = useState<string>("");
   const [URLruta, setURLRuta] = useState<string>("");
   const [adjuntar, setAdjuntar] = useState<boolean>(false);
   const [eliminarDocumentos, setEliminarDocumentos] = useState<boolean>(false);
-  const [verificar, setVerificar] = useState<boolean>(false);
   const [breadcrumbs, setBreadcrumbs] = useState([""]);
   const [explorerRoute, setexplorerRoute] = useState<string>("");
-  const iframeRef = useRef(null);
-  //const [Entregado, setEntregado] = useState(obj?.row?.entregado)
 
   const consulta = () => {
     if (explorerRoute !== "") {
@@ -180,7 +169,6 @@ const VisorDocumentosOficios = ({
 
   const createFolder = (v: any) => {
     if (v !== undefined && v != "") {
-      let peticiones: any[] = [];
       const formData = new FormData();
       formData.append("NUMOPERACION", "9");
       formData.append("ID", obj.id);
@@ -430,6 +418,11 @@ const VisorDocumentosOficios = ({
     }
   };
 
+  const verificadocumentos = () => {
+    Swal.fire("Verificando Archivos", "", "info");
+    verifidOficios(origen, [breadcrumbs].join(""));
+    setTimeout(consulta, 3000);
+  };
   useEffect(() => {
     if (tipo === 1) {
       setBreadcrumbs([obj.row.Anio + "/" + obj.row.Oficio]);
@@ -469,12 +462,19 @@ const VisorDocumentosOficios = ({
           if (String(item.ControlInterno) === "ELIMADJUN") {
             setEliminarDocumentos(true);
           }
-          if (String(item.ControlInterno) === "VERIFICARDOC") {
-            setVerificar(true);
-          }
         }
       });
       consulta();
+      const parts = explorerRoute.split("/");
+      if (parts.length > 1) {
+        const firstElement = parts[0]; // Primer elemento
+        const lastElement = parts[parts.length - 1]; // Último elemento
+        console.log("Primer elemento:", firstElement);
+        console.log("Último elemento:", lastElement);
+        const aniolastElement = lastElement.split("-");
+        console.log(aniolastElement[2] + "/" + lastElement);
+        setorigen(aniolastElement[2] + "/" + lastElement);
+      }
     }
   }, [explorerRoute]);
 
@@ -580,6 +580,37 @@ const VisorDocumentosOficios = ({
                         }}
                       >
                         <CreateNewFolderIcon />
+                      </IconButton>
+                    </ToggleButton>
+                  </TooltipPersonalizado>
+                ) : (
+                  ""
+                )}
+
+                {breadcrumbs.length == 1 ? (
+                  <TooltipPersonalizado
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">
+                          Verificar Documentos en el Módulo de Oficios
+                        </Typography>
+                        {
+                          "Permite Obtener los Documentos nuevos si se han cargado en el Módulo de Oficios"
+                        }
+                      </React.Fragment>
+                    }
+                  >
+                    <ToggleButton value="check">
+                      <IconButton
+                        color="primary"
+                        aria-label="upload documento"
+                        component="label"
+                        size="small"
+                        onClick={() => {
+                          verificadocumentos();
+                        }}
+                      >
+                        <CachedIcon />
                       </IconButton>
                     </ToggleButton>
                   </TooltipPersonalizado>
