@@ -56,3 +56,20 @@ export function findOficios(explorerRoute: string, explorerRoute2: string) {
     }
   });
 }
+
+export function verifidOficios(explorerRoute: string, explorerRoute2: string) {
+  let data = {
+    NUMOPERACION: 15,
+    ORIGEN: explorerRoute,
+    DESTINO: explorerRoute2,
+    TOKEN: JSON.parse(String(getToken())),
+  };
+
+  AuditoriaService.FoliosFilesindex(data).then((res) => {
+    if (res.SUCCESS) {
+      Swal.fire("Archivos copiados con Exito", "", "info");
+    } else {
+      Swal.fire("No se Copiaron los Archivos", "", "info");
+    }
+  });
+}
