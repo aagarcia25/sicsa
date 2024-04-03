@@ -50,7 +50,9 @@ import Progress from "../Progress";
 import { ButtonsImport } from "../componentes/ButtonsImport";
 import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
 import OrganoC from "./Organo/OrganoC";
-
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import axios from "axios";
+import { base64ToArrayBuffer } from "../../helpers/Files";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -305,6 +307,52 @@ export const Auditoria = () => {
     }
   };
 
+  const handleGenerarInforme = (v: any) => {
+    setOpenSlider(true);
+    console.log(v);
+    let data = {
+      CHID: v.row.id,
+    };
+
+    try {
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: process.env.REACT_APP_APPLICATION_BASE_URL + "handleReport",
+        headers: {
+          "Content-Type": "application/json",
+          responseType: "blob",
+        },
+        data: data,
+      };
+
+      axios
+        .request(config)
+        .then((response) => {
+          var bufferArray = base64ToArrayBuffer(
+            String(response.data.RESPONSE.response64)
+          );
+          var blobStore = new Blob([bufferArray], {
+            type: "application/*",
+          });
+
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blobStore);
+          link.download =
+            v.row.NAUDITORIA + "." + response.data.RESPONSE.extencion;
+          link.click();
+          setOpenSlider(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setOpenSlider(false);
+        });
+    } catch (err: any) {
+      setOpenSlider(false);
+      console.log(err);
+    }
+  };
+
   const handleEntregar = (v: any) => {
     if (v.row.entregado == 1) {
       Toast.fire({
@@ -461,10 +509,18 @@ export const Auditoria = () => {
       headerName: "Acciones",
       description: "Campo de Acciones",
       sortable: false,
-      width: 400,
+      width: 420,
       renderCell: (v) => {
         return (
           <>
+            <ButtonsDetail
+              title={"Descargar Informe"}
+              handleFunction={handleGenerarInforme}
+              show={true}
+              icon={<FileDownloadIcon />}
+              row={v}
+            ></ButtonsDetail>
+
             {eliminar ? (
               String(v.row.entregado) !== "1" ? (
                 <ButtonsDeleted
