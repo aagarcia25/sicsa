@@ -233,7 +233,7 @@ export const OrganoRModal = ({
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Organo Origen:
+                Órgano Origen:
               </Typography>
               <SelectFrag
                 value={idorigen}
@@ -245,7 +245,7 @@ export const OrganoRModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Organo Destino:
+                Órgano Destino:
               </Typography>
               <SelectFrag
                 value={idDestino}
