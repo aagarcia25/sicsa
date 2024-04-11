@@ -18,7 +18,7 @@ import ModalForm from "../../componentes/ModalForm";
 import { OrganoCModal } from "./OrganoCModal";
 import { OrganoR } from "./OrganoR";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
-import { IconButton, ToggleButton, Tooltip } from "@mui/material";
+import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 const OrganoC = ({
@@ -177,7 +177,7 @@ const OrganoC = ({
       headerName: "Identificador",
       width: 150,
     },
-    { field: "descripcionsec", headerName: "Organo", width: 200 },
+    { field: "descripcionsec", headerName: "Órgano", width: 200 },
     {
       field: "Oficio",
       description: "Oficio",
@@ -272,15 +272,20 @@ const OrganoC = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    console.log("obj",obj);
+
   }, []);
 
   return (
     <div>
       <ModalForm
-        title={"Contestación a Organo Áuditor"}
+        title={"Contestación a Órgano Auditor"}
         handleClose={handleFunction}
       >
         <Progress open={show}></Progress>
+        <Typography variant="h6">
+          {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
+        </Typography>
         {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (

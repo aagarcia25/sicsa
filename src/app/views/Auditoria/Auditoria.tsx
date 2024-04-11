@@ -558,7 +558,7 @@ export const Auditoria = () => {
             ></ButtonsDetail>
 
             <ButtonsDetail
-              title={"Contestación a Organo Auditor"}
+              title={"Contestación a Órgano Auditor"}
               handleFunction={handleORgano}
               show={true}
               icon={<BusinessIcon />}

@@ -149,7 +149,7 @@ export const OrigenAuditoriaModal = ({
           >
             <Grid item alignItems="center" justifyContent="center" xs={4}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Organo Auditor:
+                Órgano Auditor:
               </Typography>
               <SelectFrag
                 value={origenauditoria}
