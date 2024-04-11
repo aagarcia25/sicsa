@@ -14,7 +14,7 @@ import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
 
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { IconButton, ToggleButton, Tooltip } from "@mui/material";
+import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 
 import { OrganoRModal } from "./OrganoRModal";
@@ -170,8 +170,8 @@ export const OrganoR = ({
       headerName: "Identificador",
       width: 150,
     },
-    { field: "descripcionorigen", headerName: "Organo Origen", width: 300 },
-    { field: "descripciodestino", headerName: "Organo Destino", width: 300 },
+    { field: "descripcionorigen", headerName: "Órgano Origen", width: 300 },
+    { field: "descripciodestino", headerName: "Órgano Destino", width: 300 },
     { field: "Oficio", headerName: "Oficio", width: 150 },
     { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
     { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
@@ -239,15 +239,21 @@ export const OrganoR = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
+  
+    
+    
   }, []);
 
   return (
     <div>
       <ModalForm
-        title={"Contestación a Organo Áuditor"}
+        title={"Contestación a Órgano Auditor"}
         handleClose={handleFunction}
       >
         <Progress open={openSlider}></Progress>
+        <Typography variant="h6">
+          {obj.row.Oficio + " " + obj.row.descripcionsec}
+        </Typography>
         {agregar && Entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (

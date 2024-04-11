@@ -559,7 +559,7 @@ export const AuditoriaModal = ({
               <TextField
                 margin="dense"
                 id="personalencargado"
-                label="Personal del Organo Fiscalizador"
+                label="Personal del Órgano Fiscalizador"
                 type="text"
                 multiline
                 fullWidth
@@ -603,7 +603,7 @@ export const AuditoriaModal = ({
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
-                Organo Auditor:
+                Órgano Auditor:
               </Typography>
               <SelectFrag
                 value={origenauditoria}

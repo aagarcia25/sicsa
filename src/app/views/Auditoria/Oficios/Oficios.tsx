@@ -263,6 +263,7 @@ export const Oficios = ({
     });
 
     consulta();
+    
   }, [obj]);
 
   return (
