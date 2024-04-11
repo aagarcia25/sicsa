@@ -272,8 +272,6 @@ const OrganoC = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
-    console.log("obj",obj);
-
   }, []);
 
   return (

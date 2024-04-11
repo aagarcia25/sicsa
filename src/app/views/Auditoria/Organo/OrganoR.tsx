@@ -239,8 +239,7 @@ export const OrganoR = ({
       }
     });
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
-    console.log("obj",obj);
-    console.log("entre a organor");
+  
     
     
   }, []);

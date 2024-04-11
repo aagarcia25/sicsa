@@ -309,7 +309,6 @@ export const Auditoria = () => {
 
   const handleGenerarInforme = (v: any) => {
     setOpenSlider(true);
-    console.log(v);
     let data = {
       CHID: v.row.id,
     };
