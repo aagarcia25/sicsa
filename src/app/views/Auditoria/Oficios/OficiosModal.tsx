@@ -154,7 +154,7 @@ console.log("dt",dt);
       setId(dt[0]?.data?.row?.id);
       //setOficio(dt?.data?.row?.Oficio);
       setOficio(dt[0]?.data?.row?.Oficio);
-      setIdCatTOficio(dt[0]?.data?.row?.tofDescripcion);
+      setIdCatTOficio(dt[0]?.data?.row?.tofid);
       setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido));
       setFfin(dayjs(dt[0]?.data?.row?.FechaVencimiento));
     }

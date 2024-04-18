@@ -21,6 +21,8 @@ export const TipoOficioModal = ({
   }) => {
 
   const [descripcion, setDescripcion] = useState("");
+  const [clave, setClave] = useState("");
+
   const [id, setId] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   
@@ -33,6 +35,7 @@ export const TipoOficioModal = ({
         CHID: id,
         CHUSER: user.Id,
         DESCRIPCION: descripcion,
+        Clave: clave,
       };
 
       handleRequest(data);
@@ -83,6 +86,7 @@ export const TipoOficioModal = ({
     } else {
       setId(dt?.row?.id);
       setDescripcion(dt?.row?.Descripcion);
+      setClave(dt?.row?.Clave);
     }
   }, [dt]);
 
@@ -107,8 +111,6 @@ export const TipoOficioModal = ({
               xs={4}
             ></Grid>
             <Grid item alignItems="center" justifyContent="center" xs={4}>
-              
-
               <TextField
                 required
                 margin="dense"
@@ -128,7 +130,21 @@ export const TipoOficioModal = ({
               alignItems="center"
               justifyContent="center"
               xs={4}
-            ></Grid>
+            >
+              <TextField
+                required
+                margin="dense"
+                id="Clave"
+                label="Clave"
+                value={clave}
+                type="text"
+                fullWidth
+                variant="standard"
+                onChange={(v) => setClave(v.target.value)}
+                error={clave === "" ? true : false}
+                InputProps={{}}
+              />
+            </Grid>
             <Grid
               item
               alignItems="center"

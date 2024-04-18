@@ -38,6 +38,7 @@ export const TipoOficio = () => {
       width: 150,
     },
     { field: "Descripcion", headerName: "Descripción", width: 350 },
+    { field: "Clave", headerName: "Clave", width: 150 },
     {
       field: "acciones",
       disableExport: true,
