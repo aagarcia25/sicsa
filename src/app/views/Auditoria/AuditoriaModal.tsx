@@ -613,23 +613,6 @@ export const AuditoriaModal = ({
                 disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-          </Grid>
-
-          <Grid
-            container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
-          >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Grupo Funcional:
@@ -652,6 +635,21 @@ export const AuditoriaModal = ({
                 disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
+          </Grid>
+
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "2%" }}
+          >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Entidad Fiscalizada:
@@ -672,6 +670,30 @@ export const AuditoriaModal = ({
                 value={idTipoAuditoria}
                 options={CatTipoAuditoria}
                 onInputChange={handleFilterChange5}
+                placeholder={"Seleccione.."}
+                disabled={Entregado === "1" || visualizar === true}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Unidad Administrativa Auditora:
+              </Typography>
+              <SelectFrag
+                value={iduaa}
+                options={Listuaa}
+                onInputChange={handleFilterChangeuaa}
+                placeholder={"Seleccione.."}
+                disabled={Entregado === "1" || visualizar === true}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Área Auditora:
+              </Typography>
+              <SelectFrag
+                value={idaa}
+                options={Listaa}
+                onInputChange={handleFilterChangeaa}
                 placeholder={"Seleccione.."}
                 disabled={Entregado === "1" || visualizar === true}
               />
@@ -702,32 +724,6 @@ export const AuditoriaModal = ({
                 placeholder={"Seleccione.."}
                 disabled={Entregado === "1" || visualizar === true}
               />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Unidad Administrativa Auditora:
-              </Typography>
-              <SelectFrag
-                value={iduaa}
-                options={Listuaa}
-                onInputChange={handleFilterChangeuaa}
-                placeholder={"Seleccione.."}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Área Auditora:
-              </Typography>
-              <SelectFrag
-                value={idaa}
-                options={Listaa}
-                onInputChange={handleFilterChangeaa}
-                placeholder={"Seleccione.."}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>Ramo:</Typography>
               <SelectFrag
                 value={idramo}
@@ -737,21 +733,6 @@ export const AuditoriaModal = ({
                 disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
-          </Grid>
-
-          <Grid
-            container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
-          >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
                 required
@@ -765,11 +746,10 @@ export const AuditoriaModal = ({
                 onChange={(v) => setuniversomilespesos(validarNumero(v.target.value, universomilespesos))}
                 error={universomilespesos === "" ? true : false}
                 disabled={Entregado === "1" || visualizar === true}
-
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
+               <TextField
                 required
                 margin="dense"
                 id="muestra"
@@ -781,11 +761,10 @@ export const AuditoriaModal = ({
                 onChange={(v) => setmuestramilespesos(validarNumero(v.target.value, muestramilespesos))}
                 error={muestramilespesos === "" ? true : false}
                 disabled={Entregado === "1" || visualizar === true}
-
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
+             <TextField
                 required
                 margin="dense"
                 id="montoauditado"
@@ -801,11 +780,8 @@ export const AuditoriaModal = ({
                 }}
                 error={montoauditado === 0 ? true : false}
                 disabled={Entregado === "1" || visualizar === true}
-
               />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
+              {/* <Typography sx={{ fontFamily: "sans-serif" }}>
                 Municipio:
               </Typography>
               <SelectFrag
@@ -814,11 +790,10 @@ export const AuditoriaModal = ({
                 onInputChange={handleFilterChangeMunicipio}
                 placeholder={"Seleccione.."}
                 disabled={Entregado === "1" || visualizar === true}
-              />
+              /> */}
             </Grid>
           </Grid>
-
-
+          
 
           {(String(Entregado) !== "1" && editarPermiso === true) ? (
             <Grid
@@ -879,13 +854,6 @@ export const AuditoriaModal = ({
           </Grid>
           </Grid>
           )}
-
-
-
-
-
-
-
         </Box>
       </ModalForm>
     </>

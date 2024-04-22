@@ -11,6 +11,9 @@ import CustomizedDate from "../../componentes/CustomizedDate";
 import ModalForm from "../../componentes/ModalForm";
 import { findOficios } from "../../../helpers/Files";
 import { DnsTwoTone } from "@mui/icons-material";
+import SelectFrag from "../../componentes/SelectFrag";
+import SelectValues from "../../../interfaces/Share";
+import { ShareService } from "../../../services/ShareService";
 
 export const OficiosModal = ({
   handleClose,
@@ -32,6 +35,10 @@ export const OficiosModal = ({
   const [finicio, setFinicio] = useState<Dayjs | null>();
   const [ffin, setFfin] = useState<Dayjs | null>();
   const [oficio, setOficio] = useState("");
+  const [idCatTOficio, setIdCatTOficio] = useState("");
+  const [CatTOficioList, setCatTOficioList] = useState<SelectValues[]>([]);
+
+
   const [mensaje, setMensaje] = useState("");
   const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
@@ -48,6 +55,7 @@ export const OficiosModal = ({
         NUMOPERACION: tipo,
         CHUSER: user.Id,
         idAuditoria: idauditoria,
+        idOficios: idCatTOficio,
         Oficio: oficio,
         FechaRecibido: finicio,
         FechaVencimiento: ffin,
@@ -70,6 +78,11 @@ export const OficiosModal = ({
 
   const handleFilterChange2 = (v: any) => {
     setFfin(v);
+  };
+
+  
+  const handleFilterChangeCatTOficio = (v: any) => {
+    setIdCatTOficio(v);
   };
 
   const handleOficioBlur = () => {
@@ -108,6 +121,17 @@ export const OficiosModal = ({
     });
   };
 
+  const loadFilter = (operacion: number, P_ID?: string) => {
+    setShow(true);
+    let data = { NUMOPERACION: operacion, P_ID: P_ID };
+    ShareService.SelectIndex(data).then((res) => {
+      if (operacion === 29) {
+        setCatTOficioList(res.RESPONSE);
+        setShow(false);
+      }
+    });
+  };
+
   useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -122,12 +146,15 @@ export const OficiosModal = ({
   });
 
   useEffect(() => {
+loadFilter(29)
+console.log("dt",dt);
+
     if (dt === "") {
     } else {
       setId(dt[0]?.data?.row?.id);
       //setOficio(dt?.data?.row?.Oficio);
       setOficio(dt[0]?.data?.row?.Oficio);
-
+      setIdCatTOficio(dt[0]?.data?.row?.tofid);
       setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido));
       setFfin(dayjs(dt[0]?.data?.row?.FechaVencimiento));
     }
@@ -175,6 +202,19 @@ export const OficiosModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={2}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Tipo de Oficio:
+              </Typography>
+              <SelectFrag
+                value={idCatTOficio}
+                options={CatTOficioList}
+                onInputChange={handleFilterChangeCatTOficio}
+                placeholder={"Seleccione.."}
+                disabled={Entregado === "1" || visualizar === true}
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={6} md={4} lg={2}>
               <CustomizedDate
                 value={finicio}
                 label={"Fecha Recibido"}
@@ -183,7 +223,7 @@ export const OficiosModal = ({
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <CustomizedDate
                 value={ffin}
                 label={"Fecha Vencimiento"}
@@ -191,8 +231,6 @@ export const OficiosModal = ({
                 disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
-
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
 
           <Grid

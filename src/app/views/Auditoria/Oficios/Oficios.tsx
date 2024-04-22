@@ -146,6 +146,12 @@ export const Oficios = ({
       width: 150,
     },
     {
+      field: "tofDescripcion",
+      description: "Tipo Oficio",
+      headerName: "Oficio",
+      width: 150,
+    },
+    {
       field: "FechaRecibido",
       description: "Fecha Recibido",
       headerName: "Fecha Recibido ",
@@ -156,6 +162,12 @@ export const Oficios = ({
       description: "Fecha Vencimiento",
       headerName: "Fecha Vencimiento",
       width: 150,
+    },
+    {
+      field: "Descripcion",
+      description: "Descripción",
+      headerName: "Descripción",
+      width: 200,
     },
     {
       field: "acciones",
