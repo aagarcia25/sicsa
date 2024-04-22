@@ -35,6 +35,8 @@ export const OficiosModal = ({
   const [finicio, setFinicio] = useState<Dayjs | null>();
   const [ffin, setFfin] = useState<Dayjs | null>();
   const [oficio, setOficio] = useState("");
+  const [descripcion	, setDescripcion] = useState("");
+
   const [idCatTOficio, setIdCatTOficio] = useState("");
   const [CatTOficioList, setCatTOficioList] = useState<SelectValues[]>([]);
 
@@ -59,6 +61,7 @@ export const OficiosModal = ({
         Oficio: oficio,
         FechaRecibido: finicio,
         FechaVencimiento: ffin,
+        Descripcion: descripcion,
       };
 
       if (tipo === 1) {
@@ -154,6 +157,7 @@ console.log("dt",dt);
       setId(dt[0]?.data?.row?.id);
       //setOficio(dt?.data?.row?.Oficio);
       setOficio(dt[0]?.data?.row?.Oficio);
+      setDescripcion(dt[0]?.data?.row?.Descripcion);
       setIdCatTOficio(dt[0]?.data?.row?.tofid);
       setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido));
       setFfin(dayjs(dt[0]?.data?.row?.FechaVencimiento));
@@ -201,7 +205,7 @@ console.log("dt",dt);
                 // }}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Tipo de Oficio:
               </Typography>
@@ -214,7 +218,7 @@ console.log("dt",dt);
               />
             </Grid>
             
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <CustomizedDate
                 value={finicio}
                 label={"Fecha Recibido"}
@@ -244,9 +248,29 @@ console.log("dt",dt);
             direction="row"
             justifyContent="center"
             alignItems="center"
-            sx={{ padding: "2%" }}
+            sx={{ padding: "1%" }}
           >
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={6}>
+            <Typography sx={{ fontFamily: "sans-serif" }}>Descripción</Typography>
+            <TextField
+              
+                margin="dense"
+                id="descripcion"
+                label=""
+                value={descripcion}
+                type="text"
+                multiline
+                rows={3}
+                fullWidth
+                focused
+                onChange={(v) => setDescripcion(v.target.value)}
+                disabled={Entregado === "1" || visualizar === true}
+
+                // InputProps={{
+                //   readOnly: tipo === 1 ? false : true,
+                // }}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
