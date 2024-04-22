@@ -122,6 +122,7 @@ const OrganoC = ({
     setOpenModal(true);
     setTipoOperacion(2);
     setVrows([data.data, obj]);
+    
   };
 
   const handleOpen = () => {
@@ -190,6 +191,7 @@ const OrganoC = ({
       headerName: "Folio SIGA",
       width: 150,
     },
+    { field: "ciDescricpion", headerName: "Entrega", width: 150 },
     { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
     { field: "FRecibido", headerName: "Fecha de Recibido", width: 150 },
     { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 150 },
