@@ -244,16 +244,7 @@ export const OrganoRModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Órgano Destino:
-              </Typography>
-              <SelectFrag
-                value={idDestino}
-                options={LisDestino}
-                onInputChange={handleFilterChange2}
-                placeholder={"Seleccione..."}
-                disabled={Entregado === "1" || visualizar === true}
-              />
+              
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
