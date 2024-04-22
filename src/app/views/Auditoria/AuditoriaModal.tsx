@@ -714,16 +714,7 @@ export const AuditoriaModal = ({
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Entrega:
-              </Typography>
-              <SelectFrag
-                value={idInforme}
-                options={CatInforme}
-                onInputChange={handleFilterChange6}
-                placeholder={"Seleccione.."}
-                disabled={Entregado === "1" || visualizar === true}
-              />
+          
               <Typography sx={{ fontFamily: "sans-serif" }}>Ramo:</Typography>
               <SelectFrag
                 value={idramo}
