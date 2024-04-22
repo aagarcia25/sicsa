@@ -38,6 +38,9 @@ export const OrganoCModal = ({
   const [FRecibido, setFRecibido] = useState<Dayjs | null>();
   const [FVencimiento, setFVencimiento] = useState<Dayjs | null>();
   const [idorigen, setidorigen] = useState("");
+  const [idCatInforme, setIdCatInforme] = useState("");
+  const [CatInforme, setCatInforme] = useState<SelectValues[]>([]);
+
   const [ListOrigen, setListOrigen] = useState<SelectValues[]>([]);
   const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
@@ -104,6 +107,7 @@ export const OrganoCModal = ({
         FRecibido: FRecibido,
         FVencimiento: FVencimiento,
         idOrganoAuditorOrigen: idorigen,
+        idCatInforme: idCatInforme,
       };
 
       handleRequest(data);
@@ -155,6 +159,10 @@ export const OrganoCModal = ({
     setFVencimiento(v);
   };
 
+  const handleFilterChangeTipoInforme = (v: any) => {
+    setIdCatInforme(v);
+  };
+
   const loadFilter = (operacion: number, P_ID?: string) => {
     setShow(true);
     let data = { NUMOPERACION: operacion, P_ID: P_ID };
@@ -163,11 +171,18 @@ export const OrganoCModal = ({
         setListOrigen(res.RESPONSE);
         setShow(false);
       }
+      if (operacion === 5) {
+        setCatInforme(res.RESPONSE);
+        setShow(false);
+      }
     });
   };
 
   useEffect(() => {
     loadFilter(6);
+    loadFilter(5);
+    console.log("dt",dt[1]);
+    
 
     if (Object.keys(dt).length === 0) {
       //setAPE(dt.coaid);
@@ -176,6 +191,8 @@ export const OrganoCModal = ({
       setidorigen(dt[0]?.row?.secid);
       setOficio(dt[0]?.row?.Oficio);
       setSIGAOficio(dt[0]?.row?.SIGAOficio);
+      setIdCatInforme(dt[0]?.row?.ciid);
+      
       if (FRecibido !== null) {
         setFRecibido(dayjs(dt[0]?.row?.FRecibido));
       }
@@ -234,7 +251,18 @@ export const OrganoCModal = ({
                 disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Entrega:
+              </Typography>
+              <SelectFrag
+                value={idCatInforme}
+                options={CatInforme}
+                onInputChange={handleFilterChangeTipoInforme}
+                placeholder={"Seleccione.."}
+                disabled={Entregado === "1" || visualizar === true}
+              />
+              </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
                 margin="dense"
@@ -303,7 +331,9 @@ export const OrganoCModal = ({
                 disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            
+            </Grid>
           </Grid>
 
           {String(Entregado) !== "1" && editarPermiso === true ? (

@@ -53,6 +53,7 @@ import OrganoC from "./Organo/OrganoC";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import axios from "axios";
 import { base64ToArrayBuffer } from "../../helpers/Files";
+import ReporteAuditoriaF from "./ReporteAuditoriaF";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -102,6 +103,8 @@ export const Auditoria = () => {
   const [show, setShow] = useState(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [entregado, setEntregado] = useState({});
+  const [openReporte, setOpenReporte] = useState(false);
+
 
   const handleUpload = (data: any) => {
     setShow(true);
@@ -143,6 +146,8 @@ export const Auditoria = () => {
     consulta();
     setOpenModalgant(false);
     setopenModalOrgano(false);
+    setOpenReporte(false);
+
   };
 
   const handleAcciones = (data: any) => {
@@ -305,6 +310,12 @@ export const Auditoria = () => {
         }
       });
     }
+  };
+
+  const handleOficio = (v: any) => {
+    setVrows(v);
+    setOpenReporte(true);
+    //handleGenerarInforme(v)
   };
 
   const handleGenerarInforme = (v: any) => {
@@ -514,7 +525,7 @@ export const Auditoria = () => {
           <>
             <ButtonsDetail
               title={"Descargar Informe"}
-              handleFunction={handleGenerarInforme}
+              handleFunction={handleOficio}
               show={true}
               icon={<FileDownloadIcon />}
               row={v}
@@ -1023,6 +1034,15 @@ export const Auditoria = () => {
       ) : (
         ""
       )}
+      {openReporte ? (
+          <ReporteAuditoriaF
+            open={openReporte}
+            handleFunction={handleClose}
+            obj={vrows}
+          ></ReporteAuditoriaF>
+        ) : (
+          ""
+        )}
     </div>
   );
 };
