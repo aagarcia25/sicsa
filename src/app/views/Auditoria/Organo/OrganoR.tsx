@@ -171,7 +171,6 @@ export const OrganoR = ({
       width: 150,
     },
     { field: "descripcionorigen", headerName: "Órgano Origen", width: 300 },
-    { field: "descripciodestino", headerName: "Órgano Destino", width: 300 },
     { field: "Oficio", headerName: "Oficio", width: 150 },
     { field: "SIGAOficio", headerName: "Folio SIGA", width: 150 },
     { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
