@@ -13,12 +13,13 @@ import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
 import ButtonsEdit from "../../componentes/ButtonsEdit";
 import ModalForm from "../../componentes/ModalForm";
-
+import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
 import { OficiosModal } from "./OficiosModal";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
+import { OficiosContestacion } from "./OficiosContestacion";
 
 export const Oficios = ({
   handleFunction,
@@ -45,6 +46,8 @@ export const Oficios = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
+  const [openContestacion, setOpenContestacion] = useState(false);
+
 
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
@@ -58,6 +61,7 @@ export const Oficios = ({
     setOpen(false);
     setOpenAdjuntos(false);
     consulta();
+    setOpenContestacion(false)
   };
 
   const noSelection = () => {
@@ -98,6 +102,21 @@ export const Oficios = ({
         icon: "warning",
       });
     }
+  };
+
+  const handleDetalle = (data: any) => {
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+        OficioC: obj.row.Oficio,
+      },
+    });
+    setOpenContestacion(true);
+    setEntregado(obj.row.entregado)
+    
   };
 
   const handleAccion = (v: any) => {
@@ -148,7 +167,7 @@ export const Oficios = ({
     {
       field: "tofDescripcion",
       description: "Tipo Oficio",
-      headerName: "Oficio",
+      headerName: "Tipo Oficio",
       width: 150,
     },
     {
@@ -205,6 +224,13 @@ export const Oficios = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
+            <ButtonsDetail
+              title={"Ver Contestación"}
+              handleFunction={handleDetalle}
+              show={true}
+              icon={<DriveFileMoveIcon />}
+              row={v}
+            ></ButtonsDetail>
           </>
         );
       },
@@ -237,6 +263,8 @@ export const Oficios = ({
   };
 
   const handleEdit = (v: any) => {
+    console.log("clic v",v);
+    
     setTipoOperacion(2);
     setModo("Módificar Registro");
     setOpen(true);
@@ -330,6 +358,11 @@ export const Oficios = ({
           multiselect={true}
         />
       </ModalForm>
+      {openContestacion ? (
+        <OficiosContestacion handleFunction={handleClose} obj={vrows} Entregado={entregado}/>
+      ) : (
+        ""
+      )}
       {openAdjuntos ? (
         <VisorDocumentosOficios
           handleFunction={handleClose}

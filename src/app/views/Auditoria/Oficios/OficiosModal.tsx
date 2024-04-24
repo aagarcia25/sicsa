@@ -151,6 +151,10 @@ export const OficiosModal = ({
   useEffect(() => {
 loadFilter(29)
 console.log("dt",dt);
+console.log("FechaRecibido",dt[0]?.data?.row?.FechaRecibido);
+console.log("FechaVencimiento",dt[0]?.data?.row?.FechaVencimiento);
+console.log("dayjs(dt[0]?.data?.row?.FechaRecibido)",dayjs(dt[0]?.data?.row?.FechaRecibido));
+
 
     if (dt === "") {
     } else {
