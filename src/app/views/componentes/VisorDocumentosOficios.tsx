@@ -448,6 +448,9 @@ const VisorDocumentosOficios = ({
     } else if (tipo === 8) {
       setBreadcrumbs([obj]);
       setexplorerRoute([obj].join(""));
+    }else if (tipo === 9) {
+      setBreadcrumbs([obj]);
+      setexplorerRoute([obj].join(""));
     }
   }, []);
 

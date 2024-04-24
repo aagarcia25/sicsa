@@ -56,4 +56,8 @@ export class AuditoriaService {
   public static async informes(data: any) {
     return await post("informes", data);
   }
+
+  public static async OficiosContestacon_index(data: any) {
+    return await post("OficiosContestacon_index", data);
+  }
 }
