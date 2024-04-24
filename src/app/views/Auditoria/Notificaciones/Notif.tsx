@@ -256,13 +256,16 @@ const Notif = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
-            <ButtonsDetail
+            {v.row.NoContestacion>0?
+              <ButtonsDetail
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
               show={true}
               icon={<DriveFileMoveIcon />}
               row={v}
-            ></ButtonsDetail>
+            ></ButtonsDetail>:null
+            }
+            
           </>
         );
       },
@@ -288,6 +291,8 @@ const Notif = ({
   ];
 
   useEffect(() => {
+    console.log("data",data );
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
