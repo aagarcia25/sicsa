@@ -340,6 +340,16 @@ export const OficiosContestacion = ({
               setRowSelected={setSelectionModel}
               multiselect={true}
             />
+            {openAdjuntos ? (
+            <VisorDocumentosOficios
+              handleFunction={handleClose}
+              obj={updatedVrows}
+              tipo={9}
+              Entregado={entregado}
+            />
+          ) : (
+            ""
+          )}
           </ModalForm>
           {openModal ? (
             <OficiosContestacionModal
@@ -355,7 +365,7 @@ export const OficiosContestacion = ({
             ""
           )}
     
-          {openAdjuntos ? (
+          {/* {openAdjuntos ? (
             <VisorDocumentosOficios
               handleFunction={handleClose}
               obj={updatedVrows}
@@ -364,7 +374,7 @@ export const OficiosContestacion = ({
             />
           ) : (
             ""
-          )}
+          )} */}
         </div>
       );
 }
