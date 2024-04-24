@@ -344,16 +344,7 @@ const Acciones = ({
           ""
         )}
 
-        {openAdjuntos ? (
-          <VisorDocumentosOficios
-            handleFunction={handleClose}
-            obj={updatedVrows}
-            tipo={8}
-            Entregado={entregado}
-          />
-        ) : (
-          ""
-        )}
+        
 
         <Progress open={show}></Progress>
         {agregar && obj.row.entregado !== "1" ? (
@@ -388,6 +379,16 @@ const Acciones = ({
           setRowSelected={setSelectionModel}
           multiselect={true}
         />
+        {openAdjuntos ? (
+          <VisorDocumentosOficios
+            handleFunction={handleClose}
+            obj={updatedVrows}
+            tipo={8}
+            Entregado={entregado}
+          />
+        ) : (
+          ""
+        )}
       </ModalForm>
     </div>
   );
