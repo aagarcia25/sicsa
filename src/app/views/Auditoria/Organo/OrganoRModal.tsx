@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControlLabel, FormGroup, Grid, Switch, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
@@ -38,14 +38,28 @@ export const OrganoRModal = ({
   const [SIGAOficio, setSIGAOficio] = useState("");
   const [FOficio, setFechaOficio] = useState<Dayjs | null>();
   const [FRecibido, setFRecibido] = useState<Dayjs | null>();
-  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>();
-  const [idorigen, setidorigen] = useState("");
+  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>(
+    dt?.row?.FVencimiento !== undefined && dt?.row?.FVencimiento !== null
+      ? dayjs(dt?.row?.FVencimiento)
+      : null
+  );
+    const [idorigen, setidorigen] = useState("");
   const [LisOrigen, setLisOrigen] = useState<SelectValues[]>([]);
   const [idDestino, setidDestino] = useState("");
   const [LisDestino, setLisDestino] = useState<SelectValues[]>([]);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [visualizar, setVisualizar] = useState<boolean>(false);
+  const [Prorroga, setProrroga] = useState<Dayjs | null>(
+    dt?.row?.Prorroga !== undefined && dt?.row?.Prorroga !== null
+      ? dayjs(dt?.row?.Prorroga)
+      : null
+  );
+  const [switchValue, setSwitchValue] = useState(false);
+  const handleChange = (event: any) => {
+    setSwitchValue(event.target.checked);
+  };
+
 
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
@@ -96,7 +110,8 @@ export const OrganoRModal = ({
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
-      let data = {
+      let data = {};
+       data = {
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
@@ -105,10 +120,13 @@ export const OrganoRModal = ({
         SIGAOficio: SIGAOficio,
         FOficio: fOficio || FOficio,
         FRecibido: FRecibido,
-        FVencimiento: FVencimiento,
+        
         idOrganoAuditorOrigen: idorigen,
         idOrganoAuditorDestino: idDestino,
       };
+      if (switchValue === true) {
+        data = { ...data, FVencimiento:FVencimiento?dayjs(FVencimiento).format('YYYY-MM-DD HH:mm:ss'):null, Prorroga:Prorroga?dayjs(Prorroga).format('YYYY-MM-DD HH:mm:ss'):null };
+      }
 
       handleRequest(data);
     }
@@ -162,7 +180,9 @@ export const OrganoRModal = ({
   const handleFilterChangefv = (v: any) => {
     setFVencimiento(v);
   };
-
+  const handleFilterChangep = (v: any) => {
+    setProrroga(v);
+  };
   const loadFilter = (operacion: number, P_ID?: string) => {
     setShow(true);
     let data = { NUMOPERACION: operacion, P_ID: P_ID };
@@ -177,6 +197,11 @@ export const OrganoRModal = ({
 
   useEffect(() => {
     loadFilter(6);
+    console.log("dt1",dt[1]);
+    console.log("dt",dt);
+    console.log("dt[0]?.row?.FVencimiento",dt[0]?.row?.FVencimiento);
+    console.log("FVencimiento",FVencimiento);
+    
 
     if (Object.keys(dt).length === 0) {
     } else {
@@ -188,11 +213,16 @@ export const OrganoRModal = ({
       if (FRecibido !== null) {
         setFRecibido(dayjs(dt?.row?.FRecibido));
       }
-      if (FVencimiento !== null) {
+      if (FVencimiento !== null && FVencimiento !== undefined) {
         setFVencimiento(dayjs(dt?.row?.FVencimiento));
+        setSwitchValue(true);
       }
       if (FOficio !== null) {
         setFechaOficio(dayjs(dt?.row?.FOficio));
+      }
+      if (Prorroga !== null && Prorroga !== undefined) {
+        setProrroga(dayjs(dt?.row?.Prorroga));
+        setSwitchValue(true);
       }
     }
   }, [dt]);
@@ -275,111 +305,225 @@ export const OrganoRModal = ({
               />
             </Grid>
           </Grid>
-          <Grid
-            container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
-          >
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <CustomizedDate
-                value={FOficio}
-                label={"Fecha Oficio"}
-                onchange={handleFilterChangefo}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <CustomizedDate
-                value={FRecibido}
-                label={"Fecha Recibido"}
-                onchange={handleFilterChangefr}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <CustomizedDate
-                value={FVencimiento}
-                label={"Fecha Vencimiento"}
-                onchange={handleFilterChangefv}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-          </Grid>
-
-          {String(Entregado) !== "1" && editarPermiso === true ? (
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              sx={{ padding: "2%" }}
-            >
-              <Grid
-                item
-                alignItems="center"
-                justifyContent="flex-end"
-                xs={6}
-                paddingRight={1}
-                sx={{ display: "flex" }}
-              >
-                <Button
-                  className={tipo === 1 ? "guardar" : "actualizar"}
-                  onClick={() => handleRequestFOficio()}
+          {switchValue ? (
+                <Grid
+                  container
+                  item
+                  spacing={1}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{ padding: "2%" }}
                 >
-                  {tipo === 1 ? "Agregar" : "Editar"}
-                </Button>
-              </Grid>
-              <Grid
-                item
-                alignItems="center"
-                justifyContent="flex-start"
-                xs={6}
-                paddingLeft={1}
-                sx={{ display: "flex" }}
-              >
-                <Button className={"actualizar"} onClick={() => handleClose()}>
-                  {"Salir"}
-                </Button>
-              </Grid>
-            </Grid>
-          ) : (
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              sx={{ padding: "2%" }}
-            >
-              <Grid
-                item
-                alignItems="center"
-                justifyContent="center"
-                xs={12}
-                sx={{ display: "flex" }}
-              >
-                <Button className={"actualizar"} onClick={() => handleClose()}>
-                  {"Salir"}
-                </Button>
-              </Grid>
-            </Grid>
-          )}
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <CustomizedDate
+                      value={FOficio}
+                      label={"Fecha Oficio"}
+                      onchange={handleFilterChangefo}
+                      disabled={Entregado === "1" || visualizar === true}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <CustomizedDate
+                      value={FRecibido}
+                      label={"Fecha Recibido"}
+                      onchange={handleFilterChangefr}
+                      disabled={Entregado === "1" || visualizar === true}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <CustomizedDate
+                      value={FVencimiento}
+                      label={"Fecha Vencimiento"}
+                      onchange={handleFilterChangefv}
+                      disabled={Entregado === "1" || visualizar === true}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <CustomizedDate
+                      value={Prorroga}
+                      label={"Prorroga"}
+                      onchange={handleFilterChangep}
+                      disabled={Entregado === "1" || visualizar === true}
+                    />
+                  </Grid>
+                </Grid>
+              ) : (
+                <Grid
+                  container
+                  item
+                  spacing={1}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{ padding: "2%" }}
+                >
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <CustomizedDate
+                      value={FOficio}
+                      label={"Fecha Oficio"}
+                      onchange={handleFilterChangefo}
+                      disabled={Entregado === "1" || visualizar === true}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    <CustomizedDate
+                      value={FRecibido}
+                      label={"Fecha Recibido"}
+                      onchange={handleFilterChangefr}
+                      disabled={Entregado === "1" || visualizar === true}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+                </Grid>
+              )}
+
+{String(Entregado) !== "1" && editarPermiso === true ? (
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  sx={{ padding: "2%" }}
+                >
+                  <Grid
+                    item
+                    alignItems="end"
+                    justifyContent="flex-start"
+                    xs={3}
+                    paddingLeft={1}
+                    sx={{ display: "flex" }}
+                  ></Grid>
+                  <Grid
+                    item
+                    alignItems="center"
+                    justifyContent="flex-end"
+                    xs={3}
+                    paddingRight={1}
+                    sx={{ display: "flex" }}
+                  >
+                    <Button
+                      // disabled={descripcion === "" || nombre === ""}
+                      className={tipo === 1 ? "guardar" : "actualizar"}
+                      onClick={() => handleRequestFOficio()}
+                    >
+                      {tipo === 1 ? "Agregar" : "Editar"}
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    alignItems="center"
+                    justifyContent="flex-start"
+                    xs={3}
+                    paddingLeft={1}
+                    sx={{ display: "flex" }}
+                  >
+                    <Button
+                      // disabled={descripcion === "" || nombre === ""}
+                      className={"actualizar"}
+                      onClick={() => handleClose()}
+                    >
+                      {"Salir"}
+                    </Button>
+                  </Grid>
+    
+                  <Grid
+                    item
+                    alignItems="end"
+                    justifyContent="flex-start"
+                    xs={3}
+                    paddingLeft={1}
+                    sx={{ display: "flex" }}
+                  >
+                    <FormGroup aria-label="position" row>
+                      <FormControlLabel
+                        value="agregarFecha"
+                        control={
+                          <Switch
+                            color="primary"
+                            checked={switchValue}
+                            onChange={handleChange}
+                          />
+                        }
+                        label="Agregar fecha de vencimiento y prórroga"
+                        labelPlacement="end"
+                        disabled={Entregado === "1" || visualizar === true}
+                      />
+                    </FormGroup>
+                  </Grid>
+                </Grid>
+              ) : (
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  sx={{ padding: "2%" }}
+                >
+                  <Grid
+                    item
+                    alignItems="center"
+                    justifyContent="center"
+                    xs={4}
+                    sx={{ display: "flex" }}
+                  ></Grid>
+                  <Grid
+                    item
+                    alignItems="center"
+                    justifyContent="center"
+                    xs={4}
+                    sx={{ display: "flex" }}
+                  >
+                    <Button
+                      // disabled={descripcion === "" || nombre === ""}
+                      className={"actualizar"}
+                      onClick={() => handleClose()}
+                    >
+                      {"Salir"}
+                    </Button>
+                  </Grid>
+                  <Grid
+                    item
+                    alignItems="center"
+                    justifyContent="center"
+                    xs={4}
+                    sx={{ display: "flex" }}
+                  >
+                    <FormGroup aria-label="position" row>
+                      <FormControlLabel
+                        value="agregarFecha"
+                        control={
+                          <Switch
+                            color="primary"
+                            checked={switchValue}
+                            onChange={handleChange}
+                          />
+                        }
+                        label="Agregar fecha de vencimiento y prórroga"
+                        labelPlacement="end"
+                        disabled={Entregado === "1" || visualizar === true}
+                      />
+                    </FormGroup>
+                  </Grid>
+                </Grid>
+              )}
         </Box>
       </ModalForm>
     </>
