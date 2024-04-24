@@ -322,6 +322,16 @@ const OrganoC = ({
           setRowSelected={setSelectionModel}
           multiselect={true}
         />
+        {openAdjuntos ? (
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+          tipo={6}
+          Entregado={entregado}
+        />
+      ) : (
+        ""
+      )}
       </ModalForm>
       {openContestacion ? (
         <OrganoR
@@ -344,7 +354,7 @@ const OrganoC = ({
       ) : (
         ""
       )}
-      {openAdjuntos ? (
+      {/* {openAdjuntos ? (
         <VisorDocumentosOficios
           handleFunction={handleClose}
           obj={updatedVrows}
@@ -353,7 +363,7 @@ const OrganoC = ({
         />
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 };

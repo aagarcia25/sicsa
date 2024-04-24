@@ -338,7 +338,7 @@ const VisorDocumentosOficios = ({
               <>
                 <ButtonsDetail
                   title={"Ver"}
-                  handleFunction={handleVer} //este tenia solo handleVer
+                  handleFunction={handleVer} 
                   show={true}
                   icon={<RemoveRedEyeIcon />}
                   row={v}
@@ -452,7 +452,7 @@ const VisorDocumentosOficios = ({
       setBreadcrumbs([obj]);
       setexplorerRoute([obj].join(""));
     }
-  }, []);
+  }, [obj]);
 
   useEffect(() => {
     if (explorerRoute !== "") {
@@ -488,13 +488,13 @@ const VisorDocumentosOficios = ({
     setexplorerRoute(breadcrumbs.join(""));
   }, [breadcrumbs]);
   return (
-    <div>
-      <ModalForm title={"Documentos del Oficio"} handleClose={handleFunction}>
-        <Progress open={openSlider}></Progress>
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+    //  <div>
+    //   <ModalForm title={"Documentos del Oficio"} handleClose={handleFunction}>
+    //     <Progress open={openSlider}></Progress>
+       <> <Box sx={{ display: "flex", justifyContent: "center" }}>
           {breadcrumbs}
         </Box>
-
+        
         <Grid container>
           <Grid item xs={12} sm={4} md={4} lg={4}>
             {true ? (
@@ -637,10 +637,12 @@ const VisorDocumentosOficios = ({
             )}
           </Grid>
         </Grid>
-      </ModalForm>
+        {opendialog ? <FormDialog handleClose={createFolder}></FormDialog> : ""}
+        </>
+    //   </ModalForm>
 
-      {opendialog ? <FormDialog handleClose={createFolder}></FormDialog> : ""}
-    </div>
+    //   {opendialog ? <FormDialog handleClose={createFolder}></FormDialog> : ""}
+    // </div>
   );
 };
 
