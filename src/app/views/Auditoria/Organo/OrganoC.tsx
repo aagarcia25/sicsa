@@ -234,13 +234,16 @@ const OrganoC = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
-            <ButtonsDetail
+            {v.row.NoContestacion>0?
+              <ButtonsDetail
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
               show={true}
               icon={<DriveFileMoveIcon />}
               row={v}
-            ></ButtonsDetail>
+            ></ButtonsDetail>:null
+            }
+            
           </>
         );
       },
