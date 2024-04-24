@@ -49,6 +49,8 @@ const VisorDocumentosOficios = ({
   const [explorerRoute, setexplorerRoute] = useState<string>("");
 
   const consulta = () => {
+    setverarchivo(false);
+
     if (explorerRoute !== "") {
       setOpenSlider(true);
 
@@ -210,6 +212,8 @@ const VisorDocumentosOficios = ({
   };
 
   const handleVer = (v: any) => {
+        setverarchivo(false);
+
     setOpenSlider(true);
     let data = {
       NUMOPERACION: 5,
@@ -410,6 +414,7 @@ const VisorDocumentosOficios = ({
       // Verificar si el nombre del breadcrumb es "Oficio"
       return breadcrumb === "/" + v.row.NOMBRE;
     });
+    setverarchivo(false);
 
     if (existeOficio) {
     } else {
@@ -419,11 +424,15 @@ const VisorDocumentosOficios = ({
   };
 
   const verificadocumentos = () => {
+
     Swal.fire("Verificando Archivos", "", "info");
     verifidOficios(origen, [breadcrumbs].join(""));
     setTimeout(consulta, 3000);
+
   };
   useEffect(() => {
+    setverarchivo(false);
+
     if (tipo === 1) {
       setBreadcrumbs([obj.row.Anio + "/" + obj.row.Oficio]);
       setexplorerRoute([obj.row.Anio + "/" + obj.row.Oficio].join(""));
@@ -455,6 +464,7 @@ const VisorDocumentosOficios = ({
   }, [obj]);
 
   useEffect(() => {
+    setverarchivo(false);
     if (explorerRoute !== "") {
       setOpenSlider(true);
       permisos.map((item: PERMISO) => {
@@ -482,6 +492,8 @@ const VisorDocumentosOficios = ({
   }, [explorerRoute]);
 
   useEffect(() => {
+    setverarchivo(false);
+
     if (breadcrumbs.length === 0) {
       handleFunction();
     }
@@ -490,8 +502,10 @@ const VisorDocumentosOficios = ({
   return (
     //  <div>
     //   <ModalForm title={"Documentos del Oficio"} handleClose={handleFunction}>
-    //     <Progress open={openSlider}></Progress>
-       <> <Box sx={{ display: "flex", justifyContent: "center" }}>
+    
+       <> 
+       <Progress open={openSlider}></Progress>
+       <Box sx={{ display: "flex", justifyContent: "center" }}>
           {breadcrumbs}
         </Box>
         
