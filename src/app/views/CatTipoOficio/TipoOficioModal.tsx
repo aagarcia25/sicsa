@@ -124,13 +124,7 @@ export const TipoOficioModal = ({
                 error={descripcion === "" ? true : false}
                 InputProps={{}}
               />
-            </Grid>
-            <Grid
-              item
-              alignItems="center"
-              justifyContent="center"
-              xs={4}
-            >
+
               <TextField
                 required
                 margin="dense"
@@ -145,6 +139,15 @@ export const TipoOficioModal = ({
                 InputProps={{}}
               />
             </Grid>
+            
+              
+            <Grid
+              item
+              alignItems="center"
+              justifyContent="center"
+              xs={4}
+             
+            ></Grid>
             <Grid
               item
               alignItems="center"

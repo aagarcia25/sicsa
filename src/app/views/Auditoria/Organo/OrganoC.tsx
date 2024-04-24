@@ -196,6 +196,12 @@ const OrganoC = ({
     { field: "FRecibido", headerName: "Fecha de Recibido", width: 150 },
     { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 150 },
     {
+      field: "Prorroga",
+      description: "Fecha de Prorroga",
+      headerName: "Fecha de Prorroga",
+      width: 150,
+    },
+    {
       field: "acciones",
       disableExport: true,
       headerName: "Acciones",
