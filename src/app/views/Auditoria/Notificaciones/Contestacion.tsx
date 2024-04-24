@@ -338,6 +338,16 @@ export const Contestacion = ({
           setRowSelected={setSelectionModel}
           multiselect={true}
         />
+        {openAdjuntos ? (
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+          tipo={5}
+          Entregado={entregado}
+        />
+      ) : (
+        ""
+      )}
       </ModalForm>
       {openModal ? (
         <ContestacionModal
@@ -353,7 +363,7 @@ export const Contestacion = ({
         ""
       )}
 
-      {openAdjuntos ? (
+      {/* {openAdjuntos ? (
         <VisorDocumentosOficios
           handleFunction={handleClose}
           obj={updatedVrows}
@@ -362,7 +372,7 @@ export const Contestacion = ({
         />
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 };

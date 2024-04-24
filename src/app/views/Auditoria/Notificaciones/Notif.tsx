@@ -110,7 +110,6 @@ const Notif = ({
     );
     setOpenAdjuntos(true);
     setEntregado(obj.row.entregado)
-
   };
 
   const handleClose = () => {
@@ -343,6 +342,16 @@ const Notif = ({
           setRowSelected={setSelectionModel}
           multiselect={true}
         />
+        {openAdjuntos ? (
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={updatedVrows}
+          tipo={4}
+          Entregado={entregado}
+        />
+      ) : (
+        ""
+      )}
       </ModalForm>
       {openContestacion ? (
         <Contestacion handleFunction={handleClose} obj={vrows} Entregado={entregado}/>
@@ -361,7 +370,7 @@ const Notif = ({
       ) : (
         ""
       )}
-      {openAdjuntos ? (
+      {/* {openAdjuntos ? (
         <VisorDocumentosOficios
           handleFunction={handleClose}
           obj={updatedVrows}
@@ -370,7 +379,7 @@ const Notif = ({
         />
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 };

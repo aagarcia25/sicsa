@@ -995,6 +995,16 @@ export const Auditoria = () => {
             setRowSelected={setSelectionModel}
             multiselect={true}
           />
+          {openAdjuntos ? (
+        <VisorDocumentosOficios
+          handleFunction={handleClose}
+          obj={vrows}
+          tipo={2}
+          Entregado={entregado}
+        />
+      ) : (
+        ""
+      )}
         </div>
       </Grid>
 
@@ -1009,16 +1019,7 @@ export const Auditoria = () => {
       ) : (
         ""
       )}
-      {openAdjuntos ? (
-        <VisorDocumentosOficios
-          handleFunction={handleClose}
-          obj={vrows}
-          tipo={2}
-          Entregado={entregado}
-        />
-      ) : (
-        ""
-      )}
+      
       {openModalAcciones ? (
         <Acciones handleFunction={handleClose} obj={vrows} />
       ) : (
