@@ -224,15 +224,15 @@ export const Oficios = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
-            {v.row.NoContestacion>0?
+            
               <ButtonsDetail
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
               show={true}
               icon={<DriveFileMoveIcon />}
               row={v}
-            ></ButtonsDetail>:null
-            }
+            ></ButtonsDetail>{v.row.NoContestacion}
+           
             
           </>
         );
