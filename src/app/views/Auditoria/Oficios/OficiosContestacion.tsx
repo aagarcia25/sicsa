@@ -285,8 +285,6 @@ export const OficiosContestacion = ({
       ];
 
     useEffect(() => {
-      console.log("obj",obj);
-      
         permisos.map((item: PERMISO) => {
           if (String(item.menu) === "AUDITOR") {
             if (String(item.ControlInterno) === "AGREG") {

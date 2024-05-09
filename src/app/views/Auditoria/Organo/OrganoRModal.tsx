@@ -197,10 +197,7 @@ export const OrganoRModal = ({
 
   useEffect(() => {
     loadFilter(6);
-    console.log("dt1",dt[1]);
-    console.log("dt",dt);
-    console.log("dt[0]?.row?.FVencimiento",dt[0]?.row?.FVencimiento);
-    console.log("FVencimiento",FVencimiento);
+    
     
 
     if (Object.keys(dt).length === 0) {
@@ -211,17 +208,17 @@ export const OrganoRModal = ({
       setidorigen(dt?.row?.origenid);
       setidDestino(dt?.row?.destinoid);
       if (FRecibido !== null) {
-        setFRecibido(dayjs(dt?.row?.FRecibido));
+        setFRecibido(dayjs(dt?.row?.FRecibido,'DD-MM-YYYY'));
       }
       if (FVencimiento !== null && FVencimiento !== undefined) {
-        setFVencimiento(dayjs(dt?.row?.FVencimiento));
+        setFVencimiento(dayjs(dt?.row?.FVencimiento,'DD-MM-YYYY'));
         setSwitchValue(true);
       }
       if (FOficio !== null) {
-        setFechaOficio(dayjs(dt?.row?.FOficio));
+        setFechaOficio(dayjs(dt?.row?.FOficio,'DD-MM-YYYY'));
       }
       if (Prorroga !== null && Prorroga !== undefined) {
-        setProrroga(dayjs(dt?.row?.Prorroga));
+        setProrroga(dayjs(dt?.row?.Prorroga,'DD-MM-YYYY'));
         setSwitchValue(true);
       }
     }
