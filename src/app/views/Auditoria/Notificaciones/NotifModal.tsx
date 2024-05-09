@@ -245,18 +245,18 @@ export const NotifModal = ({
       setidunidad(dt[0]?.row?.uniid);
 
       if (FRecibido !== null) {
-        setFRecibido(dayjs(dt[0]?.row?.FRecibido));
+        setFRecibido(dayjs(dt[0]?.row?.FRecibido,'DD-MM-YYYY'));
       }
 
       if (FVencimiento !== null && FVencimiento !== undefined) {
-        setFVencimiento(dayjs(dt[0]?.row?.FVencimiento));
+        setFVencimiento(dayjs(dt[0]?.row?.FVencimiento,'DD-MM-YYYY'));
         setSwitchValue(true);
       }
       if (FOficio !== null) {
-        setFechaOficio(dayjs(dt[0]?.row?.FOficio));
+        setFechaOficio(dayjs(dt[0]?.row?.FOficio,'DD-MM-YYYY'));
       }
       if (Prorroga !== null && Prorroga !== undefined) {
-        setProrroga(dayjs(dt[0]?.row?.Prorroga));
+        setProrroga(dayjs(dt[0]?.row?.Prorroga,'DD-MM-YYYY'));
         setSwitchValue(true);
       }
     }

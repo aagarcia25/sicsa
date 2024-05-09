@@ -1,5 +1,6 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
+
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
@@ -36,6 +37,7 @@ export const OficiosModal = ({
   const [ffin, setFfin] = useState<Dayjs | null>();
   const [oficio, setOficio] = useState("");
   const [descripcion	, setDescripcion] = useState("");
+
 
   const [idCatTOficio, setIdCatTOficio] = useState("");
   const [CatTOficioList, setCatTOficioList] = useState<SelectValues[]>([]);
@@ -150,10 +152,7 @@ export const OficiosModal = ({
 
   useEffect(() => {
 loadFilter(29)
-console.log("dt",dt);
-console.log("FechaRecibido",dt[0]?.data?.row?.FechaRecibido);
-console.log("FechaVencimiento",dt[0]?.data?.row?.FechaVencimiento);
-console.log("dayjs(dt[0]?.data?.row?.FechaRecibido)",dayjs(dt[0]?.data?.row?.FechaRecibido));
+
 
 
     if (dt === "") {
@@ -163,8 +162,9 @@ console.log("dayjs(dt[0]?.data?.row?.FechaRecibido)",dayjs(dt[0]?.data?.row?.Fec
       setOficio(dt[0]?.data?.row?.Oficio);
       setDescripcion(dt[0]?.data?.row?.Descripcion);
       setIdCatTOficio(dt[0]?.data?.row?.tofid);
-      setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido));
-      setFfin(dayjs(dt[0]?.data?.row?.FechaVencimiento));
+      setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido,'DD-MM-YYYY'));
+      setFfin(dayjs(dt[0]?.data?.row?.FechaVencimiento,'DD-MM-YYYY'));
+      
     }
   }, [dt]);
 
