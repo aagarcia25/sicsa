@@ -14,10 +14,13 @@ const CustomizedDate = ({
   onchange: Function;
   disabled: boolean;
 }) => {
+  
   return (
-    <div>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+    
+    <div>        
+      <LocalizationProvider dateAdapter={AdapterDayjs}  adapterLocale="es" >
         <Typography sx={{ fontFamily: "sans-serif" }}>{label}:</Typography>
+
         <DatePicker
           value={value}
           format="DD/MM/YYYY"

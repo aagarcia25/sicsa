@@ -6,6 +6,7 @@ import Header from "./Header";
 import { ReactNode } from "react";
 import { Grid } from "@mui/material";
 import { USUARIORESPONSE } from "../interfaces/UserInfo";
+import FAB from "./componentes/FAB";
 
 let theme = createTheme({
   palette: {
@@ -210,6 +211,7 @@ export default function Inicio({ children, user, imgData, imgTipo }: Props) {
           {children}
         </Grid>
       </Grid>
+      <FAB></FAB>
     </ThemeProvider>
   );
 }
