@@ -221,17 +221,17 @@ export const ContestacionModal = ({
       handleFilterChange1(dt?.row?.secid);
       setidunidad(dt?.row?.uniid);
       if (FRecibido !== null) {
-        setFRecibido(dayjs(dt?.row?.FRecibido));
+        setFRecibido(dayjs(dt?.row?.FRecibido,'DD-MM-YYYY'));
       }
       if (FVencimiento !== null && FVencimiento !== undefined) {
-        setFVencimiento(dayjs(dt?.row?.FVencimiento));
+        setFVencimiento(dayjs(dt?.row?.FVencimiento,'DD-MM-YYYY'));
         setSwitchValue(true);
       }
       if (FOficio !== null) {
-        setFechaOficio(dayjs(dt?.row?.FOficio));
+        setFechaOficio(dayjs(dt?.row?.FOficio,'DD-MM-YYYY'));
       }
       if (Prorroga !== null && Prorroga !== undefined) {
-        setProrroga(dayjs(dt?.row?.Prorroga));
+        setProrroga(dayjs(dt?.row?.Prorroga,'DD-MM-YYYY'));
         setSwitchValue(true);
       }
     }

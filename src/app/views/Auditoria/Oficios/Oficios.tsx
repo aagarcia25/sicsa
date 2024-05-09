@@ -265,9 +265,7 @@ export const Oficios = ({
     setVrows("");
   };
 
-  const handleEdit = (v: any) => {
-    console.log("clic v",v);
-    
+  const handleEdit = (v: any) => {    
     setTipoOperacion(2);
     setModo("Módificar Registro");
     setOpen(true);

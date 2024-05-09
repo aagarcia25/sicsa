@@ -288,9 +288,7 @@ const Notif = ({
     },
   ];
 
-  useEffect(() => {
-    console.log("data",data );
-    
+  useEffect(() => {    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
