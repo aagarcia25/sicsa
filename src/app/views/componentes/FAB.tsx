@@ -16,7 +16,7 @@ const FAB = () => {
           sx={{
             position: "absolute",
             bottom: 16, // Distancia desde abajo
-            right: 16, // Distancia desde la izquierda
+            left: 16, // Distancia desde la izquierda
             transition: "background-color 0.3s", // Transición suave para el cambio de color
             "&:hover": {
               backgroundColor: "black", // Color de fondo durante el hover
