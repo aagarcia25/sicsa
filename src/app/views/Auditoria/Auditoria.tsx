@@ -54,6 +54,8 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import axios from "axios";
 import { base64ToArrayBuffer } from "../../helpers/Files";
 import ReporteAuditoriaF from "./ReporteAuditoriaF";
+import { Entrega } from "./Entrega/Entrega";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -568,14 +570,14 @@ export const Auditoria = () => {
             ></ButtonsDetail>
 
             <ButtonsDetail
-              title={"Contestación a Órgano Auditor"}
+              title={"Entregas"}
               handleFunction={handleORgano}
               show={true}
-              icon={<BusinessIcon />}
+              icon={< FormatListBulletedIcon/>}
               row={v}
             ></ButtonsDetail>
 
-            {entrega ? (
+            {/* {entrega ? (
               <ButtonsDetail
                 title={"Cambiar Entrega"}
                 handleFunction={handleEntregar}
@@ -585,9 +587,9 @@ export const Auditoria = () => {
               ></ButtonsDetail>
             ) : (
               ""
-            )}
+            )} */}
 
-            {hablitarEntrega ? (
+            {/* {hablitarEntrega ? (
               <ButtonsDetail
                 title={"Habilitar Auditoría Entregada"}
                 handleFunction={handleHabilitarAuditoriaEntregada}
@@ -597,7 +599,7 @@ export const Auditoria = () => {
               ></ButtonsDetail>
             ) : (
               ""
-            )}
+            )} */}
 
             <ButtonsDetail
               title={"Resultado de la Auditoria"}
@@ -1009,7 +1011,7 @@ export const Auditoria = () => {
       </Grid>
 
       {openModalOrgano ? (
-        <OrganoC handleFunction={handleClose} obj={vrows} />
+        <Entrega handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
       )}

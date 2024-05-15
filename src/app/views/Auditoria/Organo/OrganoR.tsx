@@ -45,15 +45,32 @@ export const OrganoR = ({
   const [entregado, setEntregado] = useState({});
 
   const handleVerAdjuntos = (data: any) => {
+    console.log("data",data);
+    console.log("ruta",obj.row.anio +
+    "/" +
+    obj.row.NAUDITORIA +
+    "/" +
+    obj.row.OficioEntrega +
+    "/" +
+    obj.row.Oficio +
+    "/" +
+    data.row.Oficio);
+    
     setupdatedVrows(
       obj.row.anio +
         "/" +
         obj.row.NAUDITORIA +
         "/" +
+        obj.row.OficioEntrega +
+        "/" +
         obj.row.Oficio +
         "/" +
         data.row.Oficio
     );
+  
+
+    
+    
     setOpenAdjuntos(true);
     setEntregado(Entregado);
   };
@@ -230,6 +247,8 @@ export const OrganoR = ({
   ];
 
   useEffect(() => {
+    console.log("obj r", obj);
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {

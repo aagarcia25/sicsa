@@ -21,6 +21,7 @@ export const OrganoCModal = ({
   user,
   idAuditoria,
   destino,
+  idEntrega
 }: {
   tipo: number;
   handleClose: Function;
@@ -28,6 +29,7 @@ export const OrganoCModal = ({
   user: USUARIORESPONSE;
   idAuditoria: string;
   destino: string;
+  idEntrega:string
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -42,8 +44,8 @@ export const OrganoCModal = ({
       : null
   );
   const [idorigen, setidorigen] = useState("");
-  const [idCatInforme, setIdCatInforme] = useState("");
-  const [CatInforme, setCatInforme] = useState<SelectValues[]>([]);
+  //const [idCatInforme, setIdCatInforme] = useState("");
+  //const [CatInforme, setCatInforme] = useState<SelectValues[]>([]);
   const [Prorroga, setProrroga] = useState<Dayjs | null>(
     dt?.row?.Prorroga !== undefined && dt?.row?.Prorroga !== null
       ? dayjs(dt?.row?.Prorroga)
@@ -75,8 +77,11 @@ export const OrganoCModal = ({
     };
 
     if (tipo === 1) {
-      AuditoriaService.Notificacionindex(data)
+      AuditoriaService.OrganoCindex(data)
         .then((res) => {
+          console.log("res.RESPONSE.length",res.RESPONSE.length);
+          console.log("res.RESPONSE",res.RESPONSE);
+          
           if (res.RESPONSE.length !== 0) {
             Swal.fire({
               icon: "info",
@@ -110,6 +115,7 @@ export const OrganoCModal = ({
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {};
+      
         data ={
         NUMOPERACION: tipo,
         CHID: id,
@@ -121,15 +127,16 @@ export const OrganoCModal = ({
         FRecibido: FRecibido,
 
         idOrganoAuditorOrigen: idorigen,
-        idCatInforme: idCatInforme,
+        idEntrega: idEntrega,
       };
-        
+      console.log("handleRequest 2");
   
       if (switchValue === true) {
         data = { ...data, FVencimiento:FVencimiento?dayjs(FVencimiento).format('YYYY-MM-DD HH:mm:ss'):null, Prorroga:Prorroga?dayjs(Prorroga).format('YYYY-MM-DD HH:mm:ss'):null };
 
       }
 
+      console.log("handleRequest 3",data);
       handleRequest(data);
     }
   };
@@ -179,9 +186,9 @@ export const OrganoCModal = ({
     setFVencimiento(v);
   };
 
-  const handleFilterChangeTipoInforme = (v: any) => {
-    setIdCatInforme(v);
-  };
+  // const handleFilterChangeTipoInforme = (v: any) => {
+  //   setIdCatInforme(v);
+  // };
   const handleFilterChangep = (v: any) => {
     setProrroga(v);
   };
@@ -194,10 +201,10 @@ export const OrganoCModal = ({
         setListOrigen(res.RESPONSE);
         setShow(false);
       }
-      if (operacion === 5) {
-        setCatInforme(res.RESPONSE);
-        setShow(false);
-      }
+      // if (operacion === 5) {
+      //   setCatInforme(res.RESPONSE);
+      //   setShow(false);
+      // }
     });
   };
 
@@ -217,6 +224,9 @@ export const OrganoCModal = ({
   useEffect(() => {
     loadFilter(6);
     loadFilter(5);
+   console.log("dt",dt);
+   console.log("idAuditoria",idAuditoria);
+   
    
     
     
@@ -230,7 +240,7 @@ export const OrganoCModal = ({
       setidorigen(dt[0]?.row?.secid);
       setOficio(dt[0]?.row?.Oficio);
       setSIGAOficio(dt[0]?.row?.SIGAOficio);
-      setIdCatInforme(dt[0]?.row?.ciid);
+      //setIdCatInforme(dt[0]?.row?.ciid);
       
       if (FRecibido !== null) {
         setFRecibido(dayjs(dt[0]?.row?.FRecibido,'DD-MM-YYYY'));
@@ -285,7 +295,7 @@ export const OrganoCModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
+              {/* <Typography sx={{ fontFamily: "sans-serif" }}>
                 Entrega:
               </Typography>
               <SelectFrag
@@ -294,7 +304,7 @@ export const OrganoCModal = ({
                 onInputChange={handleFilterChangeTipoInforme}
                 placeholder={"Seleccione.."}
                 disabled={Entregado === "1" || visualizar === true}
-              />
+              /> */}
               </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
