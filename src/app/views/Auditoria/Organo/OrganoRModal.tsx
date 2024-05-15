@@ -76,7 +76,7 @@ export const OrganoRModal = ({
     };
 
     if (tipo === 1) {
-      AuditoriaService.Notificacionindex(data)
+      AuditoriaService.OrganoRindex(data)
         .then((res) => {
           if (res.RESPONSE.length !== 0) {
             Swal.fire({
