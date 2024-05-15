@@ -1,55 +1,56 @@
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
-import { GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { Toast } from "../../../helpers/Toast";
-import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
-import { AuditoriaService } from "../../../services/AuditoriaService";
-import { getPermisos, getUser } from "../../../services/localStorage";
-import MUIXDataGrid from "../../MUIXDataGrid";
-import Progress from "../../Progress";
-import ButtonsAdd from "../../componentes/ButtonsAdd";
-import ButtonsDeleted from "../../componentes/ButtonsDeleted";
-import { ButtonsDetail } from "../../componentes/ButtonsDetail";
-import ButtonsEdit from "../../componentes/ButtonsEdit";
-import ModalForm from "../../componentes/ModalForm";
-
-import { OrganoCModal } from "./OrganoCModal";
-import { OrganoR } from "./OrganoR";
+import Progress from "../../Progress"
+import ModalForm from "../../componentes/ModalForm"
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ButtonsAdd from "../../componentes/ButtonsAdd";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
-const OrganoC = ({
-  handleFunction,
-  obj,
-  Entregado,
+import { EntregaModal } from "./EntregaModal";
+import OrganoC from "../Organo/OrganoC";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { getPermisos, getUser } from "../../../services/localStorage";
+import Swal from "sweetalert2";
+import { AuditoriaService } from "../../../services/AuditoriaService";
+import { Toast } from "../../../helpers/Toast";
+import { GridColDef } from "@mui/x-data-grid";
+import ButtonsEdit from "../../componentes/ButtonsEdit";
+import ButtonsDeleted from "../../componentes/ButtonsDeleted";
+import { ButtonsDetail } from "../../componentes/ButtonsDetail";
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
+import BusinessIcon from "@mui/icons-material/Business";
 
-}: {
-  handleFunction: Function;
-  obj: any;
-  Entregado: any;
 
-}) => {
-  const [openContestacion, setOpenContestacion] = useState(false);
-  const [openAdjuntos, setOpenAdjuntos] = useState(false);
+export const Entrega = ({
+    handleFunction,
+    obj,
+    
+}:{
+    handleFunction: Function;
+    obj: any;
+})=>{
   const [show, setShow] = useState(false);
   const [vrows, setVrows] = useState({});
   const [data, setData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [tipoOperacion, setTipoOperacion] = useState(0);
-  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
+  const [openContestacion, setOpenContestacion] = useState(false);
   const [agregar, setAgregar] = useState<boolean>(false);
-  const [editar, setEditar] = useState<boolean>(false);
+  const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
-  const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const [editar, setEditar] = useState<boolean>(false);
+
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
+  const [selectionModel, setSelectionModel] = useState<any[]>([]);
+  const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+
+
+  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
   const consulta = (data: any) => {
-    AuditoriaService.OrganoCindex(data).then((res) => {
+    AuditoriaService.Entregaindex(data).then((res) => {
       if (res.SUCCESS) {
         setData(res.RESPONSE);
         setShow(false);
@@ -59,103 +60,18 @@ const OrganoC = ({
       }
     });
   };
-
-  const handleAccion = (v: any) => {
-    Swal.fire({
-      icon: "info",
-      title: "¿Estás seguro de eliminar este registro?",
-      showDenyButton: true,
-      showCancelButton: false,
-      confirmButtonText: "Confirmar",
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = {
-          NUMOPERACION: 3,
-          CHID: v.data.row.id,
-          CHUSER: user.Id,
-        };
-
-        AuditoriaService.OrganoCindex(data).then((res) => {
-          if (res.SUCCESS) {
-            Toast.fire({
-              icon: "success",
-              title: "¡Registro Eliminado!",
-            });
-            consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
-          } else {
-            Swal.fire("¡Error!", res.STRMESSAGE, "error");
-          }
-        });
-      } else if (result.isDenied) {
-        Swal.fire("No se realizaron cambios", "", "info");
-      }
-    });
-  };
-
-  const handleDetalle = (data: any) => {
-    console.log("obj.row",obj);
-    
-    console.log("inputvrows",{
-      ...data,
-      row: {
-        ...data.row,
-        NAUDITORIA: obj.row.NAUDITORIA,
-        anio: obj.row.anio,
-        OficioEntrega: obj.row.Oficio,
-      },
-    });
-    
-    setVrows({
-      ...data,
-      row: {
-        ...data.row,
-        NAUDITORIA: obj.row.NAUDITORIA,
-        anio: obj.row.anio,
-        OficioEntrega: obj.row.Oficio,
-      },
-    });
-    console.log("OficioEntrega",obj.row.Entrega);
-    
-    setOpenContestacion(true);
-    setEntregado(obj.row.entregado);
-  };
-
-  const handleVerAdjuntos = (data: any) => {
-    setupdatedVrows(
-      obj.row.anio 
-      + "/" +
-       obj.row.NAUDITORIA +
-        "/" +
-         obj.row.Oficio +
-         "/" +
-          data.row.Oficio
-    );
-    setOpenAdjuntos(true);
-    setEntregado(obj.row.entregado);
-  };
-
   const handleClose = () => {
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
-    consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
   };
-
-  const handleEdit = (data: any) => {
-    setOpenModal(true);
-    setTipoOperacion(2);
-    setVrows([data.data, obj]);
-    
-  };
-
   const handleOpen = () => {
     setupdatedVrows(obj.row.anio + "/" + obj.row.NAUDITORIA + "/");
     setOpenModal(true);
     setTipoOperacion(1);
     setVrows({});
   };
-
   const noSelection = () => {
     if (selectionModel.length >= 1) {
       Swal.fire({
@@ -179,7 +95,7 @@ const OrganoC = ({
                 icon: "success",
                 title: "¡Registros Eliminados!",
               });
-              consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
+              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -196,35 +112,92 @@ const OrganoC = ({
     }
   };
 
+  const handleEdit = (data: any) => {
+    setOpenModal(true);
+    setTipoOperacion(2);
+    setVrows([data.data, obj]);
+    
+  };
+
+  const handleAccion = (v: any) => {
+    Swal.fire({
+      icon: "info",
+      title: "¿Estás seguro de eliminar este registro?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = {
+          NUMOPERACION: 3,
+          CHID: v.data.row.id,
+          CHUSER: user.Id,
+        };
+
+        AuditoriaService.Entregaindex(data).then((res) => {
+          if (res.SUCCESS) {
+            Toast.fire({
+              icon: "success",
+              title: "¡Registro Eliminado!",
+            });
+            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+          }
+        });
+      } else if (result.isDenied) {
+        Swal.fire("No se realizaron cambios", "", "info");
+      }
+    });
+  };
+
+  const handleDetalle = (data: any) => {
+    console.log("setVrows",{
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });
+    
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });
+    setOpenContestacion(true);
+    setEntregado(obj.row.entregado);
+  };
+
+  const handleVerAdjuntos = (data: any) => {
+    setupdatedVrows(
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
+    );
+    setOpenAdjuntos(true);
+    setEntregado(obj.row.entregado);
+  };
+ 
   const columns: GridColDef[] = [
     {
       field: "id",
       headerName: "Identificador",
       width: 150,
     },
-    { field: "descripcionsec", headerName: "Órgano", width: 200 },
+    { field: "Oficio", headerName: "Oficio", width: 200 },
+
+    { field: "ciDescripcion", headerName: "Entrega", width: 200 },
     {
-      field: "Oficio",
-      description: "Oficio",
-      headerName: "Oficio",
+      field: "Fecha",
+      description: "Fecha",
+      headerName: "Fecha",
       width: 150,
     },
-    {
-      field: "SIGAOficio",
-      description: "Folio SIGA",
-      headerName: "Folio SIGA",
-      width: 150,
-    },
-    { field: "ciDescripcion", headerName: "Entrega", width: 150 },
-    { field: "FOficio", headerName: "Fecha de Oficio", width: 150 },
-    { field: "FRecibido", headerName: "Fecha de Recibido", width: 150 },
-    { field: "FVencimiento", headerName: "Fecha de Vencimiento", width: 150 },
-    {
-      field: "Prorroga",
-      description: "Fecha de Prorroga",
-      headerName: "Fecha de Prorroga",
-      width: 150,
-    },
+    
     {
       field: "acciones",
       disableExport: true,
@@ -263,7 +236,7 @@ const OrganoC = ({
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
               show={true}
-              icon={<DriveFileMoveIcon />}
+              icon={<BusinessIcon />}
               row={v}
             ></ButtonsDetail>{v.row.NoContestacion}
             
@@ -290,9 +263,9 @@ const OrganoC = ({
       width: 150,
     },
   ];
-
   useEffect(() => {
-    console.log("obj organoc",obj);
+    console.log("obj",obj);
+    
     
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -307,18 +280,19 @@ const OrganoC = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id,  });
+  
+    
+    
   }, []);
-
-  return (
-    <div>
-      <ModalForm
-        title={"Contestación a Órgano Auditor"}
+    return(<>
+    <ModalForm
+        title={"Entrega"}
         handleClose={handleFunction}
       >
         <Progress open={show}></Progress>
         <Typography variant="h6">
-          {obj.row.NAUDITORIA + " " + obj.row.ciDescripcion}
+          {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
         </Typography>
         {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
@@ -357,9 +331,9 @@ const OrganoC = ({
       ) : (
         ""
       )}
-      </ModalForm>
-      {openContestacion ? (
-        <OrganoR
+        </ModalForm>
+        {openContestacion ? (
+        <OrganoC
           handleFunction={handleClose}
           obj={vrows}
           Entregado={entregado}
@@ -368,30 +342,17 @@ const OrganoC = ({
         ""
       )}
       {openModal ? (
-        <OrganoCModal
+        <EntregaModal
           tipo={tipoOperacion}
           handleClose={handleClose}
           dt={vrows}
           user={user}
-          idAuditoria={obj.row.idAuditoria}
-          idEntrega={obj.id}
+          idAuditoria={obj.id}
           destino={updatedVrows}
+
         />
       ) : (
         ""
       )}
-      {/* {openAdjuntos ? (
-        <VisorDocumentosOficios
-          handleFunction={handleClose}
-          obj={updatedVrows}
-          tipo={6}
-          Entregado={entregado}
-        />
-      ) : (
-        ""
-      )} */}
-    </div>
-  );
-};
-
-export default OrganoC;
+    </>)
+} 
