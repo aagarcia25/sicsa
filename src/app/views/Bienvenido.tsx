@@ -8,6 +8,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
 import MapIcon from "@mui/icons-material/Map";
 import TimerIcon from "@mui/icons-material/Timer";
+import { FavIconAvisos } from "../avisosPAUA/componentes/FavIconAvisos";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -283,6 +284,7 @@ export default function Bienvenido({ user }: { user: any }) {
           </Grid>
         </Box>
       </CustomTabPanel>
+      <FavIconAvisos/>
     </Box>
   );
 }
