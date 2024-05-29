@@ -2,6 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlL
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { base64ToArrayBuffer } from "../../helpers/Files";
+import Progress from "../Progress";
 
 export default function ReporteAuditoriaF ({
 open,
@@ -12,7 +13,7 @@ open:boolean;
 handleFunction: Function;
 obj:any;
 }) {
-    const [openSlider, setOpenSlider] = useState(true);
+    const [openSlider, setOpenSlider] = useState(false);
     const [switchValue, setSwitchValue] = useState(false);
     const handleChange = (event: any) => {
       setSwitchValue(event.target.checked);
@@ -25,7 +26,7 @@ obj:any;
           Fechas: switchValue,
 
         };
-    
+
         try {
           let config = {
             method: "post",
@@ -37,7 +38,8 @@ obj:any;
             },
             data: data,
           };
-    
+            
+
           axios
             .request(config)
             .then((response) => {
@@ -47,7 +49,6 @@ obj:any;
               var blobStore = new Blob([bufferArray], {
                 type: "application/*",
               });
-    
               const link = document.createElement("a");
               link.href = window.URL.createObjectURL(blobStore);
               link.download =
@@ -75,6 +76,7 @@ return (
         PaperProps={{
         component: "form",
         }}>
+          <Progress open= {openSlider} />
         <DialogTitle>
         Descargar Informe
         </DialogTitle>
