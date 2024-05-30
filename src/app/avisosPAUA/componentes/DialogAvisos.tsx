@@ -64,37 +64,25 @@ export const DialogAvisos = ({
   return (
     <>
       <SliderProgress open={progress} texto="" />
-      {!progress && avisos.length > 0 ? (
-        <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          aria-describedby="alert-dialog-slide-description"
-          maxWidth="md" // Establece el ancho máximo del Dialog
-          fullWidth // Permite que el Dialog ocupe todo el ancho disponible
-          sx={{
-            "& .MuiDialog-container": {
-              alignItems: "center",
-              justifyContent: "center",
-            },
-            "& .MuiPaper-root": {
-              width: {
-                xs: "90%", // 0-600px
-                sm: "90%", // 600-960px
-                md: "70%", // 960-1280px
-                lg: "70%", // 1280-1920px
-                xl: "70%", // 1920px+
-              },
-              height: {
-                xs: "90%", // 0-600px
-                sm: "90%", // 600-960px
-                md: "70%", // 960-1280px
-                lg: "70%", // 1280-1920px
-                xl: "70%", // 1920px+
-              },
-            },
-          }}
-        >
+{!progress && avisos.length > 0 ? (
+  <Dialog
+    open={open}
+    TransitionComponent={Transition}
+    keepMounted
+    aria-describedby="alert-dialog-slide-description"
+    fullWidth
+    //fullScreen
+    sx={{
+      "& .MuiDialog-container": {
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      "& .MuiPaper-root": {
+        width: "98%", // Ocupa el 98% del ancho disponible
+        height: "98%", // Ocupa el 98% de la altura disponible
+      },
+    }}
+  >
           <DialogTitle>
             <Grid
               container
