@@ -9,6 +9,7 @@ const RenderHTML = ({ html }: { html: string }) => (
       '& p': { margin: 0 },
       '& img': {
         maxWidth: '100%',
+        minWidth: '15%',
         height: 'auto',
         display: 'block',
         margin: 'auto',
@@ -20,7 +21,7 @@ const RenderHTML = ({ html }: { html: string }) => (
         margin: 'auto',
       },
       '& iframe': {
-        maxWidth: '100%',
+        maxWidth: '80%',
         height: 'auto',
         display: 'block',
         margin: 'auto',
