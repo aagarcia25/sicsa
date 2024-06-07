@@ -1,35 +1,34 @@
-import { useEffect, useState } from "react";
-import Progress from "../../Progress"
-import ModalForm from "../../componentes/ModalForm"
-import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
-import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
-import ButtonsAdd from "../../componentes/ButtonsAdd";
-import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
-import { EntregaModal } from "./EntregaModal";
-import OrganoC from "../Organo/OrganoC";
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import BusinessIcon from "@mui/icons-material/Business";
+import ChatIcon from "@mui/icons-material/Chat";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
-import { getPermisos, getUser } from "../../../services/localStorage";
-import Swal from "sweetalert2";
-import { AuditoriaService } from "../../../services/AuditoriaService";
-import { Toast } from "../../../helpers/Toast";
+import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import ButtonsEdit from "../../componentes/ButtonsEdit";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { Toast } from "../../../helpers/Toast";
+import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { AuditoriaService } from "../../../services/AuditoriaService";
+import { getPermisos, getUser } from "../../../services/localStorage";
+import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
+import Progress from "../../Progress";
+import ButtonsAdd from "../../componentes/ButtonsAdd";
 import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../../componentes/ButtonsDetail";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
-import BusinessIcon from "@mui/icons-material/Business";
-
+import ButtonsEdit from "../../componentes/ButtonsEdit";
+import ModalForm from "../../componentes/ModalForm";
+import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
+import Notif from "../Notificaciones/Notif";
+import OrganoC from "../Organo/OrganoC";
+import { EntregaModal } from "./EntregaModal";
 
 export const Entrega = ({
-    handleFunction,
-    obj,
-    
-}:{
-    handleFunction: Function;
-    obj: any;
-})=>{
+  handleFunction,
+  obj,
+}: {
+  handleFunction: Function;
+  obj: any;
+}) => {
   const [show, setShow] = useState(false);
   const [vrows, setVrows] = useState({});
   const [data, setData] = useState([]);
@@ -40,12 +39,11 @@ export const Entrega = ({
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [editar, setEditar] = useState<boolean>(false);
-
+  const [openModalNotificacion, setOpenModalDetalle] = useState<boolean>(false);
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
-
 
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
 
@@ -61,6 +59,7 @@ export const Entrega = ({
     });
   };
   const handleClose = () => {
+    setOpenModalDetalle(false);
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
@@ -116,7 +115,6 @@ export const Entrega = ({
     setOpenModal(true);
     setTipoOperacion(2);
     setVrows([data.data, obj]);
-    
   };
 
   const handleAccion = (v: any) => {
@@ -152,8 +150,14 @@ export const Entrega = ({
     });
   };
 
+  const handleDetalleNotificaciones = (data: any) => {
+    console.log(data);
+    setVrows(data);
+    setOpenModalDetalle(true);
+  };
+
   const handleDetalle = (data: any) => {
-    console.log("setVrows",{
+    console.log("setVrows", {
       ...data,
       row: {
         ...data.row,
@@ -161,7 +165,7 @@ export const Entrega = ({
         anio: obj.row.anio,
       },
     });
-    
+
     setVrows({
       ...data,
       row: {
@@ -181,7 +185,7 @@ export const Entrega = ({
     setOpenAdjuntos(true);
     setEntregado(obj.row.entregado);
   };
- 
+
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -197,7 +201,7 @@ export const Entrega = ({
       headerName: "Fecha",
       width: 150,
     },
-    
+
     {
       field: "acciones",
       disableExport: true,
@@ -231,15 +235,23 @@ export const Entrega = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
-          
-              <ButtonsDetail
+
+            <ButtonsDetail
+              title={"Notificación Área"}
+              handleFunction={handleDetalleNotificaciones}
+              show={true}
+              icon={<ChatIcon />}
+              row={v}
+            ></ButtonsDetail>
+
+            <ButtonsDetail
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
               show={true}
               icon={<BusinessIcon />}
               row={v}
-            ></ButtonsDetail>{v.row.NoContestacion}
-            
+            ></ButtonsDetail>
+            {v.row.NoContestacion}
           </>
         );
       },
@@ -264,9 +276,8 @@ export const Entrega = ({
     },
   ];
   useEffect(() => {
-    console.log("obj",obj);
-    
-    
+    console.log("obj", obj);
+
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -280,16 +291,11 @@ export const Entrega = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id,  });
-  
-    
-    
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
   }, []);
-    return(<>
-    <ModalForm
-        title={"Entrega"}
-        handleClose={handleFunction}
-      >
+  return (
+    <>
+      <ModalForm title={"Entrega"} handleClose={handleFunction}>
         <Progress open={show}></Progress>
         <Typography variant="h6">
           {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
@@ -322,17 +328,17 @@ export const Entrega = ({
           multiselect={true}
         />
         {openAdjuntos ? (
-        <VisorDocumentosOficios
-          handleFunction={handleClose}
-          obj={updatedVrows}
-          tipo={6}
-          Entregado={entregado}
-        />
-      ) : (
-        ""
-      )}
-        </ModalForm>
-        {openContestacion ? (
+          <VisorDocumentosOficios
+            handleFunction={handleClose}
+            obj={updatedVrows}
+            tipo={6}
+            Entregado={entregado}
+          />
+        ) : (
+          ""
+        )}
+      </ModalForm>
+      {openContestacion ? (
         <OrganoC
           handleFunction={handleClose}
           obj={vrows}
@@ -349,10 +355,16 @@ export const Entrega = ({
           user={user}
           idAuditoria={obj.id}
           destino={updatedVrows}
-
         />
       ) : (
         ""
       )}
-    </>)
-} 
+
+      {openModalNotificacion ? (
+        <Notif handleFunction={handleClose} obj={vrows} />
+      ) : (
+        ""
+      )}
+    </>
+  );
+};
