@@ -1,8 +1,7 @@
 import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import BusinessIcon from "@mui/icons-material/Business";
-import ChatIcon from "@mui/icons-material/Chat";
+
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -37,25 +36,21 @@ import SelectFrag from "../componentes/SelectFrag";
 import TitleComponent from "../componentes/TitleComponent";
 import Acciones from "./Acciones/Acciones";
 import { AuditoriaModal } from "./AuditoriaModal";
-import Notif from "./Notificaciones/Notif";
 import { Oficios } from "./Oficios/Oficios";
 
-import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import FactCheckIcon from "@mui/icons-material/FactCheck";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LinkIcon from "@mui/icons-material/Link";
+import axios from "axios";
+import { base64ToArrayBuffer } from "../../helpers/Files";
 import { CatalogosServices } from "../../services/catalogosServices";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import Progress from "../Progress";
 import { ButtonsImport } from "../componentes/ButtonsImport";
 import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
-import OrganoC from "./Organo/OrganoC";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import axios from "axios";
-import { base64ToArrayBuffer } from "../../helpers/Files";
-import ReporteAuditoriaF from "./ReporteAuditoriaF";
 import { Entrega } from "./Entrega/Entrega";
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ReporteAuditoriaF from "./ReporteAuditoriaF";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -107,7 +102,6 @@ export const Auditoria = () => {
   const [entregado, setEntregado] = useState({});
   const [openReporte, setOpenReporte] = useState(false);
 
-
   const handleUpload = (data: any) => {
     setShow(true);
     let file = data?.target?.files?.[0] || "";
@@ -149,7 +143,6 @@ export const Auditoria = () => {
     setOpenModalgant(false);
     setopenModalOrgano(false);
     setOpenReporte(false);
-
   };
 
   const handleAcciones = (data: any) => {
@@ -193,13 +186,6 @@ export const Auditoria = () => {
 
   const handleFilterChangeEntidadFiscalizada = (v: string) => {
     setidEntidadFiscalizada(v);
-  };
-
-  const handleDetalle = (data: any) => {
-    //if (data.row.entregado !== "1") {
-    setVrows(data);
-    setOpenModalDetalle(true);
-    //}
   };
 
   const handleORgano = (data: any) => {
@@ -562,18 +548,10 @@ export const Auditoria = () => {
             ></ButtonsDetail>
 
             <ButtonsDetail
-              title={"Notificación Área"}
-              handleFunction={handleDetalle}
-              show={true}
-              icon={<ChatIcon />}
-              row={v}
-            ></ButtonsDetail>
-
-            <ButtonsDetail
               title={"Entregas"}
               handleFunction={handleORgano}
               show={true}
-              icon={< FormatListBulletedIcon/>}
+              icon={<FormatListBulletedIcon />}
               row={v}
             ></ButtonsDetail>
 
@@ -998,15 +976,15 @@ export const Auditoria = () => {
             multiselect={true}
           />
           {openAdjuntos ? (
-        <VisorDocumentosOficios
-          handleFunction={handleClose}
-          obj={vrows}
-          tipo={2}
-          Entregado={entregado}
-        />
-      ) : (
-        ""
-      )}
+            <VisorDocumentosOficios
+              handleFunction={handleClose}
+              obj={vrows}
+              tipo={2}
+              Entregado={entregado}
+            />
+          ) : (
+            ""
+          )}
         </div>
       </Grid>
 
@@ -1016,12 +994,6 @@ export const Auditoria = () => {
         ""
       )}
 
-      {openModalNotificacion ? (
-        <Notif handleFunction={handleClose} obj={vrows} />
-      ) : (
-        ""
-      )}
-      
       {openModalAcciones ? (
         <Acciones handleFunction={handleClose} obj={vrows} />
       ) : (
@@ -1038,14 +1010,14 @@ export const Auditoria = () => {
         ""
       )}
       {openReporte ? (
-          <ReporteAuditoriaF
-            open={openReporte}
-            handleFunction={handleClose}
-            obj={vrows}
-          ></ReporteAuditoriaF>
-        ) : (
-          ""
-        )}
+        <ReporteAuditoriaF
+          open={openReporte}
+          handleFunction={handleClose}
+          obj={vrows}
+        ></ReporteAuditoriaF>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
