@@ -23,9 +23,12 @@ import { NotifModal } from "./NotifModal";
 const Notif = ({
   handleFunction,
   obj,
+  Entregado,
 }: {
   handleFunction: Function;
   obj: any;
+  Entregado: any;
+
 }) => {
   const [openContestacion, setOpenContestacion] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
@@ -78,7 +81,7 @@ const Notif = ({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+            consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
           }
@@ -116,7 +119,7 @@ const Notif = ({
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
   };
 
   const handleEdit = (data: any) => {
@@ -154,7 +157,7 @@ const Notif = ({
                 icon: "success",
                 title: "¡Registros Eliminados!",
               });
-              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+              consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -289,6 +292,8 @@ const Notif = ({
   ];
 
   useEffect(() => {    
+    console.log("obj notif",obj);
+
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -302,7 +307,7 @@ const Notif = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
   }, []);
 
   return (
@@ -310,7 +315,7 @@ const Notif = ({
       <ModalForm title={"Notificaciones de Áreas"} handleClose={handleFunction}>
         <Progress open={show}></Progress>
         <Typography variant="h6">
-          {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
+          {obj.row.NAUDITORIA + " " + obj.row.ciDescripcion}
         </Typography>
         {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
@@ -361,7 +366,8 @@ const Notif = ({
           handleClose={handleClose}
           dt={vrows}
           user={user}
-          idAuditoria={obj.id}
+          idAuditoria={obj.row.idAuditoria}
+          idEntrega={obj.id}
           destino={updatedVrows}
         />
       ) : (

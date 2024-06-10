@@ -46,7 +46,7 @@ export const DialogAvisos = ({
       try {
         const { data } = await servicesAvisosPAUA.getAvisos();
         setAvisos(data);
-        if(data.length==0){alertaInfo('No se encontraron Avisos')}
+        if(data.length === 0) { alertaInfo('No se encontraron Avisos') }
       } catch (error) {
         alertaError("Fallo la consulta de avisos"); 
       } finally {
@@ -70,28 +70,18 @@ export const DialogAvisos = ({
           TransitionComponent={Transition}
           keepMounted
           aria-describedby="alert-dialog-slide-description"
-          maxWidth="md" // Establece el ancho máximo del Dialog
-          fullWidth // Permite que el Dialog ocupe todo el ancho disponible
+          fullWidth
+          fullScreen
+          maxWidth="lg"
           sx={{
             "& .MuiDialog-container": {
               alignItems: "center",
               justifyContent: "center",
             },
             "& .MuiPaper-root": {
-              width: {
-                xs: "90%", // 0-600px
-                sm: "90%", // 600-960px
-                md: "70%", // 960-1280px
-                lg: "70%", // 1280-1920px
-                xl: "70%", // 1920px+
-              },
-              height: {
-                xs: "90%", // 0-600px
-                sm: "90%", // 600-960px
-                md: "70%", // 960-1280px
-                lg: "70%", // 1280-1920px
-                xl: "70%", // 1920px+
-              },
+              width: "98%", // Ocupa el 98% del ancho disponible
+              height: "98%", // Ocupa el 98% de la altura disponible
+              margin: 0,
             },
           }}
         >
@@ -142,11 +132,7 @@ export const DialogAvisos = ({
               >
                 {page === avisos.length ? (
                   <Tooltip title={"Salir"}>
-                    <IconButton
-                      onClick={() => {
-                        handleClose();
-                      }}
-                    >
+                    <IconButton onClick={handleClose}>
                       <CloseIcon
                         sx={{
                           fontSize: [20, 20, 20, 30, 30],
@@ -159,44 +145,45 @@ export const DialogAvisos = ({
             </Grid>
           </DialogTitle>
           <Divider />
-          <DialogContent id="content" sx={{ overflow: "auto" }}>
+          <DialogContent id="content" sx={{ overflow: "auto", padding: 2 }}>
             <RenderHTML html={avisos[page - 1]?.TextoInc} />
           </DialogContent>
           <Divider />
-          <DialogActions>
-            {avisos.length>1?
-            <Pagination
-              hidePrevButton={page === 1}
-              hideNextButton={page === avisos.length}
-              count={avisos.length}
-              page={page}
-              variant="outlined"
-              shape="rounded"
-              onChange={handleChange}
-              sx={{
-                "& .MuiPaginationItem-root": {
-                  fontFamily: "'Montserrat', sans-serif !important",
-                  backgroundColor: "#15212f !important",
-                  color: "#fff !important",
-                  textTransform: "none !important",
-                  fontSize: "14px !important",
-                  "&:hover": {
-                    backgroundColor: "rgba(47, 47, 47, 0.2) !important",
-                    color: "#000 !important",
+          <DialogActions sx={{ justifyContent: 'center' }}>
+            {avisos.length > 1 && (
+              <Pagination
+                hidePrevButton={page === 1}
+                hideNextButton={page === avisos.length}
+                count={avisos.length}
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handleChange}
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    fontFamily: "'Montserrat', sans-serif !important",
+                    backgroundColor: "#15212f !important",
+                    color: "#fff !important",
+                    textTransform: "none !important",
+                    fontSize: "14px !important",
+                    "&:hover": {
+                      backgroundColor: "rgba(47, 47, 47, 0.2) !important",
+                      color: "#000 !important",
+                    },
                   },
-                },
-                "& .Mui-selected": {
-                  backgroundColor: "rgb(175, 140, 85) !important",
-                  "&:hover": {
-                    backgroundColor: "rgba(175, 140, 85, 0.6) !important",
-                    color: "#000 !important",
+                  "& .Mui-selected": {
+                    backgroundColor: "rgb(175, 140, 85) !important",
+                    "&:hover": {
+                      backgroundColor: "rgba(175, 140, 85, 0.6) !important",
+                      color: "#000 !important",
+                    },
                   },
-                },
-              }}
-            />:null}
+                }}
+              />
+            )}
           </DialogActions>
         </Dialog>
-      ) :null};
+      ) : null}
     </>
   );
 };
