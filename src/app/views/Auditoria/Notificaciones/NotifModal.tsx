@@ -31,6 +31,7 @@ export const NotifModal = ({
   user,
   idAuditoria,
   destino,
+  idEntrega
 }: {
   tipo: number;
   handleClose: Function;
@@ -38,6 +39,8 @@ export const NotifModal = ({
   user: USUARIORESPONSE;
   idAuditoria: string;
   destino: string;
+  idEntrega:string
+
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -134,6 +137,8 @@ export const NotifModal = ({
 
         idsecretaria: idsecretaria,
         idunidad: idunidad,
+        idEntrega: idEntrega,
+
       };
       if (switchValue === true) {
         data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };

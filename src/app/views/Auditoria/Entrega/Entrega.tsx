@@ -151,8 +151,23 @@ export const Entrega = ({
   };
 
   const handleDetalleNotificaciones = (data: any) => {
+    console.log("setVrows", {
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });
     console.log(data);
-    setVrows(data);
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });    
     setOpenModalDetalle(true);
   };
 
@@ -361,7 +376,7 @@ export const Entrega = ({
       )}
 
       {openModalNotificacion ? (
-        <Notif handleFunction={handleClose} obj={vrows} />
+        <Notif handleFunction={handleClose} obj={vrows} Entregado={entregado}/>
       ) : (
         ""
       )}
