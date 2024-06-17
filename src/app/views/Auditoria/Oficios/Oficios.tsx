@@ -48,7 +48,6 @@ export const Oficios = ({
   const [entregado, setEntregado] = useState({});
   const [openContestacion, setOpenContestacion] = useState(false);
 
-
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
@@ -61,7 +60,7 @@ export const Oficios = ({
     setOpen(false);
     setOpenAdjuntos(false);
     consulta();
-    setOpenContestacion(false)
+    setOpenContestacion(false);
   };
 
   const noSelection = () => {
@@ -115,8 +114,7 @@ export const Oficios = ({
       },
     });
     setOpenContestacion(true);
-    setEntregado(obj.row.entregado)
-    
+    setEntregado(obj.row.entregado);
   };
 
   const handleAccion = (v: any) => {
@@ -186,7 +184,7 @@ export const Oficios = ({
       field: "Descripcion",
       description: "Descripción",
       headerName: "Descripción",
-      width: 200,
+      width: 500,
     },
     {
       field: "acciones",
@@ -224,16 +222,15 @@ export const Oficios = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
-            
-              <ButtonsDetail
+
+            <ButtonsDetail
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
               show={true}
               icon={<DriveFileMoveIcon />}
               row={v}
-            ></ButtonsDetail>{v.row.NoContestacion}
-           
-            
+            ></ButtonsDetail>
+            {v.row.NoContestacion}
           </>
         );
       },
@@ -265,7 +262,7 @@ export const Oficios = ({
     setVrows("");
   };
 
-  const handleEdit = (v: any) => {    
+  const handleEdit = (v: any) => {
     setTipoOperacion(2);
     setModo("Módificar Registro");
     setOpen(true);
@@ -304,7 +301,6 @@ export const Oficios = ({
     });
 
     consulta();
-    
   }, [obj]);
 
   return (
@@ -358,24 +354,28 @@ export const Oficios = ({
           setRowSelected={setSelectionModel}
           multiselect={true}
         />
-         {openAdjuntos ? ( 
-         <VisorDocumentosOficios
-          handleFunction={handleClose}
-          obj={updatedVrows}
-          tipo={3}
-          Entregado={entregado}
-        /> 
-       ) : (
-        ""
-      )} 
+        {openAdjuntos ? (
+          <VisorDocumentosOficios
+            handleFunction={handleClose}
+            obj={updatedVrows}
+            tipo={3}
+            Entregado={entregado}
+          />
+        ) : (
+          ""
+        )}
       </ModalForm>
       {openContestacion ? (
-        <OficiosContestacion handleFunction={handleClose} obj={vrows} Entregado={entregado}/>
+        <OficiosContestacion
+          handleFunction={handleClose}
+          obj={vrows}
+          Entregado={entregado}
+        />
       ) : (
         ""
       )}
       {/* {openAdjuntos ? ( */}
-        {/* <VisorDocumentosOficios
+      {/* <VisorDocumentosOficios
           handleFunction={handleClose}
           obj={updatedVrows}
           tipo={3}
