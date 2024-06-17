@@ -184,7 +184,7 @@ export const Oficios = ({
       field: "Descripcion",
       description: "Descripción",
       headerName: "Descripción",
-      width: 500,
+      width: 750,
     },
     {
       field: "acciones",
