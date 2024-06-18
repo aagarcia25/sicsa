@@ -49,7 +49,7 @@ import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import Progress from "../Progress";
 import { ButtonsImport } from "../componentes/ButtonsImport";
 import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
-import { Entrega } from "./Entrega/Entrega";
+import Notif from "./Notificaciones/Notif";
 import ReporteAuditoriaF from "./ReporteAuditoriaF";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
@@ -548,7 +548,7 @@ export const Auditoria = () => {
             ></ButtonsDetail>
 
             <ButtonsDetail
-              title={"Entregas"}
+              title={"Entregas y Notificaciones"}
               handleFunction={handleORgano}
               show={true}
               icon={<FormatListBulletedIcon />}
@@ -989,7 +989,7 @@ export const Auditoria = () => {
       </Grid>
 
       {openModalOrgano ? (
-        <Entrega handleFunction={handleClose} obj={vrows} />
+        <Notif handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
       )}
