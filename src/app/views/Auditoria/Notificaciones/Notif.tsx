@@ -23,12 +23,9 @@ import { NotifModal } from "./NotifModal";
 const Notif = ({
   handleFunction,
   obj,
-  Entregado,
 }: {
   handleFunction: Function;
   obj: any;
-  Entregado: any;
-
 }) => {
   const [openContestacion, setOpenContestacion] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
@@ -45,7 +42,6 @@ const Notif = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
-
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
@@ -81,7 +77,7 @@ const Notif = ({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
+            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
           }
@@ -103,8 +99,7 @@ const Notif = ({
       },
     });
     setOpenContestacion(true);
-    setEntregado(obj.row.entregado)
-    
+    setEntregado(obj.row.entregado);
   };
 
   const handleVerAdjuntos = (data: any) => {
@@ -112,20 +107,20 @@ const Notif = ({
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
-    setEntregado(obj.row.entregado)
+    setEntregado(obj.row.entregado);
   };
 
   const handleClose = () => {
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
-    consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
   };
 
   const handleEdit = (data: any) => {
     setOpenModal(true);
     setTipoOperacion(2);
-    setVrows([data.data,obj]);
+    setVrows([data.data, obj]);
   };
 
   const handleOpen = () => {
@@ -157,7 +152,7 @@ const Notif = ({
                 icon: "success",
                 title: "¡Registros Eliminados!",
               });
-              consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
+              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -200,7 +195,6 @@ const Notif = ({
       width: 300,
     },
 
-    
     {
       field: "FOficio",
       description: "Fecha de Oficio",
@@ -235,7 +229,6 @@ const Notif = ({
       renderCell: (v) => {
         return (
           <>
-          
             {eliminar && obj.row.entregado !== "1" ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
@@ -246,10 +239,10 @@ const Notif = ({
               ""
             )}
             <ButtonsEdit
-                handleAccion={handleEdit}
-                row={v}
-                show={true}
-              ></ButtonsEdit>
+              handleAccion={handleEdit}
+              row={v}
+              show={true}
+            ></ButtonsEdit>
 
             <ButtonsDetail
               title={"Ver Adjuntos"}
@@ -258,15 +251,14 @@ const Notif = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
-              <ButtonsDetail
+            <ButtonsDetail
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
               show={true}
               icon={<DriveFileMoveIcon />}
               row={v}
-            ></ButtonsDetail>{v.row.NoContestacion}
-            
-            
+            ></ButtonsDetail>
+            {v.row.NoContestacion}
           </>
         );
       },
@@ -291,8 +283,8 @@ const Notif = ({
     },
   ];
 
-  useEffect(() => {    
-    console.log("obj notif",obj);
+  useEffect(() => {
+    console.log("obj notif", obj);
 
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -307,7 +299,7 @@ const Notif = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDENTREGA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
   }, []);
 
   return (
@@ -315,7 +307,7 @@ const Notif = ({
       <ModalForm title={"Notificaciones de Áreas"} handleClose={handleFunction}>
         <Progress open={show}></Progress>
         <Typography variant="h6">
-          {obj.row.NAUDITORIA + " " + obj.row.ciDescripcion}
+          {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
         </Typography>
         {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
@@ -345,18 +337,22 @@ const Notif = ({
           multiselect={true}
         />
         {openAdjuntos ? (
-        <VisorDocumentosOficios
-          handleFunction={handleClose}
-          obj={updatedVrows}
-          tipo={4}
-          Entregado={entregado}
-        />
-      ) : (
-        ""
-      )}
+          <VisorDocumentosOficios
+            handleFunction={handleClose}
+            obj={updatedVrows}
+            tipo={4}
+            Entregado={entregado}
+          />
+        ) : (
+          ""
+        )}
       </ModalForm>
       {openContestacion ? (
-        <Contestacion handleFunction={handleClose} obj={vrows} Entregado={entregado}/>
+        <Contestacion
+          handleFunction={handleClose}
+          obj={vrows}
+          Entregado={entregado}
+        />
       ) : (
         ""
       )}
@@ -366,23 +362,12 @@ const Notif = ({
           handleClose={handleClose}
           dt={vrows}
           user={user}
-          idAuditoria={obj.row.idAuditoria}
-          idEntrega={obj.id}
+          idAuditoria={obj.row.id}
           destino={updatedVrows}
         />
       ) : (
         ""
       )}
-      {/* {openAdjuntos ? (
-        <VisorDocumentosOficios
-          handleFunction={handleClose}
-          obj={updatedVrows}
-          tipo={4}
-          Entregado={entregado}
-        />
-      ) : (
-        ""
-      )} */}
     </div>
   );
 };
