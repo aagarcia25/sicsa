@@ -176,6 +176,12 @@ const Notif = ({
       width: 150,
     },
     {
+      field: "ciDescripcion",
+      description: "Entrega",
+      headerName: "Entrega",
+      width: 150,
+    },
+    {
       field: "Oficio",
       description: "Oficio",
       headerName: "Oficio",
