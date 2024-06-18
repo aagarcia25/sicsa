@@ -31,7 +31,6 @@ export const NotifModal = ({
   user,
   idAuditoria,
   destino,
-  idEntrega
 }: {
   tipo: number;
   handleClose: Function;
@@ -39,8 +38,6 @@ export const NotifModal = ({
   user: USUARIORESPONSE;
   idAuditoria: string;
   destino: string;
-  idEntrega:string
-
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -74,6 +71,13 @@ export const NotifModal = ({
   };
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+
+  const [entrega, setEntrega] = useState("");
+  const [ListEntrega, setListEntrega] = useState<SelectValues[]>([]);
+
+  const handleFilterChangeEntrega = (v: string) => {
+    setEntrega(v);
+  };
 
   const handleOficioBlur = () => {
     var cadena = Oficio.split("-");
@@ -134,11 +138,9 @@ export const NotifModal = ({
         SIGAOficio: SIGAOficio,
         FOficio: fOficio || FOficio,
         FRecibido: FRecibido,
-
         idsecretaria: idsecretaria,
         idunidad: idunidad,
-        idEntrega: idEntrega,
-
+        idEntrega: entrega,
       };
       if (switchValue === true) {
         data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
@@ -219,6 +221,9 @@ export const NotifModal = ({
       } else if (operacion === 6) {
         setListAPE(res.RESPONSE);
         setShow(false);
+      } else if (operacion === 5) {
+        setListEntrega(res.RESPONSE);
+        setShow(false);
       }
     });
   };
@@ -240,6 +245,7 @@ export const NotifModal = ({
     loadFilter(11);
     loadFilter(19);
     loadFilter(6);
+    loadFilter(5);
 
     if (Object.keys(dt).length === 0) {
     } else {
@@ -250,18 +256,18 @@ export const NotifModal = ({
       setidunidad(dt[0]?.row?.uniid);
 
       if (FRecibido !== null) {
-        setFRecibido(dayjs(dt[0]?.row?.FRecibido,'DD-MM-YYYY'));
+        setFRecibido(dayjs(dt[0]?.row?.FRecibido, "DD-MM-YYYY"));
       }
 
       if (FVencimiento !== null && FVencimiento !== undefined) {
-        setFVencimiento(dayjs(dt[0]?.row?.FVencimiento,'DD-MM-YYYY'));
+        setFVencimiento(dayjs(dt[0]?.row?.FVencimiento, "DD-MM-YYYY"));
         setSwitchValue(true);
       }
       if (FOficio !== null) {
-        setFechaOficio(dayjs(dt[0]?.row?.FOficio,'DD-MM-YYYY'));
+        setFechaOficio(dayjs(dt[0]?.row?.FOficio, "DD-MM-YYYY"));
       }
       if (Prorroga !== null && Prorroga !== undefined) {
-        setProrroga(dayjs(dt[0]?.row?.Prorroga,'DD-MM-YYYY'));
+        setProrroga(dayjs(dt[0]?.row?.Prorroga, "DD-MM-YYYY"));
         setSwitchValue(true);
       }
     }
@@ -288,6 +294,18 @@ export const NotifModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Entrega:
+              </Typography>
+              <SelectFrag
+                value={entrega}
+                options={ListEntrega}
+                onInputChange={handleFilterChangeEntrega}
+                placeholder={"Seleccione..."}
+                disabled={false}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Secretaría:
