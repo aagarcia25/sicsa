@@ -257,6 +257,7 @@ const Notif = ({
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
+
             <ButtonsDetail
               title={"Ver Contestación"}
               handleFunction={handleDetalle}
