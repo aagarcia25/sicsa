@@ -639,6 +639,7 @@ export const ControlOficios = () => {
 
   const handleFilterChange1 = (v: string) => {
     setanio(v);
+    consulta({ Anio: v, NUMOPERACION: 4 });
   };
   const clearFilter = () => {
     setanio("");
