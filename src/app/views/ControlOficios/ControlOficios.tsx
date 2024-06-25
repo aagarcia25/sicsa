@@ -711,14 +711,8 @@ export const ControlOficios = () => {
           setOpenSlider(false);
           if (res.SUCCESS) {
             const response = res.RESPONSE;
-            // Contar la cantidad de archivos
             const fileCount = Array.isArray(response) ? response.length : 0;
             response.fileCount = fileCount;
-
-            // Toast.fire({
-            //   icon: "success",
-            //   title: "¡Consulta Exitosa!",
-            // });
             setData(response);
             console.log("res.RESPONSE", response);
             resolve(response);
@@ -734,11 +728,17 @@ export const ControlOficios = () => {
     });
   };
 
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   const procesarRutasConLimite = async (
     rutas: { id: string; ruta: string }[],
-    concurrencyLimit: number
+    concurrencyLimit: number,
+    delayMs: number
   ): Promise<any[]> => {
     const resultados: any[] = [];
+    const cola = [...rutas];
+
     const ejecutar = async (ruta: { id: string; ruta: string }) => {
       try {
         const resultado = await consultaArchivos(ruta.ruta);
@@ -749,13 +749,21 @@ export const ControlOficios = () => {
           data: resultado.length,
           id: ruta.id,
         });
-      } catch (error) {
-        resultados.push({ ruta: ruta.ruta, data: "Validando...", id: ruta.id });
+      } catch (error: any) {
+        if (error.message === "429") {
+          await delay(delayMs);
+          await ejecutar(ruta);
+        } else {
+          resultados.push({
+            ruta: ruta.ruta,
+            data: "Validando...",
+            id: ruta.id,
+          });
+        }
       }
     };
 
     const ejecutarConLimite = async () => {
-      const cola = [...rutas];
       const procesos: Promise<void>[] = [];
 
       for (let i = 0; i < concurrencyLimit; i++) {
@@ -772,7 +780,6 @@ export const ControlOficios = () => {
           procesos.push(ejecutar(ruta));
         }
       }
-
       await Promise.all(procesos);
     };
 
@@ -782,11 +789,33 @@ export const ControlOficios = () => {
 
   const iniciar = async (auxRutas: { id: string; ruta: string }[]) => {
     const concurrencyLimit = 10; // Ajusta este valor según las capacidades de tu servidor
+    const delayMs = 1000; // Ajusta este valor según las capacidades de tu servidor
 
-    const resultados = await procesarRutasConLimite(auxRutas, concurrencyLimit);
+    const resultados = await procesarRutasConLimite(
+      auxRutas,
+      concurrencyLimit,
+      delayMs
+    );
     console.log("resultados", resultados);
     setCountFiles(resultados);
   };
+
+  useEffect(() => {
+    let auxRutas: { id: string; ruta: string }[] = [];
+    bancos.map((item: any) => {
+      let Ruta = "";
+      if (item?.anio) {
+        Ruta = Ruta + item.anio;
+      }
+      if (item?.Oficio) {
+        Ruta = Ruta + "/" + item.Oficio;
+      }
+
+      auxRutas.push({ id: item.id, ruta: Ruta });
+    });
+
+    iniciar(auxRutas);
+  }, [bancos]);
 
   useEffect(() => {
     loadFilter(1);
