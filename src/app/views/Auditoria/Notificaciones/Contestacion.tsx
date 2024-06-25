@@ -155,6 +155,7 @@ export const Contestacion = ({
     setOpenAdjuntos(false);
     setOpenModal(false);
     consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
+    setVrows({})
   };
 
   const handleEdit = (data: any) => {
@@ -186,7 +187,7 @@ export const Contestacion = ({
       width: 150,
     },
     {
-      field: "unidad",
+      field: "depDescripcion",
       description: "Unidad Responsable",
       headerName: "Unidad Responsable",
       width: 300,
@@ -285,6 +286,8 @@ export const Contestacion = ({
   ];
 
   useEffect(() => {
+    console.log("obj",obj);
+
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -358,6 +361,7 @@ export const Contestacion = ({
           idNotificacion={obj.id}
           destino={updatedVrows}
           Entregado={entregado}
+          idSecretaria={obj?.row?.secid}
         />
       ) : (
         ""
