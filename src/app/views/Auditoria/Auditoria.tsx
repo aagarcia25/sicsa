@@ -25,7 +25,7 @@ import SelectValues from "../../interfaces/Share";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { AuditoriaService } from "../../services/AuditoriaService";
 import { ShareService } from "../../services/ShareService";
-import { getPermisos, getUser } from "../../services/localStorage";
+import { getPermisos, getToken, getUser } from "../../services/localStorage";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import { ButtonsDetail } from "../componentes/ButtonsDetail";
@@ -101,6 +101,11 @@ export const Auditoria = () => {
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [entregado, setEntregado] = useState({});
   const [openReporte, setOpenReporte] = useState(false);
+
+  const [data, setData] = useState([]);
+  const [explorerRoute, setexplorerRoute] = useState<string>("");
+  const [countFiles, setCountFiles] = useState<any[]>([]);
+
 
   const handleUpload = (data: any) => {
     setShow(true);
@@ -508,7 +513,11 @@ export const Auditoria = () => {
       description: "Campo de Acciones",
       sortable: false,
       width: 420,
-      renderCell: (v) => {
+    renderCell: (v) => {
+         //  console.log("v.row",v.row);
+        
+       // consultaArchivos(`${v.row.anio}`+"/"+`${v.row.NAUDITORIA}`)
+
         return (
           <>
             <ButtonsDetail
@@ -593,6 +602,8 @@ export const Auditoria = () => {
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
+            
+            {countFiles.length>0 ? countFiles.find(obj=>obj.id==v.row.id)?.data :"Validando"}
             <ButtonsDetail
               title={"Ver Plan de Trabajo"}
               handleFunction={handlePlan}
@@ -649,6 +660,7 @@ export const Auditoria = () => {
     setidEntidadFiscalizada("");
   };
   const consulta = () => {
+    //consultaArchivos("2022/1326")
     let data = {
       NUMOPERACION: 4,
       FolioSIGA: FolioSIGA === "false" ? "" : FolioSIGA,
@@ -677,6 +689,150 @@ export const Auditoria = () => {
       }
     });
   };
+
+  
+  useEffect(()=>{
+    let auxRutas: {id:string,ruta:string} []=[]
+    bancos.map((item:any)=>{
+      //console.log("item",item);
+      
+      let Ruta=""
+      if(item?.anio){
+        Ruta=Ruta+item.anio
+      }
+      if(item?.NAUDITORIA){
+        Ruta=Ruta+"/"+item.NAUDITORIA
+      }
+     
+      auxRutas.push({id:item.id,ruta:Ruta})
+    })
+    console.log("auxRutas",auxRutas);
+    
+    iniciar(auxRutas);
+  },[bancos])
+
+  // const consultaArchivos = (Ruta:String) => {
+
+  //   //setverarchivo(false);
+
+  //   //if (explorerRoute !== "") {
+  //     setOpenSlider(true);
+
+  //     let data = {
+  //       NUMOPERACION: 16,
+  //       TOKEN: JSON.parse(String(getToken())),
+  //       RUTA: Ruta,
+  //       //FOLIO: explorerRoute,
+  //     };
+
+  //     AuditoriaService.FoliosFilesindex(data).then((res) => {
+  //       if (res.SUCCESS) {
+  //         Toast.fire({
+  //           icon: "success",
+  //           title: "¡Consulta Exitosa!",
+  //         });
+  //         setData(res.RESPONSE);
+  //         console.log("res.RESPONSE",res?.RESPONSE);
+          
+  //         setOpenSlider(false);
+  //       } else {
+  //         setOpenSlider(false);
+  //         Swal.fire("¡Error!", res.STRMESSAGE, "error");
+  //       }
+  //     });
+  //  // }
+  // };
+
+  const consultaArchivos = (Ruta: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      setOpenSlider(true);
+   
+      let data = {
+        NUMOPERACION: 16,
+        TOKEN: JSON.parse(String(getToken())),
+        RUTA:Ruta,
+      };
+   
+      AuditoriaService.FoliosFilesindex(data)
+        .then((res) => {
+          setOpenSlider(false);
+          if (res.SUCCESS) {
+            const response = res.RESPONSE;
+            // Contar la cantidad de archivos
+            const fileCount = Array.isArray(response) ? response.length : 0;
+            response.fileCount = fileCount;
+   
+            // Toast.fire({
+            //   icon: "success",
+            //   title: "¡Consulta Exitosa!",
+            // });
+            setData(response);
+            console.log("res.RESPONSE", response);
+            resolve(response);
+          } else {
+            Swal.fire("¡Error!", res.STRMESSAGE, "error");
+            reject(new Error(res.STRMESSAGE));
+          }
+        })
+        .catch((error) => {
+          setOpenSlider(false);
+          reject(error);
+        });
+    });
+  };
+
+  
+   
+  const procesarRutasConLimite = async (rutas: {id:string,ruta:string} [], concurrencyLimit: number): Promise<any[]> => {
+    const resultados: any[] = [];
+    const ejecutar = async (ruta: {id:string,ruta:string}) => {
+      try {
+        const resultado = await consultaArchivos(ruta.ruta);
+        console.log("resultado",resultado.length);
+        
+        resultados.push({ ruta:ruta.ruta, data: resultado.length,id:ruta.id });
+      } catch (error) {
+        resultados.push({ ruta:ruta.ruta, data: "Validando...",id:ruta.id  });
+      }
+    };
+   
+    const ejecutarConLimite = async () => {
+      const cola = [...rutas];
+      const procesos: Promise<void>[] = [];
+   
+      for (let i = 0; i < concurrencyLimit; i++) {
+        const ruta = cola.shift();
+        if (ruta) {
+          procesos.push(ejecutar(ruta));
+        }
+      }
+   
+      while (cola.length > 0) {
+        await Promise.any(procesos);
+        const ruta = cola.shift();
+        if (ruta) {
+          procesos.push(ejecutar(ruta));
+        }
+      }
+   
+      await Promise.all(procesos);
+    };
+   
+    await ejecutarConLimite();
+    return resultados;
+  };
+   
+  const iniciar = async (auxRutas: {id:string,ruta:string} []) => {
+    const concurrencyLimit = 10; // Ajusta este valor según las capacidades de tu servidor
+  
+    const resultados = await procesarRutasConLimite(auxRutas, concurrencyLimit);
+    console.log("resultados",resultados);
+    setCountFiles(resultados)
+
+  };
+   
+   
+
   /*
   useEffect(() => {
     if (
@@ -718,6 +874,7 @@ export const Auditoria = () => {
   };
 
   useEffect(() => {
+
     loadFilter(1);
     loadFilter(12);
     loadFilter(16);
