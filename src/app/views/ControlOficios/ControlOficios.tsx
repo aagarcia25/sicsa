@@ -812,6 +812,25 @@ export const ControlOficios = () => {
     });
   }, []);
 
+  useEffect(() => {
+    let auxRutas: { id: string; ruta: string }[] = [];
+    bancos.map((item: any) => {
+      //console.log("item",item);
+
+      let Ruta = "";
+      if (item?.anio) {
+        Ruta = Ruta + item.anio;
+      }
+      if (item?.Oficio) {
+        Ruta = Ruta + "/" + item.Oficio;
+      }
+
+      auxRutas.push({ id: item.id, ruta: Ruta });
+    });
+
+    iniciar(auxRutas);
+  }, [bancos]);
+
   const noSelection = () => {
     if (selectionModel.length >= 1) {
       Swal.fire({
