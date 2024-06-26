@@ -789,7 +789,7 @@ export const ControlOficios = () => {
 
   const iniciar = async (auxRutas: { id: string; ruta: string }[]) => {
     const concurrencyLimit = 10; // Ajusta este valor según las capacidades de tu servidor
-    const delayMs = 1000; // Ajusta este valor según las capacidades de tu servidor
+    const delayMs = 8000; // Ajusta este valor según las capacidades de tu servidor
 
     const resultados = await procesarRutasConLimite(
       auxRutas,
