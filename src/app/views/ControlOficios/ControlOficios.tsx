@@ -800,22 +800,22 @@ export const ControlOficios = () => {
     setCountFiles(resultados);
   };
 
-  useEffect(() => {
-    let auxRutas: { id: string; ruta: string }[] = [];
-    bancos.map((item: any) => {
-      let Ruta = "";
-      if (item?.anio) {
-        Ruta = Ruta + item.anio;
-      }
-      if (item?.Oficio) {
-        Ruta = Ruta + "/" + item.Oficio;
-      }
+  // useEffect(() => {
+  //   let auxRutas: { id: string; ruta: string }[] = [];
+  //   bancos.map((item: any) => {
+  //     let Ruta = "";
+  //     if (item?.anio) {
+  //       Ruta = Ruta + item.anio;
+  //     }
+  //     if (item?.Oficio) {
+  //       Ruta = Ruta + "/" + item.Oficio;
+  //     }
 
-      auxRutas.push({ id: item.id, ruta: Ruta });
-    });
+  //     auxRutas.push({ id: item.id, ruta: Ruta });
+  //   });
 
-    iniciar(auxRutas);
-  }, [bancos]);
+  //   iniciar(auxRutas);
+  // }, [bancos]);
 
   useEffect(() => {
     loadFilter(1);
@@ -840,25 +840,6 @@ export const ControlOficios = () => {
       }
     });
   }, []);
-
-  useEffect(() => {
-    let auxRutas: { id: string; ruta: string }[] = [];
-    bancos.map((item: any) => {
-      //console.log("item",item);
-
-      let Ruta = "";
-      if (item?.anio) {
-        Ruta = Ruta + item.anio;
-      }
-      if (item?.Oficio) {
-        Ruta = Ruta + "/" + item.Oficio;
-      }
-
-      auxRutas.push({ id: item.id, ruta: Ruta });
-    });
-
-    iniciar(auxRutas);
-  }, [bancos]);
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
