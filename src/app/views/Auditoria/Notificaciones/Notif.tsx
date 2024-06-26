@@ -100,6 +100,8 @@ const Notif = ({
     });
     setOpenContestacion(true);
     setEntregado(obj.row.entregado);
+    console.log("obj",obj);
+    
   };
 
   const handleVerAdjuntos = (data: any) => {
@@ -188,10 +190,11 @@ const Notif = ({
       width: 150,
     },
     {
-      field: "unidad",
+      field: "unidadResponsable",
       description: "Unidad Responsable",
       headerName: "Unidad Responsable",
       width: 300,
+      valueGetter: (params) => params.row.unidad || params.row.depDescripcion,
     },
 
     {
