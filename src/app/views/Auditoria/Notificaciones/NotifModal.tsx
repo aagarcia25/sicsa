@@ -254,6 +254,8 @@ export const NotifModal = ({
       setSIGAOficio(dt[0]?.row?.SIGAOficio);
       handleFilterChange1(dt[0]?.row?.secid);
       setidunidad(dt[0]?.row?.uniid);
+      setEntrega(dt[0]?.row?.ciid)
+
 
       if (FRecibido !== null) {
         setFRecibido(dayjs(dt[0]?.row?.FRecibido, "DD-MM-YYYY"));
