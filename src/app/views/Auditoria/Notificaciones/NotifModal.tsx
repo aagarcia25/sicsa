@@ -179,9 +179,16 @@ export const NotifModal = ({
     }
   };
 
-  const handleFilterChange1 = (v: string) => {
+  const handleFilterChange1 = async (v: string) => {
     setidsecretaria(v);
-    loadFilter(20, v);
+    if (v === "cf96124a-41fa-11ee-a8c9-3cd92b4d9bf4") {
+      await loadFilter(20, v);
+      await loadFilter(11);
+      console.log("else", v);
+    } else if (v) {
+      loadFilter(20, v);
+      console.log("if", v);
+    }
   };
 
   const handleFilterChange2 = (v: string) => {
@@ -208,24 +215,49 @@ export const NotifModal = ({
     setAPE(v);
   };
 
-  const loadFilter = (operacion: number, P_ID?: string) => {
+  // const loadFilter = (operacion: number, P_ID?: string) => {
+  //   setShow(true);
+  //   let data = { NUMOPERACION: operacion, P_ID: P_ID };
+  //   ShareService.SelectIndex(data).then((res) => {
+  //     if (operacion === 19) {
+  //       setListSecretarias(res.RESPONSE);
+  //       setShow(false);
+  //     } else if (operacion === 20) {
+  //       setListUnidades(res.RESPONSE);
+  //       setShow(false);
+  //     } else if (operacion === 6) {
+  //       setListAPE(res.RESPONSE);
+  //       setShow(false);
+  //     } else if (operacion === 5) {
+  //       setListEntrega(res.RESPONSE);
+  //       setShow(false);
+  //     } else if (operacion === 11) {
+  //       setListUnidades(prevItems=>[...prevItems,...res.RESPONSE]);
+  //       setShow(false);
+  //     }
+  //   });
+  // };
+
+  const loadFilter = async (operacion: number, P_ID?: string) => {
     setShow(true);
     let data = { NUMOPERACION: operacion, P_ID: P_ID };
-    ShareService.SelectIndex(data).then((res) => {
-      if (operacion === 19) {
-        setListSecretarias(res.RESPONSE);
-        setShow(false);
-      } else if (operacion === 20) {
-        setListUnidades(res.RESPONSE);
-        setShow(false);
-      } else if (operacion === 6) {
-        setListAPE(res.RESPONSE);
-        setShow(false);
-      } else if (operacion === 5) {
-        setListEntrega(res.RESPONSE);
-        setShow(false);
-      }
-    });
+    const res = await ShareService.SelectIndex(data);
+    if (operacion === 19) {
+      setListSecretarias(res.RESPONSE);
+      setShow(false);
+    } else if (operacion === 20) {
+      setListUnidades(res.RESPONSE);
+      setShow(false);
+    } else if (operacion === 6) {
+      setListAPE(res.RESPONSE);
+      setShow(false);
+    } else if (operacion === 5) {
+      setListEntrega(res.RESPONSE);
+      setShow(false);
+    } else if (operacion === 11) {
+      setListUnidades(prevItems => [...prevItems, ...res.RESPONSE]);
+      setShow(false);
+    }
   };
 
   useEffect(() => {
@@ -242,7 +274,9 @@ export const NotifModal = ({
   }, [switchValue]);
 
   useEffect(() => {
-    loadFilter(11);
+    console.log("dt",dt);
+    
+    //loadFilter(11);
     loadFilter(19);
     loadFilter(6);
     loadFilter(5);
@@ -255,6 +289,11 @@ export const NotifModal = ({
       handleFilterChange1(dt[0]?.row?.secid);
       setidunidad(dt[0]?.row?.uniid);
       setEntrega(dt[0]?.row?.ciid)
+      if(dt[0].row.depid)
+      setidunidad(dt[0]?.row.depid)
+    else
+      setidunidad(dt[0]?.row.uniid)
+
 
 
       if (FRecibido !== null) {
