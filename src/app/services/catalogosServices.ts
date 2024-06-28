@@ -85,7 +85,7 @@ export class CatalogosServices {
     return await post("TipoOficio_index", data);
   }
 
-  public static async Dependencia_index(data: any) {
-    return await post("Dependencia_index", data);
+  public static async Unidad_index(data: any) {
+    return await post("Unidad_index", data);
   }
 }

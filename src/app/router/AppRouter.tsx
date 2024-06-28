@@ -32,7 +32,7 @@ import { Personal } from "../views/Personal/Personal";
 import { DestinatariosOficios } from "../views/CatDestinatariosOficio/DestinatariosOficios";
 import { MonitoreoWeb } from "../views/MonitoreoWeb/MonitoreoWeb";
 import { TipoOficio } from "../views/CatTipoOficio/TipoOficio";
-import { Dependencias } from "../views/CatDependencias/Dependencias";
+import { Unidades } from "../views/CatUnidades/Unidades";
 //import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
@@ -159,8 +159,8 @@ export const AppRouter = ({ login }: { login: boolean }) => {
         />
 
         <Route
-          path="/inicio/catalogos/dependencias"
-          element={log ? <Dependencias /> : <Dependencias />}
+          path="/inicio/catalogos/unidades"
+          element={log ? <Unidades /> : <Unidades />}
         />
 
         <Route

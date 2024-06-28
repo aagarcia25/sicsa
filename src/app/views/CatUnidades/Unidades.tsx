@@ -12,10 +12,10 @@ import { IconButton, ToggleButton, Tooltip } from "@mui/material";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
-import { DependenciasModal } from "./DependenciasModal";
+import { UnidadesModal } from "./UnidadesModal";
 
 
-export const Dependencias = ()=>{
+export const Unidades = ()=>{
   const [open, setOpen] = useState(false);
   const [tipoOperacion, setTipoOperacion] = useState(0);
   const [vrows, setVrows] = useState({});
@@ -91,7 +91,7 @@ export const Dependencias = ()=>{
             CHUSER: user.Id,
           };
 
-          CatalogosServices.Dependencia_index(data).then((res) => {
+          CatalogosServices.Unidad_index(data).then((res) => {
             if (res.SUCCESS) {
               Toast.fire({
                 icon: "success",
@@ -116,16 +116,16 @@ export const Dependencias = ()=>{
       width: 150,
     },
     {
-      field: "Descripcion",
+      field: "uniDescripcion",
       headerName: "Descripción",
       description: "Descripción",
       width: 350,
     },
     {
-        field: "Siglas",
-        headerName: "Siglas",
-        description: "Siglas",
-        width: 100,
+        field: "secDescripcion",
+        headerName: "Secretaria",
+        description: "Secretaria",
+        width: 350,
       },
     {
       field: "acciones",
@@ -183,7 +183,7 @@ export const Dependencias = ()=>{
   };
 
   const consulta = (data: any) => {
-    CatalogosServices.Dependencia_index(data).then((res) => {
+    CatalogosServices.Unidad_index(data).then((res) => {
       if (res.SUCCESS) {
         // Toast.fire({
         //   icon: "success",
@@ -218,7 +218,7 @@ export const Dependencias = ()=>{
     return(
     <div style={{ height: 600, width: "100%", padding: "1%" }}>
         {open ? (
-          <DependenciasModal
+          <UnidadesModal
             open={open}
             tipo={tipoOperacion}
             handleClose={handleClose}
@@ -228,7 +228,7 @@ export const Dependencias = ()=>{
           ""
         )}
   
-        <TitleComponent title={"Dependencias"} show={openSlider} />
+        <TitleComponent title={"Unidades"} show={openSlider} />
         {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={agregar} /> : ""}
         {eliminar ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>

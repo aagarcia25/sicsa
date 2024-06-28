@@ -187,7 +187,7 @@ export const Contestacion = ({
       width: 150,
     },
     {
-      field: "depDescripcion",
+      field: "unidad",
       description: "Unidad Responsable",
       headerName: "Unidad Responsable",
       width: 300,
@@ -361,7 +361,6 @@ export const Contestacion = ({
           idNotificacion={obj.id}
           destino={updatedVrows}
           Entregado={entregado}
-          idSecretaria={obj?.row?.secid}
         />
       ) : (
         ""
