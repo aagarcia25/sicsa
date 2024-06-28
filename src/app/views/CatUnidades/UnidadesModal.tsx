@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import ModalForm from "../componentes/ModalForm";
 import { useEffect, useState } from "react";
 import { USUARIORESPONSE } from "../../interfaces/UserInfo";
@@ -6,8 +6,12 @@ import { getUser } from "../../services/localStorage";
 import Swal from "sweetalert2";
 import { CatalogosServices } from "../../services/catalogosServices";
 import { Toast } from "../../helpers/Toast";
+import SelectFrag from "../componentes/SelectFrag";
+import SelectValues from "../../interfaces/Share";
+import { ShareService } from "../../services/ShareService";
+import Progress from "../Progress";
 
-export const DependenciasModal = ({
+export const UnidadesModal = ({
     open,
     handleClose,
     tipo,
@@ -21,18 +25,25 @@ export const DependenciasModal = ({
   const [descripcion, setDescripcion] = useState("");
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const [id, setId] = useState("");
-  const [siglas, setSiglas] = useState("");
+  const [idSecretaria, setIdSecretaria] = useState("");
+  const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
+  const [show, setShow] = useState(false);
 
+
+
+  const handleFilterChangeSecretaria = (v: string) => {
+    setIdSecretaria(v);
+  };
 
   const handleSend = () => {
-    if (!descripcion) {
+    if (!descripcion && !idSecretaria) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       let data = {
         NUMOPERACION: tipo,
         CHID: id,
         CHUSER: user.Id,
-        Siglas: siglas,
+        idSecretaria: idSecretaria,
         DESCRIPCION: descripcion,
       };
 
@@ -52,7 +63,7 @@ export const DependenciasModal = ({
   };
 
   const agregar = (data: any) => {
-    CatalogosServices.Dependencia_index(data).then((res) => {
+    CatalogosServices.Unidad_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -66,7 +77,7 @@ export const DependenciasModal = ({
   };
 
   const editar = (data: any) => {
-    CatalogosServices.Dependencia_index(data).then((res) => {
+    CatalogosServices.Unidad_index(data).then((res) => {
       if (res.SUCCESS) {
         Toast.fire({
           icon: "success",
@@ -79,12 +90,25 @@ export const DependenciasModal = ({
     });
   };
 
+  const loadFilter = (operacion: number, P_ID?: string) => {
+    setShow(true);
+    let data = { NUMOPERACION: operacion, P_ID: P_ID };
+    ShareService.SelectIndex(data).then((res) => {
+      if (operacion === 19) {
+        setListSecretarias(res.RESPONSE);
+        setShow(false);
+      } 
+    });
+  };
+
   useEffect(() => {
+    loadFilter(19)
     if (dt === "") {
     } else {
       setId(dt?.row?.id);
       //setNombre(dt?.row?.Nombre);
-      setDescripcion(dt?.row?.Descripcion);
+      setDescripcion(dt?.row?.uniDescripcion);
+      setIdSecretaria(dt?.row?.secid);
     }
   }, [dt]);
 
@@ -95,6 +119,8 @@ export const DependenciasModal = ({
         title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}
         handleClose={handleClose}
       >
+        <Progress open={show}></Progress>
+
         <Box boxShadow={3}>
           <Grid
             container
@@ -124,22 +150,15 @@ export const DependenciasModal = ({
                 InputProps={{}}
               />
 
-              <TextField
-                required
-                margin="dense"
-                id="Siglas"
-                label="Siglas"
-                value={siglas}
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={(v) => setSiglas(v.target.value)}
-                error={siglas === "" ? true : false}
-                InputProps={
-                  {
-                    //readOnly: tipo === 1 ? false : true,
-                  }
-                }
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Secretaría:
+              </Typography>
+              <SelectFrag
+                value={idSecretaria}
+                options={ListSecretarias}
+                onInputChange={handleFilterChangeSecretaria}
+                placeholder={"Seleccione..."}
+                disabled={false}
               />
             </Grid>
             <Grid
@@ -163,7 +182,7 @@ export const DependenciasModal = ({
             ></Grid>
             <Grid item alignItems="center" justifyContent="center" xs={2}>
               <Button
-                disabled={descripcion === "" || siglas === ""}
+                disabled={descripcion === "" || idSecretaria === ""}
                 className={tipo === 1 ? "guardar" : "actualizar"}
                 onClick={() => handleSend()}
               >

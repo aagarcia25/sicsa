@@ -31,7 +31,6 @@ export const ContestacionModal = ({
   idNotificacion,
   destino,
   Entregado,
-  idSecretaria,
 }: {
   tipo: number;
   handleClose: Function;
@@ -40,7 +39,6 @@ export const ContestacionModal = ({
   idNotificacion: string;
   destino: string;
   Entregado: any;
-  idSecretaria: string;
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -129,7 +127,7 @@ export const ContestacionModal = ({
         SIGAOficio: SIGAOficio,
         FOficio: fOficio || FOficio,
         FRecibido: FRecibido,
-        idsecretaria: idSecretaria,
+        idsecretaria: idsecretaria,
         idunidad: idunidad,
       };
       if (switchValue === true) {
@@ -169,10 +167,10 @@ export const ContestacionModal = ({
     }
   };
 
-  // const handleFilterChange1 = (v: string) => {
-  //   setidsecretaria(v);
-  //   loadFilter(20, v);
-  // };
+  const handleFilterChange1 = (v: string) => {
+    setidsecretaria(v);
+    loadFilter(20, v);
+  };
 
   const handleFilterChange2 = (v: string) => {
     setidunidad(v);
@@ -202,21 +200,18 @@ export const ContestacionModal = ({
         setListSecretarias(res.RESPONSE);
         setShow(false);
       } 
-      // else if (operacion === 20) {
-      //   setListUnidades(res.RESPONSE);
-      //   setShow(false);
-      // } 
-      else if (operacion === 11) {
+      else if (operacion === 20) {
         setListUnidades(res.RESPONSE);
         setShow(false);
-      }
+      } 
+
     });
   };
 
+  
   useEffect(() => {
     console.log("dt",dt);
     
-    loadFilter(11);
     loadFilter(19);
 
     if (Object.keys(dt).length === 0) {
@@ -225,8 +220,8 @@ export const ContestacionModal = ({
       setSIGAOficio(dt?.row?.SIGAOficio);
       setOficio(dt?.row?.Oficio);
       
-      //handleFilterChange1(dt?.row?.secid);
-      setidunidad(dt?.row?.depid);
+      handleFilterChange1(dt?.row?.secid);
+      setidunidad(dt?.row?.uniid);
       
       if (FRecibido !== null) {
         setFRecibido(dayjs(dt?.row?.FRecibido,'DD-MM-YYYY'));
@@ -280,7 +275,19 @@ export const ContestacionModal = ({
             sx={{ padding: "2%" }}
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Secretaría:
+              </Typography>
+              <SelectFrag
+                value={idsecretaria}
+                options={ListSecretarias}
+                onInputChange={handleFilterChange1}
+                placeholder={"Seleccione..."}
+                disabled={Entregado === "1" || visualizar === true}
+              />
               
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Unidad Administrativa:
               </Typography>
@@ -319,18 +326,7 @@ export const ContestacionModal = ({
                 onChange={(v) => setSIGAOficio(v.target.value)}
                 disabled={Entregado === "1" || visualizar === true}
               />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              {/* <Typography sx={{ fontFamily: "sans-serif" }}>
-                Secretaría:
-              </Typography>
-              <SelectFrag
-                value={idsecretaria}
-                options={ListSecretarias}
-                onInputChange={handleFilterChange1}
-                placeholder={"Seleccione..."}
-                disabled={Entregado === "1" || visualizar === true}
-              /> */}
+              
             </Grid>
           </Grid>
 

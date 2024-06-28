@@ -179,16 +179,9 @@ export const NotifModal = ({
     }
   };
 
-  const handleFilterChange1 = async (v: string) => {
+  const handleFilterChange1 = (v: string) => {
     setidsecretaria(v);
-    if (v === "cf96124a-41fa-11ee-a8c9-3cd92b4d9bf4") {
-      await loadFilter(20, v);
-      await loadFilter(11);
-      console.log("else", v);
-    } else if (v) {
-      loadFilter(20, v);
-      console.log("if", v);
-    }
+    loadFilter(20, v);
   };
 
   const handleFilterChange2 = (v: string) => {
@@ -215,51 +208,31 @@ export const NotifModal = ({
     setAPE(v);
   };
 
-  // const loadFilter = (operacion: number, P_ID?: string) => {
-  //   setShow(true);
-  //   let data = { NUMOPERACION: operacion, P_ID: P_ID };
-  //   ShareService.SelectIndex(data).then((res) => {
-  //     if (operacion === 19) {
-  //       setListSecretarias(res.RESPONSE);
-  //       setShow(false);
-  //     } else if (operacion === 20) {
-  //       setListUnidades(res.RESPONSE);
-  //       setShow(false);
-  //     } else if (operacion === 6) {
-  //       setListAPE(res.RESPONSE);
-  //       setShow(false);
-  //     } else if (operacion === 5) {
-  //       setListEntrega(res.RESPONSE);
-  //       setShow(false);
-  //     } else if (operacion === 11) {
-  //       setListUnidades(prevItems=>[...prevItems,...res.RESPONSE]);
-  //       setShow(false);
-  //     }
-  //   });
-  // };
-
-  const loadFilter = async (operacion: number, P_ID?: string) => {
+  const loadFilter = (operacion: number, P_ID?: string) => {
     setShow(true);
     let data = { NUMOPERACION: operacion, P_ID: P_ID };
-    const res = await ShareService.SelectIndex(data);
-    if (operacion === 19) {
-      setListSecretarias(res.RESPONSE);
-      setShow(false);
-    } else if (operacion === 20) {
-      setListUnidades(res.RESPONSE);
-      setShow(false);
-    } else if (operacion === 6) {
-      setListAPE(res.RESPONSE);
-      setShow(false);
-    } else if (operacion === 5) {
-      setListEntrega(res.RESPONSE);
-      setShow(false);
-    } else if (operacion === 11) {
-      setListUnidades(prevItems => [...prevItems, ...res.RESPONSE]);
-      setShow(false);
-    }
+    ShareService.SelectIndex(data).then((res) => {
+      if (operacion === 19) {
+        setListSecretarias(res.RESPONSE);
+        setShow(false);
+      } else if (operacion === 20) {
+        setListUnidades(res.RESPONSE);
+        setShow(false);
+      } else if (operacion === 6) {
+        setListAPE(res.RESPONSE);
+        setShow(false);
+      } else if (operacion === 5) {
+        setListEntrega(res.RESPONSE);
+        setShow(false);
+      } 
+      // else if (operacion === 11) {
+      //   setListUnidades(prevItems=>[...prevItems,...res.RESPONSE]);
+      //   setShow(false);
+      // }
+    });
   };
 
+  
   useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -280,6 +253,7 @@ export const NotifModal = ({
     loadFilter(19);
     loadFilter(6);
     loadFilter(5);
+    
 
     if (Object.keys(dt).length === 0) {
     } else {
@@ -289,10 +263,6 @@ export const NotifModal = ({
       handleFilterChange1(dt[0]?.row?.secid);
       setidunidad(dt[0]?.row?.uniid);
       setEntrega(dt[0]?.row?.ciid)
-      if(dt[0].row.depid)
-      setidunidad(dt[0]?.row.depid)
-    else
-      setidunidad(dt[0]?.row.uniid)
 
 
 
