@@ -187,6 +187,12 @@ export const Oficios = ({
       width: 750,
     },
     {
+      field: "Observacion",
+      description: "Observación",
+      headerName: "Observación",
+      width: 750,
+    },
+    {
       field: "acciones",
       disableExport: true,
       headerName: "Acciones",

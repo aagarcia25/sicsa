@@ -37,6 +37,7 @@ export const OficiosModal = ({
   const [ffin, setFfin] = useState<Dayjs | null>();
   const [oficio, setOficio] = useState("");
   const [descripcion	, setDescripcion] = useState("");
+  const [observacion	, setObservacion] = useState("");
 
 
   const [idCatTOficio, setIdCatTOficio] = useState("");
@@ -64,6 +65,7 @@ export const OficiosModal = ({
         FechaRecibido: finicio,
         FechaVencimiento: ffin,
         Descripcion: descripcion,
+        Observacion: observacion,
       };
 
       if (tipo === 1) {
@@ -161,6 +163,7 @@ loadFilter(29)
       //setOficio(dt?.data?.row?.Oficio);
       setOficio(dt[0]?.data?.row?.Oficio);
       setDescripcion(dt[0]?.data?.row?.Descripcion);
+      setObservacion(dt[0]?.data?.row?.Observacion);
       setIdCatTOficio(dt[0]?.data?.row?.tofid);
       setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido,'DD-MM-YYYY'));
       setFfin(dayjs(dt[0]?.data?.row?.FechaVencimiento,'DD-MM-YYYY'));
@@ -275,7 +278,28 @@ loadFilter(29)
                 // }}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            <Grid item xs={12} sm={6} md={4} lg={6}>
+            <Typography sx={{ fontFamily: "sans-serif" }}>Observación</Typography>
+
+            <TextField
+              
+              margin="dense"
+              id="observacion"
+              label=""
+              value={observacion}
+              type="text"
+              multiline
+              rows={3}
+              fullWidth
+              focused
+              onChange={(v) => setObservacion(v.target.value)}
+              disabled={Entregado === "1" || visualizar === true}
+
+              // InputProps={{
+              //   readOnly: tipo === 1 ? false : true,
+              // }}
+            />
+            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
