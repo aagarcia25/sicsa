@@ -31,7 +31,7 @@ export const AccionesModal = ({
   nAuditoria: number;
   idAuditoria: string;
 }) => {
-  useEffect(() => {});
+  useEffect(() => { });
   // CAMPOS DE LOS FORMULARIOS
   const user: USUARIORESPONSE = JSON.parse(String(getUser()));
   const [show, setShow] = useState(true);
@@ -56,7 +56,7 @@ export const AccionesModal = ({
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 
   const handleSend = () => {
-    if (!TipoAccion || !EstatusAcciones || !ClaveAccion || !TextoAccion) {
+    if (!TipoAccion || !EstatusAcciones || !TextoAccion) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       setShow(true);
@@ -281,7 +281,6 @@ export const AccionesModal = ({
                 fullWidth
                 variant="standard"
                 value={ClaveAccion}
-                required
                 error={!ClaveAccion}
                 onChange={(v) => setClaveAccion(v.target.value)}
                 disabled={Entregado === "1" || visualizar === true}
