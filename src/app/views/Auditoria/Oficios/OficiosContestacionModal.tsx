@@ -56,6 +56,8 @@ export const OficiosContestacionModal = ({
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [visualizar, setVisualizar] = useState<boolean>(false);
   const [switchValue, setSwitchValue] = useState(false);
+  const [observacion	, setObservacion] = useState("");
+
   const handleChange = (event: any) => {
     setSwitchValue(event.target.checked);
   };
@@ -117,6 +119,8 @@ export const OficiosContestacionModal = ({
             idsecretaria: idsecretaria,
             idunidad: idunidad,
             idOficio: idNotificacion,
+            Observacion: observacion,
+
           };
           if (switchValue === true) {
             data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
@@ -191,15 +195,11 @@ export const OficiosContestacionModal = ({
           } else if (operacion === 20) {
             setListUnidades(res.RESPONSE);
             setShow(false);
-          } else if (operacion === 11) {
-            setListUnidades(res.RESPONSE);
-            setShow(false);
           }
         });
       };
 
     useEffect(() => {
-        loadFilter(11);
         loadFilter(19);
         
     
@@ -208,6 +208,8 @@ export const OficiosContestacionModal = ({
           setId(dt?.row?.id);
           setSIGAOficio(dt?.row?.SIGAOficio);
           setOficio(dt?.row?.Oficio);
+          setObservacion(dt?.row?.Observacion);
+
           handleFilterChange1(dt?.row?.secid);
           setidunidad(dt?.row?.cuid);
           if (FRecibido !== null) {
@@ -362,6 +364,7 @@ export const OficiosContestacionModal = ({
                     />
                   </Grid>
                 </Grid>
+                
               ) : (
                 <Grid
                   container
@@ -396,6 +399,51 @@ export const OficiosContestacionModal = ({
                   <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
                 </Grid>
               )}
+              <Grid
+                  container
+                  item
+                  spacing={1}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{ padding: "2%" }}
+                >
+                  <Grid item xs={12} sm={6} md={4} lg={6}>
+                  <Typography sx={{ fontFamily: "sans-serif" }}>Observación</Typography>
+
+                  <TextField
+                    
+                    margin="dense"
+                    id="observacion"
+                    label=""
+                    value={observacion}
+                    type="text"
+                    multiline
+                    rows={3}
+                    fullWidth
+                    focused
+                    onChange={(v) => setObservacion(v.target.value)}
+                    disabled={Entregado === "1" || visualizar === true}
+ 
+                    // InputProps={{
+                    //   readOnly: tipo === 1 ? false : true,
+                    // }}
+                  />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                    
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                  
+                  </Grid>
+                </Grid>
     
               {String(Entregado) !== "1" && editarPermiso === true ? (
                 <Grid
