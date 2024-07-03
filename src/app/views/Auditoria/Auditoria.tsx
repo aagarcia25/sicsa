@@ -603,7 +603,7 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
             
-            {countFiles.length>0 ? countFiles.find(obj=>obj.id==v.row.id)?.data :"Validando"}
+            {/* {countFiles.length>0 ? countFiles.find(obj=>obj.id==v.row.id)?.data :"Validando"} */}
             <ButtonsDetail
               title={"Ver Plan de Trabajo"}
               handleFunction={handlePlan}
@@ -660,7 +660,6 @@ export const Auditoria = () => {
     setidEntidadFiscalizada("");
   };
   const consulta = () => {
-    //consultaArchivos("2022/1326")
     let data = {
       NUMOPERACION: 4,
       FolioSIGA: FolioSIGA === "false" ? "" : FolioSIGA,
@@ -691,145 +690,115 @@ export const Auditoria = () => {
   };
 
   
-  useEffect(()=>{
-    let auxRutas: {id:string,ruta:string} []=[]
-    bancos.map((item:any)=>{
-      //console.log("item",item);
+  // useEffect(()=>{
+  //   let auxRutas: {id:string,ruta:string} []=[]
+  //   bancos.map((item:any)=>{
+  //     //console.log("item",item);
       
-      let Ruta=""
-      if(item?.anio){
-        Ruta=Ruta+item.anio
-      }
-      if(item?.NAUDITORIA){
-        Ruta=Ruta+"/"+item.NAUDITORIA
-      }
+  //     let Ruta=""
+  //     if(item?.anio){
+  //       Ruta=Ruta+item.anio
+  //     }
+  //     if(item?.NAUDITORIA){
+  //       Ruta=Ruta+"/"+item.NAUDITORIA
+  //     }
      
-      auxRutas.push({id:item.id,ruta:Ruta})
-    })
-    console.log("auxRutas",auxRutas);
+  //     auxRutas.push({id:item.id,ruta:Ruta})
+  //   })
+  //   console.log("auxRutas",auxRutas);
     
-    iniciar(auxRutas);
-  },[bancos])
+  //   iniciar(auxRutas);
+  // },[bancos])
 
-  // const consultaArchivos = (Ruta:String) => {
+  
 
-  //   //setverarchivo(false);
-
-  //   //if (explorerRoute !== "") {
+  // const consultaArchivos = (Ruta: string): Promise<any> => {
+  //   return new Promise((resolve, reject) => {
   //     setOpenSlider(true);
-
+   
   //     let data = {
   //       NUMOPERACION: 16,
   //       TOKEN: JSON.parse(String(getToken())),
-  //       RUTA: Ruta,
-  //       //FOLIO: explorerRoute,
+  //       RUTA:Ruta,
   //     };
-
-  //     AuditoriaService.FoliosFilesindex(data).then((res) => {
-  //       if (res.SUCCESS) {
-  //         Toast.fire({
-  //           icon: "success",
-  //           title: "¡Consulta Exitosa!",
-  //         });
-  //         setData(res.RESPONSE);
-  //         console.log("res.RESPONSE",res?.RESPONSE);
-          
+   
+  //     AuditoriaService.FoliosFilesindex(data)
+  //       .then((res) => {
   //         setOpenSlider(false);
-  //       } else {
+  //         if (res.SUCCESS) {
+  //           const response = res.RESPONSE;
+  //           // Contar la cantidad de archivos
+  //           const fileCount = Array.isArray(response) ? response.length : 0;
+  //           response.fileCount = fileCount;
+   
+  //           // Toast.fire({
+  //           //   icon: "success",
+  //           //   title: "¡Consulta Exitosa!",
+  //           // });
+  //           setData(response);
+  //           console.log("res.RESPONSE", response);
+  //           resolve(response);
+  //         } else {
+  //           Swal.fire("¡Error!", res.STRMESSAGE, "error");
+  //           reject(new Error(res.STRMESSAGE));
+  //         }
+  //       })
+  //       .catch((error) => {
   //         setOpenSlider(false);
-  //         Swal.fire("¡Error!", res.STRMESSAGE, "error");
-  //       }
-  //     });
-  //  // }
+  //         reject(error);
+  //       });
+  //   });
   // };
 
-  const consultaArchivos = (Ruta: string): Promise<any> => {
-    return new Promise((resolve, reject) => {
-      setOpenSlider(true);
-   
-      let data = {
-        NUMOPERACION: 16,
-        TOKEN: JSON.parse(String(getToken())),
-        RUTA:Ruta,
-      };
-   
-      AuditoriaService.FoliosFilesindex(data)
-        .then((res) => {
-          setOpenSlider(false);
-          if (res.SUCCESS) {
-            const response = res.RESPONSE;
-            // Contar la cantidad de archivos
-            const fileCount = Array.isArray(response) ? response.length : 0;
-            response.fileCount = fileCount;
-   
-            // Toast.fire({
-            //   icon: "success",
-            //   title: "¡Consulta Exitosa!",
-            // });
-            setData(response);
-            console.log("res.RESPONSE", response);
-            resolve(response);
-          } else {
-            Swal.fire("¡Error!", res.STRMESSAGE, "error");
-            reject(new Error(res.STRMESSAGE));
-          }
-        })
-        .catch((error) => {
-          setOpenSlider(false);
-          reject(error);
-        });
-    });
-  };
-
   
    
-  const procesarRutasConLimite = async (rutas: {id:string,ruta:string} [], concurrencyLimit: number): Promise<any[]> => {
-    const resultados: any[] = [];
-    const ejecutar = async (ruta: {id:string,ruta:string}) => {
-      try {
-        const resultado = await consultaArchivos(ruta.ruta);
-        console.log("resultado",resultado.length);
+  // const procesarRutasConLimite = async (rutas: {id:string,ruta:string} [], concurrencyLimit: number): Promise<any[]> => {
+  //   const resultados: any[] = [];
+  //   const ejecutar = async (ruta: {id:string,ruta:string}) => {
+  //     try {
+  //       const resultado = await consultaArchivos(ruta.ruta);
+  //       console.log("resultado",resultado.length);
         
-        resultados.push({ ruta:ruta.ruta, data: resultado.length,id:ruta.id });
-      } catch (error) {
-        resultados.push({ ruta:ruta.ruta, data: "Validando...",id:ruta.id  });
-      }
-    };
+  //       resultados.push({ ruta:ruta.ruta, data: resultado.length,id:ruta.id });
+  //     } catch (error) {
+  //       resultados.push({ ruta:ruta.ruta, data: "Validando...",id:ruta.id  });
+  //     }
+  //   };
    
-    const ejecutarConLimite = async () => {
-      const cola = [...rutas];
-      const procesos: Promise<void>[] = [];
+  //   const ejecutarConLimite = async () => {
+  //     const cola = [...rutas];
+  //     const procesos: Promise<void>[] = [];
    
-      for (let i = 0; i < concurrencyLimit; i++) {
-        const ruta = cola.shift();
-        if (ruta) {
-          procesos.push(ejecutar(ruta));
-        }
-      }
+  //     for (let i = 0; i < concurrencyLimit; i++) {
+  //       const ruta = cola.shift();
+  //       if (ruta) {
+  //         procesos.push(ejecutar(ruta));
+  //       }
+  //     }
    
-      while (cola.length > 0) {
-        await Promise.any(procesos);
-        const ruta = cola.shift();
-        if (ruta) {
-          procesos.push(ejecutar(ruta));
-        }
-      }
+  //     while (cola.length > 0) {
+  //       await Promise.any(procesos);
+  //       const ruta = cola.shift();
+  //       if (ruta) {
+  //         procesos.push(ejecutar(ruta));
+  //       }
+  //     }
    
-      await Promise.all(procesos);
-    };
+  //     await Promise.all(procesos);
+  //   };
    
-    await ejecutarConLimite();
-    return resultados;
-  };
+  //   await ejecutarConLimite();
+  //   return resultados;
+  // };
    
-  const iniciar = async (auxRutas: {id:string,ruta:string} []) => {
-    const concurrencyLimit = 10; // Ajusta este valor según las capacidades de tu servidor
+  // const iniciar = async (auxRutas: {id:string,ruta:string} []) => {
+  //   const concurrencyLimit = 10; // Ajusta este valor según las capacidades de tu servidor
   
-    const resultados = await procesarRutasConLimite(auxRutas, concurrencyLimit);
-    console.log("resultados",resultados);
-    setCountFiles(resultados)
+  //   const resultados = await procesarRutasConLimite(auxRutas, concurrencyLimit);
+  //   console.log("resultados",resultados);
+  //   setCountFiles(resultados)
 
-  };
+  // };
    
    
 
