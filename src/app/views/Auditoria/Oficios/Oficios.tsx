@@ -20,6 +20,12 @@ import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 import { OficiosContestacion } from "./OficiosContestacion";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import Notif from "../Notificaciones/Notif";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import Acciones from "../Acciones/Acciones";
+
+
 
 export const Oficios = ({
   handleFunction,
@@ -47,6 +53,10 @@ export const Oficios = ({
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
   const [openContestacion, setOpenContestacion] = useState(false);
+  const [openModalOrgano, setopenModalOrgano] = useState<boolean>(false);
+  const [openModalAcciones, setOpenModalAcciones] = useState(false);
+
+
 
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
@@ -61,6 +71,9 @@ export const Oficios = ({
     setOpenAdjuntos(false);
     consulta();
     setOpenContestacion(false);
+    setopenModalOrgano(false);
+    setOpenModalAcciones(false)
+
   };
 
   const noSelection = () => {
@@ -115,6 +128,34 @@ export const Oficios = ({
     });
     setOpenContestacion(true);
     setEntregado(obj.row.entregado);
+  };
+
+  const handleORgano = (data: any) => {
+    //if (data.row.entregado !== "1") {
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });
+    setopenModalOrgano(true);
+    //}
+  };
+
+  const handleAcciones = (data: any) => {
+    //if (data.row.entregado !== "1") {
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });
+    setOpenModalAcciones(true);
+    //}
   };
 
   const handleAccion = (v: any) => {
@@ -184,13 +225,13 @@ export const Oficios = ({
       field: "Descripcion",
       description: "Descripción",
       headerName: "Descripción",
-      width: 750,
+      width: 325,
     },
     {
       field: "Observacion",
       description: "Observación",
       headerName: "Observación",
-      width: 750,
+      width: 325,
     },
     {
       field: "acciones",
@@ -220,6 +261,22 @@ export const Oficios = ({
             {/* ) : (
                ""
              )} */}
+
+            <ButtonsDetail
+              title={"Entregas y Notificaciones"}
+              handleFunction={handleORgano}
+              show={true}
+              icon={<FormatListBulletedIcon />}
+              row={v}
+            ></ButtonsDetail>
+
+            <ButtonsDetail
+              title={"Resultado de la Auditoria"}
+              handleFunction={handleAcciones}
+              show={true}
+              icon={<Diversity3Icon />}
+              row={v}
+            ></ButtonsDetail>
 
             <ButtonsDetail
               title={"Ver Adjuntos"}
@@ -292,6 +349,8 @@ export const Oficios = ({
   };
 
   useEffect(() => {
+    console.log("obj",obj);
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -377,6 +436,18 @@ export const Oficios = ({
           obj={vrows}
           Entregado={entregado}
         />
+      ) : (
+        ""
+      )}
+
+      {openModalOrgano ? (
+        <Notif handleFunction={handleClose} obj={vrows} idauditoria={obj?.id}/>
+      ) : (
+        ""
+      )}
+
+      {openModalAcciones ? (
+        <Acciones handleFunction={handleClose} obj={vrows} idauditoria={obj?.id}/>
       ) : (
         ""
       )}
