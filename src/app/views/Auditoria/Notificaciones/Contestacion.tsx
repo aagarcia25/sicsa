@@ -50,10 +50,14 @@ export const Contestacion = ({
   const [entregado, setEntregado] = useState({});
 
   const handleVerAdjuntos = (data: any) => {
+    console.log("data",data);
+    
     setupdatedVrows(
       obj.row.anio +
         "/" +
         obj.row.NAUDITORIA +
+        "/" +
+        obj.row.OficioA +
         "/" +
         obj.row.Oficio +
         "/" +

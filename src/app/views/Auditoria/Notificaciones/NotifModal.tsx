@@ -31,6 +31,7 @@ export const NotifModal = ({
   user,
   idAuditoria,
   destino,
+  idOficio,
 }: {
   tipo: number;
   handleClose: Function;
@@ -38,6 +39,7 @@ export const NotifModal = ({
   user: USUARIORESPONSE;
   idAuditoria: string;
   destino: string;
+  idOficio:string;
 }) => {
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
@@ -74,6 +76,10 @@ export const NotifModal = ({
 
   const [entrega, setEntrega] = useState("");
   const [ListEntrega, setListEntrega] = useState<SelectValues[]>([]);
+
+  const [idoficio, setidoficio] = useState("");
+  const [ListIdOficios, setListIdOficios] = useState<SelectValues[]>([]);
+
 
   const handleFilterChangeEntrega = (v: string) => {
     setEntrega(v);
@@ -141,6 +147,7 @@ export const NotifModal = ({
         idsecretaria: idsecretaria,
         idunidad: idunidad,
         idEntrega: entrega,
+        idOficio: idoficio,
       };
       if (switchValue === true) {
         data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
@@ -203,7 +210,10 @@ export const NotifModal = ({
   const handleFilterChangep = (v: any) => {
     setProrroga(v);
   };
-
+  
+  const handleFilterChangeOficios = (v: any) => {
+    setidoficio(v);
+  };
   const handleFilterAPE = (v: any) => {
     setAPE(v);
   };
@@ -224,7 +234,10 @@ export const NotifModal = ({
       } else if (operacion === 5) {
         setListEntrega(res.RESPONSE);
         setShow(false);
-      } 
+      } else if (operacion === 30) {
+        setListIdOficios(res.RESPONSE);
+        setShow(false);
+      }
       // else if (operacion === 11) {
       //   setListUnidades(prevItems=>[...prevItems,...res.RESPONSE]);
       //   setShow(false);
@@ -248,11 +261,14 @@ export const NotifModal = ({
 
   useEffect(() => {
     console.log("dt",dt);
+    console.log("idAuditoria",idAuditoria);
+    
     
     //loadFilter(11);
     loadFilter(19);
     loadFilter(6);
     loadFilter(5);
+    loadFilter(30);
     
 
     if (Object.keys(dt).length === 0) {
@@ -263,6 +279,7 @@ export const NotifModal = ({
       handleFilterChange1(dt[0]?.row?.secid);
       setidunidad(dt[0]?.row?.uniid);
       setEntrega(dt[0]?.row?.ciid)
+      setidoficio(dt[0]?.row?.idOficio)
 
 
 
@@ -459,6 +476,40 @@ export const NotifModal = ({
               <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             </Grid>
           )}
+          {/* mientras se poenen los oficios, quitar despues */}
+          <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "2%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Oficio al que pertenece:
+              </Typography>
+              <SelectFrag
+                value={idoficio}
+                options={ListIdOficios}
+                onInputChange={handleFilterChangeOficios}
+                placeholder={"Seleccione..."}
+                disabled={Entregado === "1" || visualizar === true}
+              />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            </Grid>
+          {/* mientras se poenen los oficios */}
+
 
           {String(Entregado) !== "1" && editarPermiso === true ? (
             <Grid

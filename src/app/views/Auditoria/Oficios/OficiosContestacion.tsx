@@ -231,7 +231,7 @@ export const OficiosContestacion = ({
           field: "Observacion",
           description: "Observación",
           headerName: "Observación",
-          width: 700,
+          width: 325,
         },
         {
           field: "acciones",

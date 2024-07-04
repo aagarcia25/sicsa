@@ -27,9 +27,13 @@ import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 const Acciones = ({
   handleFunction,
   obj,
+  idauditoria,
+
 }: {
   handleFunction: Function;
   obj: any;
+  idauditoria: any;
+
 }) => {
   const [openSlider, setOpenSlider] = useState(false);
   const [openAccionesModal, setOpenAccionesModal] = useState(false);
@@ -75,7 +79,7 @@ const Acciones = ({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
           }
@@ -109,7 +113,7 @@ const Acciones = ({
                 icon: "success",
                 title: "¡Registros Eliminados!",
               });
-              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -154,8 +158,10 @@ const Acciones = ({
   };
 
   const handleVerAdjuntos = (data: any) => {
+    console.log("data",data);
+    
     setupdatedVrows(
-      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.ClaveAccion
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.OficioA + "/" +  data.row.ClaveAccion
     );
     setOpenAdjuntos(true);
     setEntregado(obj.row.entregado)
@@ -166,7 +172,7 @@ const Acciones = ({
     setOpenAccionesModal(false);
     setOpenContestacion(false);
     setOpenAdjuntos(false);
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
   };
 
   const handleUpload = (data: any) => {
@@ -183,7 +189,7 @@ const Acciones = ({
           icon: "success",
           title: "¡Consulta Exitosa!",
         });
-        consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+        consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria});
       } else {
         setShow(false);
         Swal.fire("¡Error!", res.STRMESSAGE, "error");
@@ -208,6 +214,12 @@ const Acciones = ({
       field: "NAUDITORIA",
       description: "Número de Auditoría",
       headerName: "No. de Auditoría",
+      width: 120,
+    },
+    {
+      field: "OficioA",
+      description: "Oficio al que pertenece",
+      headerName: "Oficio al que pertenece",
       width: 150,
     },
     {
@@ -239,9 +251,9 @@ const Acciones = ({
       field: "TextoAccion",
       description: "Resultado/Observación",
       headerName: "Resultado/Observación",
-      width: 900,
+      width: 300,
     },
-    { field: "Valor", description: "Valor", headerName: "Valor", width: 150 },
+    { field: "Valor", description: "Valor", headerName: "Valor", width: 120 },
     {
       field: "numeroResultado",
       headerName: "Numero de Resultado",
@@ -310,6 +322,8 @@ const Acciones = ({
   ];
 
   useEffect(() => {
+    console.log("obj",obj);
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -323,7 +337,7 @@ const Acciones = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
   }, []);
 
   return (
@@ -337,9 +351,10 @@ const Acciones = ({
             dt={vrows}
             handleClose={handleClose}
             tipo={tipoOperacion}
-            nAuditoria={NoAuditoria}
-            idAuditoria={obj.id}
-          />
+            nAuditoria={obj.row.NAUDITORIA}
+            idAuditoria={idauditoria}
+            idOficio={obj.id}
+            />
         ) : (
           ""
         )}
