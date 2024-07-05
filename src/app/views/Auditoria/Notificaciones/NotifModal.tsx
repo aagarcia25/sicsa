@@ -268,7 +268,7 @@ export const NotifModal = ({
     loadFilter(19);
     loadFilter(6);
     loadFilter(5);
-    loadFilter(30);
+    loadFilter(30,idAuditoria);
     
 
     if (Object.keys(dt).length === 0) {

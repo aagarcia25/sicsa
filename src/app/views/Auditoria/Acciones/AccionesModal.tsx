@@ -150,8 +150,8 @@ export const AccionesModal = ({
     }
   }, [dt]);
 
-  const consultaListas = (catalogo: any) => {
-    let data = { NUMOPERACION: catalogo };
+  const consultaListas = (catalogo: any, P_ID?: string) => {
+    let data = { NUMOPERACION: catalogo, P_ID: P_ID };
     ShareService.SelectIndex(data).then((res) => {
       if (catalogo === 8) {
         setListTipoAccion(res.RESPONSE);
@@ -183,7 +183,7 @@ export const AccionesModal = ({
   useEffect(() => {
     consultaListas(8);
     consultaListas(3);
-    consultaListas(30);
+    consultaListas(30,idAuditoria);
 
   }, []);
 

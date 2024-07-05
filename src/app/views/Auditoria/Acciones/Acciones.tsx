@@ -79,7 +79,7 @@ const Acciones = ({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
+            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
           }
@@ -113,7 +113,7 @@ const Acciones = ({
                 icon: "success",
                 title: "¡Registros Eliminados!",
               });
-              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
+              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -172,7 +172,7 @@ const Acciones = ({
     setOpenAccionesModal(false);
     setOpenContestacion(false);
     setOpenAdjuntos(false);
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
   };
 
   const handleUpload = (data: any) => {
@@ -189,7 +189,7 @@ const Acciones = ({
           icon: "success",
           title: "¡Consulta Exitosa!",
         });
-        consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria});
+        consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id});
       } else {
         setShow(false);
         Swal.fire("¡Error!", res.STRMESSAGE, "error");
@@ -209,42 +209,57 @@ const Acciones = ({
       field: "id",
       headerName: "Identificador",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "NAUDITORIA",
       description: "Número de Auditoría",
       headerName: "No. de Auditoría",
       width: 120,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "OficioA",
       description: "Oficio al que pertenece",
       headerName: "Oficio al que pertenece",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "DescripcionTipoDeAccion",
       description: "Tipo de Resultado",
       headerName: "Tipo de Resultado",
       width: 150,
+      //align: "center",
+      headerAlign: "center",
     },
     {
       field: "DescripcionEstatusAccion",
       headerName: "Estatus de los Resultados",
       width: 150,
+      //align: "center",
+      headerAlign: "center",
     },
     {
       field: "ClaveAccion",
       description: "Clave de Resultado",
       headerName: "Clave de Resultado",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
-    { field: "idAuditoria", headerName: "idAuditoria", width: 150 },
+    { field: "idAuditoria", headerName: "idAuditoria", width: 150,align: "center",
+      headerAlign: "center", },
     {
       field: "accionSuperviviente",
       description: "Resultado Superveniente",
       headerName: "Resultado Superveniente",
       width: 150,
+      //align: "center",
+      headerAlign: "center",
     },
 
     {
@@ -252,8 +267,12 @@ const Acciones = ({
       description: "Resultado/Observación",
       headerName: "Resultado/Observación",
       width: 300,
+      //align: "center",
+      headerAlign: "center",
     },
-    { field: "Valor", description: "Valor", headerName: "Valor", width: 120 },
+    { field: "Valor", description: "Valor", headerName: "Valor", width: 120,align: "center",
+      headerAlign: "center",
+     },
     {
       field: "numeroResultado",
       headerName: "Numero de Resultado",
@@ -262,7 +281,8 @@ const Acciones = ({
       align: "center",
       headerAlign: "center",
     },
-    { field: "monto", headerName: "Monto", description: "Monto", width: 150 },
+    { field: "monto", headerName: "Monto", description: "Monto", width: 150,align: "center",
+      headerAlign: "center", },
     {
       field: "acciones",
       disableExport: true,
@@ -270,6 +290,8 @@ const Acciones = ({
       description: "Campo de Acciones",
       sortable: false,
       width: 150,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -337,7 +359,7 @@ const Acciones = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
   }, []);
 
   return (

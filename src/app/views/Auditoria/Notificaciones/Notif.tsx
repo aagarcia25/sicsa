@@ -80,7 +80,7 @@ const Notif = ({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
+            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
           }
@@ -120,7 +120,7 @@ const Notif = ({
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
   };
 
   const handleEdit = (data: any) => {
@@ -158,7 +158,7 @@ const Notif = ({
                 icon: "success",
                 title: "¡Registros Eliminados!",
               });
-              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
+              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -180,30 +180,40 @@ const Notif = ({
       field: "id",
       headerName: "Identificador",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "ciDescripcion",
       description: "Entrega",
       headerName: "Entrega",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "Oficio",
       description: "Oficio",
       headerName: "Oficio",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "OficioA",
       description: "Oficio al que pertenece",
       headerName: "Oficio al que pertenece",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "unidad",
       description: "Unidad Responsable",
       headerName: "Unidad Responsable",
       width: 300,
+      //align: "center",
+      headerAlign: "center",
     },
 
     {
@@ -211,6 +221,8 @@ const Notif = ({
       description: "Secretaría",
       headerName: "Secretaría",
       width: 300,
+      //align: "center",
+      headerAlign: "center",
     },
 
     {
@@ -218,24 +230,32 @@ const Notif = ({
       description: "Fecha de Oficio",
       headerName: "Fecha de Oficio",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "FRecibido",
       description: "Fecha de Recibido",
       headerName: "Fecha de Recibido",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "FVencimiento",
       description: "Fecha de Vencimiento",
       headerName: "Fecha de Vencimiento",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "Prorroga",
       description: "Fecha de Prorroga",
       headerName: "Fecha de Prorroga",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "acciones",
@@ -244,6 +264,8 @@ const Notif = ({
       description: "Campo de Acciones",
       sortable: false,
       width: 200,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -321,7 +343,7 @@ const Notif = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id});
   }, []);
 
   return (
