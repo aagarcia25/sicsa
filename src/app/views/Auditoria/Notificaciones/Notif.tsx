@@ -23,9 +23,12 @@ import { NotifModal } from "./NotifModal";
 const Notif = ({
   handleFunction,
   obj,
+  idauditoria,
 }: {
   handleFunction: Function;
   obj: any;
+  idauditoria: any;
+
 }) => {
   const [openContestacion, setOpenContestacion] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
@@ -77,7 +80,7 @@ const Notif = ({
               icon: "success",
               title: "¡Registro Eliminado!",
             });
-            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+            consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
           } else {
             Swal.fire("¡Error!", res.STRMESSAGE, "error");
           }
@@ -104,8 +107,10 @@ const Notif = ({
   };
 
   const handleVerAdjuntos = (data: any) => {
+    console.log("data",data);
+    
     setupdatedVrows(
-      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
+      obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.OficioA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
     setEntregado(obj.row.entregado);
@@ -115,7 +120,7 @@ const Notif = ({
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
   };
 
   const handleEdit = (data: any) => {
@@ -153,7 +158,7 @@ const Notif = ({
                 icon: "success",
                 title: "¡Registros Eliminados!",
               });
-              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+              consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
             } else {
               Swal.fire("¡Error!", res.STRMESSAGE, "error");
             }
@@ -175,24 +180,40 @@ const Notif = ({
       field: "id",
       headerName: "Identificador",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "ciDescripcion",
       description: "Entrega",
       headerName: "Entrega",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "Oficio",
       description: "Oficio",
       headerName: "Oficio",
       width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "OficioA",
+      description: "Oficio al que pertenece",
+      headerName: "Oficio al que pertenece",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "unidad",
       description: "Unidad Responsable",
       headerName: "Unidad Responsable",
       width: 300,
+      //align: "center",
+      headerAlign: "center",
     },
 
     {
@@ -200,6 +221,8 @@ const Notif = ({
       description: "Secretaría",
       headerName: "Secretaría",
       width: 300,
+      //align: "center",
+      headerAlign: "center",
     },
 
     {
@@ -207,24 +230,32 @@ const Notif = ({
       description: "Fecha de Oficio",
       headerName: "Fecha de Oficio",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "FRecibido",
       description: "Fecha de Recibido",
       headerName: "Fecha de Recibido",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "FVencimiento",
       description: "Fecha de Vencimiento",
       headerName: "Fecha de Vencimiento",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "Prorroga",
       description: "Fecha de Prorroga",
       headerName: "Fecha de Prorroga",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "acciones",
@@ -233,6 +264,8 @@ const Notif = ({
       description: "Campo de Acciones",
       sortable: false,
       width: 200,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -293,6 +326,9 @@ const Notif = ({
 
   useEffect(() => {
     console.log("obj notif", obj);
+    console.log("idauditoria",idauditoria);
+    console.log("obj notif", obj);
+    
 
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -307,7 +343,7 @@ const Notif = ({
         }
       }
     });
-    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: obj.id });
+    consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id});
   }, []);
 
   return (
@@ -315,7 +351,7 @@ const Notif = ({
       <ModalForm title={"Notificaciones de Áreas"} handleClose={handleFunction}>
         <Progress open={show}></Progress>
         <Typography variant="h6">
-          {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
+          {obj.row.NAUDITORIA + " " + obj.row.Oficio}
         </Typography>
         {agregar && obj.row.entregado !== "1" ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
@@ -370,8 +406,9 @@ const Notif = ({
           handleClose={handleClose}
           dt={vrows}
           user={user}
-          idAuditoria={obj.row.id}
+          idAuditoria={idauditoria}
           destino={updatedVrows}
+          idOficio={obj.id}
         />
       ) : (
         ""

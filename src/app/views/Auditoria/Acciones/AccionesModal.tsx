@@ -24,12 +24,16 @@ export const AccionesModal = ({
   dt,
   nAuditoria,
   idAuditoria,
+  idOficio,
+
 }: {
   tipo: number;
   handleClose: Function;
   dt: any;
   nAuditoria: number;
   idAuditoria: string;
+  idOficio:string;
+
 }) => {
   useEffect(() => { });
   // CAMPOS DE LOS FORMULARIOS
@@ -52,11 +56,14 @@ export const AccionesModal = ({
   const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const [visualizar, setVisualizar] = useState<boolean>(false);
+  const [idoficio, setidoficio] = useState("");
+  const [ListIdOficios, setListIdOficios] = useState<SelectValues[]>([]);
+
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 
   const handleSend = () => {
-    if (!TipoAccion || !EstatusAcciones || !TextoAccion) {
+    if (!TipoAccion || !EstatusAcciones ) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
       setShow(true);
@@ -72,6 +79,8 @@ export const AccionesModal = ({
         accionSuperviviente: accionSuperviviente,
         numeroResultado: numeroResultado,
         monto: monto,
+        idOficio: idoficio,
+
       };
 
       handleRequest(data);
@@ -116,7 +125,15 @@ export const AccionesModal = ({
     setEstatusAcciones(v);
   };
 
+  const handleFilterChangeOficios = (v: any) => {
+    setidoficio(v);
+  };
+
   useEffect(() => {
+    console.log("dt",dt);
+    console.log("nAuditoria",nAuditoria);
+    
+    
     if (dt === "") {
       setNoAuditoria(nAuditoria);
     } else {
@@ -129,17 +146,22 @@ export const AccionesModal = ({
       setaccionSuperviviente(dt[0]?.accionSuperviviente);
       setmonto(dt[0]?.monto);
       setnumeroResultado(dt[0]?.numeroResultado);
+      setidoficio(dt[0]?.idOficio)
     }
   }, [dt]);
 
-  const consultaListas = (catalogo: any) => {
-    let data = { NUMOPERACION: catalogo };
+  const consultaListas = (catalogo: any, P_ID?: string) => {
+    let data = { NUMOPERACION: catalogo, P_ID: P_ID };
     ShareService.SelectIndex(data).then((res) => {
       if (catalogo === 8) {
         setListTipoAccion(res.RESPONSE);
       }
       if (catalogo === 3) {
         setListEstatusAcciones(res.RESPONSE);
+        setShow(false);
+      }
+      if (catalogo === 30) {
+        setListIdOficios(res.RESPONSE);
         setShow(false);
       }
     });
@@ -161,6 +183,8 @@ export const AccionesModal = ({
   useEffect(() => {
     consultaListas(8);
     consultaListas(3);
+    consultaListas(30,idAuditoria);
+
   }, []);
 
   const validarNumero = (dato: string, state: any) => {
@@ -281,7 +305,7 @@ export const AccionesModal = ({
                 fullWidth
                 variant="standard"
                 value={ClaveAccion}
-                error={!ClaveAccion}
+                //error={!ClaveAccion}
                 onChange={(v) => setClaveAccion(v.target.value)}
                 disabled={Entregado === "1" || visualizar === true}
               />
@@ -336,6 +360,40 @@ export const AccionesModal = ({
               />
             </Grid>
           </Grid>
+
+          {/* mientras se poenen los oficios, quitar despues */}
+          <Grid
+              container
+              item
+              spacing={1}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              sx={{ padding: "2%" }}
+            >
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Typography sx={{ fontFamily: "sans-serif" }}>
+                Oficio al que pertenece:
+              </Typography>
+              <SelectFrag
+                value={idoficio}
+                options={ListIdOficios}
+                onInputChange={handleFilterChangeOficios}
+                placeholder={"Seleccione..."}
+                disabled={Entregado === "1" || visualizar === true}
+              />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+
+              <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+            </Grid>
+          {/* mientras se poenen los oficios */}
 
           {String(Entregado) !== "1" && editarPermiso === true ? (
             <Grid
