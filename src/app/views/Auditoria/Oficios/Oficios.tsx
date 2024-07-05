@@ -20,6 +20,12 @@ import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 import { OficiosContestacion } from "./OficiosContestacion";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import Notif from "../Notificaciones/Notif";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import Acciones from "../Acciones/Acciones";
+
+
 
 export const Oficios = ({
   handleFunction,
@@ -47,6 +53,10 @@ export const Oficios = ({
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState({});
   const [openContestacion, setOpenContestacion] = useState(false);
+  const [openModalOrgano, setopenModalOrgano] = useState<boolean>(false);
+  const [openModalAcciones, setOpenModalAcciones] = useState(false);
+
+
 
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
@@ -61,6 +71,9 @@ export const Oficios = ({
     setOpenAdjuntos(false);
     consulta();
     setOpenContestacion(false);
+    setopenModalOrgano(false);
+    setOpenModalAcciones(false)
+
   };
 
   const noSelection = () => {
@@ -117,6 +130,34 @@ export const Oficios = ({
     setEntregado(obj.row.entregado);
   };
 
+  const handleORgano = (data: any) => {
+    //if (data.row.entregado !== "1") {
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });
+    setopenModalOrgano(true);
+    //}
+  };
+
+  const handleAcciones = (data: any) => {
+    //if (data.row.entregado !== "1") {
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });
+    setOpenModalAcciones(true);
+    //}
+  };
+
   const handleAccion = (v: any) => {
     Swal.fire({
       icon: "info",
@@ -155,42 +196,56 @@ export const Oficios = ({
       field: "id",
       headerName: "Identificador",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "Oficio",
       description: "Oficio",
       headerName: "Oficio",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "tofDescripcion",
       description: "Tipo Oficio",
       headerName: "Tipo Oficio",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "FechaRecibido",
       description: "Fecha Recibido",
       headerName: "Fecha Recibido ",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "FechaVencimiento",
       description: "Fecha Vencimiento",
       headerName: "Fecha Vencimiento",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "Descripcion",
       description: "Descripción",
       headerName: "Descripción",
-      width: 750,
+      width: 325,
+      //align: "center",
+      headerAlign: "center",
     },
     {
       field: "Observacion",
       description: "Observación",
       headerName: "Observación",
-      width: 750,
+      width: 325,
+      //align: "center",
+      headerAlign: "center",
     },
     {
       field: "acciones",
@@ -199,6 +254,8 @@ export const Oficios = ({
       description: "Campo de Acciones",
       sortable: false,
       width: 250,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -220,6 +277,22 @@ export const Oficios = ({
             {/* ) : (
                ""
              )} */}
+
+            <ButtonsDetail
+              title={"Entregas y Notificaciones"}
+              handleFunction={handleORgano}
+              show={true}
+              icon={<FormatListBulletedIcon />}
+              row={v}
+            ></ButtonsDetail>
+
+            <ButtonsDetail
+              title={"Resultado de la Auditoria"}
+              handleFunction={handleAcciones}
+              show={true}
+              icon={<Diversity3Icon />}
+              row={v}
+            ></ButtonsDetail>
 
             <ButtonsDetail
               title={"Ver Adjuntos"}
@@ -292,6 +365,8 @@ export const Oficios = ({
   };
 
   useEffect(() => {
+    console.log("obj",obj);
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "AGREG") {
@@ -377,6 +452,18 @@ export const Oficios = ({
           obj={vrows}
           Entregado={entregado}
         />
+      ) : (
+        ""
+      )}
+
+      {openModalOrgano ? (
+        <Notif handleFunction={handleClose} obj={vrows} idauditoria={obj?.id}/>
+      ) : (
+        ""
+      )}
+
+      {openModalAcciones ? (
+        <Acciones handleFunction={handleClose} obj={vrows} idauditoria={obj?.id}/>
       ) : (
         ""
       )}

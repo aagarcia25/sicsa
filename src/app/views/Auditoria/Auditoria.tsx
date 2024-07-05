@@ -487,24 +487,32 @@ export const Auditoria = () => {
       description: "Nombre",
       headerName: "Nombre",
       width: 325,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "cmoDescripcion",
       description: "Modalidad",
       headerName: "Modalidad",
-      width: 200,
+      width: 120,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "ActaInicio",
       description: "Acta de Inicio",
       headerName: "Acta de Inicio",
       width: 185,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "ceaDescripcion",
       description: "Estatus",
       headerName: "Estatus",
-      width: 170,
+      width: 120,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "acciones",
@@ -513,6 +521,8 @@ export const Auditoria = () => {
       description: "Campo de Acciones",
       sortable: false,
       width: 420,
+      align: "center",
+      headerAlign: "center",
     renderCell: (v) => {
          //  console.log("v.row",v.row);
         
@@ -556,13 +566,7 @@ export const Auditoria = () => {
               row={v}
             ></ButtonsDetail>
 
-            <ButtonsDetail
-              title={"Entregas y Notificaciones"}
-              handleFunction={handleORgano}
-              show={true}
-              icon={<FormatListBulletedIcon />}
-              row={v}
-            ></ButtonsDetail>
+            
 
             {/* {entrega ? (
               <ButtonsDetail
@@ -588,13 +592,7 @@ export const Auditoria = () => {
               ""
             )} */}
 
-            <ButtonsDetail
-              title={"Resultado de la Auditoria"}
-              handleFunction={handleAcciones}
-              show={true}
-              icon={<Diversity3Icon />}
-              row={v}
-            ></ButtonsDetail>
+          
             <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
@@ -1114,17 +1112,17 @@ export const Auditoria = () => {
         </div>
       </Grid>
 
-      {openModalOrgano ? (
+      {/* {openModalOrgano ? (
         <Notif handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
-      )}
+      )} */}
 
-      {openModalAcciones ? (
+      {/* {openModalAcciones ? (
         <Acciones handleFunction={handleClose} obj={vrows} />
       ) : (
         ""
-      )}
+      )} */}
       {openModalOficios ? (
         <Oficios handleFunction={handleClose} obj={vrows} idauditoria={id} />
       ) : (
