@@ -99,7 +99,7 @@ export const Auditoria = () => {
   const [ListMunicipio, setListMunicipio] = useState<SelectValues[]>([]);
   const [show, setShow] = useState(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
-  const [entregado, setEntregado] = useState({});
+  //const [entregado, setEntregado] = useState({});
   const [openReporte, setOpenReporte] = useState(false);
 
   const [data, setData] = useState([]);
@@ -133,7 +133,7 @@ export const Auditoria = () => {
     //if (data.row.entregado !== "1") {
     setVrows(data);
     setOpenAdjuntos(true);
-    setEntregado(data.row.entregado);
+    //setEntregado(data.row.entregado);
 
     //}
   };
@@ -1104,7 +1104,7 @@ export const Auditoria = () => {
               handleFunction={handleClose}
               obj={vrows}
               tipo={2}
-              Entregado={entregado}
+              //Entregado={entregado}
             />
           ) : (
             ""

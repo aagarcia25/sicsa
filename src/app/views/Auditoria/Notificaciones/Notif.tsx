@@ -44,7 +44,7 @@ const Notif = ({
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
-  const [entregado, setEntregado] = useState({});
+  const [entregado, setEntregado] = useState(obj?.row?.entregado);
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
@@ -269,7 +269,7 @@ const Notif = ({
       renderCell: (v) => {
         return (
           <>
-            {eliminar && obj.row.entregado !== "1" ? (
+            {eliminar && obj.row.entregado !== 1 ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -327,7 +327,7 @@ const Notif = ({
   useEffect(() => {
     console.log("obj notif", obj);
     console.log("idauditoria",idauditoria);
-    console.log("obj notif", obj);
+    console.log("Entregado notif", entregado);
     
 
     permisos.map((item: PERMISO) => {
@@ -353,12 +353,12 @@ const Notif = ({
         <Typography variant="h6">
           {obj.row.NAUDITORIA + " " + obj.row.Oficio}
         </Typography>
-        {agregar && obj.row.entregado !== "1" ? (
+        {agregar && obj.row.entregado !== 1 ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
           ""
         )}
-        {eliminar && obj.row.entregado !== "1" ? (
+        {eliminar && obj.row.entregado !== 1 ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
               value="check"
