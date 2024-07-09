@@ -331,7 +331,7 @@ export const NotifModal = ({
                 options={ListEntrega}
                 onInputChange={handleFilterChangeEntrega}
                 placeholder={"Seleccione..."}
-                disabled={false}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -343,7 +343,7 @@ export const NotifModal = ({
                 options={ListSecretarias}
                 onInputChange={handleFilterChange1}
                 placeholder={"Seleccione..."}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
 
@@ -356,7 +356,7 @@ export const NotifModal = ({
                 options={ListUnidades}
                 onInputChange={handleFilterChange2}
                 placeholder={"Seleccione..."}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
 
@@ -372,7 +372,7 @@ export const NotifModal = ({
                 required
                 error={!Oficio}
                 onChange={(v) => setOficio(v.target.value)}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
 
@@ -386,7 +386,7 @@ export const NotifModal = ({
                 variant="standard"
                 value={SIGAOficio}
                 onChange={(v) => setSIGAOficio(v.target.value)}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
 
               /> */}
             </Grid>
@@ -410,7 +410,7 @@ export const NotifModal = ({
                   value={FOficio}
                   label={"Fecha Oficio"}
                   onchange={handleFilterChangefo}
-                  disabled={Entregado === "1" || visualizar === true}
+                  disabled={Entregado === 1 || visualizar === true}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -418,7 +418,7 @@ export const NotifModal = ({
                   value={FRecibido}
                   label={"Fecha Recibido"}
                   onchange={handleFilterChangefr}
-                  disabled={Entregado === "1" || visualizar === true}
+                  disabled={Entregado === 1 || visualizar === true}
                 />
               </Grid>
 
@@ -427,7 +427,7 @@ export const NotifModal = ({
                   value={FVencimiento}
                   label={"Fecha Vencimiento"}
                   onchange={handleFilterChangefv}
-                  disabled={Entregado === "1" || visualizar === true}
+                  disabled={Entregado === 1 || visualizar === true}
                 />
               </Grid>
 
@@ -436,7 +436,7 @@ export const NotifModal = ({
                   value={Prorroga}
                   label={"Prorroga"}
                   onchange={handleFilterChangep}
-                  disabled={Entregado === "1" || visualizar === true}
+                  disabled={Entregado === 1 || visualizar === true}
                 />
               </Grid>
             </Grid>
@@ -459,7 +459,7 @@ export const NotifModal = ({
                   value={FOficio}
                   label={"Fecha Oficio"}
                   onchange={handleFilterChangefo}
-                  disabled={Entregado === "1" || visualizar === true}
+                  disabled={Entregado === 1 || visualizar === true}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -467,7 +467,7 @@ export const NotifModal = ({
                   value={FRecibido}
                   label={"Fecha Recibido"}
                   onchange={handleFilterChangefr}
-                  disabled={Entregado === "1" || visualizar === true}
+                  disabled={Entregado === 1 || visualizar === true}
                 />
               </Grid>
 
@@ -499,7 +499,7 @@ export const NotifModal = ({
                 options={ListIdOficios}
                 onInputChange={handleFilterChangeOficios}
                 placeholder={"Seleccione..."}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
@@ -511,7 +511,7 @@ export const NotifModal = ({
           {/* mientras se poenen los oficios */}
 
 
-          {String(Entregado) !== "1" && editarPermiso === true ? (
+          {Entregado !== 1 && editarPermiso === true ? (
             <Grid
               container
               direction="row"
@@ -583,7 +583,7 @@ export const NotifModal = ({
                     }
                     label="Agregar fecha de vencimiento y prórroga"
                     labelPlacement="end"
-                    disabled={Entregado === "1" || visualizar === true}
+                    disabled={Entregado === 1 || visualizar === true}
                   />
                 </FormGroup>
               </Grid>
@@ -641,7 +641,7 @@ export const NotifModal = ({
                     }
                     label="Agregar fecha de vencimiento y prórroga"
                     labelPlacement="end"
-                    disabled={Entregado === "1" || visualizar === true}
+                    disabled={Entregado === 1 || visualizar === true}
                   />
                 </FormGroup>
               </Grid>
