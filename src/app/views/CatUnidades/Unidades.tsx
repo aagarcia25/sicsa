@@ -200,7 +200,7 @@ export const Unidades = ()=>{
 
   useEffect(() => {
     permisos.map((item: PERMISO) => {
-      if (String(item.menu) === "EFISCALIZADA") {
+      if (String(item.menu) === "UNIDADES") {
         if (String(item.ControlInterno) === "AGREG") {
           setAgregar(true);
         }

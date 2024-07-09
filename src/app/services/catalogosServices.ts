@@ -88,4 +88,8 @@ export class CatalogosServices {
   public static async Unidad_index(data: any) {
     return await post("Unidad_index", data);
   }
+
+  public static async Etapas_index(data: any) {
+    return await post("Etapas_index", data);
+  }
 }

@@ -223,7 +223,7 @@ export const AccionesModal = ({
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
                 margin="dense"
                 id="NoAuditoria"
                 label="No. de Auditoria"
@@ -244,7 +244,7 @@ export const AccionesModal = ({
                 options={ListTipoAccion}
                 onInputChange={handleFilterChange2}
                 placeholder={"Seleccione el Tipo de Resultado"}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -256,7 +256,7 @@ export const AccionesModal = ({
                 options={ListEstatusAcciones}
                 onInputChange={handleFilterChange4}
                 placeholder={"Seleccione el Estatus de los Resultados"}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -278,7 +278,7 @@ export const AccionesModal = ({
                 onChange={(v) => {
                   setmonto(validarNumero(v.target.value, monto));
                 }}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
           </Grid>
@@ -307,7 +307,7 @@ export const AccionesModal = ({
                 value={ClaveAccion}
                 //error={!ClaveAccion}
                 onChange={(v) => setClaveAccion(v.target.value)}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -322,7 +322,7 @@ export const AccionesModal = ({
                 //required
                 //error={!TextoAccion}
                 onChange={(v) => setTextoAccion(v.target.value)}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -337,7 +337,7 @@ export const AccionesModal = ({
                 //required
                 //error={!accionSuperviviente}
                 onChange={(v) => setaccionSuperviviente(v.target.value)}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -356,7 +356,7 @@ export const AccionesModal = ({
                     validarNumero(v.target.value, numeroResultado)
                   );
                 }}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
           </Grid>
@@ -384,7 +384,7 @@ export const AccionesModal = ({
                 options={ListIdOficios}
                 onInputChange={handleFilterChangeOficios}
                 placeholder={"Seleccione..."}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
@@ -395,7 +395,7 @@ export const AccionesModal = ({
             </Grid>
           {/* mientras se poenen los oficios */}
 
-          {String(Entregado) !== "1" && editarPermiso === true ? (
+          {Entregado !== 1 && editarPermiso === true ? (
             <Grid
               container
               direction="row"
