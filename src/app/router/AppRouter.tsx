@@ -33,6 +33,7 @@ import { DestinatariosOficios } from "../views/CatDestinatariosOficio/Destinatar
 import { MonitoreoWeb } from "../views/MonitoreoWeb/MonitoreoWeb";
 import { TipoOficio } from "../views/CatTipoOficio/TipoOficio";
 import { Unidades } from "../views/CatUnidades/Unidades";
+import { Etapas } from "../views/CatEtapas/Etapas";
 //import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
@@ -161,6 +162,11 @@ export const AppRouter = ({ login }: { login: boolean }) => {
         <Route
           path="/inicio/catalogos/unidades"
           element={log ? <Unidades /> : <Unidades />}
+        />
+
+        <Route
+          path="/inicio/catalogos/etapas"
+          element={log ? <Etapas /> : <Etapas />}
         />
 
         <Route

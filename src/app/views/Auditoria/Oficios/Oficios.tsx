@@ -24,6 +24,9 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Notif from "../Notificaciones/Notif";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import Acciones from "../Acciones/Acciones";
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import { Etapas } from "./Etapas";
+import { validateHeaderValue } from "http";
 
 
 
@@ -55,6 +58,7 @@ export const Oficios = ({
   const [openContestacion, setOpenContestacion] = useState(false);
   const [openModalOrgano, setopenModalOrgano] = useState<boolean>(false);
   const [openModalAcciones, setOpenModalAcciones] = useState(false);
+  const [openEtapas, setopenEtapas] = useState(false);
 
 
 
@@ -73,8 +77,53 @@ export const Oficios = ({
     setOpenContestacion(false);
     setopenModalOrgano(false);
     setOpenModalAcciones(false)
-
+    setopenEtapas(false)
   };
+
+
+  const CierreEtapa = () => {
+
+    setopenEtapas(true)
+
+    // if (selectionModel.length >= 1) {
+    //   Swal.fire({
+    //     icon: "info",
+    //     title: "¿Qué etapa desea concluir?",
+    //     showDenyButton: true,
+    //     showCancelButton: false,
+    //     confirmButtonText: "Confirmar",
+    //     denyButtonText: `Cancelar`,
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       // let data = {
+    //       //   NUMOPERACION: 9,
+    //       //   CHIDs: selectionModel,
+    //       //   CHUSER: user.Id,
+    //       // };
+
+    //       AuditoriaService.OficiosA_index(data).then((res) => {
+    //         if (res.SUCCESS) {
+    //           Toast.fire({
+    //             icon: "success",
+    //             title: "¡Etapa concluida!",
+    //           });
+    //           consulta();
+    //         } else {
+    //           Swal.fire("¡Error!", res.STRMESSAGE, "error");
+    //         }
+    //       });
+    //     } else if (result.isDenied) {
+    //       Swal.fire("No se realizaron cambios", "", "info");
+    //     }
+    //   });
+    // } else {
+    //   Swal.fire({
+    //     title: "Favor de Seleccionar Registros",
+    //     icon: "warning",
+    //   });
+    // }
+  }
+
 
   const noSelection = () => {
     if (selectionModel.length >= 1) {
@@ -216,6 +265,14 @@ export const Oficios = ({
       headerAlign: "center",
     },
     {
+      field: "etDescripcion",
+      description: "Etapa",
+      headerName: "Etapa",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
       field: "FechaRecibido",
       description: "Fecha Recibido",
       headerName: "Fecha Recibido ",
@@ -257,9 +314,11 @@ export const Oficios = ({
       align: "center",
       headerAlign: "center",
       renderCell: (v) => {
+        console.log("v",v);
+        
         return (
           <>
-            {eliminar && obj.row.entregado !== "1" ? (
+            {eliminar ? (v.row.entregado !== 1 ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -267,7 +326,12 @@ export const Oficios = ({
               ></ButtonsDeleted>
             ) : (
               ""
-            )}
+            )
+          ):(
+            ""
+          )}
+
+
             {/* {editar ? ( */}
             <ButtonsEdit
               handleAccion={handleEdit}
@@ -366,6 +430,8 @@ export const Oficios = ({
 
   useEffect(() => {
     console.log("obj",obj);
+    console.log("obj.row.entregado",obj.row.entregado);
+    
     
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -429,6 +495,19 @@ export const Oficios = ({
           ""
         )}
 
+          <Tooltip title={"Cierre de etapa"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => CierreEtapa()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <AssignmentTurnedInIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+
         <MUIXDataGridGeneral
           columns={columns}
           rows={data}
@@ -467,6 +546,18 @@ export const Oficios = ({
       ) : (
         ""
       )}
+
+      {openEtapas ? (
+        <Etapas
+          open={openEtapas}
+          handleFunction={handleClose}
+          obj={vrows}
+        ></Etapas>
+      ) : (
+        ""
+      )}
+
+
       {/* {openAdjuntos ? ( */}
       {/* <VisorDocumentosOficios
           handleFunction={handleClose}

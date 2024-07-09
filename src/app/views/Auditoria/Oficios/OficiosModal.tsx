@@ -42,10 +42,14 @@ export const OficiosModal = ({
 
   const [idCatTOficio, setIdCatTOficio] = useState("");
   const [CatTOficioList, setCatTOficioList] = useState<SelectValues[]>([]);
+  const [idCatEtapa, setIdCatEtapa] = useState("");
+  const [CatEtapaList, setCatEtapaList] = useState<SelectValues[]>([]);
 
 
   const [mensaje, setMensaje] = useState("");
-  const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado);
+  const [Entregado, setEntregado] = useState(dt[0]?.data?.row?.entregado);
+  //const [Entregado, setEntregado] = useState({});
+
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const [visualizar, setVisualizar] = useState<boolean>(false);
 
@@ -66,6 +70,7 @@ export const OficiosModal = ({
         FechaVencimiento: ffin,
         Descripcion: descripcion,
         Observacion: observacion,
+        idEtapa: idCatEtapa,
       };
 
       if (tipo === 1) {
@@ -85,6 +90,10 @@ export const OficiosModal = ({
 
   const handleFilterChange2 = (v: any) => {
     setFfin(v);
+  };
+
+  const handleFilterChangeCatEtapa = (v: any) => {
+    setIdCatEtapa(v);
   };
 
   
@@ -135,6 +144,9 @@ export const OficiosModal = ({
       if (operacion === 29) {
         setCatTOficioList(res.RESPONSE);
         setShow(false);
+      }if (operacion === 31) {
+        setCatEtapaList(res.RESPONSE);
+        setShow(false);
       }
     });
   };
@@ -153,7 +165,13 @@ export const OficiosModal = ({
   });
 
   useEffect(() => {
+    console.log("dt",dt);
+    console.log("Entregado",Entregado);
+    
+    
 loadFilter(29)
+loadFilter(31)
+
 
 
 
@@ -164,6 +182,7 @@ loadFilter(29)
       setOficio(dt[0]?.data?.row?.Oficio);
       setDescripcion(dt[0]?.data?.row?.Descripcion);
       setObservacion(dt[0]?.data?.row?.Observacion);
+      setIdCatEtapa(dt[0]?.data?.row?.etid);
       setIdCatTOficio(dt[0]?.data?.row?.tofid);
       setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido,'DD-MM-YYYY'));
       setFfin(dayjs(dt[0]?.data?.row?.FechaVencimiento,'DD-MM-YYYY'));
@@ -205,7 +224,7 @@ loadFilter(29)
                 focused
                 onChange={(v) => setOficio(v.target.value)}
                 error={oficio === "" ? true : false}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
 
                 // InputProps={{
                 //   readOnly: tipo === 1 ? false : true,
@@ -221,7 +240,7 @@ loadFilter(29)
                 options={CatTOficioList}
                 onInputChange={handleFilterChangeCatTOficio}
                 placeholder={"Seleccione.."}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
             
@@ -230,7 +249,7 @@ loadFilter(29)
                 value={finicio}
                 label={"Fecha Recibido"}
                 onchange={handleFilterChange1}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
 
@@ -239,7 +258,7 @@ loadFilter(29)
                 value={ffin}
                 label={"Fecha Vencimiento"}
                 onchange={handleFilterChange2}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
               />
             </Grid>
           </Grid>
@@ -257,7 +276,20 @@ loadFilter(29)
             alignItems="center"
             sx={{ padding: "1%" }}
           >
-            <Grid item xs={12} sm={6} md={4} lg={6}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Typography sx={{ fontFamily: "sans-serif" }}>
+                Etapa:
+              </Typography>
+              <SelectFrag
+                value={idCatEtapa}
+                options={CatEtapaList}
+                onInputChange={handleFilterChangeCatEtapa}
+                placeholder={"Seleccione.."}
+                disabled={Entregado === 1 || visualizar === true}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={4} lg={3}>
             <Typography sx={{ fontFamily: "sans-serif" }}>Descripción</Typography>
             <TextField
               
@@ -271,7 +303,7 @@ loadFilter(29)
                 fullWidth
                 focused
                 onChange={(v) => setDescripcion(v.target.value)}
-                disabled={Entregado === "1" || visualizar === true}
+                disabled={Entregado === 1 || visualizar === true}
 
                 // InputProps={{
                 //   readOnly: tipo === 1 ? false : true,
@@ -293,7 +325,7 @@ loadFilter(29)
               fullWidth
               focused
               onChange={(v) => setObservacion(v.target.value)}
-              disabled={Entregado === "1" || visualizar === true}
+              disabled={Entregado === 1 || visualizar === true}
 
               // InputProps={{
               //   readOnly: tipo === 1 ? false : true,
@@ -301,10 +333,9 @@ loadFilter(29)
             />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
 
-          {String(Entregado) !== "1" && editarPermiso === true ? (
+          {Entregado !== 1 && editarPermiso === true ? (
             <Grid
               container
               direction="row"

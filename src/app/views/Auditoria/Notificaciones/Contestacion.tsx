@@ -268,7 +268,7 @@ export const Contestacion = ({
               show={true}
             ></ButtonsEdit>
 
-            {eliminar && Entregado !== "1" ? (
+            {eliminar && Entregado !== 1 ? (
               <ButtonsDeleted
                 handleAccion={handleAccion}
                 row={v}
@@ -311,6 +311,8 @@ export const Contestacion = ({
 
   useEffect(() => {
     console.log("obj",obj);
+    console.log("Entregado",Entregado);
+    
 
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -338,12 +340,12 @@ export const Contestacion = ({
         <Typography variant="h6">
           {obj.row.Oficio + " " + obj.row.unidad}
         </Typography>
-        {agregar && Entregado !== "1" ? (
+        {agregar && Entregado !== 1 ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
           ""
         )}
-        {eliminar && Entregado !== "1" ? (
+        {eliminar && Entregado !== 1 ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
               value="check"
