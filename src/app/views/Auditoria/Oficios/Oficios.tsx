@@ -250,6 +250,14 @@ export const Oficios = ({
       headerAlign: "center",
     },
     {
+      field: "OficioRelacion",
+      description: "Oficio Relacionado",
+      headerName: "Oficio Relacionado",
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
       field: "FechaRecibido",
       description: "Fecha Recibido",
       headerName: "Fecha Recibido ",
@@ -291,7 +299,6 @@ export const Oficios = ({
       align: "center",
       headerAlign: "center",
       renderCell: (v) => {
-        console.log("v",v);
         
         return (
           <>
