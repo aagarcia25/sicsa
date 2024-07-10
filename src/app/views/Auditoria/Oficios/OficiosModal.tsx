@@ -44,6 +44,8 @@ export const OficiosModal = ({
   const [CatTOficioList, setCatTOficioList] = useState<SelectValues[]>([]);
   const [idCatEtapa, setIdCatEtapa] = useState("");
   const [CatEtapaList, setCatEtapaList] = useState<SelectValues[]>([]);
+  const [idOficioRelacion, setIdOficioRelacion] = useState("");
+  const [CatOficioRelacionList, setOficioRelacionList] = useState<SelectValues[]>([]);
 
 
   const [mensaje, setMensaje] = useState("");
@@ -71,6 +73,8 @@ export const OficiosModal = ({
         Descripcion: descripcion,
         Observacion: observacion,
         idEtapa: idCatEtapa,
+        idOficioRelacion: idOficioRelacion,
+
       };
 
       if (tipo === 1) {
@@ -95,7 +99,10 @@ export const OficiosModal = ({
   const handleFilterChangeCatEtapa = (v: any) => {
     setIdCatEtapa(v);
   };
-
+  
+  const handleFilterChangeOficioRelacion = (v: any) => {
+    setIdOficioRelacion(v);
+  };
   
   const handleFilterChangeCatTOficio = (v: any) => {
     setIdCatTOficio(v);
@@ -147,10 +154,13 @@ export const OficiosModal = ({
       }if (operacion === 31) {
         setCatEtapaList(res.RESPONSE);
         setShow(false);
+      }if (operacion === 30) {
+        setOficioRelacionList(res.RESPONSE);
+        setShow(false);
       }
     });
   };
-
+  
   useEffect(() => {
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -167,13 +177,12 @@ export const OficiosModal = ({
   useEffect(() => {
     console.log("dt",dt);
     console.log("Entregado",Entregado);
+    console.log("idauditoria",idauditoria);
     
     
 loadFilter(29)
 loadFilter(31)
-
-
-
+loadFilter(30,idauditoria)
 
     if (dt === "") {
     } else {
@@ -182,6 +191,7 @@ loadFilter(31)
       setOficio(dt[0]?.data?.row?.Oficio);
       setDescripcion(dt[0]?.data?.row?.Descripcion);
       setObservacion(dt[0]?.data?.row?.Observacion);
+      setIdOficioRelacion(dt[0]?.data?.row?.idOficioRelacion);
       setIdCatEtapa(dt[0]?.data?.row?.etid);
       setIdCatTOficio(dt[0]?.data?.row?.tofid);
       setFinicio(dayjs(dt[0]?.data?.row?.FechaRecibido,'DD-MM-YYYY'));
@@ -331,6 +341,40 @@ loadFilter(31)
               //   readOnly: tipo === 1 ? false : true,
               // }}
             />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
+          </Grid>
+          <Grid
+            container
+            item
+            spacing={1}
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ padding: "1%" }}
+          >
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Typography sx={{ fontFamily: "sans-serif" }}>
+                Oficio Relacionado:
+              </Typography>
+              <SelectFrag
+                value={idOficioRelacion}
+                options={CatOficioRelacionList}
+                onInputChange={handleFilterChangeOficioRelacion}
+                placeholder={"Seleccione.."}
+                disabled={Entregado === 1 || visualizar === true}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+            
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={6}>
+            
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
           </Grid>
