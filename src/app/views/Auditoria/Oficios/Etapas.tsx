@@ -4,20 +4,32 @@ import { useEffect, useState } from "react";
 import SelectFrag from "../../componentes/SelectFrag";
 import SelectValues from "../../../interfaces/Share";
 import { ShareService } from "../../../services/ShareService";
+import axios from "axios";
+import { USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { getUser } from "../../../services/localStorage";
+import { AuditoriaService } from "../../../services/AuditoriaService";
+import { Toast } from "../../../helpers/Toast";
+import Swal from "sweetalert2";
 
  export const Etapas = ({
     open,
     handleFunction,
     obj,
+    tipo,
+
  }:{
     open:boolean;
     handleFunction: Function;
     obj:any;
+    tipo: number;
+
  }) => {
     const [openSlider, setOpenSlider] = useState(false);
     const [idEtapa, setIdEtapa] = useState("");
     const [ListIdetapas, setListIdetapas] = useState<SelectValues[]>([]);
     const [show, setShow] = useState(false);
+  const user: USUARIORESPONSE = JSON.parse(String(getUser()));
+
  
 
     const handleFilterEtapas = (v: string) => {
@@ -37,7 +49,34 @@ import { ShareService } from "../../../services/ShareService";
     });
     };
 
+    const handleConcluir = () => {
+      setOpenSlider(true);
+        let data = {
+        NUMOPERACION: tipo ===1? 5:6,
+        //CHID: obj.row.id,
+        CHUSER: user.Id,
+        IDETAPA: idEtapa,
+      };
+      AuditoriaService.OficiosA_index(data).then((res) => {
+        if (res.SUCCESS) {
+          setOpenSlider(false);
+
+          Toast.fire({
+            icon: "success",
+            title: tipo ===1?"¡Etapa Concluida!":"¡Etapa Habilitada!",
+          });
+          handleFunction()
+        } else {
+          Swal.fire(res.STRMESSAGE, "¡Error!", "info");
+        }
+      })
+    };
+
+
+
   useEffect(() => {
+    console.log("tipo",tipo);
+    
     loadFilter(31)
     
   }, []);
@@ -67,7 +106,7 @@ return(<Dialog
         
       <Progress open= {openSlider} />
     <DialogTitle>
-    ¿Qué etapa desea concluir?
+    {tipo===1?"¿Qué etapa desea concluir?":"¿Qué etapa desea habilitar?"} 
     </DialogTitle>
     <DialogContent>
     <FormGroup aria-label="position" row>
@@ -85,7 +124,7 @@ return(<Dialog
     </DialogContent>
     <DialogActions>
         <Button onClick={() => handleFunction()}>Cancelar</Button>
-        {/* <Button onClick={handleGenerarInforme}>Generar</Button> */}
+        <Button onClick={handleConcluir}>{tipo===1 ? "Concluir" : "Habilitar"} </Button>
         
     </DialogActions>
   

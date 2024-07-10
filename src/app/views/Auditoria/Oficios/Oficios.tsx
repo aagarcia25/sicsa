@@ -26,6 +26,10 @@ import Diversity3Icon from "@mui/icons-material/Diversity3";
 import Acciones from "../Acciones/Acciones";
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { Etapas } from "./Etapas";
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { validateHeaderValue } from "http";
 
 
@@ -59,6 +63,7 @@ export const Oficios = ({
   const [openModalOrgano, setopenModalOrgano] = useState<boolean>(false);
   const [openModalAcciones, setOpenModalAcciones] = useState(false);
   const [openEtapas, setopenEtapas] = useState(false);
+  const [tipoEtapas, setTipoEtapas] = useState(0);
 
 
 
@@ -67,7 +72,10 @@ export const Oficios = ({
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
-    setEntregado(obj.row.entregado);
+    //setEntregado(obj.row.entregado);
+    setVrows(data)
+    console.log("data clip",data);
+    setEntregado(data.row.entregado)
   };
 
   const handleClose = () => {
@@ -82,47 +90,16 @@ export const Oficios = ({
 
 
   const CierreEtapa = () => {
-
     setopenEtapas(true)
-
-    // if (selectionModel.length >= 1) {
-    //   Swal.fire({
-    //     icon: "info",
-    //     title: "¿Qué etapa desea concluir?",
-    //     showDenyButton: true,
-    //     showCancelButton: false,
-    //     confirmButtonText: "Confirmar",
-    //     denyButtonText: `Cancelar`,
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       // let data = {
-    //       //   NUMOPERACION: 9,
-    //       //   CHIDs: selectionModel,
-    //       //   CHUSER: user.Id,
-    //       // };
-
-    //       AuditoriaService.OficiosA_index(data).then((res) => {
-    //         if (res.SUCCESS) {
-    //           Toast.fire({
-    //             icon: "success",
-    //             title: "¡Etapa concluida!",
-    //           });
-    //           consulta();
-    //         } else {
-    //           Swal.fire("¡Error!", res.STRMESSAGE, "error");
-    //         }
-    //       });
-    //     } else if (result.isDenied) {
-    //       Swal.fire("No se realizaron cambios", "", "info");
-    //     }
-    //   });
-    // } else {
-    //   Swal.fire({
-    //     title: "Favor de Seleccionar Registros",
-    //     icon: "warning",
-    //   });
-    // }
+    setTipoEtapas(1)
   }
+
+  const HabilitarEtapa = () => {
+    setopenEtapas(true)
+    setTipoEtapas(2)
+  }
+
+  
 
 
   const noSelection = () => {
@@ -503,7 +480,20 @@ export const Oficios = ({
               onChange={() => CierreEtapa()}
             >
               <IconButton color="inherit" component="label" size="small">
-                <AssignmentTurnedInIcon />
+                <FactCheckIcon />
+              </IconButton>
+            </ToggleButton>
+          </Tooltip>
+
+          <Tooltip title={"Habilitar etapa"}>
+            <ToggleButton
+              value="check"
+              className="guardar"
+              size="small"
+              onChange={() => HabilitarEtapa()}
+            >
+              <IconButton color="inherit" component="label" size="small">
+                <EditNoteIcon/>
               </IconButton>
             </ToggleButton>
           </Tooltip>
@@ -527,9 +517,8 @@ export const Oficios = ({
       </ModalForm>
       {openContestacion ? (
         <OficiosContestacion
-          handleFunction={handleClose}
-          obj={vrows}
-          Entregado={entregado}
+          handleFunction={handleClose} obj={vrows}
+          Entregado={obj?.row?.entregado}
         />
       ) : (
         ""
@@ -552,6 +541,7 @@ export const Oficios = ({
           open={openEtapas}
           handleFunction={handleClose}
           obj={vrows}
+          tipo={tipoEtapas}
         ></Etapas>
       ) : (
         ""
