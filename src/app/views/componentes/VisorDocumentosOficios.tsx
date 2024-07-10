@@ -355,7 +355,7 @@ const VisorDocumentosOficios = ({
                   row={v}
                 ></ButtonsDetail>
 
-                {Entregado !== "1" && eliminarDocumentos ? (
+                {Entregado !== 1 && eliminarDocumentos ? (
                   <ButtonsDeleted
                     handleAccion={handleAccion}
                     row={v}
@@ -374,7 +374,7 @@ const VisorDocumentosOficios = ({
                   icon={<DriveFolderUploadIcon />}
                   row={v}
                 ></ButtonsDetail>
-                {Entregado !== "1" && eliminarDocumentos ? (
+                {Entregado !== 1 && eliminarDocumentos ? (
                   <ButtonsDeletedFolder
                     handleAccion={handleAccion}
                     row={v}
@@ -495,6 +495,10 @@ const VisorDocumentosOficios = ({
   }, [explorerRoute]);
 
   useEffect(() => {
+    console.log("Entregado",Entregado);
+    console.log("obj",obj);
+
+    
     setverarchivo(false);
 
     if (breadcrumbs.length === 0) {
@@ -544,7 +548,7 @@ const VisorDocumentosOficios = ({
                   ""
                 )}
 
-                {Entregado !== "1" && adjuntar ? (
+                {Entregado !== 1 && adjuntar ? (
                   <TooltipPersonalizado
                     title={
                       <React.Fragment>
@@ -578,7 +582,7 @@ const VisorDocumentosOficios = ({
                   ""
                 )}
 
-                {Entregado !== "1" && adjuntar ? (
+                {Entregado !== 1 && adjuntar ? (
                   <TooltipPersonalizado
                     title={
                       <React.Fragment>

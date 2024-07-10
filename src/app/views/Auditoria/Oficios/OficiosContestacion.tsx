@@ -47,7 +47,7 @@ export const OficiosContestacion = ({
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
-  const [entregado, setEntregado] = useState({});
+  const [entregado, setEntregado] = useState(obj?.row?.entregado);
 
     const handleVerAdjuntos = (data: any) => {
         setupdatedVrows(
@@ -60,7 +60,7 @@ export const OficiosContestacion = ({
             data.row.Oficio
         );
         setOpenAdjuntos(true);
-        setEntregado(Entregado);
+        //setEntregado( entregado);
       };
 
     const consulta = (data: any) => {
@@ -161,7 +161,7 @@ export const OficiosContestacion = ({
         setOpenModal(true);
         setTipoOperacion(2);
         setVrows(data.data);
-        setEntregado(Entregado);
+        //setEntregado(entregado);
       };
     
       const handleOpen = () => {
@@ -271,7 +271,7 @@ export const OficiosContestacion = ({
                   show={true}
                 ></ButtonsEdit>
     
-                {eliminar && Entregado !== "1" ? (
+                {eliminar && entregado !== 1 ? (
                   <ButtonsDeleted
                     handleAccion={handleAccion}
                     row={v}
@@ -313,6 +313,9 @@ export const OficiosContestacion = ({
       ];
 
     useEffect(() => {
+      console.log("entregado",entregado);
+      console.log("obj",obj);
+      
         permisos.map((item: PERMISO) => {
           if (String(item.menu) === "AUDITOR") {
             if (String(item.ControlInterno) === "AGREG") {
@@ -339,12 +342,12 @@ export const OficiosContestacion = ({
             <Typography variant="h6">
               {obj.row.Oficio + " - " + obj.row.NAUDITORIA}
             </Typography>
-            {agregar && Entregado !== "1" ? (
+            {agregar && entregado !== 1 ? (
               <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
             ) : (
               ""
             )}
-            {eliminar && Entregado !== "1" ? (
+            {eliminar && entregado !== 1 ? (
               <Tooltip title={"Eliminar Registros Seleccionados"}>
                 <ToggleButton
                   value="check"
