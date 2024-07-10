@@ -200,6 +200,8 @@ export const OficiosContestacionModal = ({
       };
 
     useEffect(() => {
+      console.log("Entregado",Entregado);
+      
         loadFilter(19);
         
     
@@ -272,7 +274,7 @@ export const OficiosContestacionModal = ({
                     options={ListSecretarias}
                     onInputChange={handleFilterChange1}
                     placeholder={"Seleccione..."}
-                    disabled={Entregado === "1" || visualizar === true}
+                    disabled={Entregado === 1 || visualizar === true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -284,7 +286,7 @@ export const OficiosContestacionModal = ({
                     options={ListUnidades}
                     onInputChange={handleFilterChange2}
                     placeholder={"Seleccione..."}
-                    disabled={Entregado === "1" || visualizar === true}
+                    disabled={Entregado === 1 || visualizar === true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -299,7 +301,7 @@ export const OficiosContestacionModal = ({
                     required
                     error={!Oficio}
                     onChange={(v) => setOficio(v.target.value)}
-                    disabled={Entregado === "1" || visualizar === true}
+                    disabled={Entregado === 1 || visualizar === true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -312,7 +314,7 @@ export const OficiosContestacionModal = ({
                     variant="standard"
                     value={SIGAOficio}
                     onChange={(v) => setSIGAOficio(v.target.value)}
-                    disabled={Entregado === "1" || visualizar === true}
+                    disabled={Entregado === 1 || visualizar === true}
                   />
                 </Grid>
               </Grid>
@@ -336,7 +338,7 @@ export const OficiosContestacionModal = ({
                       value={FOficio}
                       label={"Fecha Oficio"}
                       onchange={handleFilterChangefo}
-                      disabled={Entregado === "1" || visualizar === true}
+                      disabled={Entregado === 1 || visualizar === true}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -344,7 +346,7 @@ export const OficiosContestacionModal = ({
                       value={FRecibido}
                       label={"Fecha Recibido"}
                       onchange={handleFilterChangefr}
-                      disabled={Entregado === "1" || visualizar === true}
+                      disabled={Entregado === 1 || visualizar === true}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -352,7 +354,7 @@ export const OficiosContestacionModal = ({
                       value={FVencimiento}
                       label={"Fecha Vencimiento"}
                       onchange={handleFilterChangefv}
-                      disabled={Entregado === "1" || visualizar === true}
+                      disabled={Entregado === 1 || visualizar === true}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -360,7 +362,7 @@ export const OficiosContestacionModal = ({
                       value={Prorroga}
                       label={"Prorroga"}
                       onchange={handleFilterChangep}
-                      disabled={Entregado === "1" || visualizar === true}
+                      disabled={Entregado === 1 || visualizar === true}
                     />
                   </Grid>
                 </Grid>
@@ -384,7 +386,7 @@ export const OficiosContestacionModal = ({
                       value={FOficio}
                       label={"Fecha Oficio"}
                       onchange={handleFilterChangefo}
-                      disabled={Entregado === "1" || visualizar === true}
+                      disabled={Entregado === 1 || visualizar === true}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -392,7 +394,7 @@ export const OficiosContestacionModal = ({
                       value={FRecibido}
                       label={"Fecha Recibido"}
                       onchange={handleFilterChangefr}
-                      disabled={Entregado === "1" || visualizar === true}
+                      disabled={Entregado === 1 || visualizar === true}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
@@ -427,7 +429,7 @@ export const OficiosContestacionModal = ({
                     fullWidth
                     focused
                     onChange={(v) => setObservacion(v.target.value)}
-                    disabled={Entregado === "1" || visualizar === true}
+                    disabled={Entregado === 1 || visualizar === true}
  
                     // InputProps={{
                     //   readOnly: tipo === 1 ? false : true,
@@ -445,7 +447,7 @@ export const OficiosContestacionModal = ({
                   </Grid>
                 </Grid>
     
-              {String(Entregado) !== "1" && editarPermiso === true ? (
+              {Entregado !== 1 && editarPermiso === true ? (
                 <Grid
                   container
                   direction="row"
@@ -518,7 +520,7 @@ export const OficiosContestacionModal = ({
                         }
                         label="Agregar fecha de vencimiento y prórroga"
                         labelPlacement="end"
-                        disabled={Entregado === "1" || visualizar === true}
+                        disabled={Entregado === 1 || visualizar === true}
                       />
                     </FormGroup>
                   </Grid>
@@ -576,7 +578,7 @@ export const OficiosContestacionModal = ({
                         }
                         label="Agregar fecha de vencimiento y prórroga"
                         labelPlacement="end"
-                        disabled={Entregado === "1" || visualizar === true}
+                        disabled={Entregado === 1 || visualizar === true}
                       />
                     </FormGroup>
                   </Grid>
