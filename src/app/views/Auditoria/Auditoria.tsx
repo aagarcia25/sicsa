@@ -487,7 +487,6 @@ export const Auditoria = () => {
       description: "Nombre",
       headerName: "Nombre",
       width: 325,
-      align: "center",
       headerAlign: "center",
     },
     {
