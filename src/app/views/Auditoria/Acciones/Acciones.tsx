@@ -159,12 +159,22 @@ const Acciones = ({
 
   const handleVerAdjuntos = (data: any) => {
     console.log("data",data);
-    
-    setupdatedVrows(
+
+    if(data.row.idOficio){
+      setupdatedVrows(
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.OficioA + "/" +  data.row.ClaveAccion
     );
     setOpenAdjuntos(true);
     setEntregado(obj.row.entregado)
+    }else{
+      Toast.fire({
+    icon: "info",
+    title: "¡Asignar oficio al que pertenece la notificación!",
+  });
+  setOpenAdjuntos(false);
+    }
+    
+    
 
   };
 
@@ -232,7 +242,7 @@ const Acciones = ({
       field: "DescripcionTipoDeAccion",
       description: "Tipo de Resultado",
       headerName: "Tipo de Resultado",
-      width: 150,
+      width: 300,
       //align: "center",
       headerAlign: "center",
     },
@@ -245,8 +255,8 @@ const Acciones = ({
     },
     {
       field: "ClaveAccion",
-      description: "Clave de Resultado",
-      headerName: "Clave de Resultado",
+      description: "Resultado",
+      headerName: "Resultado",
       width: 150,
       align: "center",
       headerAlign: "center",
@@ -266,7 +276,7 @@ const Acciones = ({
       field: "TextoAccion",
       description: "Resultado/Observación",
       headerName: "Resultado/Observación",
-      width: 300,
+      width: 450,
       //align: "center",
       headerAlign: "center",
     },
@@ -277,7 +287,7 @@ const Acciones = ({
       field: "numeroResultado",
       headerName: "Numero de Resultado",
       description: "Número de Resultado",
-      width: 150,
+      width: 80,
       align: "center",
       headerAlign: "center",
     },

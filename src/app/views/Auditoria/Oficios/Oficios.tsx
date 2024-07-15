@@ -286,7 +286,7 @@ export const Oficios = ({
       description: "Observación",
       headerName: "Observación",
       width: 325,
-      //align: "center",
+      align: "center",
       headerAlign: "center",
     },
     {
