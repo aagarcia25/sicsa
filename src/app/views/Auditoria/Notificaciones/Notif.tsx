@@ -107,14 +107,31 @@ const Notif = ({
   };
 
   const handleVerAdjuntos = (data: any) => {
+    console.log("obj.row.idOficio",obj.row.idOficio);
     console.log("data",data);
-    
-    setupdatedVrows(
+
+    if(data.row.idOficio){
+      setupdatedVrows(
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.OficioA + "/" + data.row.Oficio
     );
     setOpenAdjuntos(true);
     setEntregado(obj.row.entregado);
+    }else{
+      Toast.fire({
+    icon: "info",
+    title: "¡Asignar oficio al que pertenece la notificación!",
+  });
+  setOpenAdjuntos(false);
+    }
   };
+  
+
+  const handleSinAccesoVerAdjuntos = (data: any) => {
+    console.log("obj.row.idOficio",obj.row.idOficio);
+    console.log("data",data);
+
+    
+  }
 
   const handleClose = () => {
     setOpenContestacion(false);
@@ -187,7 +204,7 @@ const Notif = ({
       field: "ciDescripcion",
       description: "Entrega",
       headerName: "Entrega",
-      width: 150,
+      width: 60,
       align: "center",
       headerAlign: "center",
     },
@@ -284,13 +301,14 @@ const Notif = ({
               show={true}
             ></ButtonsEdit>
 
-            <ButtonsDetail
+              <ButtonsDetail
               title={"Ver Adjuntos"}
               handleFunction={handleVerAdjuntos}
               show={true}
               icon={<AttachmentIcon />}
               row={v}
             ></ButtonsDetail>
+            
 
             <ButtonsDetail
               title={"Ver Contestación"}

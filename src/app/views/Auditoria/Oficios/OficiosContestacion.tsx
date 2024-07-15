@@ -194,7 +194,6 @@ export const OficiosContestacion = ({
           description: "Unidad Responsable",
           headerName: "Unidad Responsable",
           width: 300,
-          align: "center",
           headerAlign: "center",
         },
         {
@@ -202,7 +201,6 @@ export const OficiosContestacion = ({
           description: "Secretaría",
           headerName: "Secretaría",
           width: 300,
-          align: "center",
           headerAlign: "center",
         },
         {

@@ -37,8 +37,8 @@ export const TipoOficio = () => {
       headerName: "Identificador",
       width: 150,
     },
-    { field: "Descripcion", headerName: "Descripción", width: 350 },
-    { field: "Clave", headerName: "Clave", width: 150 },
+    { field: "Descripcion", headerName: "Descripción", width: 200 },
+    { field: "Clave", headerName: "Clave", width: 100 },
     {
       field: "acciones",
       disableExport: true,
