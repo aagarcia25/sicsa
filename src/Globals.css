@@ -2079,3 +2079,11 @@ textarea {
   width: 90%;
   resize: none;
 }
+
+.redCell {
+  background-color: rgb(238, 131, 69);
+}
+
+.greenCell {
+  background-color: rgb(172, 216, 105);
+}

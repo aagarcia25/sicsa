@@ -122,7 +122,12 @@ export const Municipio = () => {
       headerName: "Identificador",
       width: 150,
     },
-    { field: "Nombre", headerName: "Nombre", width: 300 },
+    { field: "Nombre", 
+      headerName: "Nombre", 
+      width: 300, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "ClaveEstado",
       headerName: "Clave Estado",
@@ -145,6 +150,8 @@ export const Municipio = () => {
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -170,14 +177,29 @@ export const Municipio = () => {
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    { field: "FechaCreacion", 
+      headerName: "Fecha de Creación", 
+      width: 150, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "UltimaActualizacion",
       headerName: "Última Actualización",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
-    { field: "creado", headerName: "Creado Por", width: 200 },
-    { field: "modi", headerName: "Modificado Por", width: 200 },
+    { field: "creado", 
+      headerName: "Creado Por", 
+      width: 200,
+      headerAlign: "center",
+    },
+    { field: "modi", 
+      headerName: "Modificado Por", 
+      width: 200, 
+      headerAlign: "center",
+    },
   ];
 
   const handleClose = () => {

@@ -20,6 +20,9 @@ import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 import { Contestacion } from "./Contestacion";
 import { NotifModal } from "./NotifModal";
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import { DocsExtras } from "../DocsExtras/DocsExtras";
+
 const Notif = ({
   handleFunction,
   obj,
@@ -45,6 +48,8 @@ const Notif = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState(obj?.row?.entregado);
+  const [openDocsExtras, setOpenDocsExtras] = useState(false);
+
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
@@ -106,6 +111,22 @@ const Notif = ({
     
   };
 
+  const handleDocExtra = (data: any) => {
+    setVrows({
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+        OficioC: obj.row.Oficio,
+      },
+    });
+    setOpenDocsExtras(true);
+    setEntregado(obj.row.entregado);
+  };
+
+  
+
   const handleVerAdjuntos = (data: any) => {
     console.log("obj.row.idOficio",obj.row.idOficio);
     console.log("data",data);
@@ -137,6 +158,8 @@ const Notif = ({
     setOpenContestacion(false);
     setOpenAdjuntos(false);
     setOpenModal(false);
+    setOpenDocsExtras(false)
+
     consulta({ NUMOPERACION: 4, P_IDAUDITORIA: idauditoria, P_IDOFICIO: obj.id });
   };
 
@@ -318,6 +341,14 @@ const Notif = ({
               row={v}
             ></ButtonsDetail>
             {v.row.NoContestacion}
+
+            <ButtonsDetail
+                title={"Prórrogas y Acuses"}
+                handleFunction={handleDocExtra}
+                show={true}
+                icon={<PostAddIcon />}
+                row={v}
+                ></ButtonsDetail>
           </>
         );
       },
@@ -427,6 +458,16 @@ const Notif = ({
           idAuditoria={idauditoria}
           destino={updatedVrows}
           idOficio={obj.id}
+        />
+      ) : (
+        ""
+      )}
+
+      {openDocsExtras ? (
+        <DocsExtras
+          handleFunction={handleClose} obj={vrows}
+          Entregado={obj?.row?.entregado}
+          tipo={4}
         />
       ) : (
         ""

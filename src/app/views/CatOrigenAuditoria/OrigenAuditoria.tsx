@@ -5,7 +5,6 @@ import { Toast } from "../../helpers/Toast";
 import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { CatalogosServices } from "../../services/catalogosServices";
 import { getPermisos, getUser } from "../../services/localStorage";
-import MUIXDataGrid from "../MUIXDataGrid";
 import ButtonsAdd from "../componentes/ButtonsAdd";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
 import ButtonsEdit from "../componentes/ButtonsEdit";
@@ -31,7 +30,7 @@ export const OrigenAuditoria = () => {
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
 
   const handleAccion = (v: any) => {
-    if (v.tipo == 1) {
+    if (v.tipo === 1) {
       setTipoOperacion(2);
       setModo("Editar Registro");
       setOpen(true);
@@ -121,8 +120,17 @@ export const OrigenAuditoria = () => {
       headerName: "Identificador",
       width: 150,
     },
-    { field: "Descripcion", headerName: "Descripción", width: 350 },
-    { field: "tipodescripcion", headerName: "Tipo Descripción", width: 350 },
+    { field: "Descripcion",
+      headerName: "Descripción", 
+      width: 350, 
+      headerAlign: "center",
+    },
+    { field: "tipodescripcion", 
+      headerName: "Tipo Descripción", 
+      width: 180, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "acciones",
       disableExport: true,
@@ -131,6 +139,8 @@ export const OrigenAuditoria = () => {
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -156,14 +166,29 @@ export const OrigenAuditoria = () => {
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    { field: "FechaCreacion", 
+      headerName: "Fecha de Creación", 
+      width: 150, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "UltimaActualizacion",
       headerName: "Última Actualización",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
-    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
+    { field: "CreadoPor", 
+      headerName: "Creado Por", 
+      width: 200, 
+      headerAlign: "center",
+    },
+    { field: "ModificadoPor", 
+      headerName: "Modificado Por", 
+      width: 200, 
+      headerAlign: "center",
+    },
   ];
 
   const handleClose = () => {
