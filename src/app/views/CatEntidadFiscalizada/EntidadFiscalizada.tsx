@@ -120,6 +120,8 @@ export const EntidadFiscalizada = () => {
       headerName: "Descripción",
       description: "Descripción",
       width: 350,
+      //align: "center",
+      headerAlign: "center",
     },
     {
       field: "acciones",
@@ -127,6 +129,8 @@ export const EntidadFiscalizada = () => {
       headerName: eliminar || editar ? "Acciones" : "",
       description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
+      align: "center",
+      headerAlign: "center",
       //width: 200,
       width: eliminar || editar ? 200 : 0,
       renderCell: (v) => {
@@ -154,14 +158,29 @@ export const EntidadFiscalizada = () => {
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    { field: "FechaCreacion", 
+      headerName: "Fecha de Creación", 
+      width: 150,
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "UltimaActualizacion",
       headerName: "Última Actualización",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
-    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
+    { field: "CreadoPor", 
+      headerName: "Creado Por", 
+      width: 200, 
+      headerAlign: "center",
+    },
+    { field: "ModificadoPor", 
+      headerName: "Modificado Por", 
+      width: 200, 
+      headerAlign: "center",
+    },
   ];
 
   const handleClose = () => {

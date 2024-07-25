@@ -115,7 +115,12 @@ export const EstatusAcciones = () => {
       headerName: "Identificador",
       width: 150,
     },
-    { field: "Descripcion", headerName: "Descripción", width: 350 },
+    { field: "Descripcion", 
+      headerName: "Descripción", 
+      width: 350, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "acciones",
       disableExport: true,
@@ -124,6 +129,8 @@ export const EstatusAcciones = () => {
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -149,14 +156,29 @@ export const EstatusAcciones = () => {
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    { field: "FechaCreacion", 
+      headerName: "Fecha de Creación", 
+      width: 150, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "UltimaActualizacion",
       headerName: "Última Actualización",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
-    { field: "CreadoPor", headerName: "Creado Por", width: 200 },
-    { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
+    { field: "CreadoPor", 
+      headerName: "Creado Por", 
+      width: 200, 
+      headerAlign: "center",
+    },
+    { field: "ModificadoPor", 
+      headerName: "Modificado Por", 
+      width: 200,
+      headerAlign: "center", 
+    },
   ];
 
   const handleClose = () => {

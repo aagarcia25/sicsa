@@ -60,4 +60,8 @@ export class AuditoriaService {
   public static async OficiosContestacon_index(data: any) {
     return await post("OficiosContestacon_index", data);
   }
+
+  public static async DocsExtras_index(data: any) {
+    return await post("DocsExtras_index", data);
+  }
 }
