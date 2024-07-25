@@ -1,37 +1,37 @@
-import {  Tooltip } from "antd";
-import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
+import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import ModalForm from "../../componentes/ModalForm";
-import { IconButton, ToggleButton, Typography } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Progress from "../../Progress";
+import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
-import ButtonsAdd from "../../componentes/ButtonsAdd";
+import { DocsExtrasModal } from "./DocsExtrasModal";
+import ButtonsEdit from "../../componentes/ButtonsEdit";
+import { ButtonsDetail } from "../../componentes/ButtonsDetail";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useEffect, useState } from "react";
 import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
-import ButtonsEdit from "../../componentes/ButtonsEdit";
-import ButtonsDeleted from "../../componentes/ButtonsDeleted";
-import { ButtonsDetail } from "../../componentes/ButtonsDetail";
+import { getPermisos, getUser } from "../../../services/localStorage";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import { GridColDef } from "@mui/x-data-grid";
-import { AuditoriaService } from "../../../services/AuditoriaService";
+import ButtonsAdd from "../../componentes/ButtonsAdd";
+import ButtonsDeleted from "../../componentes/ButtonsDeleted";
 import Swal from "sweetalert2";
 import { Toast } from "../../../helpers/Toast";
-import { getPermisos, getUser } from "../../../services/localStorage";
-import Progress from "../../Progress";
-import { OficiosContestacionModal } from "./OficiosContestacionModal";
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import { DocsExtras } from "../DocsExtras/DocsExtras";
+import { AuditoriaService } from "../../../services/AuditoriaService";
 
 
 
-export const OficiosContestacion = ({
+
+export const DocsExtras = ({
     handleFunction,
     obj,
     Entregado,
+    tipo,
   }: {
     handleFunction: Function;
     obj: any;
     Entregado: any;
-  }) => {
+    tipo?: number;
+  })=>{
 
     const [openSlider, setOpenSlider] = useState(true);
   const [open, setOpen] = useState(false);
@@ -50,25 +50,43 @@ export const OficiosContestacion = ({
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState(obj?.row?.entregado);
-  const [openDocsExtras, setOpenDocsExtras] = useState(false);
-
 
     const handleVerAdjuntos = (data: any) => {
+
+      if(tipo===4)
+      {
         setupdatedVrows(
           obj.row.anio +
             "/" +
             obj.row.NAUDITORIA +
             "/" +
+            obj.row.OficioA +
+            "/" +
             obj.row.Oficio +
             "/" +
             data.row.Oficio
         );
+      } else if (tipo===9){
+        setupdatedVrows(
+          obj.row.anio +
+            "/" +
+            obj.row.NAUDITORIA +
+            "/" +
+            obj.row.OficioC +
+            "/" +
+            obj.row.Oficio +
+            "/" +
+            data.row.Oficio
+        );
+      }
+        
+        
         setOpenAdjuntos(true);
         //setEntregado( entregado);
       };
 
     const consulta = (data: any) => {
-        AuditoriaService.OficiosContestacon_index(data).then((res) => {
+        AuditoriaService.DocsExtras_index(data).then((res) => {
           if (res.SUCCESS) {
             setData(res.RESPONSE);
             setOpenSlider(false);
@@ -96,7 +114,7 @@ export const OficiosContestacion = ({
               CHUSER: user.Id,
             };
     
-            AuditoriaService.OficiosContestacon_index(data).then((res) => {
+            AuditoriaService.DocsExtras_index(data).then((res) => {
               if (res.SUCCESS) {
                 Toast.fire({
                   icon: "success",
@@ -131,7 +149,7 @@ export const OficiosContestacion = ({
                 CHUSER: user.Id,
               };
     
-              AuditoriaService.OficiosContestacon_index(data).then((res) => {
+              AuditoriaService.DocsExtras_index(data).then((res) => {
                 if (res.SUCCESS) {
                   Toast.fire({
                     icon: "success",
@@ -158,7 +176,6 @@ export const OficiosContestacion = ({
         setOpen(false);
         setOpenAdjuntos(false);
         setOpenModal(false);
-        setOpenDocsExtras(false)
         consulta({ NUMOPERACION: 4, P_IDNOTIFICACION: obj.id });
       };
 
@@ -178,20 +195,6 @@ export const OficiosContestacion = ({
         setVrows({});
       };
 
-      const handleDetalle = (data: any) => {
-        setVrows({
-          ...data,
-          row: {
-            ...data.row,
-            NAUDITORIA: obj.row.NAUDITORIA,
-            anio: obj.row.anio,
-            OficioC: obj.row.Oficio,
-          },
-        });
-        setOpenDocsExtras(true);
-        setEntregado(obj.row.entregado);
-      };
-
     const columns: GridColDef[] = [
         {
           field: "id",
@@ -209,64 +212,26 @@ export const OficiosContestacion = ({
           headerAlign: "center",
         },
         {
-          field: "cuDescripcion",
-          description: "Unidad Responsable",
-          headerName: "Unidad Responsable",
-          width: 300,
-          headerAlign: "center",
-        },
-        {
-          field: "secDescripcion",
-          description: "Secretaría",
-          headerName: "Secretaría",
-          width: 300,
-          headerAlign: "center",
-        },
-        {
-          field: "SIGAOficio",
-          description: "Folio SIGA",
-          headerName: "Folio SIGA",
-          width: 150,
-          align: "center",
-          headerAlign: "center",
-        },
-        {
-          field: "FOficio",
-          description: "Fecha de Oficio",
-          headerName: "Fecha de Oficio",
-          width: 150,
-          align: "center",
-          headerAlign: "center",
-        },
-        {
-          field: "FRecibido",
-          description: "Fecha de Recibido",
-          headerName: "Fecha de Recibido",
-          width: 150,
+          field: "Prorroga",
+          description: "Prórroga",
+          headerName: "Prórroga",
+          width: 100,
           align: "center",
           headerAlign: "center",
         },
         {
           field: "FVencimiento",
-          description: "Fecha de Vencimiento",
-          headerName: "Fecha de Vencimiento",
-          width: 150,
+          description: "Vencimiento",
+          headerName: "Vencimiento",
+          width: 100,
           align: "center",
           headerAlign: "center",
         },
         {
-          field: "Prorroga",
-          description: "Fecha de Prorroga",
-          headerName: "Fecha de Prorroga",
+          field: "TipoDoc",
+          description: "Tipo de Documento",
+          headerName: "Tipo de Documento",
           width: 150,
-          align: "center",
-          headerAlign: "center",
-        },
-        {
-          field: "Observacion",
-          description: "Observación",
-          headerName: "Observación",
-          width: 325,
           align: "center",
           headerAlign: "center",
         },
@@ -305,14 +270,8 @@ export const OficiosContestacion = ({
                   icon={<AttachmentIcon />}
                   row={v}
                 ></ButtonsDetail>
-
-                <ButtonsDetail
-                title={"Prórrogas y Acuses"}
-                handleFunction={handleDetalle}
-                show={true}
-                icon={<PostAddIcon />}
-                row={v}
-                ></ButtonsDetail>
+                
+                
               </>
             );
           },
@@ -360,7 +319,7 @@ export const OficiosContestacion = ({
     return (
         <div>
           <ModalForm
-            title={"Contestación a Oficios"}
+            title={"Prórrogas y Acuses"}
             handleClose={handleFunction}
           >
             <Progress open={openSlider}></Progress>
@@ -397,8 +356,8 @@ export const OficiosContestacion = ({
             {openAdjuntos ? (
             <VisorDocumentosOficios
               handleFunction={handleClose}
-              obj={updatedVrows}
-              tipo={9}
+              obj={updatedVrows} 
+              tipo={10}
               Entregado={entregado}
             />
           ) : (
@@ -406,28 +365,19 @@ export const OficiosContestacion = ({
           )}
           </ModalForm>
           {openModal ? (
-            <OficiosContestacionModal
+            <DocsExtrasModal
               tipo={tipoOperacion}
               handleClose={handleClose}
               dt={vrows}
               user={user}
-              idNotificacion={obj.id}
+              idRelacion={obj.id}
               destino={updatedVrows}
               Entregado={entregado}
+              
             />
           ) : (
             ""
           )}
-          {openDocsExtras ? (
-        <DocsExtras
-          handleFunction={handleClose} obj={vrows}
-          Entregado={obj?.row?.entregado}
-          tipo={9}
-
-        />
-      ) : (
-        ""
-      )}
     
           {/* {openAdjuntos ? (
             <VisorDocumentosOficios

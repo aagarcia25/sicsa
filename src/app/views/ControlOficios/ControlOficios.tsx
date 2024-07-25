@@ -464,22 +464,61 @@ export const ControlOficios = () => {
       field: "Anio",
       headerName: "Anio",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
 
-    { field: "Oficio", headerName: "Oficio", width: 150 },
-    { field: "Cancelado", headerName: "Cancelado", width: 100 },
-    { field: "Nauditoria", headerName: "N° de Auditoría", width: 200 },
-    { field: "dfTitular", headerName: "Destinatario", width: 250 },
-    { field: "dfCargo", headerName: "Puesto", width: 250 },
-    { field: "Asunto", headerName: "Asunto", width: 300 },
-    { field: "Tema", headerName: "Tema", width: 450 },
+    { field: "Oficio", 
+      headerName: "Oficio", 
+      width: 150, 
+      align: "center",
+      headerAlign: "center",
+    },
+    { field: "Cancelado", 
+      headerName: "Cancelado", 
+      width: 100, 
+      align: "center",
+      headerAlign: "center",
+    },
+    { field: "Nauditoria", 
+      headerName: "N° de Auditoría", 
+      width: 200, 
+      align: "center",
+      headerAlign: "center",
+    },
+    { field: "dfTitular", 
+      headerName: "Destinatario", 
+      width: 250, 
+      headerAlign: "center",
+    },
+    { field: "dfCargo", 
+      headerName: "Puesto", 
+      width: 250, 
+      headerAlign: "center",
+    },
+    { field: "Asunto", 
+      headerName: "Asunto", 
+      width: 300, 
+      headerAlign: "center",
+    },
+    { field: "Tema", 
+      headerName: "Tema", 
+      width: 450, 
+      headerAlign: "center",
+    },
 
-    { field: "cpNombre", headerName: "Solicitante", width: 250 },
+    { field: "cpNombre",
+      headerName: "Solicitante", 
+      width: 250, 
+      headerAlign: "center",
+    },
 
     {
       field: "Fecha",
       headerName: "Fecha",
       width: 100,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         if (v.row.Fecha) {
           return formatFecha(v.row.Fecha);
@@ -490,6 +529,8 @@ export const ControlOficios = () => {
       field: "FechaEntrega",
       headerName: "Fecha de Entregado",
       width: 150,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         if (v.row.FechaEntrega) {
           return formatFecha(v.row.FechaEntrega);
@@ -500,17 +541,25 @@ export const ControlOficios = () => {
       field: "FechaRecibido",
       headerName: "Fecha de Recibido",
       width: 200,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         if (v.row.FechaRecibido) {
           return formatFecha(v.row.FechaRecibido);
         }
       },
     },
-    { field: "Observaciones", headerName: "Observaciones", width: 350 },
+    { field: "Observaciones", 
+      headerName: "Observaciones", 
+      width: 350, 
+      headerAlign: "center",
+    },
     {
       field: "magneticos",
       headerName: "Medios Magnéticos",
       width: 100,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -535,6 +584,8 @@ export const ControlOficios = () => {
       description: eliminar || editar ? "Campo de Acciones" : "",
       sortable: false,
       width: eliminar || editar ? 200 : 0,
+      align: "center",
+      headerAlign: "center",
 
       renderCell: (v) => {
         return (

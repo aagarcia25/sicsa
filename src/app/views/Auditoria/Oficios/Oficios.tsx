@@ -67,6 +67,7 @@ export const Oficios = ({
 
 
 
+
   const handleVerAdjuntos = (data: any) => {
     setupdatedVrows(
       obj.row.anio + "/" + obj.row.NAUDITORIA + "/" + data.row.Oficio
@@ -232,6 +233,19 @@ export const Oficios = ({
       width: 150,
       align: "center",
       headerAlign: "center",
+      cellClassName: (params) => {
+        // Aquí puedes agregar la lógica para asignar la clase en función del valor
+console.log("v.row.entrgado1",params);
+
+        if (params.row.entregado === 0) {
+console.log("v.row.entrgado1",params.row.entregado);
+
+          return 'redCell';
+        }console.log("v.row.entrgado1",params.row.entregado);
+
+        return 'greenCell';
+
+      },
     },
     {
       field: "tofDescripcion",

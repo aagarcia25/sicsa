@@ -48,6 +48,10 @@ export default function MUIXDataGridGeneral(props: any) {
       CreadoPor: false,
       ModificadoPor: false,
       Anio: false,
+      Valor: false,
+      numeroResultado: false,
+      monto: false,
+
     });
 
   const hasData = props.rows.length < 8;
@@ -73,6 +77,7 @@ export default function MUIXDataGridGeneral(props: any) {
           }
           rowsPerPageOptions={[10, 25, 50, 100]}
           disableRowSelectionOnClick
+          
           getRowId={(row) => (row.Id ? row.Id : row.id)}
           rowHeight={255}
           pageSize={pageSize}

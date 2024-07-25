@@ -116,7 +116,12 @@ export const Modalidad = () => {
       headerName: "Identificador",
       width: 150,
     },
-    { field: "Descripcion", headerName: "Descripción", width: 350 },
+    { field: "Descripcion", 
+      headerName: "Descripción", 
+      width: 250, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "acciones",
       disableExport: true,
@@ -125,6 +130,8 @@ export const Modalidad = () => {
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 200 : 0,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -150,14 +157,29 @@ export const Modalidad = () => {
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    { field: "FechaCreacion", 
+      headerName: "Fecha de Creación", 
+      width: 150, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "UltimaActualizacion",
       headerName: "Última Actualización",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
-    { field: "creado", headerName: "Creado Por", width: 200 },
-    { field: "modi", headerName: "Modificado Por", width: 200 },
+    { field: "creado", 
+      headerName: "Creado Por", 
+      width: 200, 
+      headerAlign: "center",
+    },
+    { field: "modi", 
+      headerName: "Modificado Por", 
+      width: 200, 
+      headerAlign: "center",
+    },
   ];
 
   const handleClose = () => {

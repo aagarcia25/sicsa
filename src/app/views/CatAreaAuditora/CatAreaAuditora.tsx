@@ -119,12 +119,19 @@ export const CatAreaAuditora = () => {
       field: "iduaa",
       width: 150,
     },
-    { field: "Clave", headerName: "Clave", description: "Clave", width: 100 },
+    { field: "Clave", 
+      headerName: "Clave", 
+      description: "Clave", 
+      width: 100,
+      align: "center",
+      headerAlign: "center", },
     {
       field: "Descripcion",
       headerName: "Descripción",
       description: "Descripcion",
       width: 350,
+      //align: "center",
+      headerAlign: "center",
     },
 
     {
@@ -132,6 +139,8 @@ export const CatAreaAuditora = () => {
       headerName: "UAA",
       description: "Unidad Admnistrativa Auditora",
       width: 300,
+      //align: "center",
+      headerAlign: "center",
     },
     {
       field: "acciones",
@@ -141,6 +150,8 @@ export const CatAreaAuditora = () => {
       sortable: false,
       //width: 200,
       width: eliminar || editar ? 100 : 0,
+      align: "center",
+      headerAlign: "center",
       renderCell: (v) => {
         return (
           <>
@@ -166,11 +177,18 @@ export const CatAreaAuditora = () => {
         );
       },
     },
-    { field: "FechaCreacion", headerName: "Fecha de Creación", width: 150 },
+    { field: "FechaCreacion", 
+      headerName: "Fecha de Creación", 
+      width: 150, 
+      align: "center",
+      headerAlign: "center",
+    },
     {
       field: "UltimaActualizacion",
       headerName: "Última Actualización",
       width: 150,
+      align: "center",
+      headerAlign: "center",
     },
     { field: "CreadoPor", headerName: "Creado Por", width: 200 },
     { field: "ModificadoPor", headerName: "Modificado Por", width: 200 },
