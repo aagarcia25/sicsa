@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 import { Grid } from "@mui/material";
 import { USUARIORESPONSE } from "../interfaces/UserInfo";
 import FAB from "./componentes/FAB";
-import SpeedDialTooltipOpen from "../Flotantes/Flotante";
+//import SpeedDialTooltipOpen from "../Flotantes/Flotante";
 
 
 let theme = createTheme({
@@ -216,7 +216,7 @@ export default function Inicio({ children, user, imgData, imgTipo }: Props) {
         </Grid>
       </Grid>
       {/* <FAB></FAB> */}
-      <SpeedDialTooltipOpen first={true}></SpeedDialTooltipOpen>
+      {/* <SpeedDialTooltipOpen first={true}></SpeedDialTooltipOpen> */}
 
     </ThemeProvider>
   );
