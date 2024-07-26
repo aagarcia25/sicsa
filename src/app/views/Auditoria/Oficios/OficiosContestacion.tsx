@@ -212,14 +212,14 @@ export const OficiosContestacion = ({
           field: "cuDescripcion",
           description: "Unidad Responsable",
           headerName: "Unidad Responsable",
-          width: 300,
+          width: 200,
           headerAlign: "center",
         },
         {
           field: "secDescripcion",
           description: "Secretaría",
           headerName: "Secretaría",
-          width: 300,
+          width: 200,
           headerAlign: "center",
         },
         {
