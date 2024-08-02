@@ -112,7 +112,9 @@ const Notif = ({
   };
 
   const handleDocExtra = (data: any) => {
-    setVrows({
+
+    if(data.row.idOficio){
+      setVrows({
       ...data,
       row: {
         ...data.row,
@@ -123,6 +125,15 @@ const Notif = ({
     });
     setOpenDocsExtras(true);
     setEntregado(obj.row.entregado);
+    }else{
+      Toast.fire({
+    icon: "info",
+    title: "¡Asignar oficio al que pertenece la notificación!",
+  });
+  
+    }
+
+    
   };
 
   
