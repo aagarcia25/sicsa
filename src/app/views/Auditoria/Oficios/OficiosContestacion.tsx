@@ -27,10 +27,14 @@ export const OficiosContestacion = ({
     handleFunction,
     obj,
     Entregado,
+    Ubicacion,
+
   }: {
     handleFunction: Function;
     obj: any;
     Entregado: any;
+    Ubicacion: any;
+
   }) => {
 
     const [openSlider, setOpenSlider] = useState(true);
@@ -51,6 +55,8 @@ export const OficiosContestacion = ({
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState(obj?.row?.entregado);
   const [openDocsExtras, setOpenDocsExtras] = useState(false);
+  const [ubicacion, setUbicacion] = useState("");
+
 
 
     const handleVerAdjuntos = (data: any) => {
@@ -179,6 +185,14 @@ export const OficiosContestacion = ({
       };
 
       const handleDetalle = (data: any) => {
+        setUbicacion(
+          obj.row.anio +
+            "/" +
+            obj.row.NAUDITORIA +"-" +obj.row.NombreAudoria +  "/" +
+            obj.row.Oficio +
+            "/" +
+            data.row.Oficio
+        );
         setVrows({
           ...data,
           row: {
@@ -222,14 +236,14 @@ export const OficiosContestacion = ({
           width: 200,
           headerAlign: "center",
         },
-        {
-          field: "SIGAOficio",
-          description: "Folio SIGA",
-          headerName: "Folio SIGA",
-          width: 150,
-          align: "center",
-          headerAlign: "center",
-        },
+        // {
+        //   field: "SIGAOficio",
+        //   description: "Folio SIGA",
+        //   headerName: "Folio SIGA",
+        //   width: 150,
+        //   align: "center",
+        //   headerAlign: "center",
+        // },
         {
           field: "FOficio",
           description: "Fecha de Oficio",
@@ -246,22 +260,23 @@ export const OficiosContestacion = ({
           align: "center",
           headerAlign: "center",
         },
-        {
-          field: "FVencimiento",
-          description: "Fecha de Vencimiento",
-          headerName: "Fecha de Vencimiento",
-          width: 150,
-          align: "center",
-          headerAlign: "center",
-        },
-        {
-          field: "Prorroga",
-          description: "Fecha de Prorroga",
-          headerName: "Fecha de Prorroga",
-          width: 150,
-          align: "center",
-          headerAlign: "center",
-        },
+        
+        // {
+        //   field: "FVencimiento",
+        //   description: "Fecha de Vencimiento",
+        //   headerName: "Fecha de Vencimiento",
+        //   width: 150,
+        //   align: "center",
+        //   headerAlign: "center",
+        // },
+        // {
+        //   field: "Prorroga",
+        //   description: "Fecha de Prorroga",
+        //   headerName: "Fecha de Prorroga",
+        //   width: 150,
+        //   align: "center",
+        //   headerAlign: "center",
+        // },
         {
           field: "Observacion",
           description: "Observación",
@@ -365,7 +380,7 @@ export const OficiosContestacion = ({
           >
             <Progress open={openSlider}></Progress>
             <Typography variant="h6">
-              {obj.row.Oficio + " - " + obj.row.NAUDITORIA}
+              {Ubicacion}
             </Typography>
             {agregar && entregado !== 1 ? (
               <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
@@ -423,6 +438,8 @@ export const OficiosContestacion = ({
           handleFunction={handleClose} obj={vrows}
           Entregado={obj?.row?.entregado}
           tipo={9}
+          Ubicacion={ubicacion}
+
 
         />
       ) : (

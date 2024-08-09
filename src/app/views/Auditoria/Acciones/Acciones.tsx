@@ -20,7 +20,7 @@ import { MigraData, resultmigracion } from "../../../interfaces/Share";
 import { AccionesModal } from "./AccionesModal";
 
 import MUIXDataGridGeneral from "../../MUIXDataGridGeneral";
-import { IconButton, ToggleButton, Tooltip } from "@mui/material";
+import { IconButton, ToggleButton, Tooltip, Typography } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import VisorDocumentosOficios from "../../componentes/VisorDocumentosOficios";
 
@@ -28,12 +28,13 @@ const Acciones = ({
   handleFunction,
   obj,
   idauditoria,
+  Ubicacion,
 
 }: {
   handleFunction: Function;
   obj: any;
   idauditoria: any;
-
+  Ubicacion: any;
 }) => {
   const [openSlider, setOpenSlider] = useState(false);
   const [openAccionesModal, setOpenAccionesModal] = useState(false);
@@ -394,6 +395,9 @@ const Acciones = ({
         
 
         <Progress open={show}></Progress>
+        <Typography variant="h6">
+              {Ubicacion}
+            </Typography>
         {agregar && obj.row.entregado !== 1 ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
         ) : (
