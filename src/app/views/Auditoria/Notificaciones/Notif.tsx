@@ -27,11 +27,12 @@ const Notif = ({
   handleFunction,
   obj,
   idauditoria,
+  Ubicacion,
 }: {
   handleFunction: Function;
   obj: any;
   idauditoria: any;
-
+  Ubicacion: any;
 }) => {
   const [openContestacion, setOpenContestacion] = useState(false);
   const [openAdjuntos, setOpenAdjuntos] = useState(false);
@@ -49,7 +50,9 @@ const Notif = ({
   const [updatedVrows, setupdatedVrows] = useState("");
   const [entregado, setEntregado] = useState(obj?.row?.entregado);
   const [openDocsExtras, setOpenDocsExtras] = useState(false);
+  const [ubicacion, setUbicacion] = useState("");
 
+  
 
   const consulta = (data: any) => {
     AuditoriaService.Notificacionindex(data).then((res) => {
@@ -97,6 +100,16 @@ const Notif = ({
   };
 
   const handleDetalle = (data: any) => {
+    setUbicacion(
+      obj.row.anio + "/" + obj.row.NAUDITORIA +"-" +obj.row.NombreAudoria +  "/" + data.row.OficioA + "/" + data.row.Oficio
+    );
+    console.log("ubicacion noti",ubicacion);
+    console.log("obj noti2",obj);
+    console.log("data notif",data);
+    console.log("vrows",vrows);
+    
+    
+    
     setVrows({
       ...data,
       row: {
@@ -112,6 +125,9 @@ const Notif = ({
   };
 
   const handleDocExtra = (data: any) => {
+    setUbicacion(
+      obj.row.anio + "/" + obj.row.NAUDITORIA +"-" +obj.row.NombreAudoria +  "/" + data.row.OficioA + "/" + data.row.Oficio
+    );
 
     if(data.row.idOficio){
       setVrows({
@@ -130,14 +146,8 @@ const Notif = ({
     icon: "info",
     title: "¡Asignar oficio al que pertenece la notificación!",
   });
-  
     }
-
-    
   };
-
-  
-
   const handleVerAdjuntos = (data: any) => {
     console.log("obj.row.idOficio",obj.row.idOficio);
     console.log("data",data);
@@ -156,15 +166,12 @@ const Notif = ({
   setOpenAdjuntos(false);
     }
   };
-  
-
   const handleSinAccesoVerAdjuntos = (data: any) => {
     console.log("obj.row.idOficio",obj.row.idOficio);
     console.log("data",data);
 
     
   }
-
   const handleClose = () => {
     setOpenContestacion(false);
     setOpenAdjuntos(false);
@@ -292,22 +299,23 @@ const Notif = ({
       align: "center",
       headerAlign: "center",
     },
-    {
-      field: "FVencimiento",
-      description: "Fecha de Vencimiento",
-      headerName: "Fecha de Vencimiento",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "Prorroga",
-      description: "Fecha de Prorroga",
-      headerName: "Fecha de Prorroga",
-      width: 150,
-      align: "center",
-      headerAlign: "center",
-    },
+    ///fecha de vencimiento y prorroga////
+    // {
+    //   field: "FVencimiento",
+    //   description: "Fecha de Vencimiento",
+    //   headerName: "Fecha de Vencimiento",
+    //   width: 150,
+    //   align: "center",
+    //   headerAlign: "center",
+    // },
+    // {
+    //   field: "Prorroga",
+    //   description: "Fecha de Prorroga",
+    //   headerName: "Fecha de Prorroga",
+    //   width: 150,
+    //   align: "center",
+    //   headerAlign: "center",
+    // },
     {
       field: "acciones",
       disableExport: true,
@@ -389,6 +397,7 @@ const Notif = ({
     console.log("idauditoria",idauditoria);
     console.log("Entregado notif", entregado);
     
+    
 
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
@@ -411,7 +420,7 @@ const Notif = ({
       <ModalForm title={"Notificaciones de Áreas"} handleClose={handleFunction}>
         <Progress open={show}></Progress>
         <Typography variant="h6">
-          {obj.row.NAUDITORIA + " " + obj.row.Oficio}
+          {Ubicacion} 
         </Typography>
         {agregar && obj.row.entregado !== 1 ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />
@@ -456,6 +465,7 @@ const Notif = ({
           handleFunction={handleClose}
           obj={vrows}
           Entregado={entregado}
+          Ubicacion={ubicacion}
         />
       ) : (
         ""
@@ -479,6 +489,8 @@ const Notif = ({
           handleFunction={handleClose} obj={vrows}
           Entregado={obj?.row?.entregado}
           tipo={4}
+          Ubicacion={ubicacion}
+
         />
       ) : (
         ""

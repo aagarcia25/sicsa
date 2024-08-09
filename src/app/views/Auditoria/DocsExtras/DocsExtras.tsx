@@ -26,11 +26,13 @@ export const DocsExtras = ({
     obj,
     Entregado,
     tipo,
+    Ubicacion,
   }: {
     handleFunction: Function;
     obj: any;
     Entregado: any;
     tipo?: number;
+    Ubicacion: any;
   })=>{
 
     const [openSlider, setOpenSlider] = useState(true);
@@ -236,6 +238,14 @@ export const DocsExtras = ({
           headerAlign: "center",
         },
         {
+          field: "Estatus",
+          description: "Estatus",
+          headerName: "Estatus",
+          width: 150,
+          align: "center",
+          headerAlign: "center",
+        },
+        {
           field: "acciones",
           disableExport: true,
           headerName: "Acciones",
@@ -324,7 +334,7 @@ export const DocsExtras = ({
           >
             <Progress open={openSlider}></Progress>
             <Typography variant="h6">
-              {obj.row.Oficio + " - " + obj.row.NAUDITORIA}
+              {Ubicacion}
             </Typography>
             {agregar && entregado !== 1 ? (
               <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />

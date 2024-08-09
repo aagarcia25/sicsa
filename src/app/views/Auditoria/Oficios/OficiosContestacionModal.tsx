@@ -34,20 +34,22 @@ export const OficiosContestacionModal = ({
     // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
   const [id, setId] = useState("");
-  const [Prorroga, setProrroga] = useState<Dayjs | null>(
-    dt?.row?.Prorroga !== undefined && dt?.row?.Prorroga !== null
-      ? dayjs(dt?.row?.Prorroga)
-      : null
-  );
+  ///fecha de vencimiento y prorroga////
+  // const [Prorroga, setProrroga] = useState<Dayjs | null>(
+  //   dt?.row?.Prorroga !== undefined && dt?.row?.Prorroga !== null
+  //     ? dayjs(dt?.row?.Prorroga)
+  //     : null
+  // );
   const [Oficio, setOficio] = useState("");
-  const [SIGAOficio, setSIGAOficio] = useState("");
+  //const [SIGAOficio, setSIGAOficio] = useState("");
   const [FOficio, setFechaOficio] = useState<Dayjs | null>();
   const [FRecibido, setFRecibido] = useState<Dayjs | null>();
-  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>(
-    dt?.row?.FVencimiento !== undefined && dt?.row?.FVencimiento !== null
-      ? dayjs(dt?.row?.FVencimiento)
-      : null
-  );
+  ///fecha de vencimiento y prorroga////
+  // const [FVencimiento, setFVencimiento] = useState<Dayjs | null>(
+  //   dt?.row?.FVencimiento !== undefined && dt?.row?.FVencimiento !== null
+  //     ? dayjs(dt?.row?.FVencimiento)
+  //     : null
+  // );
   const [idsecretaria, setidsecretaria] = useState("");
   const [idunidad, setidunidad] = useState("");
   const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
@@ -55,12 +57,13 @@ export const OficiosContestacionModal = ({
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [visualizar, setVisualizar] = useState<boolean>(false);
-  const [switchValue, setSwitchValue] = useState(false);
+  //const [switchValue, setSwitchValue] = useState(false);///fecha de vencimiento y prorroga////
   const [observacion	, setObservacion] = useState("");
 
-  const handleChange = (event: any) => {
-    setSwitchValue(event.target.checked);
-  };
+  ///fecha de vencimiento y prorroga////
+  // const handleChange = (event: any) => {
+  //   setSwitchValue(event.target.checked);
+  // };
 
 
   const handleRequestFOficio = () => {
@@ -113,7 +116,7 @@ export const OficiosContestacionModal = ({
             CHUSER: user.Id,
             idNotificacion: idNotificacion,
             Oficio: Oficio,
-            SIGAOficio: SIGAOficio,
+            //SIGAOficio: SIGAOficio,
             FOficio: fOficio || FOficio,
             FRecibido: FRecibido,
             idsecretaria: idsecretaria,
@@ -122,9 +125,10 @@ export const OficiosContestacionModal = ({
             Observacion: observacion,
 
           };
-          if (switchValue === true) {
-            data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
-          }
+          ///fecha de vencimiento y prorroga////
+          // if (switchValue === true) {
+          //   data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
+          // }
     
           handleRequest(data);
         }
@@ -176,14 +180,15 @@ export const OficiosContestacionModal = ({
       const handleFilterChangefr = (v: any) => {
         setFRecibido(v);
       };
+
+    ///fecha de vencimiento y prorroga////
+      // const handleFilterChangefv = (v: any) => {
+      //   setFVencimiento(v);
+      // };
     
-      const handleFilterChangefv = (v: any) => {
-        setFVencimiento(v);
-      };
-    
-      const handleFilterChangep = (v: any) => {
-        setProrroga(v);
-      };
+      // const handleFilterChangep = (v: any) => {
+      //   setProrroga(v);
+      // };
 
     const loadFilter = (operacion: number, P_ID?: string) => {
         setShow(true);
@@ -208,7 +213,8 @@ export const OficiosContestacionModal = ({
         if (Object.keys(dt).length === 0) {
         } else {
           setId(dt?.row?.id);
-          setSIGAOficio(dt?.row?.SIGAOficio);
+          ///fecha de vencimiento y prorroga////
+          //setSIGAOficio(dt?.row?.SIGAOficio);
           setOficio(dt?.row?.Oficio);
           setObservacion(dt?.row?.Observacion);
 
@@ -217,17 +223,18 @@ export const OficiosContestacionModal = ({
           if (FRecibido !== null) {
             setFRecibido(dayjs(dt?.row?.FRecibido,'DD-MM-YYYY'));
           }
-          if (FVencimiento !== null && FVencimiento !== undefined) {
-            setFVencimiento(dayjs(dt?.row?.FVencimiento,'DD-MM-YYYY'));
-            setSwitchValue(true);
-          }
           if (FOficio !== null) {
             setFechaOficio(dayjs(dt?.row?.FOficio,'DD-MM-YYYY'));
           }
-          if (Prorroga !== null && Prorroga !== undefined) {
-            setProrroga(dayjs(dt?.row?.Prorroga,'DD-MM-YYYY'));
-            setSwitchValue(true);
-          }
+          ///fecha de vencimiento y prorroga////
+          // if (FVencimiento !== null && FVencimiento !== undefined) {
+          //   setFVencimiento(dayjs(dt?.row?.FVencimiento,'DD-MM-YYYY'));
+          //   setSwitchValue(true);
+          // }
+          // if (Prorroga !== null && Prorroga !== undefined) {
+          //   setProrroga(dayjs(dt?.row?.Prorroga,'DD-MM-YYYY'));
+          //   setSwitchValue(true);
+          // }
         }
       }, [dt]);
 
@@ -242,7 +249,10 @@ export const OficiosContestacionModal = ({
             }
           }
         });
-      }, [switchValue]);
+
+      }, [
+        //switchValue ///fecha de vencimiento y prorroga////
+      ]);
 
     return (
         <>
@@ -290,6 +300,29 @@ export const OficiosContestacionModal = ({
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
+                  {/* <Typography sx={{ fontFamily: "sans-serif" }}>Observación</Typography> */}
+
+                  <TextField
+                    
+                    margin="dense"
+                    id="observacion"
+                    label="Observación"
+                    type="text"
+                    //multiline
+                    //rows={3}
+                    fullWidth
+                    variant="standard"
+                    value={observacion}
+                    
+                    onChange={(v) => setObservacion(v.target.value)}
+                    disabled={Entregado === 1 || visualizar === true}
+ 
+                    // InputProps={{
+                    //   readOnly: tipo === 1 ? false : true,
+                    // }}
+                  />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
                   <TextField
                     margin="dense"
                     id="Oficio"
@@ -303,23 +336,11 @@ export const OficiosContestacionModal = ({
                     onChange={(v) => setOficio(v.target.value)}
                     disabled={Entregado === 1 || visualizar === true}
                   />
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
-                  <TextField
-                    margin="dense"
-                    id="FolioSIGA"
-                    label="Folio SIGA"
-                    type="text"
-                    fullWidth
-                    variant="standard"
-                    value={SIGAOficio}
-                    onChange={(v) => setSIGAOficio(v.target.value)}
-                    disabled={Entregado === 1 || visualizar === true}
-                  />
-                </Grid>
+                  </Grid>
               </Grid>
     
-              {switchValue ? (
+              {/* ///fecha de vencimiento y prorroga//// */}
+              {/* {switchValue ? (
                 <Grid
                   container
                   item
@@ -367,7 +388,7 @@ export const OficiosContestacionModal = ({
                   </Grid>
                 </Grid>
                 
-              ) : (
+              ) : ( */}
                 <Grid
                   container
                   item
@@ -400,52 +421,8 @@ export const OficiosContestacionModal = ({
                   <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
                   <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
                 </Grid>
-              )}
-              <Grid
-                  container
-                  item
-                  spacing={1}
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                  sx={{ padding: "2%" }}
-                >
-                  <Grid item xs={12} sm={6} md={4} lg={6}>
-                  <Typography sx={{ fontFamily: "sans-serif" }}>Observación</Typography>
-
-                  <TextField
-                    
-                    margin="dense"
-                    id="observacion"
-                    label=""
-                    value={observacion}
-                    type="text"
-                    multiline
-                    rows={3}
-                    fullWidth
-                    focused
-                    onChange={(v) => setObservacion(v.target.value)}
-                    disabled={Entregado === 1 || visualizar === true}
- 
-                    // InputProps={{
-                    //   readOnly: tipo === 1 ? false : true,
-                    // }}
-                  />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
-                    
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
-                    
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
-                  
-                  </Grid>
-                </Grid>
+              {/* )} */}
+              
     
               {Entregado !== 1 && editarPermiso === true ? (
                 <Grid
@@ -508,7 +485,9 @@ export const OficiosContestacionModal = ({
                     paddingLeft={1}
                     sx={{ display: "flex" }}
                   >
-                    <FormGroup aria-label="position" row>
+              {/* ///fecha de vencimiento y prorroga//// */}
+
+                    {/* <FormGroup aria-label="position" row>
                       <FormControlLabel
                         value="agregarFecha"
                         control={
@@ -522,7 +501,7 @@ export const OficiosContestacionModal = ({
                         labelPlacement="end"
                         disabled={Entregado === 1 || visualizar === true}
                       />
-                    </FormGroup>
+                    </FormGroup> */}
                   </Grid>
                 </Grid>
               ) : (
@@ -566,7 +545,9 @@ export const OficiosContestacionModal = ({
                     xs={4}
                     sx={{ display: "flex" }}
                   >
-                    <FormGroup aria-label="position" row>
+              {/* ///fecha de vencimiento y prorroga//// */}
+                    
+                    {/* <FormGroup aria-label="position" row>
                       <FormControlLabel
                         value="agregarFecha"
                         control={
@@ -580,7 +561,7 @@ export const OficiosContestacionModal = ({
                         labelPlacement="end"
                         disabled={Entregado === 1 || visualizar === true}
                       />
-                    </FormGroup>
+                    </FormGroup> */}
                   </Grid>
                 </Grid>
               )}

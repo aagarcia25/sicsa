@@ -26,10 +26,12 @@ export const Contestacion = ({
   handleFunction,
   obj,
   Entregado,
+  Ubicacion,
 }: {
   handleFunction: Function;
   obj: any;
   Entregado: any;
+  Ubicacion: any;
 }) => {
   const [openSlider, setOpenSlider] = useState(true);
   const [open, setOpen] = useState(false);
@@ -338,7 +340,7 @@ export const Contestacion = ({
       >
         <Progress open={openSlider}></Progress>
         <Typography variant="h6">
-          {obj.row.Oficio + " " + obj.row.unidad}
+          {Ubicacion}
         </Typography>
         {agregar && Entregado !== 1 ? (
           <ButtonsAdd handleOpen={handleOpen} agregar={agregar} />

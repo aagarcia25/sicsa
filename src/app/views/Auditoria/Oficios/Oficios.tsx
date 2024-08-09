@@ -64,6 +64,7 @@ export const Oficios = ({
   const [openModalAcciones, setOpenModalAcciones] = useState(false);
   const [openEtapas, setopenEtapas] = useState(false);
   const [tipoEtapas, setTipoEtapas] = useState(0);
+  const [ubicacion, setUbicacion] = useState("");
 
 
 
@@ -78,7 +79,6 @@ export const Oficios = ({
     console.log("data clip",data);
     setEntregado(data.row.entregado)
   };
-
   const handleClose = () => {
     setOpen(false);
     setOpenAdjuntos(false);
@@ -88,21 +88,14 @@ export const Oficios = ({
     setOpenModalAcciones(false)
     setopenEtapas(false)
   };
-
-
   const CierreEtapa = () => {
     setopenEtapas(true)
     setTipoEtapas(1)
   }
-
   const HabilitarEtapa = () => {
     setopenEtapas(true)
     setTipoEtapas(2)
   }
-
-  
-
-
   const noSelection = () => {
     if (selectionModel.length >= 1) {
       Swal.fire({
@@ -144,6 +137,9 @@ export const Oficios = ({
   };
 
   const handleDetalle = (data: any) => {
+    setUbicacion(
+      obj.row.anio + "/" +obj.row.NAUDITORIA +"-" +obj.row.NombreAudoria +  "/" + data.row.Oficio
+    );
     setVrows({
       ...data,
       row: {
@@ -158,6 +154,9 @@ export const Oficios = ({
   };
 
   const handleORgano = (data: any) => {
+    setUbicacion(
+      obj.row.anio + "/" +obj.row.NAUDITORIA +"-" +obj.row.NombreAudoria +  "/" + data.row.Oficio
+    );
     //if (data.row.entregado !== "1") {
     setVrows({
       ...data,
@@ -167,18 +166,31 @@ export const Oficios = ({
         anio: obj.row.anio,
       },
     });
+    console.log("vrows oficio",{
+      ...data,
+      row: {
+        ...data.row,
+        NAUDITORIA: obj.row.NAUDITORIA,
+        anio: obj.row.anio,
+      },
+    });
+    
     setopenModalOrgano(true);
     //}
   };
 
   const handleAcciones = (data: any) => {
     //if (data.row.entregado !== "1") {
+      setUbicacion(
+        obj.row.anio + "/" +obj.row.NAUDITORIA +"-" +obj.row.NombreAudoria +  "/" + data.row.Oficio
+      );
     setVrows({
       ...data,
       row: {
         ...data.row,
         NAUDITORIA: obj.row.NAUDITORIA,
         anio: obj.row.anio,
+        NombreAudoria:obj.row.NombreAudoria,
       },
     });
     setOpenModalAcciones(true);
@@ -341,7 +353,7 @@ console.log("v.row.entrgado1",params.row.entregado);
              )} */}
 
             <ButtonsDetail
-              title={"Entregas y Notificaciones"}
+              title={"Notificaciones"}
               handleFunction={handleORgano}
               show={true}
               icon={<FormatListBulletedIcon />}
@@ -427,7 +439,7 @@ console.log("v.row.entrgado1",params.row.entregado);
   };
 
   useEffect(() => {
-    console.log("obj",obj);
+    console.log("obj oficios",obj);
     console.log("obj.row.entregado",obj.row.entregado);
     
     
@@ -467,7 +479,7 @@ console.log("v.row.entrgado1",params.row.entregado);
         )}
         <Progress open={show}></Progress>
         <Typography variant="h6">
-          {obj.row.NAUDITORIA + " " + obj.row.NombreAudoria}
+          {obj.row.anio + "/" +obj.row.NAUDITORIA + "-" + obj.row.NombreAudoria}
         </Typography>
 
         {agregar && obj.row.entregado !== "1" ? (
@@ -540,19 +552,20 @@ console.log("v.row.entrgado1",params.row.entregado);
         <OficiosContestacion
           handleFunction={handleClose} obj={vrows}
           Entregado={obj?.row?.entregado}
+          Ubicacion={ubicacion}
         />
       ) : (
         ""
       )}
 
       {openModalOrgano ? (
-        <Notif handleFunction={handleClose} obj={vrows} idauditoria={obj?.id}/>
+        <Notif handleFunction={handleClose} Ubicacion={ubicacion} obj={vrows} idauditoria={obj?.id}/>
       ) : (
         ""
       )}
 
       {openModalAcciones ? (
-        <Acciones handleFunction={handleClose} obj={vrows} idauditoria={obj?.id}/>
+        <Acciones handleFunction={handleClose} Ubicacion={ubicacion} obj={vrows} idauditoria={obj?.id}/>
       ) : (
         ""
       )}

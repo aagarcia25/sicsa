@@ -39,7 +39,7 @@ export default function MUIXDataGridGeneral(props: any) {
       Tema: false,
       Observaciones: false,
       magneticos: false,
-      FechaRecibido: false,
+      FechaVencimiento: false,
       FechaEntrega: false,
       FechaCreacion: false,
       UltimaActualizacion: false,

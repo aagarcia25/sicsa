@@ -54,7 +54,8 @@ const [show, setShow] = useState(false);
   const [visualizar, setVisualizar] = useState<boolean>(false);
   //const [switchValue, setSwitchValue] = useState(false);
   const [observacion	, setObservacion] = useState("");
-
+  const [idEstatus, setIdEstatus] = useState("");
+  const [ListEstatus, setListEstatus] = useState<SelectValues[]>([]);
 
 //   const handleChange = (event: any) => {
 //     setSwitchValue(event.target.checked);
@@ -113,7 +114,8 @@ const [show, setShow] = useState(false);
             Prorroga: Prorroga,
             FVencimiento: FVencimiento, 
             idRelacion: idRelacion,
-            TipoDoc: idTipoDocumento
+            TipoDoc: idTipoDocumento,
+            Estatus: idEstatus,
             
 
           };
@@ -162,6 +164,10 @@ const [show, setShow] = useState(false);
       const handleFilterChangeTipoDocumento = (v: any) => {
         setIdTipoDocumento(v);
       };
+
+      const handleFilterChangeEstatus = (v: any) => {
+        setIdEstatus(v);
+      };
     
       const handleFilterChangefv = (v: any) => {
         setFVencimiento(v);
@@ -179,6 +185,10 @@ const [show, setShow] = useState(false);
             setListTipoDocumento(res.RESPONSE);
             setShow(false);
           } 
+          if (operacion === 32) {
+            setListEstatus(res.RESPONSE);
+            setShow(false);
+          } 
         });
       };
 
@@ -191,6 +201,8 @@ const [show, setShow] = useState(false);
       
       
         loadFilter(11);
+        loadFilter(32);
+
         
     
         if (Object.keys(dt).length === 0) {
@@ -201,6 +213,8 @@ const [show, setShow] = useState(false);
           setObservacion(dt?.row?.Observacion);
 
           handleFilterChangeTipoDocumento(dt?.row?.TipoDoc);
+          handleFilterChangeEstatus(dt?.row?.Estatus);
+
           if (FRecibido !== null) {
             setFRecibido(dayjs(dt?.row?.FRecibido,'DD-MM-YYYY'));
           }
@@ -265,7 +279,19 @@ const [show, setShow] = useState(false);
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
+            <Typography sx={{ fontFamily: "sans-serif" }}>
+                Estatus:
+              </Typography>
+              <SelectFrag
+                value={idEstatus}
+                options={ListEstatus}
+                onInputChange={handleFilterChangeEstatus}
+                placeholder={"Seleccione..."}
+                disabled={Entregado === 1 || visualizar === true}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+             <TextField
                 margin="dense"
                 id="Oficio"
                 label="Oficio"
@@ -278,9 +304,6 @@ const [show, setShow] = useState(false);
                 onChange={(v) => setOficio(v.target.value)}
                 disabled={Entregado === 1 || visualizar === true}
               />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-             
                 
                 </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
