@@ -44,20 +44,21 @@ export const NotifModal = ({
   // CAMPOS DE LOS FORMULARIOS
   const [show, setShow] = useState(false);
   const [id, setId] = useState("");
-  const [Prorroga, setProrroga] = useState<Dayjs | null>(
-    dt[0]?.row?.Prorroga !== undefined && dt[0]?.row?.Prorroga !== null
-      ? dayjs(dt[0]?.row?.Prorroga)
-      : null
-  );
+  // const [Prorroga, setProrroga] = useState<Dayjs | null>(
+  //   dt[0]?.row?.Prorroga !== undefined && dt[0]?.row?.Prorroga !== null
+  //     ? dayjs(dt[0]?.row?.Prorroga)
+  //     : null
+  // );
+  // const [FVencimiento, setFVencimiento] = useState<Dayjs | null>(
+  //   dt[0]?.row?.FVencimiento !== undefined && dt[0]?.row?.FVencimiento !== null
+  //     ? dayjs(dt[0]?.row?.FVencimiento)
+  //     : null
+  // );
   const [Oficio, setOficio] = useState("");
   const [SIGAOficio, setSIGAOficio] = useState("");
   const [FOficio, setFechaOficio] = useState<Dayjs | null>();
   const [FRecibido, setFRecibido] = useState<Dayjs | null>();
-  const [FVencimiento, setFVencimiento] = useState<Dayjs | null>(
-    dt[0]?.row?.FVencimiento !== undefined && dt[0]?.row?.FVencimiento !== null
-      ? dayjs(dt[0]?.row?.FVencimiento)
-      : null
-  );
+  
   const [idsecretaria, setidsecretaria] = useState("");
   const [idunidad, setidunidad] = useState("");
   const [ListSecretarias, setListSecretarias] = useState<SelectValues[]>([]);
@@ -67,10 +68,11 @@ export const NotifModal = ({
   const [Entregado, setEntregado] = useState(dt[1]?.row?.entregado);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
   const [visualizar, setVisualizar] = useState<boolean>(false);
-  const [switchValue, setSwitchValue] = useState(false);
-  const handleChange = (event: any) => {
-    setSwitchValue(event.target.checked);
-  };
+  ///fecha de vencimiento y prorroga////
+  // const [switchValue, setSwitchValue] = useState(false);
+  // const handleChange = (event: any) => {
+  //   setSwitchValue(event.target.checked);
+  // };
 
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
 
@@ -149,9 +151,10 @@ export const NotifModal = ({
         idEntrega: entrega,
         idOficio: idoficio,
       };
-      if (switchValue === true) {
-        data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
-      }
+      ///fecha de vencimiento y prorroga////
+      // if (switchValue === true) {
+      //   data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
+      // }
 
       handleRequest(data);
     }
@@ -203,13 +206,14 @@ export const NotifModal = ({
     setFRecibido(v);
   };
 
-  const handleFilterChangefv = (v: any) => {
-    setFVencimiento(v);
-  };
+  ///fecha de vencimiento y prorroga////
+  // const handleFilterChangefv = (v: any) => {
+  //   setFVencimiento(v);
+  // };
 
-  const handleFilterChangep = (v: any) => {
-    setProrroga(v);
-  };
+  // const handleFilterChangep = (v: any) => {
+  //   setProrroga(v);
+  // };
   
   const handleFilterChangeOficios = (v: any) => {
     setidoficio(v);
@@ -257,7 +261,9 @@ export const NotifModal = ({
         }
       }
     });
-  }, [switchValue]);
+  }, [
+    ///switchValue ///fecha de vencimiento y prorroga////
+  ]);
 
   useEffect(() => {
     console.log("dt",dt);
@@ -286,18 +292,19 @@ export const NotifModal = ({
       if (FRecibido !== null) {
         setFRecibido(dayjs(dt[0]?.row?.FRecibido, "DD-MM-YYYY"));
       }
-
-      if (FVencimiento !== null && FVencimiento !== undefined) {
-        setFVencimiento(dayjs(dt[0]?.row?.FVencimiento, "DD-MM-YYYY"));
-        setSwitchValue(true);
-      }
+      ///fecha de vencimiento y prorroga////
+      // if (FVencimiento !== null && FVencimiento !== undefined) {
+      //   setFVencimiento(dayjs(dt[0]?.row?.FVencimiento, "DD-MM-YYYY"));
+      //   setSwitchValue(true);
+      // }
+      // if (Prorroga !== null && Prorroga !== undefined) {
+      //   setProrroga(dayjs(dt[0]?.row?.Prorroga, "DD-MM-YYYY"));
+      //   setSwitchValue(true);
+      // }
       if (FOficio !== null) {
         setFechaOficio(dayjs(dt[0]?.row?.FOficio, "DD-MM-YYYY"));
       }
-      if (Prorroga !== null && Prorroga !== undefined) {
-        setProrroga(dayjs(dt[0]?.row?.Prorroga, "DD-MM-YYYY"));
-        setSwitchValue(true);
-      }
+      
     }
   }, [dt]);
 
@@ -391,7 +398,7 @@ export const NotifModal = ({
               /> */}
             </Grid>
           </Grid>
-          {switchValue ? (
+          {/* {switchValue ? (
             <Grid
               container
               item
@@ -440,7 +447,7 @@ export const NotifModal = ({
                 />
               </Grid>
             </Grid>
-          ) : (
+          ) : ( */}
             <Grid
               container
               item
@@ -475,7 +482,7 @@ export const NotifModal = ({
 
               <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             </Grid>
-          )}
+          {/* )} ///fecha de vencimiento y prorroga////*/} 
           {/* mientras se poenen los oficios, quitar despues */}
           <Grid
               container
@@ -571,7 +578,7 @@ export const NotifModal = ({
                 paddingLeft={1}
                 sx={{ display: "flex" }}
               >
-                <FormGroup aria-label="position" row>
+                {/* <FormGroup aria-label="position" row>
                   <FormControlLabel
                     value="agregarFecha"
                     control={
@@ -585,7 +592,7 @@ export const NotifModal = ({
                     labelPlacement="end"
                     disabled={Entregado === 1 || visualizar === true}
                   />
-                </FormGroup>
+                </FormGroup> */}
               </Grid>
             </Grid>
           ) : (
@@ -629,7 +636,7 @@ export const NotifModal = ({
                 xs={4}
                 sx={{ display: "flex" }}
               >
-                <FormGroup aria-label="position" row>
+                {/* <FormGroup aria-label="position" row>
                   <FormControlLabel
                     value="agregarFecha"
                     control={
@@ -643,7 +650,7 @@ export const NotifModal = ({
                     labelPlacement="end"
                     disabled={Entregado === 1 || visualizar === true}
                   />
-                </FormGroup>
+                </FormGroup> */}
               </Grid>
             </Grid>
           )}
