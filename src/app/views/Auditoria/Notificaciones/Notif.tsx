@@ -103,14 +103,9 @@ const Notif = ({
     setUbicacion(
       obj.row.anio + "/" + obj.row.NAUDITORIA +"-" +obj.row.NombreAudoria +  "/" + data.row.OficioA + "/" + data.row.Oficio
     );
-    console.log("ubicacion noti",ubicacion);
-    console.log("obj noti2",obj);
-    console.log("data notif",data);
-    console.log("vrows",vrows);
-    
-    
-    
-    setVrows({
+
+    if(data.row.idOficio){
+       setVrows({
       ...data,
       row: {
         ...data.row,
@@ -121,9 +116,16 @@ const Notif = ({
     });
     setOpenContestacion(true);
     setEntregado(obj.row.entregado);
-    
-  };
+    }else{
+      Toast.fire({
+    icon: "info",
+    title: "¡Asignar oficio al que pertenece la notificación!",
+  });
+    }
+   
 
+
+  };
   const handleDocExtra = (data: any) => {
     setUbicacion(
       obj.row.anio + "/" + obj.row.NAUDITORIA +"-" +obj.row.NombreAudoria +  "/" + data.row.OficioA + "/" + data.row.Oficio
