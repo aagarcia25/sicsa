@@ -51,6 +51,9 @@ import { ButtonsImport } from "../componentes/ButtonsImport";
 import VisorDocumentosOficios from "../componentes/VisorDocumentosOficios";
 import Notif from "./Notificaciones/Notif";
 import ReporteAuditoriaF from "./ReporteAuditoriaF";
+import { Diagnostico } from "./Diagnostico";
+import TableViewIcon from '@mui/icons-material/TableView';
+import { log } from "console";
 export const Auditoria = () => {
   const [openSlider, setOpenSlider] = useState(true);
   const [modo, setModo] = useState("");
@@ -101,6 +104,7 @@ export const Auditoria = () => {
   const [selectionModel, setSelectionModel] = useState<any[]>([]);
   //const [entregado, setEntregado] = useState({});
   const [openReporte, setOpenReporte] = useState(false);
+  const [openDiagnostico, setOpenDiagnostico] = useState(false);
 
   const [data, setData] = useState([]);
   const [explorerRoute, setexplorerRoute] = useState<string>("");
@@ -148,6 +152,7 @@ export const Auditoria = () => {
     setOpenModalgant(false);
     setopenModalOrgano(false);
     setOpenReporte(false);
+    setOpenDiagnostico(false);
   };
 
   const handleAcciones = (data: any) => {
@@ -656,6 +661,12 @@ export const Auditoria = () => {
     setidOrigenAuditoria("");
     setidEntidadFiscalizada("");
   };
+
+  const handleDiagnostico = () => {
+    setOpenDiagnostico(true)
+    console.log("bancos",bancos);
+    
+  }
   const consulta = () => {
     let data = {
       NUMOPERACION: 4,
@@ -678,6 +689,11 @@ export const Auditoria = () => {
         //   title: "¡Consulta Exitosa!",
         // });
         setBancos(res.RESPONSE);
+        console.log("res",res);
+        console.log("data",data);
+        
+        
+        
         setOpenSlider(false);
       } else {
         setOpenSlider(false);
@@ -840,6 +856,13 @@ export const Auditoria = () => {
   };
 
   useEffect(() => {
+
+    console.log("data",data);
+    console.log("vrows",vrows);
+    console.log("bancos usefect",bancos);
+    
+    
+    
 
     loadFilter(1);
     loadFilter(12);
@@ -1054,7 +1077,20 @@ export const Auditoria = () => {
                   </Button>
                 </Tooltip>
               </Grid>
-              <Grid item xs={12} sm={6} md={4} lg={2}></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={2}>
+              <Tooltip title="Diagnóstico">
+                  <Button
+                    onClick={handleDiagnostico}
+                    variant="contained"
+                    color="secondary"
+                    endIcon={<TableViewIcon sx={{ color: "white" }}/>}
+                  >
+                    <Typography sx={{ color: "white" }}>
+                      Diagnóstico
+                    </Typography>
+                  </Button>
+                </Tooltip>
+              </Grid>
               <Grid item xs={12} sm={6} md={4} lg={6}></Grid>
             </Grid>
           </Collapse>
@@ -1141,6 +1177,13 @@ export const Auditoria = () => {
       ) : (
         ""
       )}
+      {openDiagnostico &&bancos? (
+        <Diagnostico
+          handleClose={handleClose}
+          obj={bancos}
+      ></Diagnostico>):("")
+
+      }
     </div>
   );
 };
