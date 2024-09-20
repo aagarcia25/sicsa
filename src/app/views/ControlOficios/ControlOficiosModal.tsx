@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ModalForm from "../componentes/ModalForm";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import CustomizedDate from "../componentes/CustomizedDate";
@@ -36,40 +36,42 @@ export const ControlOficiosModal = ({
   const [Tipo, setTipo] = useState("");
   const [Observaciones, setObservaciones] = useState("");
   const [Destinatario, setDestinatario] = useState("");
-  const [Cargo, setCargo] = useState("");
+  // const [Cargo, setCargo] = useState("");
   const [ListDestinatario, setListDestinatario] = useState<SelectValues[]>([]);
   const [ListCargo, setListCargo] = useState<SelectValues[]>([]);
   const [ListSolicitante, setListSolicitante] = useState<SelectValues[]>([]);
-
+  const [Puesto, setPuesto] = useState("");
+  const [PuestoActual, setPuestoActual] = useState("");
 
 
   const handleSend = () => {
-      let data = {
-        CHID: id,
-        NUMOPERACION: tipo,
-        CHUSER: user.Id,
-        Fecha: Fecha,
-        Oficio: Oficio,
-        Nauditoria: Nauditoria,
-        Solicitante: Solicitante,
-        FechaEntregado: FechaEntregado,
-        FechaRecibido: FechaRecibido,
-        Asunto: Asunto,
-        Tema: Tema,
-        Tipo: Tipo,
-        Observaciones: Observaciones,
-        Cargo: Cargo,
-        Destinatario: Destinatario,
-      };
+    let data = {
+      CHID: id,
+      NUMOPERACION: tipo,
+      CHUSER: user.Id,
+      Fecha: Fecha,
+      Oficio: Oficio,
+      Nauditoria: Nauditoria,
+      Solicitante: Solicitante,
+      FechaEntregado: FechaEntregado,
+      FechaRecibido: FechaRecibido,
+      Asunto: Asunto,
+      Tema: Tema,
+      Tipo: Tipo,
+      Observaciones: Observaciones,
+      Cargo: "Cargo",
+      Destinatario: Destinatario,
+      Puesto: Puesto,
+    };
 
-      if (tipo === 1) {
-        //AGREGAR
-        agregar(data);
-      } else if (tipo === 2) {
-        //EDITAR
-        editar(data);
-      }
-    
+    if (tipo === 1) {
+      //AGREGAR
+      agregar(data);
+    } else if (tipo === 2) {
+      //EDITAR
+      editar(data);
+    }
+
   };
 
   const agregar = (data: any) => {
@@ -99,7 +101,7 @@ export const ControlOficiosModal = ({
       }
     });
   };
-  
+
 
 
   const handleFilterChange1 = (v: any) => {
@@ -114,10 +116,31 @@ export const ControlOficiosModal = ({
 
   const handleFilterChangeDestinatario = (v: string) => {
     setDestinatario(v);
+
+    let data = {
+      Destinatario: v,
+      NUMOPERACION: 9,
+    };
+
+    // Verifica si el destinatario es falsy (vacío, null, false, undefined, etc.)
+    if (v == "false") {
+      setPuesto("")
+    } else {
+      AuditoriaService.Foliosindex(data).then((res) => {
+        console.log("res", res);
+
+        if (res.SUCCESS) {
+          // setPuestoActual(res.RESPONSE[0]?.Cargo);
+          setPuesto(res.RESPONSE[0]?.Cargo);
+
+        }
+      });
+    }
   };
-  const handleFilterChangeCargo = (v: string) => {
-    setCargo(v);
+  const handleFilterChangePuesto = (v: string) => {
+    setPuesto(v);
   };
+
   const handleFilterChangeSolicitante = (v: string) => {
     setSolicitante(v);
   };
@@ -128,27 +151,30 @@ export const ControlOficiosModal = ({
     ShareService.SelectIndex(data).then((res) => {
       if (operacion === 25) {
         setListDestinatario(res.RESPONSE);
-      }else if (operacion === 26){
-        setListCargo(res.RESPONSE);
-      }else if (operacion === 27){
+      } else if (operacion === 26) {
+        //setListPuesto(res.RESPONSE);
+      } else if (operacion === 27) {
         setListSolicitante(res.RESPONSE);
       }
     });
   };
 
   useEffect(() => {
-    
+
     loadFilter(25);
-    loadFilter(26);
+    //loadFilter(26);
     loadFilter(27);
+
 
 
     if (dt === "") {
     } else {
+      console.log("hola", dt?.data?.row?.Puesto);
+
       setId(dt?.data?.row?.id);
       setOficio(dt?.data?.row?.Oficio);
       setDestinatario(dt?.data?.row?.Destinatario);
-      setCargo(dt?.data?.row?.Cargo);
+      setPuesto(dt?.data?.row?.Puesto);
       setAsunto(dt?.data?.row?.Asunto);
       setTema(dt?.data?.row?.Tema);
       setNauditoria(dt?.data?.row?.Nauditoria);
@@ -162,9 +188,81 @@ export const ControlOficiosModal = ({
     }
   }, [dt]);
 
+
+
+  // useEffect(() => {
+  //   console.log("dt", dt);
+  //   console.log("destinatario",Destinatario);
+
+
+  //   let data = {
+  //     Destinatario: Destinatario,
+  //     NUMOPERACION: 9,
+  //   };
+
+  //   // Verifica si el destinatario es falsy (vacío, null, false, undefined, etc.)
+  //   if (!Destinatario || Destinatario == "false") {
+  //   } else {
+  //     AuditoriaService.Foliosindex(data).then((res) => {
+  //       console.log("res", res);
+
+  //       if (res.SUCCESS) {
+  //         // setPuestoActual(res.RESPONSE[0]?.Cargo);
+  //         setPuesto(res.RESPONSE[0]?.Cargo);
+
+  //       }
+  //     });
+  //   }
+  // }, [Destinatario]);
+
+  // // useEffect(() => {
+  // //   // if (dt?.data?.row?.Puesto && dt?.data?.row?.Destinatario==Destinatario) {
+  // //   //  setPuesto(dt?.data?.row?.Puesto); 
+  // //   // }else { 
+  // //     setPuesto(PuestoActual);
+
+  // //   // }
+  // // }, [PuestoActual]);
+  // const hasRenderedTwice = useRef(0);
+  // useEffect(() => {
+  //   hasRenderedTwice.current += 1;
+  //   // Solo ejecutamos la lógica cuando hasRenderedTwice es igual a 2 (segunda ejecución)
+  //   if
+  //     (hasRenderedTwice.current < 2) {
+  //     return
+  //       ;
+  //     // Si no es la segunda vez, no hacemos nada
+  //   }
+  //   // Al entrar al componente asigna el valor de las props a puesto
+  //   setPuesto(dt?.data?.row?.Puesto);
+  // },
+  //   [dt?.data?.row?.Puesto]);
+  // useEffect(() => {
+  //   console.log("Destinatario", Destinatario);
+  //   // Verifica si Destinatario tiene un valor válido
+  //   if (!Destinatario || Destinatario === "false") {
+  //     setPuesto("");
+  //     return;
+  //   }
+  //   const data = {
+  //     Destinatario: Destinatario,
+  //     NUMOPERACION: 9,
+  //   };
+  //   AuditoriaService.Foliosindex(data).then((res) => {
+  //     console.log("res", res);
+  //     if (res.SUCCESS) {
+  //       setPuesto(res.RESPONSE[0]?.Cargo || dt?.data?.row?.Puesto);
+  //       // Asigna el nuevo puesto o mantiene el inicial
+  //     }
+  //   });
+  // }, [
+  //   Destinatario
+  // ]);
+
+
   return <div>
     <ModalForm handleClose={handleClose} title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}>
-    {/* <Progress open={show}></Progress> */}
+      {/* <Progress open={show}></Progress> */}
 
       <Box boxShadow={3}>
         <Grid
@@ -181,7 +279,7 @@ export const ControlOficiosModal = ({
           sx={{ padding: "2%" }}
         >
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <TextField
+            <TextField
               margin="dense"
               id="Oficio"
               label="Oficio"
@@ -193,7 +291,7 @@ export const ControlOficiosModal = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          {/* <TextField
+            {/* <TextField
               margin="dense"
               id="Destinatario"
               label="Destinatario"
@@ -204,18 +302,30 @@ export const ControlOficiosModal = ({
               onChange={(v) => setDestinatario(v.target.value)}
             /> */}
             <Typography sx={{ fontFamily: "sans-serif" }}>
-                Destinatario:
-              </Typography>
-              <SelectFrag
-                value={Destinatario}
-                options={ListDestinatario}
-                onInputChange={handleFilterChangeDestinatario}
-                placeholder={"Seleccione...."}
-                disabled={false}
-              />
+              Destinatario:
+            </Typography>
+            <SelectFrag
+              value={Destinatario}
+              options={ListDestinatario}
+              onInputChange={handleFilterChangeDestinatario}
+              placeholder={"Seleccione...."}
+              disabled={false}
+            />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <TextField
+            <TextField
+              margin="dense"
+              id="Puesto"
+              label="Puesto"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={Puesto}
+              onChange={(v) => setPuesto(v.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <TextField
               margin="dense"
               id="Asunto"
               label="Asunto"
@@ -226,8 +336,22 @@ export const ControlOficiosModal = ({
               onChange={(v) => setAsunto(v.target.value)}
             />
           </Grid>
+        </Grid>
+        <Grid
+          container
+          item
+          spacing={1}
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ padding: "2%" }}
+        >
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <TextField
+            <TextField
               margin="dense"
               id="Tema"
               label="Tema"
@@ -238,22 +362,8 @@ export const ControlOficiosModal = ({
               onChange={(v) => setTema(v.target.value)}
             />
           </Grid>
-        </Grid>
-        <Grid
-          container
-          item
-          spacing={1}
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          sx={{ padding: "2%" }}
-        >
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <TextField
+            <TextField
               margin="dense"
               id="Nauditoria"
               label="No. de Auditoría"
@@ -262,33 +372,25 @@ export const ControlOficiosModal = ({
               variant="standard"
               value={Nauditoria}
               onChange={(v) => setNauditoria(v.target.value)}
-            />          
+            />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Typography sx={{ fontFamily: "sans-serif" }}>
-                Solicitante:
-              </Typography>
-              <SelectFrag
-                value={Solicitante}
-                options={ListSolicitante}
-                onInputChange={handleFilterChangeSolicitante}
-                placeholder={"Seleccione...."}
-                disabled={false}
-              />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-          <CustomizedDate
-              value={Fecha}
-              label={"Fecha"}
-              onchange={handleFilterChange1}
+            <Typography sx={{ fontFamily: "sans-serif" }}>
+              Solicitante:
+            </Typography>
+            <SelectFrag
+              value={Solicitante}
+              options={ListSolicitante}
+              onInputChange={handleFilterChangeSolicitante}
+              placeholder={"Seleccione...."}
               disabled={false}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <CustomizedDate
-              value={FechaRecibido}
-              label={"Fecha Recibido"}
-              onchange={handleFilterChange3}
+            <CustomizedDate
+              value={Fecha}
+              label={"Fecha"}
+              onchange={handleFilterChange1}
               disabled={false}
             />
           </Grid>
@@ -307,7 +409,15 @@ export const ControlOficiosModal = ({
           sx={{ padding: "2%" }}
         >
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <CustomizedDate
+            <CustomizedDate
+              value={FechaRecibido}
+              label={"Fecha Recibido"}
+              onchange={handleFilterChange3}
+              disabled={false}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <CustomizedDate
               value={FechaEntregado}
               label={"Fecha Entregado"}
               onchange={handleFilterChange2}
@@ -315,7 +425,7 @@ export const ControlOficiosModal = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <TextField
+            <TextField
               margin="dense"
               id="Tipo"
               label="Tipo"
@@ -327,7 +437,7 @@ export const ControlOficiosModal = ({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={3}>
-          <TextField
+            <TextField
               margin="dense"
               id="Observaciones"
               label="Observaciones"
@@ -337,9 +447,6 @@ export const ControlOficiosModal = ({
               value={Observaciones}
               onChange={(v) => setObservaciones(v.target.value)}
             />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-          
           </Grid>
         </Grid>
         <Grid
@@ -354,11 +461,11 @@ export const ControlOficiosModal = ({
           sx={{ padding: "2%" }}
         >
           <Grid item
-              alignItems="center"
-              justifyContent="flex-end"
-              xs={6}
-              paddingRight={1}
-              sx={{ display: "flex" }}>
+            alignItems="center"
+            justifyContent="flex-end"
+            xs={6}
+            paddingRight={1}
+            sx={{ display: "flex" }}>
             <Button
               //disabled={Nombre === "" || ClaveEstado === "" || ClaveINEGI === ""}
               className={tipo === 1 ? "guardar" : "actualizar"}
@@ -368,21 +475,21 @@ export const ControlOficiosModal = ({
             </Button>
           </Grid>
           <Grid
-              item
-              alignItems="center"
-              justifyContent="flex-start"
-              xs={6}
-              paddingLeft={1}
-              sx={{ display: "flex" }}
+            item
+            alignItems="center"
+            justifyContent="flex-start"
+            xs={6}
+            paddingLeft={1}
+            sx={{ display: "flex" }}
+          >
+            <Button
+              // disabled={descripcion === "" || nombre === ""}
+              className={"actualizar"}
+              onClick={() => handleClose()}
             >
-              <Button
-                // disabled={descripcion === "" || nombre === ""}
-                className={"actualizar"}
-                onClick={() => handleClose()}
-              >
-                {"Salir"}
-              </Button>
-            </Grid>
+              {"Salir"}
+            </Button>
+          </Grid>
         </Grid>
       </Box>
     </ModalForm>

@@ -117,7 +117,12 @@ export const ContestacionModal = ({
     if (!Oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
-      let data = {};
+
+      if (FRecibido){
+        if (FRecibido.isAfter(FVencimiento)){
+          Swal.fire("¡Rango de fechas no válido!");
+        }else{
+           let data = {};
       data = {
         NUMOPERACION: tipo,
         CHID: id,
@@ -126,15 +131,19 @@ export const ContestacionModal = ({
         Oficio: Oficio,
         SIGAOficio: SIGAOficio,
         FOficio: fOficio || FOficio,
-        FRecibido: FRecibido,
+        FRecibido: FRecibido ? dayjs(FRecibido).format('YYYY-MM-DD HH:mm:ss') : null,
         idsecretaria: idsecretaria,
         idunidad: idunidad,
       };
       if (switchValue === true) {
-        data = { ...data, FVencimiento: FVencimiento, Prorroga: Prorroga };
+        data = { ...data, FVencimiento: FVencimiento ? dayjs(FVencimiento).format('YYYY-MM-DD HH:mm:ss') : null, Prorroga: Prorroga };
       }
 
       handleRequest(data);
+        }
+      }
+
+     
     }
   };
 

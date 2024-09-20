@@ -105,14 +105,19 @@ const [show, setShow] = useState(false);
         if (!Oficio) {
           Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
         } else {
-          let data = {};
+
+          if (Prorroga){
+            if (Prorroga.isAfter(FVencimiento)){
+            Swal.fire("¡Rango de fechas no válido!");
+            }else{
+              let data = {};
           data = {
             NUMOPERACION: tipo,
             CHID: id,
             CHUSER: user.Id,
             Oficio: Oficio,
-            Prorroga: Prorroga,
-            FVencimiento: FVencimiento, 
+            Prorroga: Prorroga ? dayjs(Prorroga).format('YYYY-MM-DD HH:mm:ss') : null,
+            FVencimiento: FVencimiento ? dayjs(FVencimiento).format('YYYY-MM-DD HH:mm:ss') : null, 
             idRelacion: idRelacion,
             TipoDoc: idTipoDocumento,
             Estatus: idEstatus,
@@ -121,6 +126,11 @@ const [show, setShow] = useState(false);
           };
     
           handleRequest(data);
+            }
+            
+          }
+
+          
         }
       };
 

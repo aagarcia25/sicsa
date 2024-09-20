@@ -61,15 +61,20 @@ export const OficiosModal = ({
     if (!oficio) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
-      let data = {
+
+      if (finicio){
+        if (finicio.isAfter(ffin)){
+          Swal.fire("¡Rango de fechas no válido!");
+          }else{
+            let data = {
         CHID: id,
         NUMOPERACION: tipo,
         CHUSER: user.Id,
         idAuditoria: idauditoria,
         idOficios: idCatTOficio,
         Oficio: oficio,
-        FechaRecibido: finicio,
-        FechaVencimiento: ffin,
+        FechaRecibido: finicio ? dayjs(finicio).format('YYYY-MM-DD HH:mm:ss') : null,
+        FechaVencimiento: ffin ? dayjs(ffin).format('YYYY-MM-DD HH:mm:ss') : null,
         Descripcion: descripcion,
         Observacion: observacion,
         idEtapa: idCatEtapa,
@@ -85,6 +90,13 @@ export const OficiosModal = ({
         //EDITAR
         editar(data);
       }
+          }
+          
+      
+        }
+        
+
+      
     }
   };
 
