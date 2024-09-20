@@ -491,7 +491,7 @@ export const ControlOficios = () => {
       width: 250, 
       headerAlign: "center",
     },
-    { field: "dfCargo", 
+    { field: "cfPuesto", 
       headerName: "Puesto", 
       width: 250, 
       headerAlign: "center",
