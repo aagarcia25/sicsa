@@ -591,7 +591,7 @@ export const ControlOficios = () => {
         return (
           <>
             <ButtonsDetail
-              title={"Generar Oficio enn WORD"}
+              title={"Generar Oficio en WORD"}
               handleFunction={handleOficio}
               show={true}
               icon={<DescriptionIcon />}
