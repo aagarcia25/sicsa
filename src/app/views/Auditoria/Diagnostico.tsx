@@ -51,14 +51,14 @@ export const Diagnostico = ({
     }
   
     return `<tr style="background-color: #f9f9f9; color: #000;">
-      <td style="padding: 8px; text-align: center;">${row.Consecutivo}</td>
-      <td style="padding: 8px; text-align: center;">${row.anio}</td>
-      <td style="padding: 8px; text-align: center;">${row.NAUDITORIA}</td>
-      <td style="padding: 8px; text-align: center;">${row.cefDescripcion}</td>
-      <td style="padding: 8px; text-align: center;">${row.NombreAudoria}</td>
-      <td style="padding: 8px; text-align: center;">${row.ctaDescripcion}</td>
-      <td style="padding: 8px; text-align: center;">${row.cmoDescripcion}</td>
-      <td style="padding: 8px; text-align: center;">${row.cuaaDescripcion}</td>
+      <td style="padding: 8px; text-align: center;">${row.Consecutivoy || ""}</td>
+      <td style="padding: 8px; text-align: center;">${row.anio || ""}</td>
+      <td style="padding: 8px; text-align: center;">${row.NAUDITORIA || ""}</td>
+      <td style="padding: 8px; text-align: center;">${row.cefDescripcion || ""}</td>
+      <td style="padding: 8px; text-align: center;">${row.NombreAudoria || ""}</td>
+      <td style="padding: 8px; text-align: center;">${row.ctaDescripcion || ""}</td>
+      <td style="padding: 8px; text-align: center;">${row.cmoDescripcion || ""}</td>
+      <td style="padding: 8px; text-align: center;">${row.cuaaDescripcion || ""}</td>
       <td style="padding: 8px; text-align: center;"></td>
       <td style="padding: 8px; text-align: center;"></td>
       <td style="padding: 8px; text-align: center;"></td>
@@ -84,7 +84,7 @@ export const Diagnostico = ({
     console.log("obj",obj);
     
   }, [
- 
+  
   ]);
 
     return(
