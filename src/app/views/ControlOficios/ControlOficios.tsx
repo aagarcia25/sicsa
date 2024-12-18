@@ -591,7 +591,7 @@ export const ControlOficios = () => {
         return (
           <>
             <ButtonsDetail
-              title={"Generar Oficio enn WORD"}
+              title={"Generar Oficio en WORD"}
               handleFunction={handleOficio}
               show={true}
               icon={<DescriptionIcon />}
@@ -726,20 +726,33 @@ export const ControlOficios = () => {
   };
 
   const handleUpload = (data: any) => {
-    setShow(true);
+    setShow(true);              setOpenSlider(false);
+
     let file = data?.target?.files?.[0] || "";
     const formData = new FormData();
     formData.append("inputfile", file, "inputfile.xlxs");
     formData.append("CHUSER", user.Id);
     formData.append("tipo", "migraoficios");
     CatalogosServices.migraData(formData).then((res) => {
+
       if (res.SUCCESS) {
-        setShow(false);
-        Toast.fire({
-          icon: "success",
-          title: "¡Consulta Exitosa!",
+        // setShow(false);
+        // // Toast.fire({
+        // //   icon: "success",
+        // //   title: "¡Consulta Exitosa!",
+        // // });
+        // consulta({ NUMOPERACION: 4 });
+        Swal.fire({
+          icon: "success",  
+          title: "Información",
+          text: "Registros Agregados",
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            
+            consulta({ NUMOPERACION: 4 });
+          }
         });
-        consulta({ NUMOPERACION: 4 });
       } else {
         setShow(false);
         Swal.fire("¡Error!", res.STRMESSAGE, "error");

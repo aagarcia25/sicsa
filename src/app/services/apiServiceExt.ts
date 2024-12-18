@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getRfToken, getToken } from "./localStorage";
+import { getIdApp, getRfToken, getToken } from "./localStorage";
 
 export const postSingle = async function (url: string, body: any) {
   try {
@@ -41,7 +41,7 @@ export const postRefresh = async function (url: string) {
   try {
     let resp = await axios.post(
       process.env.REACT_APP_APPLICATION_BASE_URL_EXT + url,
-      { refreshToken: String(getRfToken()).replace(/["']/g, "") },
+      { refreshToken: String(getRfToken()).replace(/["']/g, ""),IdApp:getIdApp() },
       {
         headers: {
           "Content-Type": "application/json",
