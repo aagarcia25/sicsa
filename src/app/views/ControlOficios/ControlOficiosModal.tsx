@@ -262,7 +262,7 @@ export const ControlOficiosModal = ({
 
   return <div>
     <ModalForm handleClose={handleClose} title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}>
-      {/* <Progress open={show}></Progress> */}
+      <Progress open={show}></Progress>
 
       <Box boxShadow={3}>
         <Grid
