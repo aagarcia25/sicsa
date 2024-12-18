@@ -668,6 +668,7 @@ export const ControlOficios = () => {
     setOpen(false);
     setopenOficio(false);
     consulta({ Anio: anio, NUMOPERACION: 4 });
+    
   };
 
   const handleVer = (v: any) => {
@@ -681,15 +682,20 @@ export const ControlOficios = () => {
   };
 
   const handleOpen = (v: any) => {
+    setOpenAdjuntos(false)
+
     setTipoOperacion(1);
     setOpen(true);
     setVrows("");
+
   };
 
   const handleEdit = (v: any) => {
+    setOpenAdjuntos(false)
     setTipoOperacion(2);
     setOpen(true);
     setVrows(v);
+    
   };
 
   const handleFilterChange1 = (v: string) => {
