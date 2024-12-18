@@ -12,6 +12,7 @@ import SelectFrag from "../componentes/SelectFrag";
 import SelectValues from "../../interfaces/Share";
 import { ShareService } from "../../services/ShareService";
 import Progress from "../Progress";
+import { log } from "console";
 
 export const ControlOficiosModal = ({
   handleClose,
@@ -160,6 +161,8 @@ export const ControlOficiosModal = ({
   };
 
   useEffect(() => {
+    console.log("entre al modal de cfolios");
+    
 
     loadFilter(25);
     //loadFilter(26);
@@ -262,7 +265,7 @@ export const ControlOficiosModal = ({
 
   return <div>
     <ModalForm handleClose={handleClose} title={tipo === 1 ? "Agregar Registro" : "Editar Registro"}>
-      <Progress open={show}></Progress>
+      {/* <Progress open={show}></Progress> */}
 
       <Box boxShadow={3}>
         <Grid
