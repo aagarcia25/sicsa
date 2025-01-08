@@ -51,7 +51,6 @@ export const Diagnostico = ({
     }
   
     return `<tr style="background-color: #f9f9f9; color: #000;">
-      <td style="padding: 8px; text-align: center;">${row.Consecutivo || ""}</td>
       <td style="padding: 8px; text-align: center;">${row.anio || ""}</td>
       <td style="padding: 8px; text-align: center;">${row.NAUDITORIA || ""}</td>
       <td style="padding: 8px; text-align: center;">${row.cefDescripcion || ""}</td>
