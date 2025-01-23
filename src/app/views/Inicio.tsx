@@ -6,8 +6,8 @@ import Header from "./Header";
 import { ReactNode } from "react";
 import { Grid } from "@mui/material";
 import { USUARIORESPONSE } from "../interfaces/UserInfo";
-import FAB from "./componentes/FAB";
-import SpeedDialTooltipOpen from "../Flotantes/Flotante";
+//import FAB from "./componentes/FAB";
+//import SpeedDialTooltipOpen from "../Flotantes/Flotante";
 
 
 let theme = createTheme({
