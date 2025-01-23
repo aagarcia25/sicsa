@@ -47,7 +47,6 @@ export const plantillaHTML =
             <th style="background-color: #BF0707; color: #FFF; padding: 8px; text-align: center;" colspan="13">RESULTADOS</th>
         </tr>
         <tr>
-            <th style="background-color: #000545; color: #FFF; padding: 8px; text-align: center;">Núm. Cons.</th>
             <th style="background-color: #000545; color: #FFF; padding: 8px; text-align: center;">Cuenta Pública</th>
             <th style="background-color: #000545; color: #FFF; padding: 8px; text-align: center;">Número Auditoría</th>
             <th style="background-color: #000545; color: #FFF; padding: 8px; text-align: center;">Entidades Fiscalizadas</th>

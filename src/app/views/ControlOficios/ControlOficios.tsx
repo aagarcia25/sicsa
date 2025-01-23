@@ -462,7 +462,7 @@ export const ControlOficios = () => {
     },
     {
       field: "Anio",
-      headerName: "Anio",
+      headerName: "Año",
       width: 150,
       align: "center",
       headerAlign: "center",
