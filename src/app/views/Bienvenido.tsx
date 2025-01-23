@@ -284,7 +284,7 @@ export default function Bienvenido({ user }: { user: any }) {
           </Grid>
         </Box>
       </CustomTabPanel>
-      <FavIconAvisos/>
+      {/* <FavIconAvisos/> */}
     </Box>
   );
 }
