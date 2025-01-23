@@ -34,6 +34,7 @@ import { MonitoreoWeb } from "../views/MonitoreoWeb/MonitoreoWeb";
 import { TipoOficio } from "../views/CatTipoOficio/TipoOficio";
 import { Unidades } from "../views/CatUnidades/Unidades";
 import { Etapas } from "../views/CatEtapas/Etapas";
+import { Usuarios } from "../views/Usuarios/Usuarios";
 //import ButtonsTutorial from "../views/componentes/ButtonsTutorial";
 
 export const AppRouter = ({ login }: { login: boolean }) => {
@@ -200,6 +201,10 @@ export const AppRouter = ({ login }: { login: boolean }) => {
           }
         />
 
+<Route
+          path="/inicio/usuarios"
+          element={log ? <Usuarios /> : <AuthRouter />}
+        />
 
         <Route
           path="/inicio/admin/reportes"
