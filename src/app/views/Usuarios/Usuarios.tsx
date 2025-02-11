@@ -9,6 +9,8 @@ import { GridColDef } from "@mui/x-data-grid";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
+import { Button, ToggleButton } from "@mui/material";
+import { EstatusUsuarios } from "./EstatusUsuarios";
 
 export const Usuarios = ()=>{
       const [open, setOpen] = useState(false);
@@ -19,6 +21,7 @@ export const Usuarios = ()=>{
   const [eliminar, setEliminar] = useState<boolean>(false);
   const [vrows, setVrows] = useState("");
    const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
+   const [openEstatusUsurios, setOpenEstatusUsurios] = useState<boolean>(false);
  
 
 const user: USUARIORESPONSE = JSON.parse(String(getUser()));
@@ -27,6 +30,7 @@ const [usuarios, setUsuarios] = useState([]);
       
       const handleClose = () => {
         setOpen(false);
+        setOpenEstatusUsurios(false);
         //consulta({ NUMOPERACION: 4 });
       };
       const handleOpen = (v: any) => {
@@ -44,7 +48,7 @@ const [usuarios, setUsuarios] = useState([]);
     
       const columns: GridColDef[] = [
         {
-          field: "id",
+          field: "Id",
           headerName: "Identificador",
           width: 150,
         },
@@ -151,13 +155,22 @@ const [usuarios, setUsuarios] = useState([]);
             
           })
           
+          
           .then((r) => {
             setState(r.data.data);
             setUsuarios(r.data.data);
             console.log("Usuarios",usuarios);
-            
+
 
           });
+      };
+      const handleEstatusUsuarios = (v: any) => {
+        console.log("entre al boton");
+        
+        setOpenEstatusUsurios(true);
+        //setModo("Agregar Registro");
+        //setOpen(true);
+        //setVrows("");
       };
       
 
@@ -220,12 +233,39 @@ useEffect(() => {
   
         <TitleComponent title={"Usuarios"} show={openSlider} />
         {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
+        <Button
+  sx={{
+    backgroundColor: '#15212f',
+    color: 'white',
+    fontSize: '18px',
+    padding: '12px 24px',
+    // '&:hover': {
+    //   backgroundColor: 'rgb(255, 255, 255)',
+    // },
+    
+  }}
+  onClick={handleEstatusUsuarios}
+>
+  Solicitud Usuarios
+</Button>
+
+{openEstatusUsurios ? (<EstatusUsuarios
+                        //open={open}
+                        //tipo={tipoOperacion}
+                        handleClose={handleClose}
+                        //dt={vrows}
+                      />):("")}
+                      
+                   
+
         <MUIXDataGridGeneral
                 columns={columns}
                 rows={usuarios}
                 //setRowSelected={setSelectionModel}
                 multiselect={true}
               />
+
+              
         {/* {eliminar ? (
           <Tooltip title={"Eliminar Registros Seleccionados"}>
             <ToggleButton
