@@ -9,8 +9,11 @@ import { GridColDef } from "@mui/x-data-grid";
 import MUIXDataGridGeneral from "../MUIXDataGridGeneral";
 import ButtonsEdit from "../componentes/ButtonsEdit";
 import ButtonsDeleted from "../componentes/ButtonsDeleted";
-import { Button, ToggleButton } from "@mui/material";
+import { Button, IconButton, ToggleButton, Typography } from "@mui/material";
 import { EstatusUsuarios } from "./EstatusUsuarios";
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import { TooltipPersonalizado } from "../componentes/CustomizedTooltips";
+import React from "react";
 
 export const Usuarios = ()=>{
       const [open, setOpen] = useState(false);
@@ -233,7 +236,7 @@ useEffect(() => {
   
         <TitleComponent title={"Usuarios"} show={openSlider} />
         {agregar ? <ButtonsAdd handleOpen={handleOpen} agregar={true} /> : ""}
-        <Button
+        {/* <Button
   sx={{
     backgroundColor: '#15212f',
     color: 'white',
@@ -246,8 +249,29 @@ useEffect(() => {
   }}
   onClick={handleEstatusUsuarios}
 >
-  Solicitud Usuarios
-</Button>
+  Solicitudes de Usuarios
+</Button> */}
+ <TooltipPersonalizado
+            title={
+              <React.Fragment>
+                <Typography color="inherit">Solicitudes de Usuarios</Typography>
+                {"Visualiza lista de peticiones de usuarios"}
+              </React.Fragment>
+            }
+          >
+            <ToggleButton value="check" className="guardar" size="small"   onClick={handleEstatusUsuarios}
+            >
+              <IconButton
+                color="inherit"
+                aria-label="upload documento"
+                component="label"
+                size="small"
+              >
+             
+                <ManageSearchIcon />
+              </IconButton>
+            </ToggleButton>
+          </TooltipPersonalizado>
 
 {openEstatusUsurios ? (<EstatusUsuarios
                         //open={open}
