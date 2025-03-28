@@ -650,6 +650,7 @@ export const Auditoria = () => {
   };
 
   const clearFilter = () => {
+
     setFolioSIGA("");
     setNAUDITORIA("");
     setidEstatus("");
@@ -660,6 +661,8 @@ export const Auditoria = () => {
     setmodalidad("");
     setidOrigenAuditoria("");
     setidEntidadFiscalizada("");
+    setBancos([]);
+
   };
 
   const handleDiagnostico = () => {
@@ -855,6 +858,24 @@ export const Auditoria = () => {
     });
   };
 
+  const validarNumero = (dato: string, state: any) => {
+    if (/^\d+(\.\d*)?$/.test(dato)) {
+      return dato;
+    } else if (dato.length === 0) {
+      return "";
+    }
+    return state;
+  };
+
+  const validarFolioSIGA = (dato: string, state: any) => {
+    if (/^[a-zA-Z0-9\/\-_]*$/.test(dato)) {
+      return dato;
+    } else if (dato.length === 0) {
+      return "";
+    }
+    return state;
+  };
+
   useEffect(() => {
 
     console.log("data",data);
@@ -1002,6 +1023,7 @@ export const Auditoria = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Tooltip title="Permite números, letras, /, - y _" arrow> 
                 <TextField
                   margin="dense"
                   id="FolioSIGA"
@@ -1010,11 +1032,15 @@ export const Auditoria = () => {
                   fullWidth
                   variant="standard"
                   value={FolioSIGA}
-                  onChange={(v) => setFolioSIGA(v.target.value)}
+                  onChange={(v) => setFolioSIGA(validarFolioSIGA(v.target.value,FolioSIGA))}
                 />
+              </Tooltip>
+
+                
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
-                <TextField
+              <Tooltip title="Permite números" arrow> 
+              <TextField
                   margin="dense"
                   id="NAUDITORIA"
                   label="N° de Auditoría"
@@ -1022,8 +1048,11 @@ export const Auditoria = () => {
                   type="text"
                   fullWidth
                   variant="standard"
-                  onChange={(v) => setNAUDITORIA(v.target.value)}
+                  onChange={(v) => setNAUDITORIA(validarNumero(v.target.value,NAUDITORIA))}
                 />
+              </Tooltip>
+
+                
               </Grid>
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Typography sx={{ fontFamily: "sans-serif" }}>
