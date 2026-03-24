@@ -1,16 +1,17 @@
-import { Box, Button, Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, InputAdornment, TextField, Tooltip, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Toast } from "../../helpers/Toast";
-import { PERMISO, USUARIORESPONSE } from "../../interfaces/UserInfo";
+import { PERMISO, ROLE, USUARIORESPONSE } from "../../interfaces/UserInfo";
 import { AuditoriaService } from "../../services/AuditoriaService";
-import { getPermisos, getUser } from "../../services/localStorage";
+import { getPermisos, getRoles, getUser } from "../../services/localStorage";
 import ModalForm from "../componentes/ModalForm";
 import SelectFrag from "../componentes/SelectFrag";
 import { ShareService } from "../../services/ShareService";
 import Progress from "../Progress";
 import SelectValues from "../../interfaces/Share";
 import { Modalidad } from "../CatModalidad/Modalidad";
+import { FlashOffRounded } from "@mui/icons-material";
 
 export const AuditoriaModal = ({
   handleClose,
@@ -80,7 +81,13 @@ export const AuditoriaModal = ({
   const permisos: PERMISO[] = JSON.parse(String(getPermisos()));
   const [visualizar, setVisualizar] = useState<boolean>(false);
   const [editarPermiso, setEditarPermiso] = useState<boolean>(false);
+  const roles: ROLE[] = JSON.parse(String(getRoles()));
+  const [rolADMINFEDERAL, setRolADMINFEDERAL] = useState<boolean>(false);
+  const [rolADMINGENERAL, setRolADMINGENERAL] = useState<boolean>(false);
+  const [rolADMINESTATAL, setRolADMINESTATAL] = useState<boolean>(false);
 
+const [openTooltipNAuditoria, setOpenTooltipNAuditoria] = useState(false);
+const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const handleSend = () => {
     if (
@@ -88,7 +95,8 @@ export const AuditoriaModal = ({
       !NombreAudoria ||
       !PersonalEncargado ||
       !universomilespesos ||
-      !muestramilespesos
+      !muestramilespesos||
+      !Consecutivo
     ) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
     } else {
@@ -154,7 +162,29 @@ export const AuditoriaModal = ({
 
   const handleFilterChangeclasificacion = (v: string) => {
     setidClasificacion(v);
+    console.log("v que clasificacion es",v);
+    
+    if(v==='df988d71-3d7b-11ee-aedd-3cd92b4d9bf4')
+    {
+          console.log("v que clasificacion es2",v);
+
+    setRolADMINFEDERAL(true);
+    setRolADMINESTATAL(false);
+    }
+     if(v==='e64df55b-3d7b-11ee-aedd-3cd92b4d9bf4')
+    {
+          console.log("v que clasificacion es3",v);
+    setRolADMINFEDERAL(false);
+    setRolADMINESTATAL(true);
+    }
+    if(v==='false')
+    {
+          console.log("v falso",v);
+    setRolADMINFEDERAL(false);
+    setRolADMINESTATAL(false);
+    }
     loadFilter(21, v);
+    
   };
 
   const handleFilterChange2 = (v: string) => {
@@ -333,6 +363,12 @@ export const AuditoriaModal = ({
   };
 
   useEffect( () => {
+    console.log("Entregado",Entregado);
+    console.log("visualizar",visualizar);
+    console.log("rolADMINFEDERAL",rolADMINFEDERAL);
+    console.log("rolADMINGENERAL",rolADMINGENERAL);
+
+    
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "VISUALDATOS") {
@@ -343,6 +379,20 @@ export const AuditoriaModal = ({
         }
       }
     });
+
+     
+    roles.map((item: ROLE) => {
+      if (String(item.ControlInterno) === "ADMINFEDERAL") {
+         setRolADMINFEDERAL(true);
+      }
+      if (String(item.ControlInterno) === "ADMINSICSA") {
+         setRolADMINGENERAL(true);
+      }
+      if (String(item.ControlInterno) === "ADMINESTATAL") {
+         setRolADMINESTATAL(true);
+      }
+    });
+
   }
     
   )
@@ -433,26 +483,70 @@ export const AuditoriaModal = ({
             alignItems="center"
             sx={{ padding: "2%" }}
           >
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Tooltip
+        open={openTooltipNAuditoria}
+        title={rolADMINFEDERAL 
+        ? "No se permiten letras ni símbolos, solo números"
+        : "No se permite el símbolo /"}    arrow
+        placement="top"
+      >
+        <TextField
+        required
+        margin="dense"
+        id="NAUDITORIA"
+        label="N° de Auditoría"
+        value={NAUDITORIA}
+        type="text"
+        fullWidth
+        variant="standard"
+        onChange={(v) => {
+          let value = v.target.value;
+          let mostrarTooltip = false;
+
+          // Nunca permitir /
+          if (value.includes("/")) {
+            value = value.replace(/\//g, "");
+            mostrarTooltip = true;
+          }
+
+          // Si es ADMIN FEDERAL, solo números
+          if (rolADMINFEDERAL) {
+            const valorOriginal = value;
+            value = value.replace(/\D/g, "");
+
+            if (valorOriginal !== value) {
+              mostrarTooltip = true;
+            }
+          }
+
+          if (mostrarTooltip) {
+            setOpenTooltipNAuditoria(true);
+
+            if (tooltipTimeout) {
+              clearTimeout(tooltipTimeout);
+            }
+
+            const timeout = setTimeout(() => {
+              setOpenTooltipNAuditoria(false);
+            }, 2000);
+
+            setTooltipTimeout(timeout);
+          }
+
+          setNAUDITORIA(value);
+        }}
+          error={NAUDITORIA === "" ? true : false}
+          InputProps={{
+            readOnly: tipo === 1 ? false : true,
+          }}
+          disabled={Entregado === "1" || visualizar === true}
+        />
+      </Tooltip>
+</Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
                 required
-                margin="dense"
-                id="NAUDITORIA"
-                label="N° de Auditoría"
-                value={NAUDITORIA}
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={(v) => setNAUDITORIA(v.target.value)}
-                error={NAUDITORIA === "" ? true : false}
-                InputProps={{
-                  readOnly: tipo === 1 ? false : true,
-                }}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
                 margin="dense"
                 id="Consecutivo"
                 label="Consecutivo"
@@ -461,6 +555,7 @@ export const AuditoriaModal = ({
                 variant="standard"
                 value={Consecutivo}
                 onChange={(v) => setConsecutivo(v.target.value)}
+                error={Consecutivo === "" ? true : false}
                 disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
@@ -512,7 +607,7 @@ export const AuditoriaModal = ({
               <TextField
                 margin="dense"
                 id="NombreAudoria"
-                label="Nombre"
+                label={rolADMINFEDERAL ? "Nombre":"Nombre de la Auditoría"} 
                 type="text"
                 multiline
                 fullWidth
@@ -687,6 +782,9 @@ export const AuditoriaModal = ({
               />
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
+
+            {rolADMINFEDERAL ? <>
+            
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Área Auditora:
               </Typography>
@@ -697,9 +795,11 @@ export const AuditoriaModal = ({
                 placeholder={"Seleccione.."}
                 disabled={Entregado === "1" || visualizar === true}
               />
+            </>: <></>}
+            
             </Grid>
           </Grid>
-
+          {rolADMINFEDERAL ? <>
           <Grid
             container
             item
@@ -784,6 +884,8 @@ export const AuditoriaModal = ({
               /> */}
             </Grid>
           </Grid>
+          </>:<></>}
+          
           
 
           {(String(Entregado) !== "1" && editarPermiso === true) ? (

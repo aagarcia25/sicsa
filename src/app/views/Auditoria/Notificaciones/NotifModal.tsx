@@ -14,14 +14,14 @@ import Swal from "sweetalert2";
 import { findOficios } from "../../../helpers/Files";
 import { Toast } from "../../../helpers/Toast";
 import SelectValues from "../../../interfaces/Share";
-import { PERMISO, USUARIORESPONSE } from "../../../interfaces/UserInfo";
+import { PERMISO, ROLE, USUARIORESPONSE } from "../../../interfaces/UserInfo";
 import { AuditoriaService } from "../../../services/AuditoriaService";
 import { ShareService } from "../../../services/ShareService";
 import Progress from "../../Progress";
 import CustomizedDate from "../../componentes/CustomizedDate";
 import ModalForm from "../../componentes/ModalForm";
 import SelectFrag from "../../componentes/SelectFrag";
-import { getPermisos } from "../../../services/localStorage";
+import { getPermisos, getRoles } from "../../../services/localStorage";
 import { log } from "console";
 
 export const NotifModal = ({
@@ -81,7 +81,8 @@ export const NotifModal = ({
 
   const [idoficio, setidoficio] = useState("");
   const [ListIdOficios, setListIdOficios] = useState<SelectValues[]>([]);
-
+  const roles: ROLE[] = JSON.parse(String(getRoles()));
+  const [rolADMINFEDERAL, setRolADMINFEDERAL] = useState<boolean>(false);
 
   const handleFilterChangeEntrega = (v: string) => {
     setEntrega(v);
@@ -261,6 +262,16 @@ export const NotifModal = ({
         }
       }
     });
+
+    roles.map((item: ROLE) => {
+          if (String(item.ControlInterno) === "ADMINFEDERAL") {
+             setRolADMINFEDERAL(true);
+          }
+          if (String(item.ControlInterno) === "ADMINFEDERAL") {
+             setRolADMINFEDERAL(true);
+          }
+        });
+
   }, [
     ///switchValue ///fecha de vencimiento y prorroga////
   ]);
@@ -483,8 +494,10 @@ export const NotifModal = ({
               <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             </Grid>
           {/* )} ///fecha de vencimiento y prorroga////*/} 
+
           {/* mientras se poenen los oficios, quitar despues */}
-          <Grid
+        { rolADMINFEDERAL ? <>
+        <Grid
               container
               item
               spacing={1}
@@ -515,6 +528,9 @@ export const NotifModal = ({
 
               <Grid item xs={12} sm={6} md={4} lg={3}></Grid>
             </Grid>
+        </>:<></>}
+          
+
           {/* mientras se poenen los oficios */}
 
 

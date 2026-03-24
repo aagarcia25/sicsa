@@ -30,6 +30,7 @@ export interface User{
 export interface ROLE {
     Nombre: string;
     Descripcion: string;
+    ControlInterno:string;
 }
 
 export interface MENU {
