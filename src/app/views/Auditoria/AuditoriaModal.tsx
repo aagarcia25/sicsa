@@ -86,8 +86,8 @@ export const AuditoriaModal = ({
   const [rolADMINGENERAL, setRolADMINGENERAL] = useState<boolean>(false);
   const [rolADMINESTATAL, setRolADMINESTATAL] = useState<boolean>(false);
 
-const [openTooltipNAuditoria, setOpenTooltipNAuditoria] = useState(false);
-const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [openTooltipNAuditoria, setOpenTooltipNAuditoria] = useState(false);
+  const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const handleSend = () => {
     if (
@@ -95,7 +95,7 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
       !NombreAudoria ||
       !PersonalEncargado ||
       !universomilespesos ||
-      !muestramilespesos||
+      !muestramilespesos ||
       !Consecutivo
     ) {
       Swal.fire("Favor de Completar los Campos", "¡Error!", "info");
@@ -162,29 +162,26 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
 
   const handleFilterChangeclasificacion = (v: string) => {
     setidClasificacion(v);
-    console.log("v que clasificacion es",v);
-    
-    if(v==='df988d71-3d7b-11ee-aedd-3cd92b4d9bf4')
-    {
-          console.log("v que clasificacion es2",v);
+    console.log("v que clasificacion es", v);
 
-    setRolADMINFEDERAL(true);
-    setRolADMINESTATAL(false);
+    if (v === 'df988d71-3d7b-11ee-aedd-3cd92b4d9bf4') {
+      console.log("v que clasificacion es2", v);
+
+      setRolADMINFEDERAL(true);
+      setRolADMINESTATAL(false);
     }
-     if(v==='e64df55b-3d7b-11ee-aedd-3cd92b4d9bf4')
-    {
-          console.log("v que clasificacion es3",v);
-    setRolADMINFEDERAL(false);
-    setRolADMINESTATAL(true);
+    if (v === 'e64df55b-3d7b-11ee-aedd-3cd92b4d9bf4') {
+      console.log("v que clasificacion es3", v);
+      setRolADMINFEDERAL(false);
+      setRolADMINESTATAL(true);
     }
-    if(v==='false')
-    {
-          console.log("v falso",v);
-    setRolADMINFEDERAL(false);
-    setRolADMINESTATAL(false);
+    if (v === 'false') {
+      console.log("v falso", v);
+      setRolADMINFEDERAL(false);
+      setRolADMINESTATAL(false);
     }
     loadFilter(21, v);
-    
+
   };
 
   const handleFilterChange2 = (v: string) => {
@@ -223,6 +220,43 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
     setiduaa(v);
     loadFilter(13, v);
   };
+
+  const sectionSx = {
+    px: { xs: 2, sm: 3, md: 4 },
+    py: { xs: 2, md: 2.5 },
+  };
+
+  const fieldTitleSx = {
+    fontFamily: "sans-serif",
+    fontSize: "0.92rem",
+    fontWeight: 500,
+    mb: 0.8,
+    color: "#374151",
+  };
+
+  const actionsSx = {
+    px: { xs: 2, sm: 3, md: 4 },
+    py: { xs: 2, md: 3 },
+    mt: 1,
+    borderTop: "1px solid #e5e7eb",
+  };
+
+  const boxWrapperSx = {
+    boxShadow: 3,
+    borderRadius: 3,
+    overflow: "hidden",
+    backgroundColor: "#fff",
+  };
+
+  const textFieldSx = {
+    "& .MuiInputBase-root": {
+      fontSize: "0.95rem",
+    },
+    "& .MuiInputLabel-root": {
+      fontSize: "0.95rem",
+    },
+  };
+
 
   const agregar = (data: any) => {
     AuditoriaService.Auditoriaindex(data).then((res) => {
@@ -276,7 +310,7 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
       else if (operacion === 10) {
         setListuaa(res.RESPONSE);
         setShow(false);
-      } else if (operacion === 13) { 
+      } else if (operacion === 13) {
         setListaa(res.RESPONSE);
         setShow(false);
       } else if (operacion === 14) {
@@ -314,7 +348,7 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
     loadFilter(17);
     loadFilter(18);
     loadFilter(21);
-    
+
 
     if (dt === "") {
     } else {
@@ -362,13 +396,13 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
     return state;
   };
 
-  useEffect( () => {
-    console.log("Entregado",Entregado);
-    console.log("visualizar",visualizar);
-    console.log("rolADMINFEDERAL",rolADMINFEDERAL);
-    console.log("rolADMINGENERAL",rolADMINGENERAL);
+  useEffect(() => {
+    console.log("Entregado", Entregado);
+    console.log("visualizar", visualizar);
+    console.log("rolADMINFEDERAL", rolADMINFEDERAL);
+    console.log("rolADMINGENERAL", rolADMINGENERAL);
 
-    
+
     permisos.map((item: PERMISO) => {
       if (String(item.menu) === "AUDITOR") {
         if (String(item.ControlInterno) === "VISUALDATOS") {
@@ -380,21 +414,21 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
       }
     });
 
-     
+
     roles.map((item: ROLE) => {
       if (String(item.ControlInterno) === "ADMINFEDERAL") {
-         setRolADMINFEDERAL(true);
+        setRolADMINFEDERAL(true);
       }
       if (String(item.ControlInterno) === "ADMINSICSA") {
-         setRolADMINGENERAL(true);
+        setRolADMINGENERAL(true);
       }
       if (String(item.ControlInterno) === "ADMINESTATAL") {
-         setRolADMINESTATAL(true);
+        setRolADMINESTATAL(true);
       }
     });
 
   }
-    
+
   )
 
   return (
@@ -404,20 +438,42 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
         handleClose={handleClose}
       >
         <Progress open={show}></Progress>
-        <Box boxShadow={3}>
+        <Box sx={boxWrapperSx}>
           <Grid
             container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
+            spacing={{ xs: 2, md: 2.5 }}
+            sx={sectionSx}
+            alignItems="flex-start"
           >
+            <Grid
+              container spacing={{ xs: 2, md: 2.5 }} sx={sectionSx}
+            >
+
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Clasificación Auditoría:
+                </Typography>
+                <SelectFrag
+                  value={idClasificacion}
+                  options={LisClasificacion}
+                  onInputChange={handleFilterChangeclasificacion}
+                  placeholder={"Seleccione...."}
+                  disabled={Entregado === "1" || visualizar === true}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3} >
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Órgano Auditor:
+                </Typography>
+                <SelectFrag
+                  value={origenauditoria}
+                  options={Listorigenauditoria}
+                  onInputChange={handleFilterChangeorigenaud}
+                  placeholder={"Seleccione...."}
+                  disabled={Entregado === "1" || visualizar === true}
+                />
+              </Grid>
+            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Estatus:
@@ -428,7 +484,7 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
                 onInputChange={handleFilterChangeestatus}
                 placeholder={"Seleccione.."}
                 //disabled={false}
-                disabled={Entregado === "1" || visualizar === true }
+                disabled={Entregado === "1" || visualizar === true}
 
               />
             </Grid>
@@ -465,85 +521,78 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
                 options={ListModalidad}
                 onInputChange={handleFilterChangemodalidad}
                 placeholder={"Seleccione ..."}
-                disabled={Entregado === "1" || visualizar === true }
+                disabled={Entregado === "1" || visualizar === true}
               />
             </Grid>
           </Grid>
 
           <Grid
             container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
+            spacing={{ xs: 2, md: 2.5 }}
+            sx={sectionSx}
+            alignItems="flex-start"
           >
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-      <Tooltip
-        open={openTooltipNAuditoria}
-        title={rolADMINFEDERAL 
-        ? "No se permiten letras ni símbolos, solo números"
-        : "No se permite el símbolo /"}    arrow
-        placement="top"
-      >
-        <TextField
-        required
-        margin="dense"
-        id="NAUDITORIA"
-        label="N° de Auditoría"
-        value={NAUDITORIA}
-        type="text"
-        fullWidth
-        variant="standard"
-        onChange={(v) => {
-          let value = v.target.value;
-          let mostrarTooltip = false;
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Tooltip
+                open={openTooltipNAuditoria}
+                title={rolADMINFEDERAL
+                  ? "No se permiten letras ni símbolos, solo números"
+                  : "No se permite el símbolo /"} arrow
+                placement="top"
+              >
+                <TextField
+                  required
+                  margin="dense"
+                  id="NAUDITORIA"
+                  label="N° de Auditoría"
+                  value={NAUDITORIA}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(v) => {
+                    let value = v.target.value;
+                    let mostrarTooltip = false;
 
-          // Nunca permitir /
-          if (value.includes("/")) {
-            value = value.replace(/\//g, "");
-            mostrarTooltip = true;
-          }
+                    // Nunca permitir /
+                    if (value.includes("/")) {
+                      value = value.replace(/\//g, "");
+                      mostrarTooltip = true;
+                    }
 
-          // Si es ADMIN FEDERAL, solo números
-          if (rolADMINFEDERAL) {
-            const valorOriginal = value;
-            value = value.replace(/\D/g, "");
+                    // Si es ADMIN FEDERAL, solo números
+                    if (rolADMINFEDERAL) {
+                      const valorOriginal = value;
+                      value = value.replace(/\D/g, "");
 
-            if (valorOriginal !== value) {
-              mostrarTooltip = true;
-            }
-          }
+                      if (valorOriginal !== value) {
+                        mostrarTooltip = true;
+                      }
+                    }
 
-          if (mostrarTooltip) {
-            setOpenTooltipNAuditoria(true);
+                    if (mostrarTooltip) {
+                      setOpenTooltipNAuditoria(true);
 
-            if (tooltipTimeout) {
-              clearTimeout(tooltipTimeout);
-            }
+                      if (tooltipTimeout) {
+                        clearTimeout(tooltipTimeout);
+                      }
 
-            const timeout = setTimeout(() => {
-              setOpenTooltipNAuditoria(false);
-            }, 2000);
+                      const timeout = setTimeout(() => {
+                        setOpenTooltipNAuditoria(false);
+                      }, 2000);
 
-            setTooltipTimeout(timeout);
-          }
+                      setTooltipTimeout(timeout);
+                    }
 
-          setNAUDITORIA(value);
-        }}
-          error={NAUDITORIA === "" ? true : false}
-          InputProps={{
-            readOnly: tipo === 1 ? false : true,
-          }}
-          disabled={Entregado === "1" || visualizar === true}
-        />
-      </Tooltip>
-</Grid>
+                    setNAUDITORIA(value);
+                  }}
+                  error={NAUDITORIA === "" ? true : false}
+                  InputProps={{
+                    readOnly: tipo === 1 ? false : true,
+                  }}
+                  disabled={Entregado === "1" || visualizar === true}
+                />
+              </Tooltip>
+            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField
                 required
@@ -592,22 +641,15 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
 
           <Grid
             container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
+            spacing={{ xs: 2, md: 2.5 }}
+            sx={sectionSx}
+            alignItems="flex-start"
           >
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <TextField
                 margin="dense"
                 id="NombreAudoria"
-                label={rolADMINFEDERAL ? "Nombre":"Nombre de la Auditoría"} 
+                label={rolADMINFEDERAL ? "Nombre" : "Nombre de la Auditoría"}
                 type="text"
                 multiline
                 fullWidth
@@ -639,16 +681,9 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
 
           <Grid
             container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
+            spacing={{ xs: 2, md: 2.5 }}
+            sx={sectionSx}
+            alignItems="flex-start"
           >
             <Grid item xs={12} sm={12} md={8} lg={6}>
               <TextField
@@ -673,41 +708,10 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
 
           <Grid
             container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
+            spacing={{ xs: 2, md: 2.5 }}
+            sx={sectionSx}
+            alignItems="flex-start"
           >
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Clasificación Auditoría:
-              </Typography>
-              <SelectFrag
-                value={idClasificacion}
-                options={LisClasificacion}
-                onInputChange={handleFilterChangeclasificacion}
-                placeholder={"Seleccione...."}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Órgano Auditor:
-              </Typography>
-              <SelectFrag
-                value={origenauditoria}
-                options={Listorigenauditoria}
-                onInputChange={handleFilterChangeorigenaud}
-                placeholder={"Seleccione...."}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
                 Grupo Funcional:
@@ -734,16 +738,9 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
 
           <Grid
             container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
+            spacing={{ xs: 2, md: 2.5 }}
+            sx={sectionSx}
+            alignItems="flex-start"
           >
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Typography sx={{ fontFamily: "sans-serif" }}>
@@ -783,96 +780,89 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
             </Grid>
             <Grid item xs={12} sm={6} md={4} lg={3}>
 
-            {rolADMINFEDERAL ? <>
-            
-              <Typography sx={{ fontFamily: "sans-serif" }}>
-                Área Auditora:
-              </Typography>
-              <SelectFrag
-                value={idaa}
-                options={Listaa}
-                onInputChange={handleFilterChangeaa}
-                placeholder={"Seleccione.."}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </>: <></>}
-            
+              {rolADMINFEDERAL ? <>
+
+                <Typography sx={{ fontFamily: "sans-serif" }}>
+                  Área Auditora:
+                </Typography>
+                <SelectFrag
+                  value={idaa}
+                  options={Listaa}
+                  onInputChange={handleFilterChangeaa}
+                  placeholder={"Seleccione.."}
+                  disabled={Entregado === "1" || visualizar === true}
+                />
+              </> : <></>}
+
             </Grid>
           </Grid>
           {rolADMINFEDERAL ? <>
-          <Grid
-            container
-            item
-            spacing={1}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ padding: "2%" }}
-          >
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-          
-              <Typography sx={{ fontFamily: "sans-serif" }}>Ramo:</Typography>
-              <SelectFrag
-                value={idramo}
-                options={CatRamo}
-                onInputChange={handleFilterramo}
-                placeholder={"Seleccione.."}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <TextField
-                required
-                margin="dense"
-                id="UNIVERSO"
-                label="Universo(miles de pesos)"
-                value={universomilespesos}
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={(v) => setuniversomilespesos(validarNumero(v.target.value, universomilespesos))}
-                error={universomilespesos === "" ? true : false}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-               <TextField
-                required
-                margin="dense"
-                id="muestra"
-                label="Muestra(miles de pesos)"
-                value={muestramilespesos}
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={(v) => setmuestramilespesos(validarNumero(v.target.value, muestramilespesos))}
-                error={muestramilespesos === "" ? true : false}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-             <TextField
-                required
-                margin="dense"
-                id="montoauditado"
-                label="Monto auditado"
-                value={montoauditado || ""}
-                type="text"
-                fullWidth
-                variant="standard"
-                onChange={(v) => {
-                  setmontoauditado(
-                    validarNumero(v.target.value, montoauditado)
-                  );
-                }}
-                error={montoauditado === 0 ? true : false}
-                disabled={Entregado === "1" || visualizar === true}
-              />
-              {/* <Typography sx={{ fontFamily: "sans-serif" }}>
+            <Grid
+              container
+              spacing={{ xs: 2, md: 2.5 }}
+              sx={sectionSx}
+              alignItems="flex-start"
+            >
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+
+                <Typography sx={{ fontFamily: "sans-serif" }}>Ramo:</Typography>
+                <SelectFrag
+                  value={idramo}
+                  options={CatRamo}
+                  onInputChange={handleFilterramo}
+                  placeholder={"Seleccione.."}
+                  disabled={Entregado === "1" || visualizar === true}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="UNIVERSO"
+                  label="Universo(miles de pesos)"
+                  value={universomilespesos}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(v) => setuniversomilespesos(validarNumero(v.target.value, universomilespesos))}
+                  error={universomilespesos === "" ? true : false}
+                  disabled={Entregado === "1" || visualizar === true}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="muestra"
+                  label="Muestra(miles de pesos)"
+                  value={muestramilespesos}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(v) => setmuestramilespesos(validarNumero(v.target.value, muestramilespesos))}
+                  error={muestramilespesos === "" ? true : false}
+                  disabled={Entregado === "1" || visualizar === true}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="montoauditado"
+                  label="Monto auditado"
+                  value={montoauditado || ""}
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  onChange={(v) => {
+                    setmontoauditado(
+                      validarNumero(v.target.value, montoauditado)
+                    );
+                  }}
+                  error={montoauditado === 0 ? true : false}
+                  disabled={Entregado === "1" || visualizar === true}
+                />
+                {/* <Typography sx={{ fontFamily: "sans-serif" }}>
                 Municipio:
               </Typography>
               <SelectFrag
@@ -882,23 +872,18 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
                 placeholder={"Seleccione.."}
                 disabled={Entregado === "1" || visualizar === true}
               /> */}
+              </Grid>
             </Grid>
-          </Grid>
-          </>:<></>}
-          
-          
+          </> : <></>}
+
+
 
           {(String(Entregado) !== "1" && editarPermiso === true) ? (
             <Grid
               container
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              sx={{ padding: "2%" }}
+              spacing={{ xs: 2, md: 2.5 }}
+              sx={sectionSx}
+              alignItems="flex-start"
             >
 
 
@@ -927,25 +912,20 @@ const [tooltipTimeout, setTooltipTimeout] = useState<NodeJS.Timeout | null>(null
           ) : (
             <Grid
               container
-              direction="row"
-              justifyContent="center"
-              alignItems="center"
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              sx={{ padding: "2%" }}
+              spacing={{ xs: 2, md: 2.5 }}
+              sx={sectionSx}
+              alignItems="flex-start"
             >
-          <Grid item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}>
-            <Button
-              // disabled={descripcion === "" || nombre === ""}
-              className={"actualizar"}
-              onClick={() => handleClose()}
-            >
-              {"Salir"}
-            </Button>
-          </Grid>
-          </Grid>
+              <Grid item alignItems="center" justifyContent="center" xs={12} sx={{ display: "flex" }}>
+                <Button
+                  // disabled={descripcion === "" || nombre === ""}
+                  className={"actualizar"}
+                  onClick={() => handleClose()}
+                >
+                  {"Salir"}
+                </Button>
+              </Grid>
+            </Grid>
           )}
         </Box>
       </ModalForm>
